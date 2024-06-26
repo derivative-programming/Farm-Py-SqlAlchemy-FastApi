@@ -10,7 +10,7 @@ import uuid  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from datetime import datetime, date  # noqa: F401
 
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 
 
 class ReportItemPlantUserDetails():
@@ -107,4 +107,3 @@ class ReportItemPlantUserDetails():
         )
         self.back_to_dashboard_link_tac_code = (
             TypeConversion.get_uuid(data["back_to_dashboard_link_tac_code"]))
-

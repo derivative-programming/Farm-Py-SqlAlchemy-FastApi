@@ -20,4 +20,3 @@ is_client_side_error_isEncrypted: bool = False
 is_resolved_isEncrypted: bool = False
 pac_id_isEncrypted: bool = False
 url_isEncrypted: bool = False
-

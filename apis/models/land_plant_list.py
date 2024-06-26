@@ -27,10 +27,12 @@ from apis.models.validation_error import ValidationErrorItem
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
-from reports.land_plant_list import ReportManagerLandPlantList
+from reports.land_plant_list import (
+    ReportManagerLandPlantList)
 from reports.report_request_validation_error import \
     ReportRequestValidationError
-from reports.row_models.land_plant_list import ReportItemLandPlantList
+from reports.row_models.land_plant_list import (
+    ReportItemLandPlantList)
 
 
 class LandPlantListGetModelRequest(CamelModel):
@@ -402,11 +404,14 @@ class LandPlantListGetModelResponse(ListModel):
             None
         """
         try:
-            logging.info("loading model..."
-                         "LandPlantListGetModelResponse")
-            generator = ReportManagerLandPlantList(session_context)
-            logging.info("processing..."
-                         "LandPlantListGetModelResponse")
+            logging.info(
+                "loading model..."
+                "LandPlantListGetModelResponse")
+            generator = ReportManagerLandPlantList(
+                session_context)
+            logging.info(
+                "processing..."
+                "LandPlantListGetModelResponse")
             items = await generator.generate(
                 land_code,
                 request.flavor_code,
@@ -433,7 +438,8 @@ class LandPlantListGetModelResponse(ListModel):
             )
             self.items = list()
             for item in items:
-                report_item = LandPlantListGetModelResponseItem()
+                report_item = \
+                    LandPlantListGetModelResponseItem()
                 report_item.load_report_item(item)
                 self.items.append(report_item)
             self.success = True

@@ -40,6 +40,6 @@ class TestPacUserDateGreaterThanFilterListGetModelRequestFactoryAsync:
                 session=session
             )
         )
-        assert isinstance(model_instance,
-                          PacUserDateGreaterThanFilterListGetModelRequest)
-
+        assert isinstance(
+            model_instance,
+            PacUserDateGreaterThanFilterListGetModelRequest)

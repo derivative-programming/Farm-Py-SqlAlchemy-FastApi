@@ -63,7 +63,8 @@ class FlavorFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                Flavor: An instance of the
+                Flavor:
+                    An instance of the
                     Flavor model.
 
         """
@@ -152,7 +153,8 @@ class FlavorFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = FlavorFactory.build(session=None, *args, **kwargs)
+        obj = FlavorFactory \
+            .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
@@ -184,7 +186,8 @@ class FlavorFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = FlavorFactory.build(session=None, *args, **kwargs)
+        obj = FlavorFactory \
+            .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
@@ -192,4 +195,3 @@ class FlavorFactory(factory.Factory):
         # session.add(obj)
         # await session.flush()
         return obj
-

@@ -11,8 +11,8 @@
     @pytest.mark.asyncio
     async def test_build_GENVALSnakeName(
         self,
-        GENVALSnakeParentObjectName_bus_obj: GENVALPascalParentObjectNameBusObj,
-        new_GENVALSnakeParentObjectName: GENVALPascalParentObjectName,
+        new_bus_obj: GENVALPascalParentObjectNameBusObj,
+        new_obj: GENVALPascalParentObjectName,
         session: AsyncSession
     ):
         """
@@ -23,24 +23,24 @@
 
         await current_runtime.initialize(session_context)
 
-        await GENVALSnakeParentObjectName_bus_obj.load_from_id(
-            new_GENVALSnakeParentObjectName.GENVALSnakeParentObjectName_id
+        await new_bus_obj.load_from_id(
+            new_obj.GENVALSnakeParentObjectName_id
         ) 
         
-        GENVALSnakeName_bus_obj = await GENVALSnakeParentObjectName_bus_obj.build_GENVALSnakeName()
+        child_bus_obj = await new_bus_obj.build_GENVALSnakeName()
 
-        assert GENVALSnakeName_bus_obj.GENVALSnakeParentObjectName_id == GENVALSnakeParentObjectName_bus_obj.GENVALSnakeParentObjectName_id
-        assert GENVALSnakeName_bus_obj.GENVALSnakeParentObjectName_code_peek == GENVALSnakeParentObjectName_bus_obj.code
+        assert child_bus_obj.GENVALSnakeParentObjectName_id == new_bus_obj.GENVALSnakeParentObjectName_id
+        assert child_bus_obj.GENVALSnakeParentObjectName_code_peek == new_bus_obj.code
 
-        await GENVALSnakeName_bus_obj.save()
+        await child_bus_obj.save()
 
-        assert GENVALSnakeName_bus_obj.GENVALSnakeName_id > 0
+        assert child_bus_obj.GENVALSnakeName_id > 0
 
     @pytest.mark.asyncio
     async def test_get_all_GENVALSnakeName(
         self,
-        GENVALSnakeParentObjectName_bus_obj: GENVALPascalParentObjectNameBusObj,
-        new_GENVALSnakeParentObjectName: GENVALPascalParentObjectName,
+        new_bus_obj: GENVALPascalParentObjectNameBusObj,
+        new_obj: GENVALPascalParentObjectName,
         session: AsyncSession
     ):
         """
@@ -51,22 +51,28 @@
 
         await current_runtime.initialize(session_context)
         
-        new_GENVALSnakeParentObjectName_GENVALSnakeParentObjectName_id = (
-            new_GENVALSnakeParentObjectName.GENVALSnakeParentObjectName_id
+        new_obj_GENVALSnakeParentObjectName_id = (
+            new_obj.GENVALSnakeParentObjectName_id
         )
 
-        await GENVALSnakeParentObjectName_bus_obj.load_from_id(
-            new_GENVALSnakeParentObjectName_GENVALSnakeParentObjectName_id
+        await new_bus_obj.load_from_id(
+            new_obj_GENVALSnakeParentObjectName_id
         ) 
         
-        GENVALSnakeName_bus_obj = await GENVALSnakeParentObjectName_bus_obj.build_GENVALSnakeName() 
+        child_bus_obj = await new_bus_obj.build_GENVALSnakeName() 
 
-        await GENVALSnakeName_bus_obj.save() 
+        await child_bus_obj.save() 
 
-        GENVALSnakeName_list = await GENVALSnakeParentObjectName_bus_obj.get_all_GENVALSnakeName()
+        child_bus_obj_list = await new_bus_obj.get_all_GENVALSnakeName()
 
-        assert len(GENVALSnakeName_list) >= 1
+        assert len(child_bus_obj_list) >= 1
         
-        #assert GENVALSnakeName_list[0].GENVALSnakeName_id > 0 
+        assert child_bus_obj_list[0].GENVALSnakeName_id > 0  
 
-        #assert GENVALSnakeName_list[0].GENVALSnakeName_id == GENVALSnakeName_bus_obj.GENVALSnakeName_id
+        # Check if any item in the list has a matching
+        # GENVALSnakeName_id
+        assert any(
+            child.GENVALSnakeName_id == (
+                child_bus_obj.GENVALSnakeName_id)
+            for child in child_bus_obj_list
+        ), "No matching GENVALSnakeName_id found in the list"

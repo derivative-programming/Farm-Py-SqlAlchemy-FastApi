@@ -570,18 +570,19 @@ class RoleManager:
         """
         logging.info(
             "RoleManager.add_bulk")
-        for role in roles:
+        for list_item in roles:
             role_id = \
-                role.role_id
-            code = role.code
-            if role.role_id is not None and role.role_id > 0:
+                list_item.role_id
+            code = list_item.code
+            if list_item.role_id is not None and \
+                    list_item.role_id > 0:
                 raise ValueError(
                     "Role is already added"
                     f": {str(code)} {str(role_id)}"
                 )
-            role.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            role.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(roles)
         await self._session_context.session.flush()
@@ -801,4 +802,3 @@ class RoleManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-

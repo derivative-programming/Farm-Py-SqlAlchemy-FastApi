@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 """
 This module contains the
-FlowPacUserRoleListInitReport class and related classes
+FlowPacUserRoleListInitReport class
+and related classes
 that handle the addition of a
  to a specific
 pac in the flow process.
@@ -17,7 +18,7 @@ from flows.base.pac_user_role_list_init_report import (
 from flows.base import LogSeverity
 from business.pac import PacBusObj
 from helpers import SessionContext  # noqa: F401
-from helpers import TypeConversion
+from helpers import TypeConversion  # noqa: F401
 
 
 class FlowPacUserRoleListInitReportResult():
@@ -27,7 +28,6 @@ class FlowPacUserRoleListInitReportResult():
     """
 
     context_object_code: uuid.UUID = uuid.UUID(int=0)
-
 
     def __init__(self):
         """
@@ -62,7 +62,8 @@ class FlowPacUserRoleListInitReport(
     a  to
     a specific pac in the flow process.
 
-    This class extends the BaseFlowPacUserRoleListInitReport class and
+    This class extends the
+    BaseFlowPacUserRoleListInitReportclass and
     initializes it with the provided session context.
     """
 
@@ -77,7 +78,8 @@ class FlowPacUserRoleListInitReport(
          to a specific pac.
 
         Returns:
-            FlowPacUserRoleListInitReportResult: The result of the
+            FlowPacUserRoleListInitReportResult:
+                The result of the
                 FlowPacUserRoleListInitReport process.
         """
         super()._log_message_and_severity(
@@ -88,15 +90,12 @@ class FlowPacUserRoleListInitReport(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(pac_bus_obj.code)
         )
-
         await super()._process_validation_rules(
             pac_bus_obj,
 
 # endset  # noqa: E122
         )
-
         super()._throw_queued_validation_errors()
-
 
         # TODO: add flow logic
 
@@ -105,9 +104,7 @@ class FlowPacUserRoleListInitReport(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowPacUserRoleListInitReportResult()
-
         result.context_object_code = pac_bus_obj.code
-
 
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
@@ -116,6 +113,4 @@ class FlowPacUserRoleListInitReport(
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
-
         return result
-

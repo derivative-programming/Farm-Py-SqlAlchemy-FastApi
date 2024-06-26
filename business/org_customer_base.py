@@ -980,4 +980,3 @@ class OrgCustomerBaseBusObj(BaseBusObj):
         organization = await self.get_organization_id_rel_obj()
 
         return organization
-

@@ -135,4 +135,3 @@ class TriStateFilterFluentBusObj(TriStateFilterBaseBusObj):
         self.pac_id = value
         return self
     # stateIntValue,
-

@@ -54,4 +54,3 @@ class OrganizationFluentBusObj(OrganizationBaseBusObj):
 
         self.tac_id = value
         return self
-

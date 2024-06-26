@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.org_api_key import OrgApiKeyManager
+from managers.org_api_key import (
+    OrgApiKeyManager)
 from models import OrgApiKey
-from models.factory import OrgApiKeyFactory
+from models.factory import (
+    OrgApiKeyFactory)
 
 
 class TestOrgApiKeyBulkManager:
@@ -28,7 +30,7 @@ class TestOrgApiKeyBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def org_api_key_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `OrgApiKeyManager` for testing.
@@ -40,7 +42,7 @@ class TestOrgApiKeyBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestOrgApiKeyBulkManager:
         1. Generate a list of org_api_key data using the
             `OrgApiKeyFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `org_api_key_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated org_api_key data.
         3. Verify that the number of org_api_keys
@@ -79,35 +81,36 @@ class TestOrgApiKeyBulkManager:
         org_api_keys_data = [
             await OrgApiKeyFactory.build_async(session) for _ in range(5)]
 
-        org_api_keys = await org_api_key_manager.add_bulk(
+        org_api_keys = await obj_manager.add_bulk(
             org_api_keys_data)
 
         assert len(org_api_keys) == 5
 
-        for updated_org_api_key in org_api_keys:
+        for updated_obj in org_api_keys:
             result = await session.execute(
                 select(OrgApiKey).filter(
-                    OrgApiKey._org_api_key_id == updated_org_api_key.org_api_key_id  # type: ignore
+                    OrgApiKey._org_api_key_id == (
+                        updated_obj.org_api_key_id)  # type: ignore
                 )
             )
-            fetched_org_api_key = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_org_api_key,
+                fetched_obj,
                 OrgApiKey)
 
-            assert str(fetched_org_api_key.insert_user_id) == (
-                str(org_api_key_manager._session_context.customer_code))
-            assert str(fetched_org_api_key.last_update_user_id) == (
-                str(org_api_key_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_org_api_key.org_api_key_id == \
-                updated_org_api_key.org_api_key_id
+            assert fetched_obj.org_api_key_id == \
+                updated_obj.org_api_key_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestOrgApiKeyBulkManager:
             the updated codes in the database.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager):
+            obj_manager (OrgApiKeyManager):
                 An instance of the
                 `OrgApiKeyManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestOrgApiKeyBulkManager:
             None
         """
         # Mocking org_api_key instances
-        org_api_key1 = await OrgApiKeyFactory. \
+        obj_1 = await OrgApiKeyFactory. \
             create_async(
                 session=session)
-        org_api_key2 = await OrgApiKeyFactory. \
+        obj_2 = await OrgApiKeyFactory. \
             create_async(
                 session=session)
-        logging.info(org_api_key1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestOrgApiKeyBulkManager:
         updates = [
             {
                 "org_api_key_id":
-                    org_api_key1.org_api_key_id,
+                    obj_1.org_api_key_id,
                 "code": code_updated1
             },
             {
                 "org_api_key_id":
-                    org_api_key2.org_api_key_id,
+                    obj_2.org_api_key_id,
                 "code": code_updated2
             }
         ]
-        updated_org_api_keys = await org_api_key_manager.update_bulk(
+        updated_org_api_keys = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestOrgApiKeyBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        org_api_keys = await org_api_key_manager.get_list()
+        org_api_keys = await obj_manager.get_list()
         logging.info(org_api_keys[0]
                      .__dict__)
         logging.info(org_api_keys[1]
@@ -192,40 +195,40 @@ class TestOrgApiKeyBulkManager:
 
         assert str(updated_org_api_keys[0]
                    .last_update_user_id) == (
-            str(org_api_key_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_org_api_keys[1]
                    .last_update_user_id) == (
-            str(org_api_key_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(OrgApiKey).filter(
                 OrgApiKey._org_api_key_id == 1)  # type: ignore
         )
-        fetched_org_api_key = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_org_api_key,
+        assert isinstance(fetched_obj,
                           OrgApiKey)
 
-        assert fetched_org_api_key.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(OrgApiKey).filter(
                 OrgApiKey._org_api_key_id == 2)  # type: ignore
         )
-        fetched_org_api_key = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_org_api_key,
+        assert isinstance(fetched_obj,
                           OrgApiKey)
 
-        assert fetched_org_api_key.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_org_api_key_id(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestOrgApiKeyBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No org_api_keys to update since org_api_key_id is missing
+        # No org_api_keys to update since
+        # org_api_key_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await org_api_key_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_org_api_key_not_found(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestOrgApiKeyBulkManager:
             where each update
             contains a org_api_key_id and a code.
         2. Calls the update_bulk method of the
-            org_api_key_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the org_api_key was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestOrgApiKeyBulkManager:
         updates = [{"org_api_key_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await org_api_key_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestOrgApiKeyBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param org_api_key_manager: An instance of the
+        :param obj_manager: An instance of the
             OrgApiKeyManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestOrgApiKeyBulkManager:
         updates = [{"org_api_key_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await org_api_key_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestOrgApiKeyBulkManager:
             using the OrgApiKeyFactory.
         2. Delete the org_api_keys using the
             delete_bulk method
-            of the org_api_key_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the org_api_keys no longer exist in the database.
+            checking if the org_api_keys
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The org_api_keys should no longer exist in the database.
+        - The org_api_keys should
+            no longer exist in the database.
 
         """
 
-        org_api_key1 = await OrgApiKeyFactory.create_async(
+        obj_1 = await OrgApiKeyFactory.create_async(
             session=session)
 
-        org_api_key2 = await OrgApiKeyFactory.create_async(
+        obj_2 = await OrgApiKeyFactory.create_async(
             session=session)
 
         # Delete org_api_keys
-        org_api_key_ids = [org_api_key1.org_api_key_id,
-                     org_api_key2.org_api_key_id]
-        result = await org_api_key_manager.delete_bulk(
+        org_api_key_ids = [
+            obj_1.org_api_key_id,
+            obj_2.org_api_key_id
+        ]
+        result = await obj_manager.delete_bulk(
             org_api_key_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestOrgApiKeyBulkManager:
         for org_api_key_id in org_api_key_ids:
             execute_result = await session.execute(
                 select(OrgApiKey).filter(
-                    OrgApiKey._org_api_key_id == org_api_key_id)  # type: ignore
+                    OrgApiKey._org_api_key_id == (
+                        org_api_key_id))  # type: ignore
             )
-            fetched_org_api_key = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_org_api_key is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_org_api_keys_not_found(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        org_api_keys when some org_api_keys are not found.
+        org_api_keys when some
+        org_api_keys are not found.
 
         Steps:
         1. Create a org_api_key using the
@@ -392,17 +402,17 @@ class TestOrgApiKeyBulkManager:
         when some org_api_keys with the specified IDs are
         not found in the database.
         """
-        org_api_key1 = await OrgApiKeyFactory.create_async(
+        obj_1 = await OrgApiKeyFactory.create_async(
             session=session)
 
-        assert isinstance(org_api_key1,
+        assert isinstance(obj_1,
                           OrgApiKey)
 
         # Delete org_api_keys
         org_api_key_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await org_api_key_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 org_api_key_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestOrgApiKeyBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        org_api_key_manager: OrgApiKeyManager
+        obj_manager: OrgApiKeyManager
     ):
         """
         Test case to verify the behavior of deleting
         org_api_keys with an empty list.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): The
+            obj_manager (OrgApiKeyManager): The
                 instance of the
                 OrgApiKeyManager class.
 
@@ -430,7 +440,7 @@ class TestOrgApiKeyBulkManager:
 
         # Delete org_api_keys with an empty list
         org_api_key_ids = []
-        result = await org_api_key_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             org_api_key_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestOrgApiKeyBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestOrgApiKeyBulkManager:
         method when invalid org_api_key IDs are provided.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): The
+            obj_manager (OrgApiKeyManager): The
                 instance of the
                 OrgApiKeyManager class.
             session (AsyncSession): The async session object.
@@ -463,8 +473,7 @@ class TestOrgApiKeyBulkManager:
         org_api_key_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await org_api_key_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 org_api_key_ids)
 
         await session.rollback()
-

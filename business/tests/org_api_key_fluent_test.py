@@ -4,7 +4,7 @@
 Unit tests for the
 OrgApiKeyFluentBusObj class.
 """
-import math
+import math  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
@@ -37,76 +37,112 @@ class TestOrgApiKeyFluentBusObj:
     OrgApiKeyFluentBusObj class.
     """
     @pytest.fixture
-    def org_api_key(self, session):
+    def new_fluent_bus_obj(self, session):
         """
         Return a OrgApiKeyFluentBusObj
         object.
         """
         session_context = SessionContext(dict(), session=session)
         return OrgApiKeyFluentBusObj(session_context)
-    def test_set_prop_api_key_value(self, org_api_key):
+    # apiKeyValue
+
+    def test_set_prop_api_key_value(self, new_fluent_bus_obj):
         """
         Test setting the api_key_value property.
         """
-        result = org_api_key.set_prop_api_key_value("Vanilla")
-        assert org_api_key.api_key_value == "Vanilla"
-        assert result is org_api_key
-    def test_set_prop_created_by(self, org_api_key):
+        result = new_fluent_bus_obj.set_prop_api_key_value(
+            "Vanilla")
+        assert new_fluent_bus_obj.api_key_value == \
+            "Vanilla"
+        assert result is new_fluent_bus_obj
+    # createdBy
+
+    def test_set_prop_created_by(self, new_fluent_bus_obj):
         """
         Test setting the created_by property.
         """
-        result = org_api_key.set_prop_created_by("Vanilla")
-        assert org_api_key.created_by == "Vanilla"
-        assert result is org_api_key
-    def test_set_prop_created_utc_date_time(self, org_api_key):
+        result = new_fluent_bus_obj.set_prop_created_by(
+            "Vanilla")
+        assert new_fluent_bus_obj.created_by == \
+            "Vanilla"
+        assert result is new_fluent_bus_obj
+    # createdUTCDateTime
+
+    def test_set_prop_created_utc_date_time(self, new_fluent_bus_obj):
         """
         Test setting the created_utc_date_time property.
         """
         test_datetime = datetime(2023, 1, 1, 12, 0, 0)
-        result = org_api_key.set_prop_created_utc_date_time(test_datetime)
-        assert org_api_key.created_utc_date_time == test_datetime
-        assert result is org_api_key
-    def test_set_prop_expiration_utc_date_time(self, org_api_key):
+        result = new_fluent_bus_obj.set_prop_created_utc_date_time(
+            test_datetime)
+        assert new_fluent_bus_obj.created_utc_date_time == \
+            test_datetime
+        assert result is new_fluent_bus_obj
+    # expirationUTCDateTime
+
+    def test_set_prop_expiration_utc_date_time(self, new_fluent_bus_obj):
         """
         Test setting the expiration_utc_date_time property.
         """
         test_datetime = datetime(2023, 1, 1, 12, 0, 0)
-        result = org_api_key.set_prop_expiration_utc_date_time(test_datetime)
-        assert org_api_key.expiration_utc_date_time == test_datetime
-        assert result is org_api_key
-    def test_set_prop_is_active(self, org_api_key):
+        result = new_fluent_bus_obj.set_prop_expiration_utc_date_time(
+            test_datetime)
+        assert new_fluent_bus_obj.expiration_utc_date_time == \
+            test_datetime
+        assert result is new_fluent_bus_obj
+    # isActive
+
+    def test_set_prop_is_active(self, new_fluent_bus_obj):
         """
         Test setting the is_active property.
         """
-        result = org_api_key.set_prop_is_active(True)
-        assert org_api_key.is_active is True
-        assert result is org_api_key
-    def test_set_prop_is_temp_user_key(self, org_api_key):
+        result = new_fluent_bus_obj.set_prop_is_active(True)
+        assert new_fluent_bus_obj.is_active is True
+        assert result is new_fluent_bus_obj
+    # isTempUserKey
+
+    def test_set_prop_is_temp_user_key(self, new_fluent_bus_obj):
         """
         Test setting the is_temp_user_key property.
         """
-        result = org_api_key.set_prop_is_temp_user_key(True)
-        assert org_api_key.is_temp_user_key is True
-        assert result is org_api_key
-    def test_set_prop_name(self, org_api_key):
+        result = new_fluent_bus_obj.set_prop_is_temp_user_key(True)
+        assert new_fluent_bus_obj.is_temp_user_key is True
+        assert result is new_fluent_bus_obj
+    # name
+
+    def test_set_prop_name(self, new_fluent_bus_obj):
         """
         Test setting the name property.
         """
-        result = org_api_key.set_prop_name("Vanilla")
-        assert org_api_key.name == "Vanilla"
-        assert result is org_api_key
-    def test_set_prop_organization_id(self, org_api_key):
+        result = new_fluent_bus_obj.set_prop_name(
+            "Vanilla")
+        assert new_fluent_bus_obj.name == \
+            "Vanilla"
+        assert result is new_fluent_bus_obj
+    # OrganizationID
+    # OrgCustomerID
+    # apiKeyValue,
+    # createdBy,
+    # createdUTCDateTime
+    # expirationUTCDateTime
+    # isActive,
+    # isTempUserKey,
+    # name,
+    # OrganizationID
+
+    def test_set_prop_organization_id(self, new_fluent_bus_obj):
         """
         Test setting the organization_id property.
         """
-        result = org_api_key.set_prop_organization_id(1)
-        assert org_api_key.organization_id == 1
-        assert result is org_api_key
-    def test_set_prop_org_customer_id(self, org_api_key):
+        result = new_fluent_bus_obj.set_prop_organization_id(1)
+        assert new_fluent_bus_obj.organization_id == 1
+        assert result is new_fluent_bus_obj
+    # OrgCustomerID
+
+    def test_set_prop_org_customer_id(self, new_fluent_bus_obj):
         """
         Test setting the org_customer_id property.
         """
-        result = org_api_key.set_prop_org_customer_id(1)
-        assert org_api_key.org_customer_id == 1
-        assert result is org_api_key
-
+        result = new_fluent_bus_obj.set_prop_org_customer_id(1)
+        assert new_fluent_bus_obj.org_customer_id == 1
+        assert result is new_fluent_bus_obj

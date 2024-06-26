@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 """
 This module contains the
-FlowPlantUserDetailsInitReport class and related classes
+FlowPlantUserDetailsInitReport class
+and related classes
 that handle the addition of a
  to a specific
 plant in the flow process.
@@ -17,7 +18,7 @@ from flows.base.plant_user_details_init_report import (
 from flows.base import LogSeverity
 from business.plant import PlantBusObj
 from helpers import SessionContext  # noqa: F401
-from helpers import TypeConversion
+from helpers import TypeConversion  # noqa: F401
 
 
 class FlowPlantUserDetailsInitReportResult():
@@ -25,10 +26,9 @@ class FlowPlantUserDetailsInitReportResult():
     Represents the result of the
     FlowPlantUserDetailsInitReport process.
     """
-
-    context_object_code: uuid.UUID = uuid.UUID(int=0)
     land_code: uuid.UUID = uuid.UUID(int=0)
     tac_code: uuid.UUID = uuid.UUID(int=0)
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
 
     def __init__(self):
         """
@@ -66,7 +66,8 @@ class FlowPlantUserDetailsInitReport(
     a  to
     a specific plant in the flow process.
 
-    This class extends the BaseFlowPlantUserDetailsInitReport class and
+    This class extends the
+    BaseFlowPlantUserDetailsInitReportclass and
     initializes it with the provided session context.
     """
 
@@ -81,7 +82,8 @@ class FlowPlantUserDetailsInitReport(
          to a specific plant.
 
         Returns:
-            FlowPlantUserDetailsInitReportResult: The result of the
+            FlowPlantUserDetailsInitReportResult:
+                The result of the
                 FlowPlantUserDetailsInitReport process.
         """
         super()._log_message_and_severity(
@@ -92,17 +94,14 @@ class FlowPlantUserDetailsInitReport(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(plant_bus_obj.code)
         )
-
         await super()._process_validation_rules(
             plant_bus_obj,
 
 # endset  # noqa: E122
         )
-
         super()._throw_queued_validation_errors()
         land_code_output: uuid.UUID = uuid.UUID(int=0)
         tac_code_output: uuid.UUID = uuid.UUID(int=0)
-
         # TODO: add flow logic
 
 
@@ -110,13 +109,11 @@ class FlowPlantUserDetailsInitReport(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowPlantUserDetailsInitReportResult()
-
         result.context_object_code = plant_bus_obj.code
         result.land_code = (
             land_code_output)
         result.tac_code = (
             tac_code_output)
-
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
@@ -124,6 +121,4 @@ class FlowPlantUserDetailsInitReport(
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
-
         return result
-

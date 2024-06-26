@@ -21,7 +21,7 @@ from flows.tac_login import (
     FlowTacLogin,
     FlowTacLoginResult)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.tac import (
     TacFactory)
 
@@ -32,7 +32,7 @@ class TestTacLoginPostModelResponse:
     `FlowTacLoginResult` class.
     """
 
-    def test_flow_tac_login_result_to_json(self):
+    def test_flow_result_to_json(self):
         """
         Test the `to_json` method of the
         `FlowTacLoginResult` class.
@@ -78,9 +78,12 @@ class TestTacLoginPostModelResponse:
         """
 
         session_context = SessionContext(dict(), session)
-        flow = FlowTacLogin(session_context)
+        flow = FlowTacLogin(
+            session_context)
 
-        tac = await TacFactory.create_async(session)
+        tac = await \
+            TacFactory.create_async(
+                session)
 
         tac_bus_obj = TacBusObj(session_context)
         tac_bus_obj.load_from_obj_instance(tac)
@@ -130,4 +133,3 @@ class TestTacLoginPostModelResponse:
         #     request=request_instance
         #     )
         # assert isinstance(result,FlowTacLoginResult)
-

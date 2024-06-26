@@ -56,4 +56,3 @@ class ErrorLogBusObj(ErrorLogFluentBusObj):
             result.append(error_log_bus_obj)
 
         return result
-

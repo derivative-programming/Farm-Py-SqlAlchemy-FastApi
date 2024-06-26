@@ -16,9 +16,11 @@ from sqlalchemy.future import select
 
 import models
 from helpers.session_context import SessionContext
-from managers.tac import TacManager
+from managers.tac import (
+    TacManager)
 from models import Tac
-from models.factory import TacFactory
+from models.factory import (
+    TacFactory)
 
 
 class TestTacGetByManager:
@@ -28,7 +30,7 @@ class TestTacGetByManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def tac_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `TacManager` for testing.
@@ -40,7 +42,7 @@ class TestTacGetByManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        tac_manager: TacManager
+        obj_manager: TacManager
     ):
         """
         Test case for the `build` method of
@@ -53,7 +55,7 @@ class TestTacGetByManager:
 
         # Call the build function of the manager
         tac = await \
-            tac_manager.build(
+            obj_manager.build(
                 **mock_data)
 
         # Assert that the returned object is an instance of
@@ -69,34 +71,34 @@ class TestTacGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
         Test case for the `get_by_id` method of
         `TacManager`.
         """
-        test_tac = await \
+        new_obj = await \
             TacFactory.create_async(
                 session)
 
         tac = await \
-            tac_manager.get_by_id(
-                test_tac.tac_id)
+            obj_manager.get_by_id(
+                new_obj.tac_id)
 
         assert isinstance(
             tac,
             Tac)
 
-        assert test_tac.tac_id == \
+        assert new_obj.tac_id == \
             tac.tac_id
-        assert test_tac.code == \
+        assert new_obj.code == \
             tac.code
 
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
-        tac_manager: TacManager
+        obj_manager: TacManager
     ):
         """
         Test case for the `get_by_id` method of
@@ -107,7 +109,7 @@ class TestTacGetByManager:
         non_existent_id = 9999  # An ID that's not in the database
 
         retrieved_tac = await \
-            tac_manager.get_by_id(
+            obj_manager.get_by_id(
                 non_existent_id)
 
         assert retrieved_tac is None
@@ -115,7 +117,7 @@ class TestTacGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_code_returns_tac(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -125,27 +127,27 @@ class TestTacGetByManager:
         returned by its code.
         """
 
-        test_tac = await \
+        new_obj = await \
             TacFactory.create_async(
                 session)
 
         tac = await \
-            tac_manager.get_by_code(
-                test_tac.code)
+            obj_manager.get_by_code(
+                new_obj.code)
 
         assert isinstance(
             tac,
             Tac)
 
-        assert test_tac.tac_id == \
+        assert new_obj.tac_id == \
             tac.tac_id
-        assert test_tac.code == \
+        assert new_obj.code == \
             tac.code
 
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
-        tac_manager: TacManager
+        obj_manager: TacManager
     ):
         """
         Test case for the `get_by_code` method of
@@ -156,7 +158,7 @@ class TestTacGetByManager:
         random_code = uuid.uuid4()
 
         tac = await \
-            tac_manager.get_by_code(
+            obj_manager.get_by_code(
                 random_code)
 
         assert tac is None
@@ -171,7 +173,7 @@ class TestTacGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_pac_id_existing(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -184,7 +186,7 @@ class TestTacGetByManager:
         1. Create a tac using the
             TacFactory.
         2. Fetch the tac using the
-            `get_by_pac_id` method of the tac_manager.
+            `get_by_pac_id` method of the obj_manager.
         3. Assert that the fetched tacs list contains
             only one tac.
         4. Assert that the fetched tac
@@ -203,34 +205,34 @@ class TestTacGetByManager:
         """
         # Add a tac with a specific
         # pac_id
-        tac1 = await TacFactory.create_async(
+        obj_1 = await TacFactory.create_async(
             session=session)
 
         # Fetch the tac using
         # the manager function
 
-        fetched_tacs = await \
-            tac_manager.get_by_pac_id(
-                tac1.pac_id)
-        assert len(fetched_tacs) == 1
-        assert isinstance(fetched_tacs[0],
+        fetched_objs = await \
+            obj_manager.get_by_pac_id(
+                obj_1.pac_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           Tac)
-        assert fetched_tacs[0].code == \
-            tac1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.Pac).where(
-            models.Pac._pac_id == tac1.pac_id)  # type: ignore  # noqa: E501
+            models.Pac._pac_id == obj_1.pac_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         pac = result.scalars().first()
 
         assert isinstance(pac, models.Pac)
 
-        assert fetched_tacs[0].pac_code_peek == pac.code
+        assert fetched_objs[0].pac_code_peek == pac.code
 
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,
-        tac_manager: TacManager
+        obj_manager: TacManager
     ):
         """
         Test case to verify the behavior of the
@@ -243,15 +245,15 @@ class TestTacGetByManager:
 
         non_existent_id = 999
 
-        fetched_tacs = await \
-            tac_manager.get_by_pac_id(
+        fetched_objs = await \
+            obj_manager.get_by_pac_id(
                 non_existent_id)
-        assert len(fetched_tacs) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_pac_id_invalid_type(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -259,7 +261,7 @@ class TestTacGetByManager:
         `get_by_pac_id` method when an invalid pac ID is provided.
 
         Args:
-            tac_manager (TacManager): An
+            obj_manager (TacManager): An
                 instance of the TacManager class.
             session (AsyncSession): An instance
                 of the AsyncSession class.
@@ -275,8 +277,7 @@ class TestTacGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await tac_manager.get_by_pac_id(
+            await obj_manager.get_by_pac_id(
                 invalid_id)  # type: ignore
 
         await session.rollback()
-

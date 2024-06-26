@@ -27,10 +27,12 @@ from apis.models.validation_error import ValidationErrorItem
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
-from reports.pac_user_tac_list import ReportManagerPacUserTacList
+from reports.pac_user_tac_list import (
+    ReportManagerPacUserTacList)
 from reports.report_request_validation_error import \
     ReportRequestValidationError
-from reports.row_models.pac_user_tac_list import ReportItemPacUserTacList
+from reports.row_models.pac_user_tac_list import (
+    ReportItemPacUserTacList)
 
 
 class PacUserTacListGetModelRequest(CamelModel):
@@ -226,11 +228,14 @@ class PacUserTacListGetModelResponse(ListModel):
             None
         """
         try:
-            logging.info("loading model..."
-                         "PacUserTacListGetModelResponse")
-            generator = ReportManagerPacUserTacList(session_context)
-            logging.info("processing..."
-                         "PacUserTacListGetModelResponse")
+            logging.info(
+                "loading model..."
+                "PacUserTacListGetModelResponse")
+            generator = ReportManagerPacUserTacList(
+                session_context)
+            logging.info(
+                "processing..."
+                "PacUserTacListGetModelResponse")
             items = await generator.generate(
                 pac_code,
 
@@ -242,7 +247,8 @@ class PacUserTacListGetModelResponse(ListModel):
             )
             self.items = list()
             for item in items:
-                report_item = PacUserTacListGetModelResponseItem()
+                report_item = \
+                    PacUserTacListGetModelResponseItem()
                 report_item.load_report_item(item)
                 self.items.append(report_item)
             self.success = True
@@ -271,4 +277,3 @@ class PacUserTacListGetModelResponse(ListModel):
             str: The JSON representation of the response model.
         """
         return self.model_dump_json()
-

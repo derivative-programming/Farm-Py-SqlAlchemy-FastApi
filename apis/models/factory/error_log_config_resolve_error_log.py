@@ -54,14 +54,12 @@ class ErrorLogConfigResolveErrorLogPostModelRequestFactory(
             An instance of
             ErrorLogConfigResolveErrorLogPostModelRequest.
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
 
 
         obj = model_class(*args, **kwargs)
-
 
         return obj
 
@@ -88,7 +86,6 @@ class ErrorLogConfigResolveErrorLogPostModelRequestFactory(
 
         obj = model_class(*args, **kwargs)
 
-
         return obj
 
     @classmethod
@@ -111,10 +108,9 @@ class ErrorLogConfigResolveErrorLogPostModelRequestFactory(
         """
 
 
-        obj = ErrorLogConfigResolveErrorLogPostModelRequestFactory.build(
-            session=None, *args, **kwargs
-        )
-
+        obj = ErrorLogConfigResolveErrorLogPostModelRequestFactory \
+            .build(
+                session=None, *args, **kwargs
+            )
 
         return obj
-

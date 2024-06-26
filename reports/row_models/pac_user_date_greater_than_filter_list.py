@@ -10,7 +10,7 @@ import uuid  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from datetime import datetime, date  # noqa: F401
 
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 
 
 class ReportItemPacUserDateGreaterThanFilterList():
@@ -52,4 +52,3 @@ class ReportItemPacUserDateGreaterThanFilterList():
             str(data["date_greater_than_filter_lookup_enum_name"]))
         self.date_greater_than_filter_name = (
             str(data["date_greater_than_filter_name"]))
-

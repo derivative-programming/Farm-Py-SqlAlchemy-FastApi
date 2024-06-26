@@ -1018,4 +1018,3 @@ class PacBaseBusObj(BaseBusObj):
     # isActive,
     # lookupEnumName,
     # name,
-

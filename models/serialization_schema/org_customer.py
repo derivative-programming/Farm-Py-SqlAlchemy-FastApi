@@ -52,4 +52,3 @@ class OrgCustomerSchema(SQLAlchemyAutoSchema):
     last_update_utc_date_time = fields.DateTime()
     customer_code_peek = fields.UUID()   # CustomerID
     organization_code_peek = fields.UUID()  # OrganizationID
-

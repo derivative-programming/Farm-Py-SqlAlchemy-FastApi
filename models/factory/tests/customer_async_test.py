@@ -8,7 +8,7 @@ operations of the CustomerFactory class.
 """
 
 import asyncio
-import math
+import math  # noqa: F401
 import time
 import uuid  # noqa: F401
 from datetime import date, datetime, timedelta  # noqa: F401
@@ -405,45 +405,45 @@ class TestCustomerFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        customer = await \
+        obj = await \
             CustomerFactory.create_async(
                 session=session)
-        assert isinstance(customer.customer_id, int)
-        assert isinstance(customer.code, uuid.UUID)
-        assert isinstance(customer.last_change_code, int)
-        assert isinstance(customer.insert_user_id, uuid.UUID)
-        assert isinstance(customer.last_update_user_id, uuid.UUID)
-        assert isinstance(customer.active_organization_id, int)
-        assert customer.email == "" or isinstance(
-            customer.email, str)
-        assert isinstance(customer.email_confirmed_utc_date_time, datetime)
-        assert customer.first_name == "" or isinstance(
-            customer.first_name, str)
-        assert isinstance(customer.forgot_password_key_expiration_utc_date_time, datetime)
-        assert customer.forgot_password_key_value == "" or isinstance(
-            customer.forgot_password_key_value, str)
-        assert isinstance(customer.fs_user_code_value, uuid.UUID)
-        assert isinstance(customer.is_active, bool)
-        assert isinstance(customer.is_email_allowed, bool)
-        assert isinstance(customer.is_email_confirmed, bool)
-        assert isinstance(customer.is_email_marketing_allowed, bool)
-        assert isinstance(customer.is_locked, bool)
-        assert isinstance(customer.is_multiple_organizations_allowed, bool)
-        assert isinstance(customer.is_verbose_logging_forced, bool)
-        assert isinstance(customer.last_login_utc_date_time, datetime)
-        assert customer.last_name == "" or isinstance(
-            customer.last_name, str)
-        assert customer.password == "" or isinstance(
-            customer.password, str)
-        assert customer.phone == "" or isinstance(
-            customer.phone, str)
-        assert customer.province == "" or isinstance(
-            customer.province, str)
-        assert isinstance(customer.registration_utc_date_time, datetime)
-        assert isinstance(customer.tac_id, int)
-        assert isinstance(customer.utc_offset_in_minutes, int)
-        assert customer.zip == "" or isinstance(
-            customer.zip, str)
+        assert isinstance(obj.customer_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert isinstance(obj.active_organization_id, int)
+        assert obj.email == "" or isinstance(
+            obj.email, str)
+        assert isinstance(obj.email_confirmed_utc_date_time, datetime)
+        assert obj.first_name == "" or isinstance(
+            obj.first_name, str)
+        assert isinstance(obj.forgot_password_key_expiration_utc_date_time, datetime)
+        assert obj.forgot_password_key_value == "" or isinstance(
+            obj.forgot_password_key_value, str)
+        assert isinstance(obj.fs_user_code_value, uuid.UUID)
+        assert isinstance(obj.is_active, bool)
+        assert isinstance(obj.is_email_allowed, bool)
+        assert isinstance(obj.is_email_confirmed, bool)
+        assert isinstance(obj.is_email_marketing_allowed, bool)
+        assert isinstance(obj.is_locked, bool)
+        assert isinstance(obj.is_multiple_organizations_allowed, bool)
+        assert isinstance(obj.is_verbose_logging_forced, bool)
+        assert isinstance(obj.last_login_utc_date_time, datetime)
+        assert obj.last_name == "" or isinstance(
+            obj.last_name, str)
+        assert obj.password == "" or isinstance(
+            obj.password, str)
+        assert obj.phone == "" or isinstance(
+            obj.phone, str)
+        assert obj.province == "" or isinstance(
+            obj.province, str)
+        assert isinstance(obj.registration_utc_date_time, datetime)
+        assert isinstance(obj.tac_id, int)
+        assert isinstance(obj.utc_offset_in_minutes, int)
+        assert obj.zip == "" or isinstance(
+            obj.zip, str)
         # Check for the peek values
         # activeOrganizationID,
         # email,
@@ -467,12 +467,12 @@ class TestCustomerFactoryAsync:
         # registrationUTCDateTime
         # tacID
 
-        assert isinstance(customer.tac_code_peek, uuid.UUID)
+        assert isinstance(obj.tac_code_peek, uuid.UUID)
         # uTCOffsetInMinutes,
         # zip,
 
-        assert isinstance(customer.insert_utc_date_time, datetime)
-        assert isinstance(customer.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
@@ -497,12 +497,13 @@ class TestCustomerFactoryAsync:
         each customer.
         """
 
-        customer_1 = await CustomerFactory.create_async(
+        obj_1 = await CustomerFactory.create_async(
             session=session)
-        customer_2 = await CustomerFactory.create_async(
+        obj_2 = await CustomerFactory.create_async(
             session=session)
-        customer_2.code = customer_1.code
-        session.add_all([customer_1, customer_2])
+        obj_2.code = obj_1.code
+        session.add_all([obj_1,
+                         obj_2])
         with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
@@ -520,13 +521,13 @@ class TestCustomerFactoryAsync:
         or empty, and that the data types of certain fields are correct.
         """
 
-        customer = Customer()
-        assert customer.code is not None
-        assert customer.last_change_code is not None
-        assert customer.insert_user_id is not None
-        assert customer.last_update_user_id is not None
-        assert customer.insert_utc_date_time is not None
-        assert customer.last_update_utc_date_time is not None
+        new_obj = Customer()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id is not None
+        assert new_obj.last_update_user_id is not None
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
 
         # activeOrganizationID,
         # email,
@@ -550,32 +551,32 @@ class TestCustomerFactoryAsync:
         # registrationUTCDateTime
         # TacID
 
-        assert isinstance(customer.tac_code_peek, uuid.UUID)
+        assert isinstance(new_obj.tac_code_peek, uuid.UUID)
         # uTCOffsetInMinutes,
         # zip,
-        assert customer.active_organization_id == 0
-        assert customer.email == ""
-        assert customer.email_confirmed_utc_date_time == datetime(1753, 1, 1)
-        assert customer.first_name == ""
-        assert customer.forgot_password_key_expiration_utc_date_time == datetime(1753, 1, 1)
-        assert customer.forgot_password_key_value == ""
-        assert isinstance(customer.fs_user_code_value, uuid.UUID)
-        assert customer.is_active is False
-        assert customer.is_email_allowed is False
-        assert customer.is_email_confirmed is False
-        assert customer.is_email_marketing_allowed is False
-        assert customer.is_locked is False
-        assert customer.is_multiple_organizations_allowed is False
-        assert customer.is_verbose_logging_forced is False
-        assert customer.last_login_utc_date_time == datetime(1753, 1, 1)
-        assert customer.last_name == ""
-        assert customer.password == ""
-        assert customer.phone == ""
-        assert customer.province == ""
-        assert customer.registration_utc_date_time == datetime(1753, 1, 1)
-        assert customer.tac_id == 0
-        assert customer.utc_offset_in_minutes == 0
-        assert customer.zip == ""
+        assert new_obj.active_organization_id == 0
+        assert new_obj.email == ""
+        assert new_obj.email_confirmed_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.first_name == ""
+        assert new_obj.forgot_password_key_expiration_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.forgot_password_key_value == ""
+        assert isinstance(new_obj.fs_user_code_value, uuid.UUID)
+        assert new_obj.is_active is False
+        assert new_obj.is_email_allowed is False
+        assert new_obj.is_email_confirmed is False
+        assert new_obj.is_email_marketing_allowed is False
+        assert new_obj.is_locked is False
+        assert new_obj.is_multiple_organizations_allowed is False
+        assert new_obj.is_verbose_logging_forced is False
+        assert new_obj.last_login_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.last_name == ""
+        assert new_obj.password == ""
+        assert new_obj.phone == ""
+        assert new_obj.province == ""
+        assert new_obj.registration_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.tac_id == 0
+        assert new_obj.utc_offset_in_minutes == 0
+        assert new_obj.zip == ""
 
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
@@ -623,24 +624,24 @@ class TestCustomerFactoryAsync:
             Customer._customer_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 customer.customer_id))
         result = await session.execute(stmt)
-        customer_1 = result.scalars().first()
+        obj_1 = result.scalars().first()
 
-        # customer_1 = await session.query(Customer).filter_by(
+        # obj_1 = await session.query(Customer).filter_by(
         # customer_id=customer.customer_id).first()
-        customer_1.code = uuid.uuid4()
+        obj_1.code = uuid.uuid4()
         await session.commit()
 
         stmt = select(Customer).where(
             Customer._customer_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 customer.customer_id))
         result = await session.execute(stmt)
-        customer_2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
-        # customer_2 = await session.query(Customer).filter_by(
+        # obj_2 = await session.query(Customer).filter_by(
         # customer_id=customer.customer_id).first()
-        customer_2.code = uuid.uuid4()
+        obj_2.code = uuid.uuid4()
         await session.commit()
-        assert customer_2.last_change_code != original_last_change_code
+        assert obj_2.last_change_code != original_last_change_code
     # activeOrganizationID,
     # email,
     # emailConfirmedUTCDateTime
@@ -689,4 +690,3 @@ class TestCustomerFactoryAsync:
         await session.rollback()
     # uTCOffsetInMinutes,
     # zip,
-

@@ -34,10 +34,11 @@ class TestPlantUserPropertyRandomUpdatePostModelRequestFactoryAsync:
         class.
         """
 
-        model_instance = (
-            await PlantUserPropertyRandomUpdatePostModelRequestFactory.create_async(
+        model_instance = await \
+            PlantUserPropertyRandomUpdatePostModelRequestFactory \
+            .create_async(
                 session=session)
-        )
-        assert isinstance(model_instance,
-                          PlantUserPropertyRandomUpdatePostModelRequest)
 
+        assert isinstance(
+            model_instance,
+            PlantUserPropertyRandomUpdatePostModelRequest)

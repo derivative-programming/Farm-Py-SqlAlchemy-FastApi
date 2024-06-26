@@ -559,18 +559,19 @@ class TriStateFilterManager:
         """
         logging.info(
             "TriStateFilterManager.add_bulk")
-        for tri_state_filter in tri_state_filters:
+        for list_item in tri_state_filters:
             tri_state_filter_id = \
-                tri_state_filter.tri_state_filter_id
-            code = tri_state_filter.code
-            if tri_state_filter.tri_state_filter_id is not None and tri_state_filter.tri_state_filter_id > 0:
+                list_item.tri_state_filter_id
+            code = list_item.code
+            if list_item.tri_state_filter_id is not None and \
+                    list_item.tri_state_filter_id > 0:
                 raise ValueError(
                     "TriStateFilter is already added"
                     f": {str(code)} {str(tri_state_filter_id)}"
                 )
-            tri_state_filter.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            tri_state_filter.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(tri_state_filters)
         await self._session_context.session.flush()
@@ -790,4 +791,3 @@ class TriStateFilterManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-

@@ -34,10 +34,11 @@ class TestCustomerBuildTempApiKeyPostModelRequestFactoryAsync:
         class.
         """
 
-        model_instance = (
-            await CustomerBuildTempApiKeyPostModelRequestFactory.create_async(
+        model_instance = await \
+            CustomerBuildTempApiKeyPostModelRequestFactory \
+            .create_async(
                 session=session)
-        )
-        assert isinstance(model_instance,
-                          CustomerBuildTempApiKeyPostModelRequest)
 
+        assert isinstance(
+            model_instance,
+            CustomerBuildTempApiKeyPostModelRequest)

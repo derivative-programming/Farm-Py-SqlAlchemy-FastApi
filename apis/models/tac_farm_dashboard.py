@@ -27,10 +27,12 @@ from apis.models.validation_error import ValidationErrorItem
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
-from reports.tac_farm_dashboard import ReportManagerTacFarmDashboard
+from reports.tac_farm_dashboard import (
+    ReportManagerTacFarmDashboard)
 from reports.report_request_validation_error import \
     ReportRequestValidationError
-from reports.row_models.tac_farm_dashboard import ReportItemTacFarmDashboard
+from reports.row_models.tac_farm_dashboard import (
+    ReportItemTacFarmDashboard)
 
 
 class TacFarmDashboardGetModelRequest(CamelModel):
@@ -200,11 +202,14 @@ class TacFarmDashboardGetModelResponse(ListModel):
             None
         """
         try:
-            logging.info("loading model..."
-                         "TacFarmDashboardGetModelResponse")
-            generator = ReportManagerTacFarmDashboard(session_context)
-            logging.info("processing..."
-                         "TacFarmDashboardGetModelResponse")
+            logging.info(
+                "loading model..."
+                "TacFarmDashboardGetModelResponse")
+            generator = ReportManagerTacFarmDashboard(
+                session_context)
+            logging.info(
+                "processing..."
+                "TacFarmDashboardGetModelResponse")
             items = await generator.generate(
                 tac_code,
 
@@ -216,7 +221,8 @@ class TacFarmDashboardGetModelResponse(ListModel):
             )
             self.items = list()
             for item in items:
-                report_item = TacFarmDashboardGetModelResponseItem()
+                report_item = \
+                    TacFarmDashboardGetModelResponseItem()
                 report_item.load_report_item(item)
                 self.items.append(report_item)
             self.success = True
@@ -245,4 +251,3 @@ class TacFarmDashboardGetModelResponse(ListModel):
             str: The JSON representation of the response model.
         """
         return self.model_dump_json()
-

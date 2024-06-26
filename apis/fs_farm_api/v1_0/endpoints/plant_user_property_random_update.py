@@ -24,17 +24,17 @@ the following endpoints:
 """
 
 import logging
-import tempfile
+import tempfile  # noqa: F401
 import traceback
 import uuid
 
-from fastapi import APIRouter, Depends, Path
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, Depends, Path  # noqa: F401
+from fastapi.responses import FileResponse  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import apis.models as api_models
-import apis.models.init as api_init_models
-import reports
+import apis.models.init as api_init_models  # noqa: F401
+import reports  # noqa: F401
 from database import get_db
 from helpers import SessionContext, api_key_header
 
@@ -78,7 +78,8 @@ class PlantUserPropertyRandomUpdateRouter(BaseRouter):
 
     @staticmethod
     @router.post(
-        "/api/v1_0/plant-user-property-random-update/{plant_code}",
+        "/api/v1_0/plant-user-property-random-update"
+        "/{plant_code}",
         response_model=(
             api_models
             .PlantUserPropertyRandomUpdatePostModelResponse
@@ -159,7 +160,7 @@ class PlantUserPropertyRandomUpdateRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            'PlantUserPropertyRandomUpdateRouter.submit get result:%s',
+            "PlantUserPropertyRandomUpdateRouter"
+            ".submit get result:%s",
             response_data)
         return response
-

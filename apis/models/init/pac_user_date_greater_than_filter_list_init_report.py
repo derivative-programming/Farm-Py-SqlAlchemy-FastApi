@@ -20,7 +20,7 @@ from flows.base.flow_validation_error import FlowValidationError
 from flows.pac_user_date_greater_than_filter_list_init_report import (
     FlowPacUserDateGreaterThanFilterListInitReport,
     FlowPacUserDateGreaterThanFilterListInitReportResult)
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 
@@ -88,7 +88,8 @@ class PacUserDateGreaterThanFilterListInitReportGetInitModelRequest(
             if pac_bus_obj.get_pac_obj() is None:
                 logging.info("Invalid pac_code")
                 raise ValueError("Invalid pac_code")
-            flow = FlowPacUserDateGreaterThanFilterListInitReport(session_context)
+            flow = FlowPacUserDateGreaterThanFilterListInitReport(
+                session_context)
             logging.info(
                 "process request..."
                 "PacUserDateGreaterThanFilterListInitReport"
@@ -100,9 +101,10 @@ class PacUserDateGreaterThanFilterListInitReportGetInitModelRequest(
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error..."
-                         "PacUserDateGreaterThanFilterListInitReport"
-                         "GetInitModelRequest")
+            logging.info(
+                "error..."
+                "PacUserDateGreaterThanFilterListInitReport"
+                "GetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
@@ -111,4 +113,3 @@ class PacUserDateGreaterThanFilterListInitReportGetInitModelRequest(
                 val_error.message = ve.error_dict[key]
                 response.validation_errors.append(val_error)
         return response
-

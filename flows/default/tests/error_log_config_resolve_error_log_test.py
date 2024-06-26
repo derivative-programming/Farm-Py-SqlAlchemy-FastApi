@@ -21,7 +21,7 @@ from flows.error_log_config_resolve_error_log import (
     FlowErrorLogConfigResolveErrorLog,
     FlowErrorLogConfigResolveErrorLogResult)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.error_log import (
     ErrorLogFactory)
 
@@ -32,7 +32,7 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
     `FlowErrorLogConfigResolveErrorLogResult` class.
     """
 
-    def test_flow_error_log_config_resolve_error_log_result_to_json(self):
+    def test_flow_result_to_json(self):
         """
         Test the `to_json` method of the
         `FlowErrorLogConfigResolveErrorLogResult` class.
@@ -62,9 +62,12 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
         """
 
         session_context = SessionContext(dict(), session)
-        flow = FlowErrorLogConfigResolveErrorLog(session_context)
+        flow = FlowErrorLogConfigResolveErrorLog(
+            session_context)
 
-        error_log = await ErrorLogFactory.create_async(session)
+        error_log = await \
+            ErrorLogFactory.create_async(
+                session)
 
         error_log_bus_obj = ErrorLogBusObj(session_context)
         error_log_bus_obj.load_from_obj_instance(error_log)
@@ -111,4 +114,3 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
         #     request=request_instance
         #     )
         # assert isinstance(result,FlowErrorLogConfigResolveErrorLogResult)
-

@@ -56,4 +56,3 @@ class RoleBusObj(RoleFluentBusObj):
             result.append(role_bus_obj)
 
         return result
-

@@ -1,4 +1,4 @@
-# pac_test.py
+# models/serialization_schema/tests/pac_test.py
 # pylint: disable=redefined-outer-name
 # pylint: disable=unused-import
 
@@ -15,13 +15,15 @@ transmitted over a network.
 
 The tests in this module cover the serialization
 and deserialization of Pac
-instances using the PacSchema class. They verify
+instances using the PacSchema
+class. They verify
 that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a Pac instance.
 
-The PacSchema class is used to define
+The PacSchema class
+is used to define
 the serialization and deserialization
 rules for Pac instances. It
 specifies how each attribute of a
@@ -56,7 +58,7 @@ logger = get_logger(__name__)
 
 
 @pytest.fixture(scope="function")
-def pac(
+def new_obj(
     session
 ) -> Pac:
     """
@@ -111,7 +113,7 @@ class TestPacSchema:
 
     def test_pac_serialization(
         self,
-        pac: Pac
+        new_obj: Pac
     ):
         """
         Test the serialization of a
@@ -124,39 +126,39 @@ class TestPacSchema:
         """
 
         schema = PacSchema()
-        pac_data = schema.dump(pac)
+        pac_data = schema.dump(new_obj)
 
         assert isinstance(pac_data, dict)
 
         result = pac_data
 
-        assert result['code'] == str(pac.code)
+        assert result['code'] == str(new_obj.code)
         assert result['last_change_code'] == (
-            pac.last_change_code)
+            new_obj.last_change_code)
         assert result['insert_user_id'] == (
-            str(pac.insert_user_id))
+            str(new_obj.insert_user_id))
         assert result['last_update_user_id'] == (
-            str(pac.last_update_user_id))
+            str(new_obj.last_update_user_id))
 
         assert result['description'] == (
-            pac.description)
+            new_obj.description)
         assert result['display_order'] == (
-            pac.display_order)
+            new_obj.display_order)
         assert result['is_active'] == (
-            pac.is_active)
+            new_obj.is_active)
         assert result['lookup_enum_name'] == (
-            pac.lookup_enum_name)
+            new_obj.lookup_enum_name)
         assert result['name'] == (
-            pac.name)
+            new_obj.name)
         assert result['insert_utc_date_time'] == (
-            pac.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
-            pac.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
 
 
     def test_pac_deserialization(
         self,
-        pac
+        new_obj: Pac
     ):
         """
         Test the deserialization of a
@@ -175,64 +177,64 @@ class TestPacSchema:
         """
 
         schema = PacSchema()
-        serialized_data = schema.dump(pac)
+        serialized_data = schema.dump(new_obj)
         deserialized_data = schema.load(serialized_data)
 
         assert deserialized_data['code'] == \
-            pac.code
+            new_obj.code
         assert deserialized_data['last_change_code'] == (
-            pac.last_change_code)
+            new_obj.last_change_code)
         assert deserialized_data['insert_user_id'] == (
-            pac.insert_user_id)
+            new_obj.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
-            pac.last_update_user_id)
+            new_obj.last_update_user_id)
         assert deserialized_data['description'] == (
-            pac.description)
+            new_obj.description)
         assert deserialized_data['display_order'] == (
-            pac.display_order)
+            new_obj.display_order)
         assert deserialized_data['is_active'] == (
-            pac.is_active)
+            new_obj.is_active)
         assert deserialized_data['lookup_enum_name'] == (
-            pac.lookup_enum_name)
+            new_obj.lookup_enum_name)
         assert deserialized_data['name'] == (
-            pac.name)
+            new_obj.name)
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
-            pac.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
-            pac.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
 
 
-        new_pac = Pac(
+        obj_from_dict = Pac(
             **deserialized_data)
 
-        assert isinstance(new_pac,
+        assert isinstance(new_obj,
                           Pac)
 
-        # Now compare the new_pac attributes with
+        # Now compare the new_obj attributes with
         # the pac attributes
-        assert new_pac.code == \
-            pac.code
-        assert new_pac.last_change_code == \
-            pac.last_change_code
-        assert new_pac.insert_user_id == \
-            pac.insert_user_id
-        assert new_pac.last_update_user_id == \
-            pac.last_update_user_id
-        assert new_pac.description == (
-            pac.description)
-        assert new_pac.display_order == (
-            pac.display_order)
-        assert new_pac.is_active == (
-            pac.is_active)
-        assert new_pac.lookup_enum_name == (
-            pac.lookup_enum_name)
-        assert new_pac.name == (
-            pac.name)
+        assert obj_from_dict.code == \
+            new_obj.code
+        assert obj_from_dict.last_change_code == \
+            new_obj.last_change_code
+        assert obj_from_dict.insert_user_id == \
+            new_obj.insert_user_id
+        assert obj_from_dict.last_update_user_id == \
+            new_obj.last_update_user_id
+        assert obj_from_dict.description == (
+            new_obj.description)
+        assert obj_from_dict.display_order == (
+            new_obj.display_order)
+        assert obj_from_dict.is_active == (
+            new_obj.is_active)
+        assert obj_from_dict.lookup_enum_name == (
+            new_obj.lookup_enum_name)
+        assert obj_from_dict.name == (
+            new_obj.name)
 
-        assert new_pac.insert_utc_date_time.isoformat() == (
-            pac.insert_utc_date_time.isoformat())
-        assert new_pac.last_update_utc_date_time.isoformat() == (
-            pac.last_update_utc_date_time.isoformat())
+        assert obj_from_dict.insert_utc_date_time.isoformat() == (
+            new_obj.insert_utc_date_time.isoformat())
+        assert obj_from_dict.last_update_utc_date_time.isoformat() == (
+            new_obj.last_update_utc_date_time.isoformat())
 
 
     def test_from_json(self):
@@ -299,7 +301,7 @@ class TestPacSchema:
 
     def test_to_json(
         self,
-        pac: Pac
+        new_obj: Pac
     ):
         """
         Test the conversion of a
@@ -318,72 +320,71 @@ class TestPacSchema:
         # to JSON using the schema
         pac_schema = PacSchema()
         pac_dict = pac_schema.dump(
-            pac)
+            new_obj)
 
         # Convert the pac_dict to JSON string
         pac_json = json.dumps(
             pac_dict)
 
         # Convert the JSON strings back to dictionaries
-        pac_dict_from_json = json.loads(
+        dict_from_json = json.loads(
             pac_json)
         # sample_dict_from_json = json.loads(self.sample_data)
 
         logging.info(
-            "pac_dict_from_json.keys() %s",
-            pac_dict_from_json.keys())
+            "dict_from_json.keys() %s",
+            dict_from_json.keys())
 
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
 
         # Verify the keys in both dictionaries match
-        assert set(pac_dict_from_json.keys()) == (
+        assert set(dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
-            f"Got: {set(pac_dict_from_json.keys())}"
+            f"Got: {set(dict_from_json.keys())}"
         )
 
-        assert pac_dict_from_json['code'] == \
-            str(pac.code), (
+        assert dict_from_json['code'] == \
+            str(new_obj.code), (
             "failed on code"
         )
-        assert pac_dict_from_json['last_change_code'] == (
-            pac.last_change_code), (
+        assert dict_from_json['last_change_code'] == (
+            new_obj.last_change_code), (
             "failed on last_change_code"
         )
-        assert pac_dict_from_json['insert_user_id'] == (
-            str(pac.insert_user_id)), (
+        assert dict_from_json['insert_user_id'] == (
+            str(new_obj.insert_user_id)), (
             "failed on insert_user_id"
         )
-        assert pac_dict_from_json['last_update_user_id'] == (
-            str(pac.last_update_user_id)), (
+        assert dict_from_json['last_update_user_id'] == (
+            str(new_obj.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-        assert pac_dict_from_json['description'] == (
-            pac.description), (
+        assert dict_from_json['description'] == (
+            new_obj.description), (
             "failed on description"
         )
-        assert pac_dict_from_json['display_order'] == (
-            pac.display_order), (
+        assert dict_from_json['display_order'] == (
+            new_obj.display_order), (
             "failed on display_order"
         )
-        assert pac_dict_from_json['is_active'] == (
-            pac.is_active), (
+        assert dict_from_json['is_active'] == (
+            new_obj.is_active), (
             "failed on is_active"
         )
-        assert pac_dict_from_json['lookup_enum_name'] == (
-            pac.lookup_enum_name), (
+        assert dict_from_json['lookup_enum_name'] == (
+            new_obj.lookup_enum_name), (
             "failed on lookup_enum_name"
         )
-        assert pac_dict_from_json['name'] == (
-            pac.name), (
+        assert dict_from_json['name'] == (
+            new_obj.name), (
             "failed on name"
         )
-        assert pac_dict_from_json['insert_utc_date_time'] == (
-            pac.insert_utc_date_time.isoformat()), (
+        assert dict_from_json['insert_utc_date_time'] == (
+            new_obj.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
         )
-        assert pac_dict_from_json['last_update_utc_date_time'] == (
-            pac.last_update_utc_date_time.isoformat()), (
+        assert dict_from_json['last_update_utc_date_time'] == (
+            new_obj.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-

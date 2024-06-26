@@ -20,7 +20,7 @@ from flows.base.flow_validation_error import FlowValidationError
 from flows.tac_register_init_obj_wf import (
     FlowTacRegisterInitObjWF,
     FlowTacRegisterInitObjWFResult)
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 
@@ -111,7 +111,8 @@ class TacRegisterInitObjWFGetInitModelRequest(
             if tac_bus_obj.get_tac_obj() is None:
                 logging.info("Invalid tac_code")
                 raise ValueError("Invalid tac_code")
-            flow = FlowTacRegisterInitObjWF(session_context)
+            flow = FlowTacRegisterInitObjWF(
+                session_context)
             logging.info(
                 "process request..."
                 "TacRegisterInitObjWF"
@@ -123,9 +124,10 @@ class TacRegisterInitObjWFGetInitModelRequest(
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error..."
-                         "TacRegisterInitObjWF"
-                         "GetInitModelRequest")
+            logging.info(
+                "error..."
+                "TacRegisterInitObjWF"
+                "GetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
@@ -134,4 +136,3 @@ class TacRegisterInitObjWFGetInitModelRequest(
                 val_error.message = ve.error_dict[key]
                 response.validation_errors.append(val_error)
         return response
-

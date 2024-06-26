@@ -548,18 +548,19 @@ class TacManager:
         """
         logging.info(
             "TacManager.add_bulk")
-        for tac in tacs:
+        for list_item in tacs:
             tac_id = \
-                tac.tac_id
-            code = tac.code
-            if tac.tac_id is not None and tac.tac_id > 0:
+                list_item.tac_id
+            code = list_item.code
+            if list_item.tac_id is not None and \
+                    list_item.tac_id > 0:
                 raise ValueError(
                     "Tac is already added"
                     f": {str(code)} {str(tac_id)}"
                 )
-            tac.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            tac.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(tacs)
         await self._session_context.session.flush()
@@ -779,4 +780,3 @@ class TacManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-

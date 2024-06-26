@@ -117,4 +117,3 @@ class FlavorFluentBusObj(FlavorBaseBusObj):
 
         self.pac_id = value
         return self
-

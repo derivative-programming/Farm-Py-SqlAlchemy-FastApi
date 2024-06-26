@@ -13,7 +13,7 @@ import logging
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import List
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from reports.providers.plant_user_details import (
     ReportProviderPlantUserDetails)
 from reports.row_models.plant_user_details import (
@@ -225,4 +225,3 @@ class ReportManagerPlantUserDetails():
                         #     setattr(obj, key, value)
                 objects.append(obj)
         return objects
-

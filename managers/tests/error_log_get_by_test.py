@@ -16,9 +16,11 @@ from sqlalchemy.future import select
 
 import models
 from helpers.session_context import SessionContext
-from managers.error_log import ErrorLogManager
+from managers.error_log import (
+    ErrorLogManager)
 from models import ErrorLog
-from models.factory import ErrorLogFactory
+from models.factory import (
+    ErrorLogFactory)
 
 
 class TestErrorLogGetByManager:
@@ -28,7 +30,7 @@ class TestErrorLogGetByManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def error_log_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `ErrorLogManager` for testing.
@@ -40,7 +42,7 @@ class TestErrorLogGetByManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        error_log_manager: ErrorLogManager
+        obj_manager: ErrorLogManager
     ):
         """
         Test case for the `build` method of
@@ -53,7 +55,7 @@ class TestErrorLogGetByManager:
 
         # Call the build function of the manager
         error_log = await \
-            error_log_manager.build(
+            obj_manager.build(
                 **mock_data)
 
         # Assert that the returned object is an instance of
@@ -69,34 +71,34 @@ class TestErrorLogGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
-        error_log_manager: ErrorLogManager,
+        obj_manager: ErrorLogManager,
         session: AsyncSession
     ):
         """
         Test case for the `get_by_id` method of
         `ErrorLogManager`.
         """
-        test_error_log = await \
+        new_obj = await \
             ErrorLogFactory.create_async(
                 session)
 
         error_log = await \
-            error_log_manager.get_by_id(
-                test_error_log.error_log_id)
+            obj_manager.get_by_id(
+                new_obj.error_log_id)
 
         assert isinstance(
             error_log,
             ErrorLog)
 
-        assert test_error_log.error_log_id == \
+        assert new_obj.error_log_id == \
             error_log.error_log_id
-        assert test_error_log.code == \
+        assert new_obj.code == \
             error_log.code
 
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
-        error_log_manager: ErrorLogManager
+        obj_manager: ErrorLogManager
     ):
         """
         Test case for the `get_by_id` method of
@@ -107,7 +109,7 @@ class TestErrorLogGetByManager:
         non_existent_id = 9999  # An ID that's not in the database
 
         retrieved_error_log = await \
-            error_log_manager.get_by_id(
+            obj_manager.get_by_id(
                 non_existent_id)
 
         assert retrieved_error_log is None
@@ -115,7 +117,7 @@ class TestErrorLogGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_code_returns_error_log(
         self,
-        error_log_manager: ErrorLogManager,
+        obj_manager: ErrorLogManager,
         session: AsyncSession
     ):
         """
@@ -125,27 +127,27 @@ class TestErrorLogGetByManager:
         returned by its code.
         """
 
-        test_error_log = await \
+        new_obj = await \
             ErrorLogFactory.create_async(
                 session)
 
         error_log = await \
-            error_log_manager.get_by_code(
-                test_error_log.code)
+            obj_manager.get_by_code(
+                new_obj.code)
 
         assert isinstance(
             error_log,
             ErrorLog)
 
-        assert test_error_log.error_log_id == \
+        assert new_obj.error_log_id == \
             error_log.error_log_id
-        assert test_error_log.code == \
+        assert new_obj.code == \
             error_log.code
 
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
-        error_log_manager: ErrorLogManager
+        obj_manager: ErrorLogManager
     ):
         """
         Test case for the `get_by_code` method of
@@ -156,7 +158,7 @@ class TestErrorLogGetByManager:
         random_code = uuid.uuid4()
 
         error_log = await \
-            error_log_manager.get_by_code(
+            obj_manager.get_by_code(
                 random_code)
 
         assert error_log is None
@@ -172,7 +174,7 @@ class TestErrorLogGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_pac_id_existing(
         self,
-        error_log_manager: ErrorLogManager,
+        obj_manager: ErrorLogManager,
         session: AsyncSession
     ):
         """
@@ -185,7 +187,7 @@ class TestErrorLogGetByManager:
         1. Create a error_log using the
             ErrorLogFactory.
         2. Fetch the error_log using the
-            `get_by_pac_id` method of the error_log_manager.
+            `get_by_pac_id` method of the obj_manager.
         3. Assert that the fetched error_logs list contains
             only one error_log.
         4. Assert that the fetched error_log
@@ -204,34 +206,34 @@ class TestErrorLogGetByManager:
         """
         # Add a error_log with a specific
         # pac_id
-        error_log1 = await ErrorLogFactory.create_async(
+        obj_1 = await ErrorLogFactory.create_async(
             session=session)
 
         # Fetch the error_log using
         # the manager function
 
-        fetched_error_logs = await \
-            error_log_manager.get_by_pac_id(
-                error_log1.pac_id)
-        assert len(fetched_error_logs) == 1
-        assert isinstance(fetched_error_logs[0],
+        fetched_objs = await \
+            obj_manager.get_by_pac_id(
+                obj_1.pac_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           ErrorLog)
-        assert fetched_error_logs[0].code == \
-            error_log1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.Pac).where(
-            models.Pac._pac_id == error_log1.pac_id)  # type: ignore  # noqa: E501
+            models.Pac._pac_id == obj_1.pac_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         pac = result.scalars().first()
 
         assert isinstance(pac, models.Pac)
 
-        assert fetched_error_logs[0].pac_code_peek == pac.code
+        assert fetched_objs[0].pac_code_peek == pac.code
 
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,
-        error_log_manager: ErrorLogManager
+        obj_manager: ErrorLogManager
     ):
         """
         Test case to verify the behavior of the
@@ -244,15 +246,15 @@ class TestErrorLogGetByManager:
 
         non_existent_id = 999
 
-        fetched_error_logs = await \
-            error_log_manager.get_by_pac_id(
+        fetched_objs = await \
+            obj_manager.get_by_pac_id(
                 non_existent_id)
-        assert len(fetched_error_logs) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_pac_id_invalid_type(
         self,
-        error_log_manager: ErrorLogManager,
+        obj_manager: ErrorLogManager,
         session: AsyncSession
     ):
         """
@@ -260,7 +262,7 @@ class TestErrorLogGetByManager:
         `get_by_pac_id` method when an invalid pac ID is provided.
 
         Args:
-            error_log_manager (ErrorLogManager): An
+            obj_manager (ErrorLogManager): An
                 instance of the ErrorLogManager class.
             session (AsyncSession): An instance
                 of the AsyncSession class.
@@ -276,9 +278,8 @@ class TestErrorLogGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await error_log_manager.get_by_pac_id(
+            await obj_manager.get_by_pac_id(
                 invalid_id)  # type: ignore
 
         await session.rollback()
     # url,
-

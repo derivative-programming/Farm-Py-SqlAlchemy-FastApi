@@ -42,4 +42,3 @@ some_text_val_isEncrypted: bool = False
 some_uniqueidentifier_val_isEncrypted: bool = False
 some_utc_date_time_val_isEncrypted: bool = False
 some_var_char_val_isEncrypted: bool = False
-

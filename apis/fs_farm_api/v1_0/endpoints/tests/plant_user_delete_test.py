@@ -89,7 +89,8 @@ async def test_submit_success(overridden_get_db):
         ) as ac:
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.post(
-                f'/api/v1_0/plant-user-delete/{plant_code}',
+                "/api/v1_0/plant-user-delete"
+                f"/{plant_code}",
                 json={},
                 headers={'API_KEY': test_api_key}
             )
@@ -135,7 +136,8 @@ async def test_submit_request_validation_error(overridden_get_db):
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/plant-user-delete/{plant_code}',
+            "/api/v1_0/plant-user-delete"
+            f"/{plant_code}",
             json=json.dumps(
                 {
                     "xxxx": "yyyy"
@@ -178,7 +180,8 @@ async def test_submit_authorization_failure_bad_api_key(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/plant-user-delete/{plant_code}',
+            "/api/v1_0/plant-user-delete"
+            f"/{plant_code}",
             json={},
             headers={'API_KEY': 'xxx'}
         )
@@ -221,7 +224,8 @@ async def test_submit_authorization_failure_empty_header_key(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/plant-user-delete/{plant_code}',
+            "/api/v1_0/plant-user-delete"
+            f"/{plant_code}",
             json={},
             headers={'API_KEY': ''}
         )
@@ -263,7 +267,8 @@ async def test_submit_authorization_failure_no_header(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/plant-user-delete/{plant_code}',
+            "/api/v1_0/plant-user-delete"
+            f"/{plant_code}",
             json={}
         )
 
@@ -303,7 +308,8 @@ async def test_submit_endpoint_url_failure(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/plant-user-delete/{plant_code}/xxxx',
+            "/api/v1_0/plant-user-delete"
+            f"/{plant_code}/xxxx",
             json={},
             headers={'API_KEY': test_api_key}
         )
@@ -333,7 +339,8 @@ async def test_submit_endpoint_invalid_code_failure(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/plant-user-delete/{plant_code}',
+            "/api/v1_0/plant-user-delete"
+            f"/{plant_code}",
             json={},
             headers={'API_KEY': test_api_key}
         )
@@ -380,7 +387,8 @@ async def test_submit_endpoint_method_failure(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/plant-user-delete/{plant_code}',
+            "/api/v1_0/plant-user-delete"
+            f"/{plant_code}",
             headers={'API_KEY': test_api_key}
         )
 

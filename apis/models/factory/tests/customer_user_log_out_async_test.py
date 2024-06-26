@@ -34,10 +34,11 @@ class TestCustomerUserLogOutPostModelRequestFactoryAsync:
         class.
         """
 
-        model_instance = (
-            await CustomerUserLogOutPostModelRequestFactory.create_async(
+        model_instance = await \
+            CustomerUserLogOutPostModelRequestFactory \
+            .create_async(
                 session=session)
-        )
-        assert isinstance(model_instance,
-                          CustomerUserLogOutPostModelRequest)
 
+        assert isinstance(
+            model_instance,
+            CustomerUserLogOutPostModelRequest)

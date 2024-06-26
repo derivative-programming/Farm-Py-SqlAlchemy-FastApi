@@ -65,7 +65,8 @@ class CustomerRoleFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                CustomerRole: An instance of the
+                CustomerRole:
+                    An instance of the
                     CustomerRole model.
 
         """
@@ -180,7 +181,8 @@ class CustomerRoleFactory(factory.Factory):
         kwargs["role_code_peek"] = (  # RoleID
             role_id_role_instance.code)
 
-        obj = CustomerRoleFactory.build(session=None, *args, **kwargs)
+        obj = CustomerRoleFactory \
+            .build(session=None, *args, **kwargs)
         obj.customer_id = (  # CustomerID
             customer_id_customer_instance.customer_id)
         obj.role_id = (  # RoleID
@@ -222,7 +224,8 @@ class CustomerRoleFactory(factory.Factory):
         kwargs["role_code_peek"] = (  # RoleID
             role_id_role_instance.code)
 
-        obj = CustomerRoleFactory.build(session=None, *args, **kwargs)
+        obj = CustomerRoleFactory \
+            .build(session=None, *args, **kwargs)
         obj.customer_id = (  # CustomerID
             customer_id_customer_instance.customer_id)
         obj.role_id = (  # RoleID
@@ -234,4 +237,3 @@ class CustomerRoleFactory(factory.Factory):
         # session.add(obj)
         # await session.flush()
         return obj
-

@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.tac import TacManager
+from managers.tac import (
+    TacManager)
 from models import Tac
-from models.factory import TacFactory
+from models.factory import (
+    TacFactory)
 
 
 class TestTacBulkManager:
@@ -28,7 +30,7 @@ class TestTacBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def tac_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `TacManager` for testing.
@@ -40,7 +42,7 @@ class TestTacBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestTacBulkManager:
         1. Generate a list of tac data using the
             `TacFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `tac_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated tac data.
         3. Verify that the number of tacs
@@ -79,35 +81,36 @@ class TestTacBulkManager:
         tacs_data = [
             await TacFactory.build_async(session) for _ in range(5)]
 
-        tacs = await tac_manager.add_bulk(
+        tacs = await obj_manager.add_bulk(
             tacs_data)
 
         assert len(tacs) == 5
 
-        for updated_tac in tacs:
+        for updated_obj in tacs:
             result = await session.execute(
                 select(Tac).filter(
-                    Tac._tac_id == updated_tac.tac_id  # type: ignore
+                    Tac._tac_id == (
+                        updated_obj.tac_id)  # type: ignore
                 )
             )
-            fetched_tac = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_tac,
+                fetched_obj,
                 Tac)
 
-            assert str(fetched_tac.insert_user_id) == (
-                str(tac_manager._session_context.customer_code))
-            assert str(fetched_tac.last_update_user_id) == (
-                str(tac_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_tac.tac_id == \
-                updated_tac.tac_id
+            assert fetched_obj.tac_id == \
+                updated_obj.tac_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestTacBulkManager:
             the updated codes in the database.
 
         Args:
-            tac_manager (TacManager):
+            obj_manager (TacManager):
                 An instance of the
                 `TacManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestTacBulkManager:
             None
         """
         # Mocking tac instances
-        tac1 = await TacFactory. \
+        obj_1 = await TacFactory. \
             create_async(
                 session=session)
-        tac2 = await TacFactory. \
+        obj_2 = await TacFactory. \
             create_async(
                 session=session)
-        logging.info(tac1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestTacBulkManager:
         updates = [
             {
                 "tac_id":
-                    tac1.tac_id,
+                    obj_1.tac_id,
                 "code": code_updated1
             },
             {
                 "tac_id":
-                    tac2.tac_id,
+                    obj_2.tac_id,
                 "code": code_updated2
             }
         ]
-        updated_tacs = await tac_manager.update_bulk(
+        updated_tacs = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestTacBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        tacs = await tac_manager.get_list()
+        tacs = await obj_manager.get_list()
         logging.info(tacs[0]
                      .__dict__)
         logging.info(tacs[1]
@@ -192,40 +195,40 @@ class TestTacBulkManager:
 
         assert str(updated_tacs[0]
                    .last_update_user_id) == (
-            str(tac_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_tacs[1]
                    .last_update_user_id) == (
-            str(tac_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(Tac).filter(
                 Tac._tac_id == 1)  # type: ignore
         )
-        fetched_tac = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_tac,
+        assert isinstance(fetched_obj,
                           Tac)
 
-        assert fetched_tac.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(Tac).filter(
                 Tac._tac_id == 2)  # type: ignore
         )
-        fetched_tac = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_tac,
+        assert isinstance(fetched_obj,
                           Tac)
 
-        assert fetched_tac.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_tac_id(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestTacBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No tacs to update since tac_id is missing
+        # No tacs to update since
+        # tac_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await tac_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_tac_not_found(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestTacBulkManager:
             where each update
             contains a tac_id and a code.
         2. Calls the update_bulk method of the
-            tac_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the tac was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestTacBulkManager:
         updates = [{"tac_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await tac_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestTacBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param tac_manager: An instance of the
+        :param obj_manager: An instance of the
             TacManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestTacBulkManager:
         updates = [{"tac_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await tac_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestTacBulkManager:
             using the TacFactory.
         2. Delete the tacs using the
             delete_bulk method
-            of the tac_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the tacs no longer exist in the database.
+            checking if the tacs
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The tacs should no longer exist in the database.
+        - The tacs should
+            no longer exist in the database.
 
         """
 
-        tac1 = await TacFactory.create_async(
+        obj_1 = await TacFactory.create_async(
             session=session)
 
-        tac2 = await TacFactory.create_async(
+        obj_2 = await TacFactory.create_async(
             session=session)
 
         # Delete tacs
-        tac_ids = [tac1.tac_id,
-                     tac2.tac_id]
-        result = await tac_manager.delete_bulk(
+        tac_ids = [
+            obj_1.tac_id,
+            obj_2.tac_id
+        ]
+        result = await obj_manager.delete_bulk(
             tac_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestTacBulkManager:
         for tac_id in tac_ids:
             execute_result = await session.execute(
                 select(Tac).filter(
-                    Tac._tac_id == tac_id)  # type: ignore
+                    Tac._tac_id == (
+                        tac_id))  # type: ignore
             )
-            fetched_tac = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_tac is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_tacs_not_found(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        tacs when some tacs are not found.
+        tacs when some
+        tacs are not found.
 
         Steps:
         1. Create a tac using the
@@ -392,17 +402,17 @@ class TestTacBulkManager:
         when some tacs with the specified IDs are
         not found in the database.
         """
-        tac1 = await TacFactory.create_async(
+        obj_1 = await TacFactory.create_async(
             session=session)
 
-        assert isinstance(tac1,
+        assert isinstance(obj_1,
                           Tac)
 
         # Delete tacs
         tac_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await tac_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 tac_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestTacBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        tac_manager: TacManager
+        obj_manager: TacManager
     ):
         """
         Test case to verify the behavior of deleting
         tacs with an empty list.
 
         Args:
-            tac_manager (TacManager): The
+            obj_manager (TacManager): The
                 instance of the
                 TacManager class.
 
@@ -430,7 +440,7 @@ class TestTacBulkManager:
 
         # Delete tacs with an empty list
         tac_ids = []
-        result = await tac_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             tac_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestTacBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestTacBulkManager:
         method when invalid tac IDs are provided.
 
         Args:
-            tac_manager (TacManager): The
+            obj_manager (TacManager): The
                 instance of the
                 TacManager class.
             session (AsyncSession): The async session object.
@@ -463,8 +473,7 @@ class TestTacBulkManager:
         tac_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await tac_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 tac_ids)
 
         await session.rollback()
-

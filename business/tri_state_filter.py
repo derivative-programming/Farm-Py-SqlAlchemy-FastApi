@@ -56,4 +56,3 @@ class TriStateFilterBusObj(TriStateFilterFluentBusObj):
             result.append(tri_state_filter_bus_obj)
 
         return result
-

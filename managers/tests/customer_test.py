@@ -1,4 +1,4 @@
-# models/managers/tests/customer_test.py
+# managers/tests/customer_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
@@ -16,10 +16,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.customer import CustomerManager
+from managers.customer import (
+    CustomerManager)
 from models import Customer
-from models.factory import CustomerFactory
-from models.serialization_schema.customer import CustomerSchema
+from models.factory import (
+    CustomerFactory)
+from models.serialization_schema.customer import (
+    CustomerSchema)
 
 
 class TestCustomerManager:
@@ -29,7 +32,7 @@ class TestCustomerManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def customer_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `CustomerManager` for testing.
@@ -41,7 +44,7 @@ class TestCustomerManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        customer_manager: CustomerManager
+        obj_manager: CustomerManager
     ):
         """
         Test case for the `build` method of
@@ -54,10 +57,11 @@ class TestCustomerManager:
 
         # Call the build function of the manager
         customer = await \
-            customer_manager.build(
+            obj_manager.build(
                 **mock_data)
 
-        # Assert that the returned object is an instance of Customer
+        # Assert that the returned object is an
+        # instance of Customer
         assert isinstance(
             customer,
             Customer)
@@ -69,7 +73,7 @@ class TestCustomerManager:
     @pytest.mark.asyncio
     async def test_build_with_missing_data(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -84,14 +88,14 @@ class TestCustomerManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await customer_manager.build(**mock_data)
+            await obj_manager.build(**mock_data)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_add_correctly_adds_customer_to_database(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -99,49 +103,51 @@ class TestCustomerManager:
         `CustomerManager` that checks if a
         customer is correctly added to the database.
         """
-        test_customer = await \
+        new_obj = await \
             CustomerFactory.build_async(
                 session)
 
-        assert test_customer.customer_id == 0
+        assert new_obj.customer_id == 0
 
         # Add the customer using the
         # manager's add method
-        added_customer = await \
-            customer_manager.add(
-                customer=test_customer)
+        added_obj = await \
+            obj_manager.add(
+                customer=new_obj)
 
-        assert isinstance(added_customer,
+        assert isinstance(added_obj,
                           Customer)
 
-        assert str(added_customer.insert_user_id) == (
-            str(customer_manager._session_context.customer_code))
-        assert str(added_customer.last_update_user_id) == (
-            str(customer_manager._session_context.customer_code))
+        assert str(added_obj.insert_user_id) == (
+            str(obj_manager._session_context.customer_code))
+        assert str(added_obj.last_update_user_id) == (
+            str(obj_manager._session_context.customer_code))
 
-        assert added_customer.customer_id > 0
+        assert added_obj.customer_id > 0
 
         # Fetch the customer from
         # the database directly
         result = await session.execute(
             select(Customer).filter(
-                Customer._customer_id == added_customer.customer_id  # type: ignore
+                Customer._customer_id == (
+                    added_obj.customer_id)  # type: ignore
             )
         )
-        fetched_customer = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
         # Assert that the fetched customer
         # is not None and matches the
         # added customer
-        assert fetched_customer is not None
-        assert isinstance(fetched_customer,
+        assert fetched_obj is not None
+        assert isinstance(fetched_obj,
                           Customer)
-        assert fetched_customer.customer_id == added_customer.customer_id
+        assert fetched_obj.customer_id == \
+            added_obj.customer_id
 
     @pytest.mark.asyncio
     async def test_add_returns_correct_customer_object(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -152,42 +158,42 @@ class TestCustomerManager:
         # Create a test customer
         # using the CustomerFactory
         # without persisting it to the database
-        test_customer = await \
+        new_obj = await \
             CustomerFactory.build_async(
                 session)
 
-        assert test_customer.customer_id == 0
+        assert new_obj.customer_id == 0
 
-        test_customer.code = uuid.uuid4()
+        new_obj.code = uuid.uuid4()
 
         # Add the customer using
         # the manager's add method
-        added_customer = await \
-            customer_manager.add(
-                customer=test_customer)
+        added_obj = await \
+            obj_manager.add(
+                customer=new_obj)
 
-        assert isinstance(added_customer,
+        assert isinstance(added_obj,
                           Customer)
 
-        assert str(added_customer.insert_user_id) == (
-            str(customer_manager._session_context.customer_code))
-        assert str(added_customer.last_update_user_id) == (
-            str(customer_manager._session_context.customer_code))
+        assert str(added_obj.insert_user_id) == (
+            str(obj_manager._session_context.customer_code))
+        assert str(added_obj.last_update_user_id) == (
+            str(obj_manager._session_context.customer_code))
 
-        assert added_customer.customer_id > 0
+        assert added_obj.customer_id > 0
 
         # Assert that the returned
         # customer matches the
         # test customer
-        assert added_customer.customer_id == \
-            test_customer.customer_id
-        assert added_customer.code == \
-            test_customer.code
+        assert added_obj.customer_id == \
+            new_obj.customer_id
+        assert added_obj.code == \
+            new_obj.code
 
     @pytest.mark.asyncio
     async def test_update(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -196,48 +202,49 @@ class TestCustomerManager:
         that checks if a customer
         is correctly updated.
         """
-        test_customer = await \
+        new_obj = await \
             CustomerFactory.create_async(
                 session)
 
-        test_customer.code = uuid.uuid4()
+        new_obj.code = uuid.uuid4()
 
-        updated_customer = await \
-            customer_manager.update(
-                customer=test_customer)
+        updated_obj = await \
+            obj_manager.update(
+                customer=new_obj)
 
-        assert isinstance(updated_customer,
+        assert isinstance(updated_obj,
                           Customer)
 
-        assert str(updated_customer.last_update_user_id) == str(
-            customer_manager._session_context.customer_code)
+        assert str(updated_obj.last_update_user_id) == str(
+            obj_manager._session_context.customer_code)
 
-        assert updated_customer.customer_id == \
-            test_customer.customer_id
-        assert updated_customer.code == \
-            test_customer.code
+        assert updated_obj.customer_id == \
+            new_obj.customer_id
+        assert updated_obj.code == \
+            new_obj.code
 
         result = await session.execute(
             select(Customer).filter(
-                Customer._customer_id == test_customer.customer_id)  # type: ignore
+                Customer._customer_id == (
+                    new_obj.customer_id))  # type: ignore
         )
 
-        fetched_customer = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert updated_customer.customer_id == \
-            fetched_customer.customer_id
-        assert updated_customer.code == \
-            fetched_customer.code
+        assert updated_obj.customer_id == \
+            fetched_obj.customer_id
+        assert updated_obj.code == \
+            fetched_obj.code
 
-        assert test_customer.customer_id == \
-            fetched_customer.customer_id
-        assert test_customer.code == \
-            fetched_customer.code
+        assert new_obj.customer_id == \
+            fetched_obj.customer_id
+        assert new_obj.code == \
+            fetched_obj.code
 
     @pytest.mark.asyncio
     async def test_update_via_dict(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -246,50 +253,51 @@ class TestCustomerManager:
         that checks if a customer is
         correctly updated using a dictionary.
         """
-        test_customer = await \
+        new_obj = await \
             CustomerFactory.create_async(
                 session)
 
         new_code = uuid.uuid4()
 
-        updated_customer = await \
-            customer_manager.update(
-                customer=test_customer,
+        updated_obj = await \
+            obj_manager.update(
+                customer=new_obj,
                 code=new_code
             )
 
-        assert isinstance(updated_customer,
+        assert isinstance(updated_obj,
                           Customer)
 
-        assert str(updated_customer.last_update_user_id) == str(
-            customer_manager._session_context.customer_code
+        assert str(updated_obj.last_update_user_id) == str(
+            obj_manager._session_context.customer_code
         )
 
-        assert updated_customer.customer_id == \
-            test_customer.customer_id
-        assert updated_customer.code == new_code
+        assert updated_obj.customer_id == \
+            new_obj.customer_id
+        assert updated_obj.code == new_code
 
         result = await session.execute(
             select(Customer).filter(
-                Customer._customer_id == test_customer.customer_id)  # type: ignore
+                Customer._customer_id == (
+                    new_obj.customer_id))  # type: ignore
         )
 
-        fetched_customer = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert updated_customer.customer_id == \
-            fetched_customer.customer_id
-        assert updated_customer.code == \
-            fetched_customer.code
+        assert updated_obj.customer_id == \
+            fetched_obj.customer_id
+        assert updated_obj.code == \
+            fetched_obj.code
 
-        assert test_customer.customer_id == \
-            fetched_customer.customer_id
+        assert new_obj.customer_id == \
+            fetched_obj.customer_id
         assert new_code == \
-            fetched_customer.code
+            fetched_obj.code
 
     @pytest.mark.asyncio
     async def test_update_invalid_customer(
         self,
-        customer_manager: CustomerManager
+        obj_manager: CustomerManager
     ):
         """
         Test case for the `update` method of
@@ -302,17 +310,17 @@ class TestCustomerManager:
 
         new_code = uuid.uuid4()
 
-        updated_customer = await (
-            customer_manager.update(
+        updated_obj = await (
+            obj_manager.update(
                 customer, code=new_code))  # type: ignore
 
         # Assertions
-        assert updated_customer is None
+        assert updated_obj is None
 
     @pytest.mark.asyncio
     async def test_update_with_nonexistent_attribute(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -320,15 +328,15 @@ class TestCustomerManager:
         `CustomerManager`
         with a nonexistent attribute.
         """
-        test_customer = await \
+        new_obj = await \
             CustomerFactory.create_async(
                 session)
 
         new_code = uuid.uuid4()
 
         with pytest.raises(ValueError):
-            await customer_manager.update(
-                customer=test_customer,
+            await obj_manager.update(
+                customer=new_obj,
                 xxx=new_code
             )
 
@@ -337,66 +345,70 @@ class TestCustomerManager:
     @pytest.mark.asyncio
     async def test_delete(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
         Test case for the `delete` method of
         `CustomerManager`.
         """
-        customer_data = await CustomerFactory.create_async(
+        new_obj = await CustomerFactory.create_async(
             session)
 
         result = await session.execute(
             select(Customer).filter(
-                Customer._customer_id == customer_data.customer_id)  # type: ignore
+                Customer._customer_id == (
+                    new_obj.customer_id))  # type: ignore
         )
-        fetched_customer = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_customer,
+        assert isinstance(fetched_obj,
                           Customer)
 
-        assert fetched_customer.customer_id == \
-            customer_data.customer_id
+        assert fetched_obj.customer_id == \
+            new_obj.customer_id
 
-        await customer_manager.delete(
-            customer_id=customer_data.customer_id)
+        await obj_manager.delete(
+            customer_id=new_obj.customer_id)
 
         result = await session.execute(
             select(Customer).filter(
-                Customer._customer_id == customer_data.customer_id)  # type: ignore
+                Customer._customer_id == (
+                    new_obj.customer_id))  # type: ignore
         )
-        fetched_customer = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert fetched_customer is None
+        assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_nonexistent(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
-        Test case to verify the behavior of deleting a nonexistent customer.
+        Test case to verify the behavior of deleting a nonexistent
+        customer.
 
         This test case ensures that when the delete method
-        is called with the ID of a nonexistent customer,
+        is called with the ID of a nonexistent
+        customer,
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param customer_manager: The instance of the
+        :param obj_manager: The instance of the
             CustomerManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
-            await customer_manager.delete(999)
+            await obj_manager.delete(999)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_invalid_type(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -404,13 +416,13 @@ class TestCustomerManager:
         with an invalid type.
 
         This test case ensures that when the `delete` method
-        of the `customer_manager` is called with an invalid type,
+        of the `obj_manager` is called with an invalid type,
         an exception is raised. The test case expects the
         `delete` method to raise an exception, and if it doesn't,
         the test case will fail.
 
         Args:
-            customer_manager
+            obj_manager
             (CustomerManager): An
                 instance of the
                 `CustomerManager` class.
@@ -424,14 +436,14 @@ class TestCustomerManager:
 
         """
         with pytest.raises(Exception):
-            await customer_manager.delete("999")  # type: ignore
+            await obj_manager.delete("999")  # type: ignore
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_get_list(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -443,44 +455,50 @@ class TestCustomerManager:
 
         Steps:
         1. Call the `get_list` method of the
-            `customer_manager` instance.
+            `obj_manager` instance.
         2. Assert that the returned list is empty.
         3. Create 5 customer objects using the
             `CustomerFactory.create_async` method.
-        4. Assert that the `customers_data` variable is of type `List`.
+        4. Assert that the
+            `customers_data` variable
+            is of type `List`.
         5. Call the `get_list` method of the
-            `customer_manager` instance again.
+            `obj_manager` instance again.
         6. Assert that the returned list contains 5 customers.
         7. Assert that all elements in the returned list are
-            instances of the `Customer` class.
+            instances of the
+            `Customer` class.
         """
 
-        customers = await customer_manager.get_list()
+        customers = await obj_manager.get_list()
 
         assert len(customers) == 0
 
         customers_data = (
-            [await CustomerFactory.create_async(session) for _ in range(5)])
+            [await CustomerFactory.create_async(session)
+             for _ in range(5)])
 
         assert isinstance(customers_data, List)
 
-        customers = await customer_manager.get_list()
+        customers = await obj_manager.get_list()
 
         assert len(customers) == 5
         assert all(isinstance(
-            customer, Customer) for customer in customers)
+            customer,
+            Customer
+        ) for customer in customers)
 
     @pytest.mark.asyncio
     async def test_to_json(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
         Test the 'to_json' method of the CustomerManager class.
 
         Args:
-            customer_manager
+            obj_manager
             (CustomerManager): An
                 instance of the
                 CustomerManager class.
@@ -496,7 +514,7 @@ class TestCustomerManager:
             CustomerFactory.build_async(
                 session)
 
-        json_data = customer_manager.to_json(
+        json_data = obj_manager.to_json(
             customer)
 
         assert json_data is not None
@@ -504,14 +522,14 @@ class TestCustomerManager:
     @pytest.mark.asyncio
     async def test_to_dict(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
         Test the to_dict method of the CustomerManager class.
 
         Args:
-            customer_manager
+            obj_manager
             (CustomerManager): An
                 instance of the
                 CustomerManager class.
@@ -525,7 +543,7 @@ class TestCustomerManager:
                 session)
 
         dict_data = \
-            customer_manager.to_dict(
+            obj_manager.to_dict(
                 customer)
 
         assert dict_data is not None
@@ -533,14 +551,16 @@ class TestCustomerManager:
     @pytest.mark.asyncio
     async def test_from_json(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
-        Test the `from_json` method of the `CustomerManager` class.
+        Test the `from_json` method of the
+        `CustomerManager` class.
 
         This method tests the functionality of the
-        `from_json` method of the `CustomerManager` class.
+        `from_json` method of the
+        `CustomerManager` class.
         It creates a customer using
         the `CustomerFactory`
         and converts it to JSON using the `to_json` method.
@@ -551,7 +571,7 @@ class TestCustomerManager:
         the same code as the original customer.
 
         Args:
-            customer_manager
+            obj_manager
             (CustomerManager): An
                 instance of the
                 `CustomerManager` class.
@@ -564,11 +584,11 @@ class TestCustomerManager:
             CustomerFactory.create_async(
                 session)
 
-        json_data = customer_manager.to_json(
+        json_data = obj_manager.to_json(
             customer)
 
         deserialized_customer = await \
-                customer_manager.from_json(json_data)
+            obj_manager.from_json(json_data)
 
         assert isinstance(deserialized_customer,
                           Customer)
@@ -578,7 +598,7 @@ class TestCustomerManager:
     @pytest.mark.asyncio
     async def test_from_dict(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -591,10 +611,11 @@ class TestCustomerManager:
         customer object.
 
         Args:
-            customer_manager
+            obj_manager
             (CustomerManager): An instance
                 of the `CustomerManager` class.
-            session (AsyncSession): An instance of the `AsyncSession` class.
+            session (AsyncSession): An instance of the
+            `AsyncSession` class.
 
         Returns:
             None
@@ -608,13 +629,13 @@ class TestCustomerManager:
 
         schema = CustomerSchema()
 
-        customer_data = schema.dump(customer)
+        new_obj = schema.dump(customer)
 
-        assert isinstance(customer_data, dict)
+        assert isinstance(new_obj, dict)
 
         deserialized_customer = await \
-            customer_manager.from_dict(
-                customer_data)
+            obj_manager.from_dict(
+                new_obj)
 
         assert isinstance(deserialized_customer,
                           Customer)
@@ -625,7 +646,7 @@ class TestCustomerManager:
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -641,32 +662,34 @@ class TestCustomerManager:
         Steps:
         1. Create 5 customer objects using
             the CustomerFactory.
-        2. Call the count method of the customer_manager.
+        2. Call the count method of the obj_manager.
         3. Assert that the count is equal to 5.
 
         """
         customers_data = (
-            [await CustomerFactory.create_async(session) for _ in range(5)])
+            [await CustomerFactory.create_async(session)
+             for _ in range(5)])
 
         assert isinstance(customers_data, List)
 
-        count = await customer_manager.count()
+        count = await obj_manager.count()
 
         assert count == 5
 
     @pytest.mark.asyncio
     async def test_count_empty_database(
         self,
-        customer_manager: CustomerManager
+        obj_manager: CustomerManager
     ):
         """
         Test the count method when the database is empty.
 
         This test case checks if the count method of the
-        CustomerManager class returns 0 when the database is empty.
+        CustomerManager class
+        returns 0 when the database is empty.
 
         Args:
-            customer_manager
+            obj_manager
             (CustomerManager): An
                 instance of the
                 CustomerManager class.
@@ -675,14 +698,14 @@ class TestCustomerManager:
             None
         """
 
-        count = await customer_manager.count()
+        count = await obj_manager.count()
 
         assert count == 0
 
     @pytest.mark.asyncio
     async def test_refresh_basic(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -701,61 +724,63 @@ class TestCustomerManager:
             it reflects the updated code.
 
         Args:
-            customer_manager
+            obj_manager
             (CustomerManager): The
                 manager responsible
                 for customer operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a customer
-        customer1 = await CustomerFactory.create_async(
+        obj_1 = await CustomerFactory.create_async(
             session=session)
 
         # Retrieve the customer from the database
         result = await session.execute(
             select(Customer).filter(
-                Customer._customer_id == customer1.customer_id)  # type: ignore
+                Customer._customer_id == (
+                    obj_1.customer_id))  # type: ignore
         )  # type: ignore
-        customer2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
         # Verify that the retrieved customer
         # matches the added customer
-        assert customer1.code == \
-            customer2.code
+        assert obj_1.code == \
+            obj_2.code
 
         # Update the customer's code
         updated_code1 = uuid.uuid4()
-        customer1.code = updated_code1
-        updated_customer1 = await customer_manager.update(
-            customer1)
+        obj_1.code = updated_code1
+        updated_obj_1 = await obj_manager.update(
+            obj_1)
 
         # Verify that the updated customer
         # is of type Customer
         # and has the updated code
-        assert isinstance(updated_customer1,
+        assert isinstance(updated_obj_1,
                           Customer)
 
-        assert updated_customer1.code == updated_code1
+        assert updated_obj_1.code == updated_code1
 
         # Refresh the original customer instance
-        refreshed_customer2 = await customer_manager.refresh(
-            customer2)
+        refreshed_obj_2 = await obj_manager.refresh(
+            obj_2)
 
         # Verify that the refreshed customer
         # reflects the updated code
-        assert refreshed_customer2.code == updated_code1
+        assert refreshed_obj_2.code == updated_code1
 
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_customer(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
-        Test case to verify the behavior of refreshing a nonexistent customer.
+        Test case to verify the behavior of refreshing a
+        nonexistent customer.
 
         Args:
-            customer_manager
+            obj_manager
             (CustomerManager): The
                 instance of the
                 CustomerManager class.
@@ -772,7 +797,7 @@ class TestCustomerManager:
             customer_id=999)
 
         with pytest.raises(Exception):
-            await customer_manager.refresh(
+            await obj_manager.refresh(
                 customer)
 
         await session.rollback()
@@ -780,7 +805,7 @@ class TestCustomerManager:
     @pytest.mark.asyncio
     async def test_exists_with_existing_customer(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -788,7 +813,7 @@ class TestCustomerManager:
         exists using the manager function.
 
         Args:
-            customer_manager
+            obj_manager
             (CustomerManager): The
                 customer manager instance.
             session (AsyncSession): The async session object.
@@ -797,26 +822,28 @@ class TestCustomerManager:
             None
         """
         # Add a customer
-        customer1 = await CustomerFactory.create_async(
+        obj_1 = await CustomerFactory.create_async(
             session=session)
 
         # Check if the customer exists
         # using the manager function
-        assert await customer_manager.exists(
-            customer1.customer_id) is True
+        assert await obj_manager.exists(
+            obj_1.customer_id) is True
 
     @pytest.mark.asyncio
     async def test_is_equal_with_existing_customer(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
         Test if the is_equal method of the
-        CustomerManager class correctly compares two customers.
+        CustomerManager
+        class correctly compares two
+        customers.
 
         Args:
-            customer_manager
+            obj_manager
             (CustomerManager): An
                 instance of the
                 CustomerManager class.
@@ -826,39 +853,39 @@ class TestCustomerManager:
             None
         """
         # Add a customer
-        customer1 = await \
+        obj_1 = await \
             CustomerFactory.create_async(
                 session=session)
 
-        customer2 = await \
-            customer_manager.get_by_id(
-                customer_id=customer1.customer_id)
+        obj_2 = await \
+            obj_manager.get_by_id(
+                customer_id=obj_1.customer_id)
 
-        assert customer_manager.is_equal(
-            customer1, customer2) is True
+        assert obj_manager.is_equal(
+            obj_1, obj_2) is True
 
-        customer1_dict = \
-            customer_manager.to_dict(
-                customer1)
+        obj_1_dict = \
+            obj_manager.to_dict(
+                obj_1)
 
         customer3 = await \
-            customer_manager.from_dict(
-                customer1_dict)
+            obj_manager.from_dict(
+                obj_1_dict)
 
-        assert customer_manager.is_equal(
-            customer1, customer3) is True
+        assert obj_manager.is_equal(
+            obj_1, customer3) is True
 
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_customer(
         self,
-        customer_manager: CustomerManager
+        obj_manager: CustomerManager
     ):
         """
         Test case to check if a customer with a
         non-existent ID exists in the database.
 
         Args:
-            customer_manager
+            obj_manager
             (CustomerManager): The
                 instance of the CustomerManager class.
 
@@ -868,12 +895,12 @@ class TestCustomerManager:
         """
         non_existent_id = 999
 
-        assert await customer_manager.exists(non_existent_id) is False
+        assert await obj_manager.exists(non_existent_id) is False
 
     @pytest.mark.asyncio
     async def test_exists_with_invalid_id_type(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -881,7 +908,7 @@ class TestCustomerManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            customer_manager
+            obj_manager
             (CustomerManager): The instance
                 of the CustomerManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -895,7 +922,6 @@ class TestCustomerManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await customer_manager.exists(invalid_id)  # type: ignore  # noqa: E501
+            await obj_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-

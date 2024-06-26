@@ -14,7 +14,8 @@ from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
                         Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
-import models.constants.customer as customer_constants
+import models.constants.customer as \
+    customer_constants
 from utils.common_functions import snake_case
 from .base import Base, EncryptedType  # noqa: F401
 
@@ -1078,4 +1079,3 @@ def set_updated_on(
     :param target: The target object to update.
     """
     target.last_update_utc_date_time = datetime.utcnow()
-

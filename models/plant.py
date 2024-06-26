@@ -14,7 +14,8 @@ from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
                         Column, Date, DateTime, Float,
                         ForeignKey, Index, Integer, Numeric, String,
                         event, func)
-import models.constants.plant as plant_constants
+import models.constants.plant as \
+    plant_constants
 from utils.common_functions import snake_case
 from .base import Base, EncryptedType  # noqa: F401
 

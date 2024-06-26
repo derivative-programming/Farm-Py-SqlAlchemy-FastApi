@@ -99,11 +99,19 @@ class ReportProviderTacFarmDashboard():
         query_dict["user_id"] = (
             str(self._session_context.customer_code))
 
-        if ReportProviderTacFarmDashboard._cached_sql_query == "":
-            # Prioritize 'tac_farm_dashboard.inc.sql' if it exists
-            inc_file_path = "reports/providers/sql/tac_farm_dashboard.inc.sql"
-            gen_file_path = "reports/providers/sql/tac_farm_dashboard.gen.sql"
-
+        if ReportProviderTacFarmDashboard \
+                ._cached_sql_query == "":
+            # Prioritize
+            # 'tac_farm_dashboard.inc.sql'
+            # if it exists
+            inc_file_path = (
+                "reports/providers/sql/"
+                "tac_farm_dashboard.inc.sql"
+            )
+            gen_file_path = (
+                "reports/providers/sql/"
+                "tac_farm_dashboard.gen.sql"
+            )
             if os.path.exists(inc_file_path):
                 file_to_read = inc_file_path
             elif os.path.exists(gen_file_path):
@@ -112,11 +120,13 @@ class ReportProviderTacFarmDashboard():
                 raise FileNotFoundError("SQL file not found")
 
             with open(file_to_read, 'r', encoding='utf-8') as file:
-                ReportProviderTacFarmDashboard._cached_sql_query = file.read()
+                (ReportProviderTacFarmDashboard
+                 ._cached_sql_query) = file.read()
 
         # Execute the SQL query with the provided parameters
         cursor = await self._session_context.session.execute(
-            text(ReportProviderTacFarmDashboard._cached_sql_query),
+            text(ReportProviderTacFarmDashboard
+                 ._cached_sql_query),
             query_dict
         )
 
@@ -142,4 +152,3 @@ class ReportProviderTacFarmDashboard():
             dict(zip(columns, row))
             for row in cursor.fetchall()
         ]
-

@@ -40,6 +40,6 @@ class TestPacUserRoleListGetModelRequestFactoryAsync:
                 session=session
             )
         )
-        assert isinstance(model_instance,
-                          PacUserRoleListGetModelRequest)
-
+        assert isinstance(
+            model_instance,
+            PacUserRoleListGetModelRequest)

@@ -26,4 +26,3 @@ DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 engine = create_async_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(bind=engine, class_=AsyncSession)
-

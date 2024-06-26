@@ -1124,4 +1124,3 @@ class TriStateFilterBaseBusObj(BaseBusObj):
 
         return pac
     # stateIntValue,
-

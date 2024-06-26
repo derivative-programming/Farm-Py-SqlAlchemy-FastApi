@@ -531,18 +531,19 @@ class PacManager:
         """
         logging.info(
             "PacManager.add_bulk")
-        for pac in pacs:
+        for list_item in pacs:
             pac_id = \
-                pac.pac_id
-            code = pac.code
-            if pac.pac_id is not None and pac.pac_id > 0:
+                list_item.pac_id
+            code = list_item.code
+            if list_item.pac_id is not None and \
+                    list_item.pac_id > 0:
                 raise ValueError(
                     "Pac is already added"
                     f": {str(code)} {str(pac_id)}"
                 )
-            pac.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            pac.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(pacs)
         await self._session_context.session.flush()
@@ -762,4 +763,3 @@ class PacManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-

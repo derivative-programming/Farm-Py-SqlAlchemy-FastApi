@@ -14,11 +14,11 @@ The unit tests in this module ensure that the default
 values of the fields are set correctly
 and that data can be loaded into the model from a dictionary.
 """
-import math
+import math  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from datetime import datetime, date  # noqa: F401
 from uuid import UUID  # noqa: F401
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from reports.row_models.land_plant_list import (
     ReportItemLandPlantList)
 

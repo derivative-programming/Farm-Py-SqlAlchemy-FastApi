@@ -66,4 +66,3 @@ class OrgApiKeySchema(SQLAlchemyAutoSchema):
     last_update_utc_date_time = fields.DateTime()
     organization_code_peek = fields.UUID()  # OrganizationID
     org_customer_code_peek = fields.UUID()   # OrgCustomerID
-

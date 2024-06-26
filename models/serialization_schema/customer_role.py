@@ -54,4 +54,3 @@ class CustomerRoleSchema(SQLAlchemyAutoSchema):
     last_update_utc_date_time = fields.DateTime()
     customer_code_peek = fields.UUID()  # CustomerID
     role_code_peek = fields.UUID()   # RoleID
-

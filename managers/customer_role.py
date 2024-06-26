@@ -495,18 +495,19 @@ class CustomerRoleManager:
         """
         logging.info(
             "CustomerRoleManager.add_bulk")
-        for customer_role in customer_roles:
+        for list_item in customer_roles:
             customer_role_id = \
-                customer_role.customer_role_id
-            code = customer_role.code
-            if customer_role.customer_role_id is not None and customer_role.customer_role_id > 0:
+                list_item.customer_role_id
+            code = list_item.code
+            if list_item.customer_role_id is not None and \
+                    list_item.customer_role_id > 0:
                 raise ValueError(
                     "CustomerRole is already added"
                     f": {str(code)} {str(customer_role_id)}"
                 )
-            customer_role.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            customer_role.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(customer_roles)
         await self._session_context.session.flush()
@@ -762,4 +763,3 @@ class CustomerRoleManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-

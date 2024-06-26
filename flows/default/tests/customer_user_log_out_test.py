@@ -21,7 +21,7 @@ from flows.customer_user_log_out import (
     FlowCustomerUserLogOut,
     FlowCustomerUserLogOutResult)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.customer import (
     CustomerFactory)
 
@@ -32,7 +32,7 @@ class TestCustomerUserLogOutPostModelResponse:
     `FlowCustomerUserLogOutResult` class.
     """
 
-    def test_flow_customer_user_log_out_result_to_json(self):
+    def test_flow_result_to_json(self):
         """
         Test the `to_json` method of the
         `FlowCustomerUserLogOutResult` class.
@@ -62,9 +62,12 @@ class TestCustomerUserLogOutPostModelResponse:
         """
 
         session_context = SessionContext(dict(), session)
-        flow = FlowCustomerUserLogOut(session_context)
+        flow = FlowCustomerUserLogOut(
+            session_context)
 
-        customer = await CustomerFactory.create_async(session)
+        customer = await \
+            CustomerFactory.create_async(
+                session)
 
         customer_bus_obj = CustomerBusObj(session_context)
         customer_bus_obj.load_from_obj_instance(customer)
@@ -111,4 +114,3 @@ class TestCustomerUserLogOutPostModelResponse:
         #     request=request_instance
         #     )
         # assert isinstance(result,FlowCustomerUserLogOutResult)
-

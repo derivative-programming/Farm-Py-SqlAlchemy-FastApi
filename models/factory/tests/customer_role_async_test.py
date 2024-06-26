@@ -8,7 +8,7 @@ operations of the CustomerRoleFactory class.
 """
 
 import asyncio
-import math
+import math  # noqa: F401
 import time
 import uuid  # noqa: F401
 from datetime import date, datetime, timedelta  # noqa: F401
@@ -405,30 +405,30 @@ class TestCustomerRoleFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        customer_role = await \
+        obj = await \
             CustomerRoleFactory.create_async(
                 session=session)
-        assert isinstance(customer_role.customer_role_id, int)
-        assert isinstance(customer_role.code, uuid.UUID)
-        assert isinstance(customer_role.last_change_code, int)
-        assert isinstance(customer_role.insert_user_id, uuid.UUID)
-        assert isinstance(customer_role.last_update_user_id, uuid.UUID)
-        assert isinstance(customer_role.customer_id, int)
-        assert isinstance(customer_role.is_placeholder, bool)
-        assert isinstance(customer_role.placeholder, bool)
-        assert isinstance(customer_role.role_id, int)
+        assert isinstance(obj.customer_role_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert isinstance(obj.customer_id, int)
+        assert isinstance(obj.is_placeholder, bool)
+        assert isinstance(obj.placeholder, bool)
+        assert isinstance(obj.role_id, int)
         # Check for the peek values
         # customerID
 
-        assert isinstance(customer_role.customer_code_peek, uuid.UUID)
+        assert isinstance(obj.customer_code_peek, uuid.UUID)
         # isPlaceholder,
         # placeholder,
         # roleID
 
-        assert isinstance(customer_role.role_code_peek, uuid.UUID)
+        assert isinstance(obj.role_code_peek, uuid.UUID)
 
-        assert isinstance(customer_role.insert_utc_date_time, datetime)
-        assert isinstance(customer_role.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
@@ -453,12 +453,13 @@ class TestCustomerRoleFactoryAsync:
         each customer_role.
         """
 
-        customer_role_1 = await CustomerRoleFactory.create_async(
+        obj_1 = await CustomerRoleFactory.create_async(
             session=session)
-        customer_role_2 = await CustomerRoleFactory.create_async(
+        obj_2 = await CustomerRoleFactory.create_async(
             session=session)
-        customer_role_2.code = customer_role_1.code
-        session.add_all([customer_role_1, customer_role_2])
+        obj_2.code = obj_1.code
+        session.add_all([obj_1,
+                         obj_2])
         with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
@@ -476,26 +477,26 @@ class TestCustomerRoleFactoryAsync:
         or empty, and that the data types of certain fields are correct.
         """
 
-        customer_role = CustomerRole()
-        assert customer_role.code is not None
-        assert customer_role.last_change_code is not None
-        assert customer_role.insert_user_id is not None
-        assert customer_role.last_update_user_id is not None
-        assert customer_role.insert_utc_date_time is not None
-        assert customer_role.last_update_utc_date_time is not None
+        new_obj = CustomerRole()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id is not None
+        assert new_obj.last_update_user_id is not None
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
 
         # CustomerID
 
-        assert isinstance(customer_role.customer_code_peek, uuid.UUID)
+        assert isinstance(new_obj.customer_code_peek, uuid.UUID)
         # isPlaceholder,
         # placeholder,
         # RoleID
 
-        assert isinstance(customer_role.role_code_peek, uuid.UUID)
-        assert customer_role.customer_id == 0
-        assert customer_role.is_placeholder is False
-        assert customer_role.placeholder is False
-        assert customer_role.role_id == 0
+        assert isinstance(new_obj.role_code_peek, uuid.UUID)
+        assert new_obj.customer_id == 0
+        assert new_obj.is_placeholder is False
+        assert new_obj.placeholder is False
+        assert new_obj.role_id == 0
 
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
@@ -543,24 +544,24 @@ class TestCustomerRoleFactoryAsync:
             CustomerRole._customer_role_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 customer_role.customer_role_id))
         result = await session.execute(stmt)
-        customer_role_1 = result.scalars().first()
+        obj_1 = result.scalars().first()
 
-        # customer_role_1 = await session.query(CustomerRole).filter_by(
+        # obj_1 = await session.query(CustomerRole).filter_by(
         # customer_role_id=customer_role.customer_role_id).first()
-        customer_role_1.code = uuid.uuid4()
+        obj_1.code = uuid.uuid4()
         await session.commit()
 
         stmt = select(CustomerRole).where(
             CustomerRole._customer_role_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 customer_role.customer_role_id))
         result = await session.execute(stmt)
-        customer_role_2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
-        # customer_role_2 = await session.query(CustomerRole).filter_by(
+        # obj_2 = await session.query(CustomerRole).filter_by(
         # customer_role_id=customer_role.customer_role_id).first()
-        customer_role_2.code = uuid.uuid4()
+        obj_2.code = uuid.uuid4()
         await session.commit()
-        assert customer_role_2.last_change_code != original_last_change_code
+        assert obj_2.last_change_code != original_last_change_code
     # CustomerID
 
     @pytest.mark.asyncio
@@ -615,4 +616,3 @@ class TestCustomerRoleFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-

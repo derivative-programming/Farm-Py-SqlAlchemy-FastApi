@@ -164,4 +164,3 @@ class OrgApiKeyFluentBusObj(OrgApiKeyBaseBusObj):
         """
         self.org_customer_id = value
         return self
-

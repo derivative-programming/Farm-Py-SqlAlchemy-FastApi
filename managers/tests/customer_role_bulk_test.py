@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.customer_role import CustomerRoleManager
+from managers.customer_role import (
+    CustomerRoleManager)
 from models import CustomerRole
-from models.factory import CustomerRoleFactory
+from models.factory import (
+    CustomerRoleFactory)
 
 
 class TestCustomerRoleBulkManager:
@@ -28,7 +30,7 @@ class TestCustomerRoleBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def customer_role_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `CustomerRoleManager` for testing.
@@ -40,7 +42,7 @@ class TestCustomerRoleBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestCustomerRoleBulkManager:
         1. Generate a list of customer_role data using the
             `CustomerRoleFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `customer_role_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated customer_role data.
         3. Verify that the number of customer_roles
@@ -79,35 +81,36 @@ class TestCustomerRoleBulkManager:
         customer_roles_data = [
             await CustomerRoleFactory.build_async(session) for _ in range(5)]
 
-        customer_roles = await customer_role_manager.add_bulk(
+        customer_roles = await obj_manager.add_bulk(
             customer_roles_data)
 
         assert len(customer_roles) == 5
 
-        for updated_customer_role in customer_roles:
+        for updated_obj in customer_roles:
             result = await session.execute(
                 select(CustomerRole).filter(
-                    CustomerRole._customer_role_id == updated_customer_role.customer_role_id  # type: ignore
+                    CustomerRole._customer_role_id == (
+                        updated_obj.customer_role_id)  # type: ignore
                 )
             )
-            fetched_customer_role = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_customer_role,
+                fetched_obj,
                 CustomerRole)
 
-            assert str(fetched_customer_role.insert_user_id) == (
-                str(customer_role_manager._session_context.customer_code))
-            assert str(fetched_customer_role.last_update_user_id) == (
-                str(customer_role_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_customer_role.customer_role_id == \
-                updated_customer_role.customer_role_id
+            assert fetched_obj.customer_role_id == \
+                updated_obj.customer_role_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestCustomerRoleBulkManager:
             the updated codes in the database.
 
         Args:
-            customer_role_manager (CustomerRoleManager):
+            obj_manager (CustomerRoleManager):
                 An instance of the
                 `CustomerRoleManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestCustomerRoleBulkManager:
             None
         """
         # Mocking customer_role instances
-        customer_role1 = await CustomerRoleFactory. \
+        obj_1 = await CustomerRoleFactory. \
             create_async(
                 session=session)
-        customer_role2 = await CustomerRoleFactory. \
+        obj_2 = await CustomerRoleFactory. \
             create_async(
                 session=session)
-        logging.info(customer_role1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestCustomerRoleBulkManager:
         updates = [
             {
                 "customer_role_id":
-                    customer_role1.customer_role_id,
+                    obj_1.customer_role_id,
                 "code": code_updated1
             },
             {
                 "customer_role_id":
-                    customer_role2.customer_role_id,
+                    obj_2.customer_role_id,
                 "code": code_updated2
             }
         ]
-        updated_customer_roles = await customer_role_manager.update_bulk(
+        updated_customer_roles = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestCustomerRoleBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        customer_roles = await customer_role_manager.get_list()
+        customer_roles = await obj_manager.get_list()
         logging.info(customer_roles[0]
                      .__dict__)
         logging.info(customer_roles[1]
@@ -192,40 +195,40 @@ class TestCustomerRoleBulkManager:
 
         assert str(updated_customer_roles[0]
                    .last_update_user_id) == (
-            str(customer_role_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_customer_roles[1]
                    .last_update_user_id) == (
-            str(customer_role_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(CustomerRole).filter(
                 CustomerRole._customer_role_id == 1)  # type: ignore
         )
-        fetched_customer_role = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_customer_role,
+        assert isinstance(fetched_obj,
                           CustomerRole)
 
-        assert fetched_customer_role.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(CustomerRole).filter(
                 CustomerRole._customer_role_id == 2)  # type: ignore
         )
-        fetched_customer_role = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_customer_role,
+        assert isinstance(fetched_obj,
                           CustomerRole)
 
-        assert fetched_customer_role.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_customer_role_id(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestCustomerRoleBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No customer_roles to update since customer_role_id is missing
+        # No customer_roles to update since
+        # customer_role_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await customer_role_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_customer_role_not_found(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestCustomerRoleBulkManager:
             where each update
             contains a customer_role_id and a code.
         2. Calls the update_bulk method of the
-            customer_role_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the customer_role was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestCustomerRoleBulkManager:
         updates = [{"customer_role_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await customer_role_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestCustomerRoleBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param customer_role_manager: An instance of the
+        :param obj_manager: An instance of the
             CustomerRoleManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestCustomerRoleBulkManager:
         updates = [{"customer_role_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await customer_role_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestCustomerRoleBulkManager:
             using the CustomerRoleFactory.
         2. Delete the customer_roles using the
             delete_bulk method
-            of the customer_role_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the customer_roles no longer exist in the database.
+            checking if the customer_roles
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The customer_roles should no longer exist in the database.
+        - The customer_roles should
+            no longer exist in the database.
 
         """
 
-        customer_role1 = await CustomerRoleFactory.create_async(
+        obj_1 = await CustomerRoleFactory.create_async(
             session=session)
 
-        customer_role2 = await CustomerRoleFactory.create_async(
+        obj_2 = await CustomerRoleFactory.create_async(
             session=session)
 
         # Delete customer_roles
-        customer_role_ids = [customer_role1.customer_role_id,
-                     customer_role2.customer_role_id]
-        result = await customer_role_manager.delete_bulk(
+        customer_role_ids = [
+            obj_1.customer_role_id,
+            obj_2.customer_role_id
+        ]
+        result = await obj_manager.delete_bulk(
             customer_role_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestCustomerRoleBulkManager:
         for customer_role_id in customer_role_ids:
             execute_result = await session.execute(
                 select(CustomerRole).filter(
-                    CustomerRole._customer_role_id == customer_role_id)  # type: ignore
+                    CustomerRole._customer_role_id == (
+                        customer_role_id))  # type: ignore
             )
-            fetched_customer_role = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_customer_role is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_customer_roles_not_found(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        customer_roles when some customer_roles are not found.
+        customer_roles when some
+        customer_roles are not found.
 
         Steps:
         1. Create a customer_role using the
@@ -392,17 +402,17 @@ class TestCustomerRoleBulkManager:
         when some customer_roles with the specified IDs are
         not found in the database.
         """
-        customer_role1 = await CustomerRoleFactory.create_async(
+        obj_1 = await CustomerRoleFactory.create_async(
             session=session)
 
-        assert isinstance(customer_role1,
+        assert isinstance(obj_1,
                           CustomerRole)
 
         # Delete customer_roles
         customer_role_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await customer_role_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 customer_role_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestCustomerRoleBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        customer_role_manager: CustomerRoleManager
+        obj_manager: CustomerRoleManager
     ):
         """
         Test case to verify the behavior of deleting
         customer_roles with an empty list.
 
         Args:
-            customer_role_manager (CustomerRoleManager): The
+            obj_manager (CustomerRoleManager): The
                 instance of the
                 CustomerRoleManager class.
 
@@ -430,7 +440,7 @@ class TestCustomerRoleBulkManager:
 
         # Delete customer_roles with an empty list
         customer_role_ids = []
-        result = await customer_role_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             customer_role_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestCustomerRoleBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestCustomerRoleBulkManager:
         method when invalid customer_role IDs are provided.
 
         Args:
-            customer_role_manager (CustomerRoleManager): The
+            obj_manager (CustomerRoleManager): The
                 instance of the
                 CustomerRoleManager class.
             session (AsyncSession): The async session object.
@@ -463,8 +473,7 @@ class TestCustomerRoleBulkManager:
         customer_role_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await customer_role_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 customer_role_ids)
 
         await session.rollback()
-

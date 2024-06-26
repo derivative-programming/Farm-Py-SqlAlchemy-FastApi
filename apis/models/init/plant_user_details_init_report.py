@@ -20,7 +20,7 @@ from flows.base.flow_validation_error import FlowValidationError
 from flows.plant_user_details_init_report import (
     FlowPlantUserDetailsInitReport,
     FlowPlantUserDetailsInitReportResult)
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 
@@ -100,7 +100,8 @@ class PlantUserDetailsInitReportGetInitModelRequest(
             if plant_bus_obj.get_plant_obj() is None:
                 logging.info("Invalid plant_code")
                 raise ValueError("Invalid plant_code")
-            flow = FlowPlantUserDetailsInitReport(session_context)
+            flow = FlowPlantUserDetailsInitReport(
+                session_context)
             logging.info(
                 "process request..."
                 "PlantUserDetailsInitReport"
@@ -112,9 +113,10 @@ class PlantUserDetailsInitReportGetInitModelRequest(
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error..."
-                         "PlantUserDetailsInitReport"
-                         "GetInitModelRequest")
+            logging.info(
+                "error..."
+                "PlantUserDetailsInitReport"
+                "GetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
@@ -123,4 +125,3 @@ class PlantUserDetailsInitReportGetInitModelRequest(
                 val_error.message = ve.error_dict[key]
                 response.validation_errors.append(val_error)
         return response
-

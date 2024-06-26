@@ -1,4 +1,4 @@
-# customer_test.py
+# models/serialization_schema/tests/customer_test.py
 # pylint: disable=redefined-outer-name
 # pylint: disable=unused-import
 
@@ -15,13 +15,15 @@ transmitted over a network.
 
 The tests in this module cover the serialization
 and deserialization of Customer
-instances using the CustomerSchema class. They verify
+instances using the CustomerSchema
+class. They verify
 that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a Customer instance.
 
-The CustomerSchema class is used to define
+The CustomerSchema class
+is used to define
 the serialization and deserialization
 rules for Customer instances. It
 specifies how each attribute of a
@@ -56,7 +58,7 @@ logger = get_logger(__name__)
 
 
 @pytest.fixture(scope="function")
-def customer(
+def new_obj(
     session
 ) -> Customer:
     """
@@ -139,7 +141,7 @@ class TestCustomerSchema:
 
     def test_customer_serialization(
         self,
-        customer: Customer
+        new_obj: Customer
     ):
         """
         Test the serialization of a
@@ -152,76 +154,76 @@ class TestCustomerSchema:
         """
 
         schema = CustomerSchema()
-        customer_data = schema.dump(customer)
+        customer_data = schema.dump(new_obj)
 
         assert isinstance(customer_data, dict)
 
         result = customer_data
 
-        assert result['code'] == str(customer.code)
+        assert result['code'] == str(new_obj.code)
         assert result['last_change_code'] == (
-            customer.last_change_code)
+            new_obj.last_change_code)
         assert result['insert_user_id'] == (
-            str(customer.insert_user_id))
+            str(new_obj.insert_user_id))
         assert result['last_update_user_id'] == (
-            str(customer.last_update_user_id))
+            str(new_obj.last_update_user_id))
 
         assert result['active_organization_id'] == (
-            customer.active_organization_id)
+            new_obj.active_organization_id)
         assert result['email'] == (
-            customer.email)
+            new_obj.email)
         assert result['email_confirmed_utc_date_time'] == (
-            customer.email_confirmed_utc_date_time.isoformat())
+            new_obj.email_confirmed_utc_date_time.isoformat())
         assert result['first_name'] == (
-            customer.first_name)
+            new_obj.first_name)
         assert result['forgot_password_key_expiration_utc_date_time'] == (
-            customer.forgot_password_key_expiration_utc_date_time.isoformat())
+            new_obj.forgot_password_key_expiration_utc_date_time.isoformat())
         assert result['forgot_password_key_value'] == (
-            customer.forgot_password_key_value)
+            new_obj.forgot_password_key_value)
         assert result['fs_user_code_value'] == (
-            str(customer.fs_user_code_value))
+            str(new_obj.fs_user_code_value))
         assert result['is_active'] == (
-            customer.is_active)
+            new_obj.is_active)
         assert result['is_email_allowed'] == (
-            customer.is_email_allowed)
+            new_obj.is_email_allowed)
         assert result['is_email_confirmed'] == (
-            customer.is_email_confirmed)
+            new_obj.is_email_confirmed)
         assert result['is_email_marketing_allowed'] == (
-            customer.is_email_marketing_allowed)
+            new_obj.is_email_marketing_allowed)
         assert result['is_locked'] == (
-            customer.is_locked)
+            new_obj.is_locked)
         assert result['is_multiple_organizations_allowed'] == (
-            customer.is_multiple_organizations_allowed)
+            new_obj.is_multiple_organizations_allowed)
         assert result['is_verbose_logging_forced'] == (
-            customer.is_verbose_logging_forced)
+            new_obj.is_verbose_logging_forced)
         assert result['last_login_utc_date_time'] == (
-            customer.last_login_utc_date_time.isoformat())
+            new_obj.last_login_utc_date_time.isoformat())
         assert result['last_name'] == (
-            customer.last_name)
+            new_obj.last_name)
         assert result['password'] == (
-            customer.password)
+            new_obj.password)
         assert result['phone'] == (
-            customer.phone)
+            new_obj.phone)
         assert result['province'] == (
-            customer.province)
+            new_obj.province)
         assert result['registration_utc_date_time'] == (
-            customer.registration_utc_date_time.isoformat())
+            new_obj.registration_utc_date_time.isoformat())
         assert result['tac_id'] == (
-            customer.tac_id)
+            new_obj.tac_id)
         assert result['utc_offset_in_minutes'] == (
-            customer.utc_offset_in_minutes)
+            new_obj.utc_offset_in_minutes)
         assert result['zip'] == (
-            customer.zip)
+            new_obj.zip)
         assert result['insert_utc_date_time'] == (
-            customer.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
-            customer.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert result['tac_code_peek'] == (  # TacID
-            str(customer.tac_code_peek))
+            str(new_obj.tac_code_peek))
 
     def test_customer_deserialization(
         self,
-        customer
+        new_obj: Customer
     ):
         """
         Test the deserialization of a
@@ -240,140 +242,140 @@ class TestCustomerSchema:
         """
 
         schema = CustomerSchema()
-        serialized_data = schema.dump(customer)
+        serialized_data = schema.dump(new_obj)
         deserialized_data = schema.load(serialized_data)
 
         assert deserialized_data['code'] == \
-            customer.code
+            new_obj.code
         assert deserialized_data['last_change_code'] == (
-            customer.last_change_code)
+            new_obj.last_change_code)
         assert deserialized_data['insert_user_id'] == (
-            customer.insert_user_id)
+            new_obj.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
-            customer.last_update_user_id)
+            new_obj.last_update_user_id)
         assert deserialized_data['active_organization_id'] == (
-            customer.active_organization_id)
+            new_obj.active_organization_id)
         assert deserialized_data['email'] == (
-            customer.email)
+            new_obj.email)
         assert deserialized_data['email_confirmed_utc_date_time'].isoformat() == (
-            customer.email_confirmed_utc_date_time.isoformat())
+            new_obj.email_confirmed_utc_date_time.isoformat())
         assert deserialized_data['first_name'] == (
-            customer.first_name)
+            new_obj.first_name)
         assert deserialized_data['forgot_password_key_expiration_utc_date_time'].isoformat() == (
-            customer.forgot_password_key_expiration_utc_date_time.isoformat())
+            new_obj.forgot_password_key_expiration_utc_date_time.isoformat())
         assert deserialized_data['forgot_password_key_value'] == (
-            customer.forgot_password_key_value)
+            new_obj.forgot_password_key_value)
         assert deserialized_data['fs_user_code_value'] == (
-            customer.fs_user_code_value)
+            new_obj.fs_user_code_value)
         assert deserialized_data['is_active'] == (
-            customer.is_active)
+            new_obj.is_active)
         assert deserialized_data['is_email_allowed'] == (
-            customer.is_email_allowed)
+            new_obj.is_email_allowed)
         assert deserialized_data['is_email_confirmed'] == (
-            customer.is_email_confirmed)
+            new_obj.is_email_confirmed)
         assert deserialized_data['is_email_marketing_allowed'] == (
-            customer.is_email_marketing_allowed)
+            new_obj.is_email_marketing_allowed)
         assert deserialized_data['is_locked'] == (
-            customer.is_locked)
+            new_obj.is_locked)
         assert deserialized_data['is_multiple_organizations_allowed'] == (
-            customer.is_multiple_organizations_allowed)
+            new_obj.is_multiple_organizations_allowed)
         assert deserialized_data['is_verbose_logging_forced'] == (
-            customer.is_verbose_logging_forced)
+            new_obj.is_verbose_logging_forced)
         assert deserialized_data['last_login_utc_date_time'].isoformat() == (
-            customer.last_login_utc_date_time.isoformat())
+            new_obj.last_login_utc_date_time.isoformat())
         assert deserialized_data['last_name'] == (
-            customer.last_name)
+            new_obj.last_name)
         assert deserialized_data['password'] == (
-            customer.password)
+            new_obj.password)
         assert deserialized_data['phone'] == (
-            customer.phone)
+            new_obj.phone)
         assert deserialized_data['province'] == (
-            customer.province)
+            new_obj.province)
         assert deserialized_data['registration_utc_date_time'].isoformat() == (
-            customer.registration_utc_date_time.isoformat())
+            new_obj.registration_utc_date_time.isoformat())
         assert deserialized_data['tac_id'] == (
-            customer.tac_id)
+            new_obj.tac_id)
         assert deserialized_data['utc_offset_in_minutes'] == (
-            customer.utc_offset_in_minutes)
+            new_obj.utc_offset_in_minutes)
         assert deserialized_data['zip'] == (
-            customer.zip)
+            new_obj.zip)
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
-            customer.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
-            customer.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert deserialized_data[(  # TacID
             'tac_code_peek')] == (
-            customer.tac_code_peek)
+            new_obj.tac_code_peek)
 
-        new_customer = Customer(
+        obj_from_dict = Customer(
             **deserialized_data)
 
-        assert isinstance(new_customer,
+        assert isinstance(new_obj,
                           Customer)
 
-        # Now compare the new_customer attributes with
+        # Now compare the new_obj attributes with
         # the customer attributes
-        assert new_customer.code == \
-            customer.code
-        assert new_customer.last_change_code == \
-            customer.last_change_code
-        assert new_customer.insert_user_id == \
-            customer.insert_user_id
-        assert new_customer.last_update_user_id == \
-            customer.last_update_user_id
-        assert new_customer.active_organization_id == (
-            customer.active_organization_id)
-        assert new_customer.email == (
-            customer.email)
-        assert new_customer.email_confirmed_utc_date_time.isoformat() == (
-            customer.email_confirmed_utc_date_time.isoformat())
-        assert new_customer.first_name == (
-            customer.first_name)
-        assert new_customer.forgot_password_key_expiration_utc_date_time.isoformat() == (
-            customer.forgot_password_key_expiration_utc_date_time.isoformat())
-        assert new_customer.forgot_password_key_value == (
-            customer.forgot_password_key_value)
-        assert new_customer.fs_user_code_value == (
-            customer.fs_user_code_value)
-        assert new_customer.is_active == (
-            customer.is_active)
-        assert new_customer.is_email_allowed == (
-            customer.is_email_allowed)
-        assert new_customer.is_email_confirmed == (
-            customer.is_email_confirmed)
-        assert new_customer.is_email_marketing_allowed == (
-            customer.is_email_marketing_allowed)
-        assert new_customer.is_locked == (
-            customer.is_locked)
-        assert new_customer.is_multiple_organizations_allowed == (
-            customer.is_multiple_organizations_allowed)
-        assert new_customer.is_verbose_logging_forced == (
-            customer.is_verbose_logging_forced)
-        assert new_customer.last_login_utc_date_time.isoformat() == (
-            customer.last_login_utc_date_time.isoformat())
-        assert new_customer.last_name == (
-            customer.last_name)
-        assert new_customer.password == (
-            customer.password)
-        assert new_customer.phone == (
-            customer.phone)
-        assert new_customer.province == (
-            customer.province)
-        assert new_customer.registration_utc_date_time.isoformat() == (
-            customer.registration_utc_date_time.isoformat())
-        assert new_customer.tac_id == (
-            customer.tac_id)
-        assert new_customer.utc_offset_in_minutes == (
-            customer.utc_offset_in_minutes)
-        assert new_customer.zip == (
-            customer.zip)
+        assert obj_from_dict.code == \
+            new_obj.code
+        assert obj_from_dict.last_change_code == \
+            new_obj.last_change_code
+        assert obj_from_dict.insert_user_id == \
+            new_obj.insert_user_id
+        assert obj_from_dict.last_update_user_id == \
+            new_obj.last_update_user_id
+        assert obj_from_dict.active_organization_id == (
+            new_obj.active_organization_id)
+        assert obj_from_dict.email == (
+            new_obj.email)
+        assert obj_from_dict.email_confirmed_utc_date_time.isoformat() == (
+            new_obj.email_confirmed_utc_date_time.isoformat())
+        assert obj_from_dict.first_name == (
+            new_obj.first_name)
+        assert obj_from_dict.forgot_password_key_expiration_utc_date_time.isoformat() == (
+            new_obj.forgot_password_key_expiration_utc_date_time.isoformat())
+        assert obj_from_dict.forgot_password_key_value == (
+            new_obj.forgot_password_key_value)
+        assert obj_from_dict.fs_user_code_value == (
+            new_obj.fs_user_code_value)
+        assert obj_from_dict.is_active == (
+            new_obj.is_active)
+        assert obj_from_dict.is_email_allowed == (
+            new_obj.is_email_allowed)
+        assert obj_from_dict.is_email_confirmed == (
+            new_obj.is_email_confirmed)
+        assert obj_from_dict.is_email_marketing_allowed == (
+            new_obj.is_email_marketing_allowed)
+        assert obj_from_dict.is_locked == (
+            new_obj.is_locked)
+        assert obj_from_dict.is_multiple_organizations_allowed == (
+            new_obj.is_multiple_organizations_allowed)
+        assert obj_from_dict.is_verbose_logging_forced == (
+            new_obj.is_verbose_logging_forced)
+        assert obj_from_dict.last_login_utc_date_time.isoformat() == (
+            new_obj.last_login_utc_date_time.isoformat())
+        assert obj_from_dict.last_name == (
+            new_obj.last_name)
+        assert obj_from_dict.password == (
+            new_obj.password)
+        assert obj_from_dict.phone == (
+            new_obj.phone)
+        assert obj_from_dict.province == (
+            new_obj.province)
+        assert obj_from_dict.registration_utc_date_time.isoformat() == (
+            new_obj.registration_utc_date_time.isoformat())
+        assert obj_from_dict.tac_id == (
+            new_obj.tac_id)
+        assert obj_from_dict.utc_offset_in_minutes == (
+            new_obj.utc_offset_in_minutes)
+        assert obj_from_dict.zip == (
+            new_obj.zip)
 
-        assert new_customer.insert_utc_date_time.isoformat() == (
-            customer.insert_utc_date_time.isoformat())
-        assert new_customer.last_update_utc_date_time.isoformat() == (
-            customer.last_update_utc_date_time.isoformat())
-        assert new_customer.tac_code_peek == (  # TacID
-            customer.tac_code_peek)
+        assert obj_from_dict.insert_utc_date_time.isoformat() == (
+            new_obj.insert_utc_date_time.isoformat())
+        assert obj_from_dict.last_update_utc_date_time.isoformat() == (
+            new_obj.last_update_utc_date_time.isoformat())
+        assert obj_from_dict.tac_code_peek == (  # TacID
+            new_obj.tac_code_peek)
 
     def test_from_json(self):
         """
@@ -477,7 +479,7 @@ class TestCustomerSchema:
 
     def test_to_json(
         self,
-        customer: Customer
+        new_obj: Customer
     ):
         """
         Test the conversion of a
@@ -496,149 +498,148 @@ class TestCustomerSchema:
         # to JSON using the schema
         customer_schema = CustomerSchema()
         customer_dict = customer_schema.dump(
-            customer)
+            new_obj)
 
         # Convert the customer_dict to JSON string
         customer_json = json.dumps(
             customer_dict)
 
         # Convert the JSON strings back to dictionaries
-        customer_dict_from_json = json.loads(
+        dict_from_json = json.loads(
             customer_json)
         # sample_dict_from_json = json.loads(self.sample_data)
 
         logging.info(
-            "customer_dict_from_json.keys() %s",
-            customer_dict_from_json.keys())
+            "dict_from_json.keys() %s",
+            dict_from_json.keys())
 
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
 
         # Verify the keys in both dictionaries match
-        assert set(customer_dict_from_json.keys()) == (
+        assert set(dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
-            f"Got: {set(customer_dict_from_json.keys())}"
+            f"Got: {set(dict_from_json.keys())}"
         )
 
-        assert customer_dict_from_json['code'] == \
-            str(customer.code), (
+        assert dict_from_json['code'] == \
+            str(new_obj.code), (
             "failed on code"
         )
-        assert customer_dict_from_json['last_change_code'] == (
-            customer.last_change_code), (
+        assert dict_from_json['last_change_code'] == (
+            new_obj.last_change_code), (
             "failed on last_change_code"
         )
-        assert customer_dict_from_json['insert_user_id'] == (
-            str(customer.insert_user_id)), (
+        assert dict_from_json['insert_user_id'] == (
+            str(new_obj.insert_user_id)), (
             "failed on insert_user_id"
         )
-        assert customer_dict_from_json['last_update_user_id'] == (
-            str(customer.last_update_user_id)), (
+        assert dict_from_json['last_update_user_id'] == (
+            str(new_obj.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-        assert customer_dict_from_json['active_organization_id'] == (
-            customer.active_organization_id), (
+        assert dict_from_json['active_organization_id'] == (
+            new_obj.active_organization_id), (
             "failed on active_organization_id"
         )
-        assert customer_dict_from_json['email'] == (
-            customer.email), (
+        assert dict_from_json['email'] == (
+            new_obj.email), (
             "failed on email"
         )
-        assert customer_dict_from_json['email_confirmed_utc_date_time'] == (
-            customer.email_confirmed_utc_date_time.isoformat()), (
+        assert dict_from_json['email_confirmed_utc_date_time'] == (
+            new_obj.email_confirmed_utc_date_time.isoformat()), (
             "failed on email_confirmed_utc_date_time"
         )
-        assert customer_dict_from_json['first_name'] == (
-            customer.first_name), (
+        assert dict_from_json['first_name'] == (
+            new_obj.first_name), (
             "failed on first_name"
         )
-        assert customer_dict_from_json['forgot_password_key_expiration_utc_date_time'] == (
-            customer.forgot_password_key_expiration_utc_date_time.isoformat()), (
+        assert dict_from_json['forgot_password_key_expiration_utc_date_time'] == (
+            new_obj.forgot_password_key_expiration_utc_date_time.isoformat()), (
             "failed on forgot_password_key_expiration_utc_date_time"
         )
-        assert customer_dict_from_json['forgot_password_key_value'] == (
-            customer.forgot_password_key_value), (
+        assert dict_from_json['forgot_password_key_value'] == (
+            new_obj.forgot_password_key_value), (
             "failed on forgot_password_key_value"
         )
-        assert customer_dict_from_json['fs_user_code_value'] == (
-            str(customer.fs_user_code_value)), (
+        assert dict_from_json['fs_user_code_value'] == (
+            str(new_obj.fs_user_code_value)), (
             "failed on fs_user_code_value"
         )
-        assert customer_dict_from_json['is_active'] == (
-            customer.is_active), (
+        assert dict_from_json['is_active'] == (
+            new_obj.is_active), (
             "failed on is_active"
         )
-        assert customer_dict_from_json['is_email_allowed'] == (
-            customer.is_email_allowed), (
+        assert dict_from_json['is_email_allowed'] == (
+            new_obj.is_email_allowed), (
             "failed on is_email_allowed"
         )
-        assert customer_dict_from_json['is_email_confirmed'] == (
-            customer.is_email_confirmed), (
+        assert dict_from_json['is_email_confirmed'] == (
+            new_obj.is_email_confirmed), (
             "failed on is_email_confirmed"
         )
-        assert customer_dict_from_json['is_email_marketing_allowed'] == (
-            customer.is_email_marketing_allowed), (
+        assert dict_from_json['is_email_marketing_allowed'] == (
+            new_obj.is_email_marketing_allowed), (
             "failed on is_email_marketing_allowed"
         )
-        assert customer_dict_from_json['is_locked'] == (
-            customer.is_locked), (
+        assert dict_from_json['is_locked'] == (
+            new_obj.is_locked), (
             "failed on is_locked"
         )
-        assert customer_dict_from_json['is_multiple_organizations_allowed'] == (
-            customer.is_multiple_organizations_allowed), (
+        assert dict_from_json['is_multiple_organizations_allowed'] == (
+            new_obj.is_multiple_organizations_allowed), (
             "failed on is_multiple_organizations_allowed"
         )
-        assert customer_dict_from_json['is_verbose_logging_forced'] == (
-            customer.is_verbose_logging_forced), (
+        assert dict_from_json['is_verbose_logging_forced'] == (
+            new_obj.is_verbose_logging_forced), (
             "failed on is_verbose_logging_forced"
         )
-        assert customer_dict_from_json['last_login_utc_date_time'] == (
-            customer.last_login_utc_date_time.isoformat()), (
+        assert dict_from_json['last_login_utc_date_time'] == (
+            new_obj.last_login_utc_date_time.isoformat()), (
             "failed on last_login_utc_date_time"
         )
-        assert customer_dict_from_json['last_name'] == (
-            customer.last_name), (
+        assert dict_from_json['last_name'] == (
+            new_obj.last_name), (
             "failed on last_name"
         )
-        assert customer_dict_from_json['password'] == (
-            customer.password), (
+        assert dict_from_json['password'] == (
+            new_obj.password), (
             "failed on password"
         )
-        assert customer_dict_from_json['phone'] == (
-            customer.phone), (
+        assert dict_from_json['phone'] == (
+            new_obj.phone), (
             "failed on phone"
         )
-        assert customer_dict_from_json['province'] == (
-            customer.province), (
+        assert dict_from_json['province'] == (
+            new_obj.province), (
             "failed on province"
         )
-        assert customer_dict_from_json['registration_utc_date_time'] == (
-            customer.registration_utc_date_time.isoformat()), (
+        assert dict_from_json['registration_utc_date_time'] == (
+            new_obj.registration_utc_date_time.isoformat()), (
             "failed on registration_utc_date_time"
         )
-        assert customer_dict_from_json['tac_id'] == (
-            customer.tac_id), (
+        assert dict_from_json['tac_id'] == (
+            new_obj.tac_id), (
             "failed on tac_id"
         )
-        assert customer_dict_from_json['utc_offset_in_minutes'] == (
-            customer.utc_offset_in_minutes), (
+        assert dict_from_json['utc_offset_in_minutes'] == (
+            new_obj.utc_offset_in_minutes), (
             "failed on utc_offset_in_minutes"
         )
-        assert customer_dict_from_json['zip'] == (
-            customer.zip), (
+        assert dict_from_json['zip'] == (
+            new_obj.zip), (
             "failed on zip"
         )
-        assert customer_dict_from_json['insert_utc_date_time'] == (
-            customer.insert_utc_date_time.isoformat()), (
+        assert dict_from_json['insert_utc_date_time'] == (
+            new_obj.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
         )
-        assert customer_dict_from_json['last_update_utc_date_time'] == (
-            customer.last_update_utc_date_time.isoformat()), (
+        assert dict_from_json['last_update_utc_date_time'] == (
+            new_obj.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-        assert customer_dict_from_json[(  # TacID
+        assert dict_from_json[(  # TacID
             'tac_code_peek')] == (
-            str(customer.tac_code_peek)), (
+            str(new_obj.tac_code_peek)), (
             "failed on tac_code_peek"
         )
-

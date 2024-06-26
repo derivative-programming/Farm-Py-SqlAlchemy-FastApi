@@ -9,7 +9,8 @@ import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 import pytest
-import flows.constants.land_add_plant as FlowConstants
+import flows.constants.land_add_plant \
+    as FlowConstants  # noqa: F401
 from flows.base.land_add_plant import (
     BaseFlowLandAddPlant)
 from helpers.session_context import SessionContext
@@ -40,8 +41,10 @@ class TestBaseFlowLandAddPlant():
             None
         """
         session_context = SessionContext(dict(), session)
-        flow = BaseFlowLandAddPlant(session_context)
-        land = await LandFactory.create_async(session)
+        flow = BaseFlowLandAddPlant(
+            session_context)
+        land = await \
+            LandFactory.create_async(session)
         request_flavor_code: uuid.UUID = uuid.UUID(int=0)
         request_other_flavor: str = ""
         request_some_int_val: int = 0
@@ -231,8 +234,10 @@ class TestBaseFlowLandAddPlant():
             None
         """
         session_context = SessionContext(dict(), session)
-        land = await LandFactory.create_async(session)
-        flow = BaseFlowLandAddPlant(session_context)
+        land = await \
+            LandFactory.create_async(session)
+        flow = BaseFlowLandAddPlant(
+            session_context)
         role_required = "User"
         if len(role_required) > 0:
             await flow._process_security_rules(land)

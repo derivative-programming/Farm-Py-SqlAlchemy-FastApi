@@ -1072,4 +1072,3 @@ class FlavorBaseBusObj(BaseBusObj):
         pac = await self.get_pac_id_rel_obj()
 
         return pac
-

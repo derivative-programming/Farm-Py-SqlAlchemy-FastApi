@@ -484,18 +484,19 @@ class OrganizationManager:
         """
         logging.info(
             "OrganizationManager.add_bulk")
-        for organization in organizations:
+        for list_item in organizations:
             organization_id = \
-                organization.organization_id
-            code = organization.code
-            if organization.organization_id is not None and organization.organization_id > 0:
+                list_item.organization_id
+            code = list_item.code
+            if list_item.organization_id is not None and \
+                    list_item.organization_id > 0:
                 raise ValueError(
                     "Organization is already added"
                     f": {str(code)} {str(organization_id)}"
                 )
-            organization.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            organization.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(organizations)
         await self._session_context.session.flush()
@@ -715,4 +716,3 @@ class OrganizationManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-

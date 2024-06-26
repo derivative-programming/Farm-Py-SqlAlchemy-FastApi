@@ -26,7 +26,7 @@ def session_context():
 
 
 @pytest.fixture
-def date_greater_than_filter_list():
+def obj_list():
     """
     Return a list of mock DateGreaterThanFilter objects.
     """
@@ -39,23 +39,27 @@ def date_greater_than_filter_list():
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(
-        session_context, date_greater_than_filter_list):
+        session_context, obj_list):
     """
     Test the to_bus_obj_list method.
     """
-    with patch('business.date_greater_than_filter.DateGreaterThanFilterBusObj.load_from_obj_instance',
+    with patch("business.date_greater_than_filter"
+               ".DateGreaterThanFilterBusObj"
+               ".load_from_obj_instance",
                new_callable=AsyncMock) as mock_load:
         bus_obj_list = await \
             DateGreaterThanFilterBusObj.to_bus_obj_list(
-                session_context, date_greater_than_filter_list)
+                session_context, obj_list)
 
-        assert len(bus_obj_list) == len(date_greater_than_filter_list)
+        assert len(bus_obj_list) == len(obj_list)
         assert all(
-            isinstance(bus_obj, DateGreaterThanFilterBusObj) for bus_obj in bus_obj_list)
+            isinstance(bus_obj, DateGreaterThanFilterBusObj)
+            for bus_obj in bus_obj_list)
         assert all(
-            bus_obj.load_from_obj_instance.called for bus_obj in bus_obj_list)
+            bus_obj.load_from_obj_instance.called
+            for bus_obj in bus_obj_list)
 
-        for bus_obj, date_greater_than_filter in zip(bus_obj_list, date_greater_than_filter_list):
+        for bus_obj, date_greater_than_filter in zip(bus_obj_list, obj_list):
             mock_load.assert_any_call(date_greater_than_filter)
 
 
@@ -66,11 +70,10 @@ async def test_to_bus_obj_list_empty(
     Test the to_bus_obj_list
     method with an empty list.
     """
-    empty_date_greater_than_filter_list = []
+    empty_obj_list = []
     bus_obj_list = await \
         DateGreaterThanFilterBusObj.to_bus_obj_list(
             session_context,
-            empty_date_greater_than_filter_list)
+            empty_obj_list)
 
     assert len(bus_obj_list) == 0
-

@@ -16,9 +16,11 @@ from sqlalchemy.future import select
 
 import models
 from helpers.session_context import SessionContext
-from managers.customer_role import CustomerRoleManager
+from managers.customer_role import (
+    CustomerRoleManager)
 from models import CustomerRole
-from models.factory import CustomerRoleFactory
+from models.factory import (
+    CustomerRoleFactory)
 
 
 class TestCustomerRoleGetByManager:
@@ -28,7 +30,7 @@ class TestCustomerRoleGetByManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def customer_role_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `CustomerRoleManager` for testing.
@@ -40,7 +42,7 @@ class TestCustomerRoleGetByManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        customer_role_manager: CustomerRoleManager
+        obj_manager: CustomerRoleManager
     ):
         """
         Test case for the `build` method of
@@ -53,7 +55,7 @@ class TestCustomerRoleGetByManager:
 
         # Call the build function of the manager
         customer_role = await \
-            customer_role_manager.build(
+            obj_manager.build(
                 **mock_data)
 
         # Assert that the returned object is an instance of
@@ -69,34 +71,34 @@ class TestCustomerRoleGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
         Test case for the `get_by_id` method of
         `CustomerRoleManager`.
         """
-        test_customer_role = await \
+        new_obj = await \
             CustomerRoleFactory.create_async(
                 session)
 
         customer_role = await \
-            customer_role_manager.get_by_id(
-                test_customer_role.customer_role_id)
+            obj_manager.get_by_id(
+                new_obj.customer_role_id)
 
         assert isinstance(
             customer_role,
             CustomerRole)
 
-        assert test_customer_role.customer_role_id == \
+        assert new_obj.customer_role_id == \
             customer_role.customer_role_id
-        assert test_customer_role.code == \
+        assert new_obj.code == \
             customer_role.code
 
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
-        customer_role_manager: CustomerRoleManager
+        obj_manager: CustomerRoleManager
     ):
         """
         Test case for the `get_by_id` method of
@@ -107,7 +109,7 @@ class TestCustomerRoleGetByManager:
         non_existent_id = 9999  # An ID that's not in the database
 
         retrieved_customer_role = await \
-            customer_role_manager.get_by_id(
+            obj_manager.get_by_id(
                 non_existent_id)
 
         assert retrieved_customer_role is None
@@ -115,7 +117,7 @@ class TestCustomerRoleGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_code_returns_customer_role(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
@@ -125,27 +127,27 @@ class TestCustomerRoleGetByManager:
         returned by its code.
         """
 
-        test_customer_role = await \
+        new_obj = await \
             CustomerRoleFactory.create_async(
                 session)
 
         customer_role = await \
-            customer_role_manager.get_by_code(
-                test_customer_role.code)
+            obj_manager.get_by_code(
+                new_obj.code)
 
         assert isinstance(
             customer_role,
             CustomerRole)
 
-        assert test_customer_role.customer_role_id == \
+        assert new_obj.customer_role_id == \
             customer_role.customer_role_id
-        assert test_customer_role.code == \
+        assert new_obj.code == \
             customer_role.code
 
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
-        customer_role_manager: CustomerRoleManager
+        obj_manager: CustomerRoleManager
     ):
         """
         Test case for the `get_by_code` method of
@@ -156,7 +158,7 @@ class TestCustomerRoleGetByManager:
         random_code = uuid.uuid4()
 
         customer_role = await \
-            customer_role_manager.get_by_code(
+            obj_manager.get_by_code(
                 random_code)
 
         assert customer_role is None
@@ -166,7 +168,7 @@ class TestCustomerRoleGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_customer_id_existing(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
@@ -179,7 +181,7 @@ class TestCustomerRoleGetByManager:
         1. Create a customer_role using the
             CustomerRoleFactory.
         2. Fetch the customer_role using the
-            `get_by_customer_id` method of the customer_role_manager.
+            `get_by_customer_id` method of the obj_manager.
         3. Assert that the fetched customer_roles list contains
             only one customer_role.
         4. Assert that the fetched customer_role
@@ -198,34 +200,34 @@ class TestCustomerRoleGetByManager:
         """
         # Add a customer_role with a specific
         # customer_id
-        customer_role1 = await CustomerRoleFactory.create_async(
+        obj_1 = await CustomerRoleFactory.create_async(
             session=session)
 
         # Fetch the customer_role using
         # the manager function
 
-        fetched_customer_roles = await \
-            customer_role_manager.get_by_customer_id(
-                customer_role1.customer_id)
-        assert len(fetched_customer_roles) == 1
-        assert isinstance(fetched_customer_roles[0],
+        fetched_objs = await \
+            obj_manager.get_by_customer_id(
+                obj_1.customer_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           CustomerRole)
-        assert fetched_customer_roles[0].code == \
-            customer_role1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.Customer).where(
-            models.Customer._customer_id == customer_role1.customer_id)  # type: ignore  # noqa: E501
+            models.Customer._customer_id == obj_1.customer_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         customer = result.scalars().first()
 
         assert isinstance(customer, models.Customer)
 
-        assert fetched_customer_roles[0].customer_code_peek == customer.code
+        assert fetched_objs[0].customer_code_peek == customer.code
 
     @pytest.mark.asyncio
     async def test_get_by_customer_id_nonexistent(
         self,
-        customer_role_manager: CustomerRoleManager
+        obj_manager: CustomerRoleManager
     ):
         """
         Test case to verify the behavior of the
@@ -238,15 +240,15 @@ class TestCustomerRoleGetByManager:
 
         non_existent_id = 999
 
-        fetched_customer_roles = await \
-            customer_role_manager.get_by_customer_id(
+        fetched_objs = await \
+            obj_manager.get_by_customer_id(
                 non_existent_id)
-        assert len(fetched_customer_roles) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_customer_id_invalid_type(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
@@ -254,7 +256,7 @@ class TestCustomerRoleGetByManager:
         `get_by_customer_id` method when an invalid customer ID is provided.
 
         Args:
-            customer_role_manager (CustomerRoleManager): An
+            obj_manager (CustomerRoleManager): An
                 instance of the CustomerRoleManager class.
             session (AsyncSession): An instance
                 of the AsyncSession class.
@@ -270,7 +272,7 @@ class TestCustomerRoleGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await customer_role_manager.get_by_customer_id(
+            await obj_manager.get_by_customer_id(
                 invalid_id)  # type: ignore
 
         await session.rollback()
@@ -281,7 +283,7 @@ class TestCustomerRoleGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_role_id_existing(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
@@ -295,7 +297,7 @@ class TestCustomerRoleGetByManager:
             CustomerRoleFactory.
         2. Fetch the customer_role using the
             `get_by_role_id`
-            method of the customer_role_manager.
+            method of the obj_manager.
         3. Assert that the fetched customer_roles list has a length of 1.
         4. Assert that the first element in the fetched
             customer_roles list is an instance of the
@@ -314,34 +316,34 @@ class TestCustomerRoleGetByManager:
         """
         # Add a customer_role with a specific
         # role_id
-        customer_role1 = await CustomerRoleFactory.create_async(
+        obj_1 = await CustomerRoleFactory.create_async(
             session=session)
 
         # Fetch the customer_role using the
         # manager function
 
-        fetched_customer_roles = await \
-            customer_role_manager.get_by_role_id(
-                customer_role1.role_id)
-        assert len(fetched_customer_roles) == 1
-        assert isinstance(fetched_customer_roles[0],
+        fetched_objs = await \
+            obj_manager.get_by_role_id(
+                obj_1.role_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           CustomerRole)
-        assert fetched_customer_roles[0].code == \
-            customer_role1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.Role).where(
-            models.Role._role_id == customer_role1.role_id)  # type: ignore  # noqa: E501
+            models.Role._role_id == obj_1.role_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         role = result.scalars().first()
 
         assert isinstance(role, models.Role)
 
-        assert fetched_customer_roles[0].role_code_peek == role.code
+        assert fetched_objs[0].role_code_peek == role.code
 
     @pytest.mark.asyncio
     async def test_get_by_role_id_nonexistent(
         self,
-        customer_role_manager: CustomerRoleManager
+        obj_manager: CustomerRoleManager
     ):
         """
         Test case to verify the behavior of the
@@ -363,15 +365,15 @@ class TestCustomerRoleGetByManager:
         """
         non_existent_id = 999
 
-        fetched_customer_roles = (
-            await customer_role_manager.get_by_role_id(
+        fetched_objs = (
+            await obj_manager.get_by_role_id(
                 non_existent_id))
-        assert len(fetched_customer_roles) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_role_id_invalid_type(
         self,
-        customer_role_manager: CustomerRoleManager,
+        obj_manager: CustomerRoleManager,
         session: AsyncSession
     ):
         """
@@ -383,7 +385,7 @@ class TestCustomerRoleGetByManager:
         when an invalid ID is passed to the method.
 
         Args:
-            customer_role_manager (CustomerRoleManager): The
+            obj_manager (CustomerRoleManager): The
                 instance of the CustomerRoleManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 
@@ -395,8 +397,7 @@ class TestCustomerRoleGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await customer_role_manager.get_by_role_id(
+            await obj_manager.get_by_role_id(
                 invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-

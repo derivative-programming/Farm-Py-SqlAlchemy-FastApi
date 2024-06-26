@@ -7,7 +7,7 @@ class in the models.factory package.
 
 from decimal import Decimal  # noqa: F401
 import time
-import math
+import math  # noqa: F401
 import uuid  # noqa: F401
 import logging
 from datetime import datetime, date, timedelta  # noqa: F401
@@ -56,48 +56,48 @@ class TestCustomerRoleFactory:
         """
         Test case for creating a customer_role.
         """
-        customer_role = CustomerRoleFactory.create(
+        new_obj = CustomerRoleFactory.create(
             session=session)
-        assert customer_role.customer_role_id is not None
+        assert new_obj.customer_role_id is not None
 
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
-        customer_role = CustomerRoleFactory.create(
+        new_obj = CustomerRoleFactory.create(
             session=session)
-        assert isinstance(customer_role.code, uuid.UUID)
+        assert isinstance(new_obj.code, uuid.UUID)
 
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
         the last_change_code attribute on build.
         """
-        customer_role: CustomerRole = CustomerRoleFactory.build(
+        new_obj: CustomerRole = CustomerRoleFactory.build(
             session=session)
-        assert customer_role.last_change_code == 0
+        assert new_obj.last_change_code == 0
 
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on creation.
         """
-        customer_role: CustomerRole = CustomerRoleFactory.create(
+        new_obj: CustomerRole = CustomerRoleFactory.create(
             session=session)
-        assert customer_role.last_change_code == 1
+        assert new_obj.last_change_code == 1
 
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on update.
         """
-        customer_role = CustomerRoleFactory.create(
+        new_obj = CustomerRoleFactory.create(
             session=session)
-        initial_code = customer_role.last_change_code
-        customer_role.code = uuid.uuid4()
+        initial_code = new_obj.last_change_code
+        new_obj.code = uuid.uuid4()
         session.commit()
-        assert customer_role.last_change_code != \
+        assert new_obj.last_change_code != \
             initial_code
 
     def test_date_inserted_on_build(self, session):
@@ -105,27 +105,27 @@ class TestCustomerRoleFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on build.
         """
-        customer_role = CustomerRoleFactory.build(
+        new_obj = CustomerRoleFactory.build(
             session=session)
-        assert customer_role.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            customer_role.insert_utc_date_time, datetime)
+            new_obj.insert_utc_date_time, datetime)
 
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
         insert_utc_date_time attribute on initial save.
         """
-        customer_role = CustomerRoleFactory.build(
+        new_obj = CustomerRoleFactory.build(
             session=session)
-        assert customer_role.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            customer_role.insert_utc_date_time, datetime)
+            new_obj.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        customer_role.code = uuid.uuid4()
-        session.add(customer_role)
+        new_obj.code = uuid.uuid4()
+        session.add(new_obj)
         session.commit()
-        assert customer_role.insert_utc_date_time > \
+        assert new_obj.insert_utc_date_time > \
             initial_time
 
     def test_date_inserted_on_second_save(self, session):
@@ -133,43 +133,43 @@ class TestCustomerRoleFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on second save.
         """
-        customer_role = CustomerRoleFactory(
+        new_obj = CustomerRoleFactory(
             session=session)
-        assert customer_role.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            customer_role.insert_utc_date_time, datetime)
-        initial_time = customer_role.insert_utc_date_time
-        customer_role.code = uuid.uuid4()
+            new_obj.insert_utc_date_time, datetime)
+        initial_time = new_obj.insert_utc_date_time
+        new_obj.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert customer_role.insert_utc_date_time == initial_time
+        assert new_obj.insert_utc_date_time == initial_time
 
     def test_date_updated_on_build(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on build.
         """
-        customer_role = CustomerRoleFactory.build(
+        new_obj = CustomerRoleFactory.build(
             session=session)
-        assert customer_role.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            customer_role.last_update_utc_date_time, datetime)
+            new_obj.last_update_utc_date_time, datetime)
 
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on initial save.
         """
-        customer_role = CustomerRoleFactory.build(
+        new_obj = CustomerRoleFactory.build(
             session=session)
-        assert customer_role.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            customer_role.last_update_utc_date_time, datetime)
+            new_obj.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        customer_role.code = uuid.uuid4()
-        session.add(customer_role)
+        new_obj.code = uuid.uuid4()
+        session.add(new_obj)
         session.commit()
-        assert customer_role.last_update_utc_date_time > \
+        assert new_obj.last_update_utc_date_time > \
             initial_time
 
     def test_date_updated_on_second_save(self, session):
@@ -177,16 +177,16 @@ class TestCustomerRoleFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on second save.
         """
-        customer_role = CustomerRoleFactory(
+        new_obj = CustomerRoleFactory(
             session=session)
-        assert customer_role.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            customer_role.last_update_utc_date_time, datetime)
-        initial_time = customer_role.last_update_utc_date_time
-        customer_role.code = uuid.uuid4()
+            new_obj.last_update_utc_date_time, datetime)
+        initial_time = new_obj.last_update_utc_date_time
+        new_obj.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert customer_role.last_update_utc_date_time > \
+        assert new_obj.last_update_utc_date_time > \
             initial_time
 
     def test_model_deletion(self, session):
@@ -194,13 +194,14 @@ class TestCustomerRoleFactory:
         Test case for deleting a
         customer_role model.
         """
-        customer_role = CustomerRoleFactory.create(
+        new_obj = CustomerRoleFactory.create(
             session=session)
-        session.delete(customer_role)
+        session.delete(new_obj)
         session.commit()
-        deleted_customer_role = session.query(CustomerRole).filter_by(
+        deleted_customer_role = session.query(
+            CustomerRole).filter_by(
             _customer_role_id=(
-                customer_role.customer_role_id)
+                new_obj.customer_role_id)
         ).first()
         assert deleted_customer_role is None
 
@@ -209,29 +210,29 @@ class TestCustomerRoleFactory:
         Test case for checking the data types of
         the customer_role attributes.
         """
-        customer_role = CustomerRoleFactory.create(
+        obj = CustomerRoleFactory.create(
             session=session)
-        assert isinstance(customer_role.customer_role_id, int)
-        assert isinstance(customer_role.code, uuid.UUID)
-        assert isinstance(customer_role.last_change_code, int)
-        assert isinstance(customer_role.insert_user_id, uuid.UUID)
-        assert isinstance(customer_role.last_update_user_id, uuid.UUID)
-        assert isinstance(customer_role.customer_id, int)
-        assert isinstance(customer_role.is_placeholder, bool)
-        assert isinstance(customer_role.placeholder, bool)
-        assert isinstance(customer_role.role_id, int)
+        assert isinstance(obj.customer_role_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert isinstance(obj.customer_id, int)
+        assert isinstance(obj.is_placeholder, bool)
+        assert isinstance(obj.placeholder, bool)
+        assert isinstance(obj.role_id, int)
         # customerID
 
         assert isinstance(
-            customer_role.customer_code_peek, uuid.UUID)
+            obj.customer_code_peek, uuid.UUID)
         # isPlaceholder,
         # placeholder,
         # roleID
 
         assert isinstance(
-            customer_role.role_code_peek, uuid.UUID)
-        assert isinstance(customer_role.insert_utc_date_time, datetime)
-        assert isinstance(customer_role.last_update_utc_date_time, datetime)
+            obj.role_code_peek, uuid.UUID)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     def test_unique_code_constraint(self, session):
         """
@@ -253,28 +254,28 @@ class TestCustomerRoleFactory:
         Test case for checking the default values of
         the customer_role fields.
         """
-        customer_role = CustomerRole()
-        assert customer_role.code is not None
-        assert customer_role.last_change_code is not None
-        assert customer_role.insert_user_id == uuid.UUID(int=0)
-        assert customer_role.last_update_user_id == uuid.UUID(int=0)
-        assert customer_role.insert_utc_date_time is not None
-        assert customer_role.last_update_utc_date_time is not None
+        new_obj = CustomerRole()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id == uuid.UUID(int=0)
+        assert new_obj.last_update_user_id == uuid.UUID(int=0)
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         # CustomerID
 
         assert isinstance(
-            customer_role.customer_code_peek, uuid.UUID)
+            new_obj.customer_code_peek, uuid.UUID)
         # isPlaceholder,
         # placeholder,
         # RoleID
 
         assert isinstance(
-            customer_role.role_code_peek, uuid.UUID)
-        assert customer_role is not None
-        assert customer_role.customer_id == 0
-        assert customer_role.is_placeholder is False
-        assert customer_role.placeholder is False
-        assert customer_role.role_id == 0
+            new_obj.role_code_peek, uuid.UUID)
+        assert new_obj is not None
+        assert new_obj.customer_id == 0
+        assert new_obj.is_placeholder is False
+        assert new_obj.placeholder is False
+        assert new_obj.role_id == 0
 
     def test_last_change_code_concurrency(self, session):
         """
@@ -300,18 +301,21 @@ class TestCustomerRoleFactory:
             None
         """
 
-        customer_role = CustomerRoleFactory.create(
+        new_obj = CustomerRoleFactory.create(
             session=session)
-        original_last_change_code = customer_role.last_change_code
-        customer_role_1 = session.query(CustomerRole).filter_by(
+        original_last_change_code = \
+            new_obj.last_change_code
+        customer_role_1 = session.query(
+            CustomerRole).filter_by(
             _customer_role_id=(
-                customer_role.customer_role_id)
+                new_obj.customer_role_id)
         ).first()
         customer_role_1.code = uuid.uuid4()
         session.commit()
-        customer_role_2 = session.query(CustomerRole).filter_by(
+        customer_role_2 = session.query(
+            CustomerRole).filter_by(
             _customer_role_id=(
-                customer_role.customer_role_id)
+                new_obj.customer_role_id)
         ).first()
         customer_role_2.code = uuid.uuid4()
         session.commit()
@@ -338,9 +342,9 @@ class TestCustomerRoleFactory:
                 session violate any integrity constraints.
 
         """
-        customer_role = CustomerRoleFactory.create(
+        new_obj = CustomerRoleFactory.create(
             session=session)
-        customer_role.customer_id = 99999
+        new_obj.customer_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
@@ -367,10 +371,9 @@ class TestCustomerRoleFactory:
                 session violate any integrity constraints.
 
         """
-        customer_role = CustomerRoleFactory.create(
+        new_obj = CustomerRoleFactory.create(
             session=session)
-        customer_role.role_id = 99999
+        new_obj.role_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-

@@ -56,4 +56,3 @@ class OrgApiKeyBusObj(OrgApiKeyFluentBusObj):
             result.append(org_api_key_bus_obj)
 
         return result
-

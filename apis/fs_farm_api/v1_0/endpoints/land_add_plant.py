@@ -53,7 +53,8 @@ class LandAddPlantRouter(BaseRouter):
 
     @staticmethod
     @router.get(
-        "/api/v1_0/land-add-plant/{land_code}/init",
+        "/api/v1_0/land-add-plant"
+        "/{land_code}/init",
         response_model=(
             api_init_models
             .LandAddPlantInitObjWFGetInitModelResponse
@@ -77,7 +78,8 @@ class LandAddPlantRouter(BaseRouter):
         - response: JSON response with initialization details.
         """
         logging.info(
-            'LandAddPlantRouter.request_get_init start. landCode:%s',
+            "LandAddPlantRouter.request_get_init"
+            " start. landCode:%s",
             land_code)
         auth_dict = BaseRouter.implementation_check(
             LandAddPlantRouterConfig
@@ -89,6 +91,10 @@ class LandAddPlantRouter(BaseRouter):
             LandAddPlantRouterConfig
             .is_public, api_key)
 
+        init_request = (
+            api_init_models.LandAddPlantInitObjWFGetInitModelRequest()
+        )
+
         async with session:
             try:
                 logging.info("Start session...")
@@ -98,9 +104,6 @@ class LandAddPlantRouter(BaseRouter):
                 land_code = session_context.check_context_code(
                     "LandCode", land_code)
 
-                init_request = (
-                    api_init_models.LandAddPlantInitObjWFGetInitModelRequest()
-                )
                 response = await init_request.process_request(
                     session_context,
                     land_code,
@@ -128,7 +131,8 @@ class LandAddPlantRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            'LandAddPlantRouter.init get result:%s',
+            "LandAddPlantRouter"
+            ".init get result:%s",
             response_data)
         return response
 ##GENTrainingBlock[caseisPostWithIdAvailable]Start
@@ -136,7 +140,8 @@ class LandAddPlantRouter(BaseRouter):
 
     @staticmethod
     @router.post(
-        "/api/v1_0/land-add-plant/{land_code}",
+        "/api/v1_0/land-add-plant"
+        "/{land_code}",
         response_model=(
             api_models
             .LandAddPlantPostModelResponse
@@ -217,7 +222,8 @@ class LandAddPlantRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            'LandAddPlantRouter.submit get result:%s',
+            "LandAddPlantRouter"
+            ".submit get result:%s",
             response_data)
         return response
 ##GENLearn[isPostWithIdAvailable=true]End

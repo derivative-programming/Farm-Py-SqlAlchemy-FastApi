@@ -54,14 +54,12 @@ class LandUserPlantMultiSelectToNotEditablePostModelRequestFactory(
             An instance of
             LandUserPlantMultiSelectToNotEditablePostModelRequest.
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
 
 
         obj = model_class(*args, **kwargs)
-
 
         return obj
 
@@ -88,7 +86,6 @@ class LandUserPlantMultiSelectToNotEditablePostModelRequestFactory(
 
         obj = model_class(*args, **kwargs)
 
-
         return obj
 
     @classmethod
@@ -111,10 +108,9 @@ class LandUserPlantMultiSelectToNotEditablePostModelRequestFactory(
         """
 
 
-        obj = LandUserPlantMultiSelectToNotEditablePostModelRequestFactory.build(
-            session=None, *args, **kwargs
-        )
-
+        obj = LandUserPlantMultiSelectToNotEditablePostModelRequestFactory \
+            .build(
+                session=None, *args, **kwargs
+            )
 
         return obj
-

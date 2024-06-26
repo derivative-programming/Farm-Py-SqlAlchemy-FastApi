@@ -495,18 +495,19 @@ class OrgCustomerManager:
         """
         logging.info(
             "OrgCustomerManager.add_bulk")
-        for org_customer in org_customers:
+        for list_item in org_customers:
             org_customer_id = \
-                org_customer.org_customer_id
-            code = org_customer.code
-            if org_customer.org_customer_id is not None and org_customer.org_customer_id > 0:
+                list_item.org_customer_id
+            code = list_item.code
+            if list_item.org_customer_id is not None and \
+                    list_item.org_customer_id > 0:
                 raise ValueError(
                     "OrgCustomer is already added"
                     f": {str(code)} {str(org_customer_id)}"
                 )
-            org_customer.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            org_customer.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(org_customers)
         await self._session_context.session.flush()
@@ -762,4 +763,3 @@ class OrgCustomerManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-

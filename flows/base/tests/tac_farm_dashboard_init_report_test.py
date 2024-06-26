@@ -9,7 +9,8 @@ import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 import pytest
-import flows.constants.tac_farm_dashboard_init_report as FlowConstants
+import flows.constants.tac_farm_dashboard_init_report \
+    as FlowConstants  # noqa: F401
 from flows.base.tac_farm_dashboard_init_report import (
     BaseFlowTacFarmDashboardInitReport)
 from helpers.session_context import SessionContext
@@ -40,8 +41,10 @@ class TestBaseFlowTacFarmDashboardInitReport():
             None
         """
         session_context = SessionContext(dict(), session)
-        flow = BaseFlowTacFarmDashboardInitReport(session_context)
-        tac = await TacFactory.create_async(session)
+        flow = BaseFlowTacFarmDashboardInitReport(
+            session_context)
+        tac = await \
+            TacFactory.create_async(session)
 
         # Call the method being tested
         await flow._process_validation_rules(
@@ -83,8 +86,10 @@ class TestBaseFlowTacFarmDashboardInitReport():
             None
         """
         session_context = SessionContext(dict(), session)
-        tac = await TacFactory.create_async(session)
-        flow = BaseFlowTacFarmDashboardInitReport(session_context)
+        tac = await \
+            TacFactory.create_async(session)
+        flow = BaseFlowTacFarmDashboardInitReport(
+            session_context)
         role_required = ""
         if len(role_required) > 0:
             await flow._process_security_rules(tac)
@@ -92,4 +97,3 @@ class TestBaseFlowTacFarmDashboardInitReport():
             assert flow.queued_validation_errors[''] == (
                 f"Unauthorized access. {role_required} role not found.")
             session_context.role_name_csv = role_required
-

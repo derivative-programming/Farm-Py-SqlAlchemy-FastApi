@@ -16,9 +16,11 @@ from sqlalchemy.future import select
 
 import models
 from helpers.session_context import SessionContext
-from managers.tri_state_filter import TriStateFilterManager
+from managers.tri_state_filter import (
+    TriStateFilterManager)
 from models import TriStateFilter
-from models.factory import TriStateFilterFactory
+from models.factory import (
+    TriStateFilterFactory)
 
 
 class TestTriStateFilterGetByManager:
@@ -28,7 +30,7 @@ class TestTriStateFilterGetByManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def tri_state_filter_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `TriStateFilterManager` for testing.
@@ -40,7 +42,7 @@ class TestTriStateFilterGetByManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        tri_state_filter_manager: TriStateFilterManager
+        obj_manager: TriStateFilterManager
     ):
         """
         Test case for the `build` method of
@@ -53,7 +55,7 @@ class TestTriStateFilterGetByManager:
 
         # Call the build function of the manager
         tri_state_filter = await \
-            tri_state_filter_manager.build(
+            obj_manager.build(
                 **mock_data)
 
         # Assert that the returned object is an instance of
@@ -69,34 +71,34 @@ class TestTriStateFilterGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
         Test case for the `get_by_id` method of
         `TriStateFilterManager`.
         """
-        test_tri_state_filter = await \
+        new_obj = await \
             TriStateFilterFactory.create_async(
                 session)
 
         tri_state_filter = await \
-            tri_state_filter_manager.get_by_id(
-                test_tri_state_filter.tri_state_filter_id)
+            obj_manager.get_by_id(
+                new_obj.tri_state_filter_id)
 
         assert isinstance(
             tri_state_filter,
             TriStateFilter)
 
-        assert test_tri_state_filter.tri_state_filter_id == \
+        assert new_obj.tri_state_filter_id == \
             tri_state_filter.tri_state_filter_id
-        assert test_tri_state_filter.code == \
+        assert new_obj.code == \
             tri_state_filter.code
 
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
-        tri_state_filter_manager: TriStateFilterManager
+        obj_manager: TriStateFilterManager
     ):
         """
         Test case for the `get_by_id` method of
@@ -107,7 +109,7 @@ class TestTriStateFilterGetByManager:
         non_existent_id = 9999  # An ID that's not in the database
 
         retrieved_tri_state_filter = await \
-            tri_state_filter_manager.get_by_id(
+            obj_manager.get_by_id(
                 non_existent_id)
 
         assert retrieved_tri_state_filter is None
@@ -115,7 +117,7 @@ class TestTriStateFilterGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_code_returns_tri_state_filter(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -125,27 +127,27 @@ class TestTriStateFilterGetByManager:
         returned by its code.
         """
 
-        test_tri_state_filter = await \
+        new_obj = await \
             TriStateFilterFactory.create_async(
                 session)
 
         tri_state_filter = await \
-            tri_state_filter_manager.get_by_code(
-                test_tri_state_filter.code)
+            obj_manager.get_by_code(
+                new_obj.code)
 
         assert isinstance(
             tri_state_filter,
             TriStateFilter)
 
-        assert test_tri_state_filter.tri_state_filter_id == \
+        assert new_obj.tri_state_filter_id == \
             tri_state_filter.tri_state_filter_id
-        assert test_tri_state_filter.code == \
+        assert new_obj.code == \
             tri_state_filter.code
 
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
-        tri_state_filter_manager: TriStateFilterManager
+        obj_manager: TriStateFilterManager
     ):
         """
         Test case for the `get_by_code` method of
@@ -156,7 +158,7 @@ class TestTriStateFilterGetByManager:
         random_code = uuid.uuid4()
 
         tri_state_filter = await \
-            tri_state_filter_manager.get_by_code(
+            obj_manager.get_by_code(
                 random_code)
 
         assert tri_state_filter is None
@@ -171,7 +173,7 @@ class TestTriStateFilterGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_pac_id_existing(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -184,7 +186,7 @@ class TestTriStateFilterGetByManager:
         1. Create a tri_state_filter using the
             TriStateFilterFactory.
         2. Fetch the tri_state_filter using the
-            `get_by_pac_id` method of the tri_state_filter_manager.
+            `get_by_pac_id` method of the obj_manager.
         3. Assert that the fetched tri_state_filters list contains
             only one tri_state_filter.
         4. Assert that the fetched tri_state_filter
@@ -203,34 +205,34 @@ class TestTriStateFilterGetByManager:
         """
         # Add a tri_state_filter with a specific
         # pac_id
-        tri_state_filter1 = await TriStateFilterFactory.create_async(
+        obj_1 = await TriStateFilterFactory.create_async(
             session=session)
 
         # Fetch the tri_state_filter using
         # the manager function
 
-        fetched_tri_state_filters = await \
-            tri_state_filter_manager.get_by_pac_id(
-                tri_state_filter1.pac_id)
-        assert len(fetched_tri_state_filters) == 1
-        assert isinstance(fetched_tri_state_filters[0],
+        fetched_objs = await \
+            obj_manager.get_by_pac_id(
+                obj_1.pac_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           TriStateFilter)
-        assert fetched_tri_state_filters[0].code == \
-            tri_state_filter1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.Pac).where(
-            models.Pac._pac_id == tri_state_filter1.pac_id)  # type: ignore  # noqa: E501
+            models.Pac._pac_id == obj_1.pac_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         pac = result.scalars().first()
 
         assert isinstance(pac, models.Pac)
 
-        assert fetched_tri_state_filters[0].pac_code_peek == pac.code
+        assert fetched_objs[0].pac_code_peek == pac.code
 
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,
-        tri_state_filter_manager: TriStateFilterManager
+        obj_manager: TriStateFilterManager
     ):
         """
         Test case to verify the behavior of the
@@ -243,15 +245,15 @@ class TestTriStateFilterGetByManager:
 
         non_existent_id = 999
 
-        fetched_tri_state_filters = await \
-            tri_state_filter_manager.get_by_pac_id(
+        fetched_objs = await \
+            obj_manager.get_by_pac_id(
                 non_existent_id)
-        assert len(fetched_tri_state_filters) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_pac_id_invalid_type(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -259,7 +261,7 @@ class TestTriStateFilterGetByManager:
         `get_by_pac_id` method when an invalid pac ID is provided.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): An
+            obj_manager (TriStateFilterManager): An
                 instance of the TriStateFilterManager class.
             session (AsyncSession): An instance
                 of the AsyncSession class.
@@ -275,9 +277,8 @@ class TestTriStateFilterGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await tri_state_filter_manager.get_by_pac_id(
+            await obj_manager.get_by_pac_id(
                 invalid_id)  # type: ignore
 
         await session.rollback()
     # stateIntValue,
-

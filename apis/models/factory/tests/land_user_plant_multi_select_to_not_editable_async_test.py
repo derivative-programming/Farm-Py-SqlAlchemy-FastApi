@@ -34,12 +34,13 @@ class TestLandUserPlantMultiSelectToNotEditablePostModelRequestFactoryAsync:
         class.
         """
 
-        model_instance = (
-            await LandUserPlantMultiSelectToNotEditablePostModelRequestFactory.create_async(
+        model_instance = await \
+            LandUserPlantMultiSelectToNotEditablePostModelRequestFactory \
+            .create_async(
                 session=session)
-        )
-        assert isinstance(model_instance,
-                          LandUserPlantMultiSelectToNotEditablePostModelRequest)
+
+        assert isinstance(
+            model_instance,
+            LandUserPlantMultiSelectToNotEditablePostModelRequest)
         assert isinstance(model_instance.plant_code_list_csv,
                           str)
-

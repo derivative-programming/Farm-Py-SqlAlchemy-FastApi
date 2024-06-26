@@ -14,11 +14,11 @@ The unit tests in this module ensure that the default
 values of the fields are set correctly
 and that data can be loaded into the model from a dictionary.
 """
-import math
+import math  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from datetime import datetime, date  # noqa: F401
 from uuid import UUID  # noqa: F401
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from reports.row_models.pac_user_date_greater_than_filter_list import (
     ReportItemPacUserDateGreaterThanFilterList)
 
@@ -62,4 +62,3 @@ class TestReportItemPacUserDateGreaterThanFilterList:
         assert report_item.date_greater_than_filter_is_active is True
         assert report_item.date_greater_than_filter_lookup_enum_name == "test"
         assert report_item.date_greater_than_filter_name == "test"
-

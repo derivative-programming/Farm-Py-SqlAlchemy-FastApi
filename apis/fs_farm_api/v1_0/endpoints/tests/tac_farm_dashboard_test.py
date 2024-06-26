@@ -6,7 +6,7 @@ This module contains unit tests for the
 `tac_farm_dashboard` endpoint.
 """
 
-import logging
+import logging  # noqa: F401
 import uuid
 import json  # noqa: F401
 from unittest.mock import AsyncMock, patch
@@ -16,13 +16,13 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import apis.fs_farm_api.v1_0.endpoints.tests.test_constants as test_constants
-import models.factory as model_factorys
+import models.factory as model_factorys  # noqa: F401
 from helpers.api_token import ApiToken  # noqa: F401
 from apis import models as apis_models
 from database import get_db
 from main import app
 
-from .....models import (  # pylint: disable=reimported
+from .....models import (  # pylint: disable=reimported  # noqa: F401
     factory as request_factory)
 from ..tac_farm_dashboard import (
     TacFarmDashboardRouterConfig)
@@ -37,7 +37,9 @@ async def test_init_success(
     Test the successful initialization endpoint.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
     async with AsyncClient(
@@ -46,7 +48,8 @@ async def test_init_success(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/init',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/init",
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 200
@@ -61,7 +64,9 @@ async def test_init_authorization_failure_bad_api_key(
     Test the authorization failure with a bad API key during initialization.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
 
     async with AsyncClient(
@@ -70,7 +75,8 @@ async def test_init_authorization_failure_bad_api_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/init',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/init",
             headers={'API_KEY': 'xxx'}
 
         )
@@ -89,7 +95,9 @@ async def test_init_authorization_failure_empty_header_key(
     empty header key during initialization.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
 
     async with AsyncClient(
@@ -98,7 +106,8 @@ async def test_init_authorization_failure_empty_header_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/init',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/init",
             headers={'API_KEY': ''}
 
         )
@@ -116,7 +125,9 @@ async def test_init_authorization_failure_no_header(
     Test the authorization failure with no header during initialization.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
 
     async with AsyncClient(
@@ -125,7 +136,8 @@ async def test_init_authorization_failure_no_header(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/init'
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/init"
 
         )
         if TacFarmDashboardRouterConfig.is_public is True:
@@ -143,7 +155,9 @@ async def test_init_endpoint_url_failure(
     Test the failure of the endpoint URL during initialization.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
 
@@ -153,7 +167,8 @@ async def test_init_endpoint_url_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/init/xxx',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/init/xxx",
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 501
@@ -178,7 +193,8 @@ async def test_init_endpoint_invalid_code_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/init',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/init",
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 200
@@ -195,7 +211,9 @@ async def test_init_endpoint_method_failure(
     invalid HTTP method during initialization.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
 
@@ -205,7 +223,8 @@ async def test_init_endpoint_method_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/init',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/init",
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 405
@@ -236,7 +255,9 @@ async def test_get_success(
     ) as mock_method:
         mock_method.side_effect = mock_process_request
 
-        tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+        tac = await \
+            model_factorys.TacFactory.create_async(
+                overridden_get_db)
         tac_code = tac.code
         test_api_key = api_key_fixture
         request = await (
@@ -255,7 +276,8 @@ async def test_get_success(
 
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.get(
-                f'/api/v1_0/tac-farm-dashboard/{tac_code}',
+                "/api/v1_0/tac-farm-dashboard"
+                f"/{tac_code}",
                 params=request_dict,
                 headers={'API_KEY': test_api_key}
             )
@@ -273,7 +295,9 @@ async def test_get_authorization_failure_bad_api_key(
     Test the authorization failure with a bad API key during retrieval.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     request = await (
         request_factory.
@@ -290,7 +314,8 @@ async def test_get_authorization_failure_bad_api_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}",
             params=request_dict,
             headers={'API_KEY': 'xxx'}
 
@@ -310,7 +335,9 @@ async def test_get_authorization_failure_empty_header_key(
     Test the authorization failure with an empty header key during retrieval.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     request = await (
         request_factory.
@@ -327,7 +354,8 @@ async def test_get_authorization_failure_empty_header_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}",
             params=request_dict,
             headers={'API_KEY': ''}
 
@@ -359,7 +387,9 @@ async def test_get_authorization_failure_no_header(
     Returns:
         None
     """
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     request = await (
         request_factory.
@@ -376,7 +406,8 @@ async def test_get_authorization_failure_no_header(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}",
             params=request_dict
         )
 
@@ -409,7 +440,9 @@ async def test_get_endpoint_url_failure(
 
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     request = await (
         request_factory.TacFarmDashboardGetModelRequestFactory.
@@ -427,7 +460,8 @@ async def test_get_endpoint_url_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/xxx',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/xxx",
             params=request_dict,
             headers={'API_KEY': test_api_key}
         )
@@ -468,7 +502,8 @@ async def test_get_endpoint_invalid_code_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}",
             params=request_dict,
             headers={'API_KEY': test_api_key}
         )
@@ -493,7 +528,9 @@ async def test_get_endpoint_method_failure(
         None
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
 
@@ -503,7 +540,8 @@ async def test_get_endpoint_method_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}",
             headers={'API_KEY': test_api_key}
         )
 
@@ -541,7 +579,9 @@ async def test_get_csv_success(
     ) as mock_method:
         mock_method.side_effect = mock_process_request
 
-        tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+        tac = await \
+            model_factorys.TacFactory.create_async(
+                overridden_get_db)
         tac_code = tac.code
         test_api_key = api_key_fixture
         request = await (
@@ -561,7 +601,8 @@ async def test_get_csv_success(
 
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.get(
-                f'/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv',
+                "/api/v1_0/tac-farm-dashboard"
+                f"/{tac_code}/to-csv",
                 params=request_dict,
                 headers={'API_KEY': test_api_key}
             )
@@ -582,8 +623,8 @@ async def test_get_csv_authorization_failure_bad_api_key(
     when an invalid API key is provided.
 
     This test case sends a GET request to the
-    '/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv' endpoint
-    with an invalid API key in the headers.
+    '/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv'
+    endpoint with an invalid API key in the headers.
     The expected behavior is a 401 Unauthorized response.
 
     Steps:
@@ -600,7 +641,9 @@ async def test_get_csv_authorization_failure_bad_api_key(
        starts with the expected media type for CSV reports.
 
     """
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     request = await (
         request_factory.
@@ -617,7 +660,8 @@ async def test_get_csv_authorization_failure_bad_api_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/to-csv",
             params=request_dict,
             headers={'API_KEY': 'xxx'}
 
@@ -643,7 +687,8 @@ async def test_get_csv_authorization_failure_empty_header_key(
 
     Steps:
     1. Create a test tac using the TacFactory.
-    2. Create a TacFarmDashboardGetModelRequest using the request_factory.
+    2. Create a TacFarmDashboardGetModelRequest
+        using the request_factory.
     3. Convert the request to a dictionary in camel case format.
     4. Send a GET request to the endpoint with the tac code
         and request parameters.
@@ -659,7 +704,9 @@ async def test_get_csv_authorization_failure_empty_header_key(
     - The response status code should be 401.
 
     """
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     request = await (
         request_factory.
@@ -676,7 +723,8 @@ async def test_get_csv_authorization_failure_empty_header_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/to-csv",
             params=request_dict,
             headers={'API_KEY': ''}
 
@@ -712,16 +760,20 @@ async def test_get_csv_authorization_failure_no_header(
     4. Verify the response status code and content type based
     on the configuration.
 
-    If the 'is_public' flag in the TacFarmDashboardRouterConfig is True:
+    If the 'is_public' flag in the
+    TacFarmDashboardRouterConfig is True:
     - The response status code should be 200.
     - The response content type should start with the
         'REPORT_TO_CSV_MEDIA_TYPE' defined in the test_constants.
 
-    If the 'is_public' flag in the TacFarmDashboardRouterConfig is False:
+    If the 'is_public' flag in the
+    TacFarmDashboardRouterConfig is False:
     - The response status code should be 401.
 
     """
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     request = await (
         request_factory.
@@ -738,7 +790,8 @@ async def test_get_csv_authorization_failure_no_header(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/to-csv",
             params=request_dict,
 
         )
@@ -772,7 +825,9 @@ async def test_get_csv_endpoint_url_failure(
         None
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
 
@@ -782,7 +837,8 @@ async def test_get_csv_endpoint_url_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv/xxx',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/to-csv/xxx",
             headers={'API_KEY': test_api_key}
         )
 
@@ -798,8 +854,8 @@ async def test_get_csv_endpoint_invalid_code_failure(
     Test case for the 'get_csv_endpoint_invalid_code_failure' function.
 
     This test case verifies the behavior of the
-        '/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv' endpoint
-    when an invalid tac code is provided.
+    '/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv'
+    endpoint when an invalid tac code is provided.
 
     Steps:
     1. Create a UUID representing an invalid tac code.
@@ -839,7 +895,8 @@ async def test_get_csv_endpoint_invalid_code_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/to-csv",
             params=request_dict,
             headers={'API_KEY': test_api_key}
         )
@@ -868,7 +925,9 @@ async def test_get_csv_endpoint_method_failure(
     Raises:
         AssertionError: If the response status code is not 405.
     """
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
 
@@ -878,7 +937,8 @@ async def test_get_csv_endpoint_method_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv',
+            "/api/v1_0/tac-farm-dashboard"
+            f"/{tac_code}/to-csv",
             headers={'API_KEY': test_api_key}
         )
 
@@ -900,4 +960,3 @@ def teardown_module(module):  # pylint: disable=unused-argument
         None
     """
     app.dependency_overrides.clear()
-

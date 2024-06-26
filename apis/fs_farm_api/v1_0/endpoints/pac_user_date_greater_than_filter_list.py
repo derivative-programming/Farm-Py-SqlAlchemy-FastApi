@@ -24,17 +24,17 @@ the following endpoints:
 """
 
 import logging
-import tempfile
+import tempfile  # noqa: F401
 import traceback
 import uuid
 
-from fastapi import APIRouter, Depends, Path
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, Depends, Path  # noqa: F401
+from fastapi.responses import FileResponse  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import apis.models as api_models
-import apis.models.init as api_init_models
-import reports
+import apis.models.init as api_init_models  # noqa: F401
+import reports  # noqa: F401
 from database import get_db
 from helpers import SessionContext, api_key_header
 
@@ -78,7 +78,8 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
 
     @staticmethod
     @router.get(
-        "/api/v1_0/pac-user-date-greater-than-filter-list/{pac_code}/init",
+        "/api/v1_0/pac-user-date-greater-than-filter-list"
+        "/{pac_code}/init",
         response_model=(
             api_init_models.
             PacUserDateGreaterThanFilterListInitReportGetInitModelResponse
@@ -105,7 +106,8 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
         """
 
         logging.info(
-            'PacUserDateGreaterThanFilterListRouter.request_get_init start. pacCode:%s',
+            "PacUserDateGreaterThanFilterListRouter"
+            ".request_get_init start. pacCode:%s",
             pac_code)
         auth_dict = BaseRouter.implementation_check(
             PacUserDateGreaterThanFilterListRouterConfig
@@ -119,6 +121,11 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
         auth_dict = BaseRouter.authorization_check(
             PacUserDateGreaterThanFilterListRouterConfig.is_public, api_key)
 
+        init_request = (
+            api_init_models.
+            PacUserDateGreaterThanFilterListInitReportGetInitModelRequest()
+        )
+
         # Start a transaction
         async with session:
             try:
@@ -128,10 +135,7 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
                     "PacCode",
                     pac_code
                 )
-                init_request = (
-                    api_init_models.
-                    PacUserDateGreaterThanFilterListInitReportGetInitModelRequest()
-                )
+
                 response = await init_request.process_request(
                     session_context,
                     pac_code,
@@ -158,14 +162,17 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
                 else:
                     await session.rollback()
         response_data = response.model_dump_json()
-        logging.info('PacUserDateGreaterThanFilterListRouter.init get result:%s',
-                     response_data)
+        logging.info(
+            "PacUserDateGreaterThanFilterListRouter"
+            ".init get result:%s",
+            response_data)
         return response
 
 
     @staticmethod
     @router.get(
-        "/api/v1_0/pac-user-date-greater-than-filter-list/{pac_code}",
+        "/api/v1_0/pac-user-date-greater-than-filter-list"
+        "/{pac_code}",
         response_model=(
             api_models
             .PacUserDateGreaterThanFilterListGetModelResponse
@@ -174,7 +181,8 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
     async def request_get_with_id(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
         request_model:
-            api_models.PacUserDateGreaterThanFilterListGetModelRequest = Depends(),
+            api_models.PacUserDateGreaterThanFilterListGetModelRequest = (
+                Depends()),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -184,7 +192,8 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
 
         Args:
             pac_code (uuid.UUID): The unique identifier for the pac.
-            request_model (api_models.PacUserDateGreaterThanFilterListGetModelRequest):
+            request_model (api_models.
+            PacUserDateGreaterThanFilterListGetModelRequest):
                 The request model for the API.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
@@ -200,7 +209,8 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
         """
 
         logging.info(
-            'PacUserDateGreaterThanFilterListRouter.request_get_with_id start. pacCode:%s',
+            "PacUserDateGreaterThanFilterListRouter"
+            ".request_get_with_id start. pacCode:%s",
             pac_code)
         auth_dict = BaseRouter.implementation_check(
             PacUserDateGreaterThanFilterListRouterConfig
@@ -229,7 +239,8 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
                     pac_code,
                     request_model
                 )
-                logging.info('PacUserDateGreaterThanFilterListRouter success')
+                logging.info(
+                    'PacUserDateGreaterThanFilterListRouter success')
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info(
                     EXCEPTION_OCCURRED,
@@ -256,13 +267,15 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
 
     @staticmethod
     @router.get(
-        "/api/v1_0/pac-user-date-greater-than-filter-list/{pac_code}/to-csv",
+        "/api/v1_0/pac-user-date-greater-than-filter-list"
+        "/{pac_code}/to-csv",
         response_class=FileResponse,
         summary="Pac User Date Greater Than Filter List Report to CSV")
     async def request_get_with_id_to_csv(
         pac_code: uuid.UUID = Path(..., description=PAC_CODE),
         request_model:
-            api_models.PacUserDateGreaterThanFilterListGetModelRequest = Depends(),
+            api_models.PacUserDateGreaterThanFilterListGetModelRequest = (
+                Depends()),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -272,7 +285,8 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
 
         Args:
             pac_code (uuid.UUID): The unique identifier for the pac.
-            request_model (api_models.PacUserDateGreaterThanFilterListGetModelRequest):
+            request_model (api_models.
+            PacUserDateGreaterThanFilterListGetModelRequest):
                 The request model for the API.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
@@ -325,8 +339,9 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
                     pac_code,
                     request_model
                 )
-                report_manager = reports.ReportManagerPacUserDateGreaterThanFilterList(
-                    session_context)
+                report_manager = \
+                    reports.ReportManagerPacUserDateGreaterThanFilterList(
+                        session_context)
 
                 report_items = [response_item.build_report_item() for
                                 response_item in response.items]
@@ -351,16 +366,18 @@ class PacUserDateGreaterThanFilterListRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            'PacUserDateGreaterThanFilterListRouter.submit get result:%s', response_data
+            "PacUserDateGreaterThanFilterListRouter"
+            ".submit get result:%s",
+            response_data
         )
 
         uuid_value = uuid.uuid4()
 
         output_file_name = (
-            f'pac_user_date_greater_than_filter_list_{str(pac_code)}_{str(uuid_value)}.csv'
+            "pac_user_date_greater_than_filter_list_"
+            f"{str(pac_code)}_{str(uuid_value)}.csv"
         )
         return FileResponse(
             tmp_file_path,
             media_type='text/csv',
             filename=output_file_name)
-

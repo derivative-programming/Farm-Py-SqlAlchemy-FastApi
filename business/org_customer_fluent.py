@@ -74,4 +74,3 @@ class OrgCustomerFluentBusObj(OrgCustomerBaseBusObj):
 
         self.organization_id = value
         return self
-

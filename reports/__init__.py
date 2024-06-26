@@ -23,5 +23,19 @@ from .land_plant_list import (  # noqa: F401
 ##GENLearn[modelType=object,name=Land]End
 from .tac_farm_dashboard import (  # noqa: F401
     ReportManagerTacFarmDashboard)
+from .pac_user_date_greater_than_filter_list import (  # noqa: F401
+    ReportManagerPacUserDateGreaterThanFilterList)
+from .pac_user_flavor_list import (  # noqa: F401
+    ReportManagerPacUserFlavorList)
+from .pac_user_land_list import (  # noqa: F401
+    ReportManagerPacUserLandList)
+from .pac_user_role_list import (  # noqa: F401
+    ReportManagerPacUserRoleList)
+from .pac_user_tac_list import (  # noqa: F401
+    ReportManagerPacUserTacList)
+from .pac_user_tri_state_filter_list import (  # noqa: F401
+    ReportManagerPacUserTriStateFilterList)
+from .plant_user_details import (  # noqa: F401
+    ReportManagerPlantUserDetails)
 ##GENTrainingBlock[a]End
 ##GENLOOPObjectEnd

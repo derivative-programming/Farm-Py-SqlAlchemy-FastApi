@@ -40,6 +40,6 @@ class TestTacFarmDashboardGetModelRequestFactoryAsync:
                 session=session
             )
         )
-        assert isinstance(model_instance,
-                          TacFarmDashboardGetModelRequest)
-
+        assert isinstance(
+            model_instance,
+            TacFarmDashboardGetModelRequest)

@@ -11,13 +11,14 @@ import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 
-import flows.constants.tac_register as FlowConstants
-from business.customer import CustomerBusObj
+import flows.constants.tac_register \
+    as FlowConstants
+from business.customer import CustomerBusObj  # noqa: F401
 from business.factory import BusObjFactory
 from business.tac import TacBusObj
 from flows.base import LogSeverity
-from helpers import SessionContext, TypeConversion
-from managers.org_customer import OrgCustomerManager
+from helpers import SessionContext, TypeConversion  # noqa: F401
+from managers.org_customer import OrgCustomerManager  # noqa: F401
 
 # from models import Tac
 from .base_flow import BaseFlow
@@ -151,4 +152,3 @@ class BaseFlowTacRegister(BaseFlow):
                     item.get_parent_name(),  # type: ignore
                     item.get_parent_code()  # type: ignore
                 )
-

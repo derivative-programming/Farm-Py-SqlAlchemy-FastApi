@@ -87,23 +87,17 @@ class LandPlantListGetModelRequestFactory(
             LandPlantListGetModelRequest: The built
                 instance of LandPlantListGetModelRequest.
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-
         flavor_code_instance = FlavorFactory.create(  # FlavorCode
             session=session)
 # endset
-
         kwargs["flavor_code"] = flavor_code_instance.code  # FlavorCode
 # endset
-
         obj = model_class(*args, **kwargs)
-
         obj.flavor_code = flavor_code_instance.code  # FlavorCode
 # endset
-
         return obj
 
     @classmethod
@@ -129,15 +123,12 @@ class LandPlantListGetModelRequestFactory(
             LandPlantListGetModelRequest: The created
                 instance of LandPlantListGetModelRequest.
         """
-
         flavor_code_instance = FlavorFactory.create(  # requestFlavorCode
             session=session)
 # endset
-
         kwargs["flavor_code"] = flavor_code_instance.code  # requestFlavorCode
 # endset
         obj = model_class(*args, **kwargs)
-
         obj.flavor_code = flavor_code_instance.code  # requestFlavorCode
 # endset
         return obj
@@ -161,19 +152,17 @@ class LandPlantListGetModelRequestFactory(
             LandPlantListGetModelRequest: The created
                 instance of LandPlantListGetModelRequest.
         """
-
         flavor_code_instance = (  # requestFlavorCode
-            await FlavorFactory.create_async(session=session))
-
+            await FlavorFactory.create_async(
+                session=session))
 # endset
-
         kwargs["flavor_code"] = flavor_code_instance.code  # requestFlavorCode
 # endset
-        obj = LandPlantListGetModelRequestFactory.build(
-            session=None,
-            *args, **kwargs
-        )
-
+        obj = LandPlantListGetModelRequestFactory \
+            .build(
+                session=None,
+                *args, **kwargs
+            )
         obj.flavor_code = flavor_code_instance.code  # requestFlavorCode
 # endset
         return obj

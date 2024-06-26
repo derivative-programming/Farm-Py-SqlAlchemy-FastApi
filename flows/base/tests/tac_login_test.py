@@ -9,7 +9,8 @@ import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 import pytest
-import flows.constants.tac_login as FlowConstants
+import flows.constants.tac_login \
+    as FlowConstants  # noqa: F401
 from flows.base.tac_login import (
     BaseFlowTacLogin)
 from helpers.session_context import SessionContext
@@ -40,8 +41,10 @@ class TestBaseFlowTacLogin():
             None
         """
         session_context = SessionContext(dict(), session)
-        flow = BaseFlowTacLogin(session_context)
-        tac = await TacFactory.create_async(session)
+        flow = BaseFlowTacLogin(
+            session_context)
+        tac = await \
+            TacFactory.create_async(session)
         email: str = ""
         password: str = ""
         # Call the method being tested
@@ -96,8 +99,10 @@ class TestBaseFlowTacLogin():
             None
         """
         session_context = SessionContext(dict(), session)
-        tac = await TacFactory.create_async(session)
-        flow = BaseFlowTacLogin(session_context)
+        tac = await \
+            TacFactory.create_async(session)
+        flow = BaseFlowTacLogin(
+            session_context)
         role_required = ""
         if len(role_required) > 0:
             await flow._process_security_rules(tac)
@@ -105,4 +110,3 @@ class TestBaseFlowTacLogin():
             assert flow.queued_validation_errors[''] == (
                 f"Unauthorized access. {role_required} role not found.")
             session_context.role_name_csv = role_required
-

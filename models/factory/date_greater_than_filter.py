@@ -64,7 +64,8 @@ class DateGreaterThanFilterFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                DateGreaterThanFilter: An instance of the
+                DateGreaterThanFilter:
+                    An instance of the
                     DateGreaterThanFilter model.
 
         """
@@ -153,7 +154,8 @@ class DateGreaterThanFilterFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = DateGreaterThanFilterFactory.build(session=None, *args, **kwargs)
+        obj = DateGreaterThanFilterFactory \
+            .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
@@ -185,7 +187,8 @@ class DateGreaterThanFilterFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = DateGreaterThanFilterFactory.build(session=None, *args, **kwargs)
+        obj = DateGreaterThanFilterFactory \
+            .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
@@ -193,4 +196,3 @@ class DateGreaterThanFilterFactory(factory.Factory):
         # session.add(obj)
         # await session.flush()
         return obj
-

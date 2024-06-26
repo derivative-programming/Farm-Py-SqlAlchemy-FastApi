@@ -507,18 +507,19 @@ class PlantManager:
         """
         logging.info(
             "PlantManager.add_bulk")
-        for plant in plants:
+        for list_item in plants:
             plant_id = \
-                plant.plant_id
-            code = plant.code
-            if plant.plant_id is not None and plant.plant_id > 0:
+                list_item.plant_id
+            code = list_item.code
+            if list_item.plant_id is not None and \
+                    list_item.plant_id > 0:
                 raise ValueError(
                     "Plant is already added"
                     f": {str(code)} {str(plant_id)}"
                 )
-            plant.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            plant.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(plants)
         await self._session_context.session.flush()

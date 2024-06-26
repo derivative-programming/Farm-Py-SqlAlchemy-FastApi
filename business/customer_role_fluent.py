@@ -87,4 +87,3 @@ class CustomerRoleFluentBusObj(CustomerRoleBaseBusObj):
         """
         self.role_id = value
         return self
-

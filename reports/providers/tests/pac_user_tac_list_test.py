@@ -12,7 +12,7 @@ from decimal import Decimal  # noqa: F401
 from datetime import datetime, date  # noqa: F401
 import pytest
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.pac import PacFactory
 from reports.providers.pac_user_tac_list import (
     ReportProviderPacUserTacList)
@@ -84,4 +84,3 @@ class TestReportProviderPacUserTacList:
             ]
             for key in expected_keys:
                 assert key in result, f"Key {key} not found in result"
-

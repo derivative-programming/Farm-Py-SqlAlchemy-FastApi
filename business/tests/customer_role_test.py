@@ -26,7 +26,7 @@ def session_context():
 
 
 @pytest.fixture
-def customer_role_list():
+def obj_list():
     """
     Return a list of mock CustomerRole objects.
     """
@@ -39,23 +39,27 @@ def customer_role_list():
 
 @pytest.mark.asyncio
 async def test_to_bus_obj_list(
-        session_context, customer_role_list):
+        session_context, obj_list):
     """
     Test the to_bus_obj_list method.
     """
-    with patch('business.customer_role.CustomerRoleBusObj.load_from_obj_instance',
+    with patch("business.customer_role"
+               ".CustomerRoleBusObj"
+               ".load_from_obj_instance",
                new_callable=AsyncMock) as mock_load:
         bus_obj_list = await \
             CustomerRoleBusObj.to_bus_obj_list(
-                session_context, customer_role_list)
+                session_context, obj_list)
 
-        assert len(bus_obj_list) == len(customer_role_list)
+        assert len(bus_obj_list) == len(obj_list)
         assert all(
-            isinstance(bus_obj, CustomerRoleBusObj) for bus_obj in bus_obj_list)
+            isinstance(bus_obj, CustomerRoleBusObj)
+            for bus_obj in bus_obj_list)
         assert all(
-            bus_obj.load_from_obj_instance.called for bus_obj in bus_obj_list)
+            bus_obj.load_from_obj_instance.called
+            for bus_obj in bus_obj_list)
 
-        for bus_obj, customer_role in zip(bus_obj_list, customer_role_list):
+        for bus_obj, customer_role in zip(bus_obj_list, obj_list):
             mock_load.assert_any_call(customer_role)
 
 
@@ -66,11 +70,10 @@ async def test_to_bus_obj_list_empty(
     Test the to_bus_obj_list
     method with an empty list.
     """
-    empty_customer_role_list = []
+    empty_obj_list = []
     bus_obj_list = await \
         CustomerRoleBusObj.to_bus_obj_list(
             session_context,
-            empty_customer_role_list)
+            empty_obj_list)
 
     assert len(bus_obj_list) == 0
-

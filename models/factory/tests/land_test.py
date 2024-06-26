@@ -7,7 +7,7 @@ class in the models.factory package.
 
 from decimal import Decimal  # noqa: F401
 import time
-import math
+import math  # noqa: F401
 import uuid  # noqa: F401
 import logging
 from datetime import datetime, date, timedelta  # noqa: F401
@@ -56,48 +56,48 @@ class TestLandFactory:
         """
         Test case for creating a land.
         """
-        land = LandFactory.create(
+        new_obj = LandFactory.create(
             session=session)
-        assert land.land_id is not None
+        assert new_obj.land_id is not None
 
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
-        land = LandFactory.create(
+        new_obj = LandFactory.create(
             session=session)
-        assert isinstance(land.code, uuid.UUID)
+        assert isinstance(new_obj.code, uuid.UUID)
 
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
         the last_change_code attribute on build.
         """
-        land: Land = LandFactory.build(
+        new_obj: Land = LandFactory.build(
             session=session)
-        assert land.last_change_code == 0
+        assert new_obj.last_change_code == 0
 
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on creation.
         """
-        land: Land = LandFactory.create(
+        new_obj: Land = LandFactory.create(
             session=session)
-        assert land.last_change_code == 1
+        assert new_obj.last_change_code == 1
 
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on update.
         """
-        land = LandFactory.create(
+        new_obj = LandFactory.create(
             session=session)
-        initial_code = land.last_change_code
-        land.code = uuid.uuid4()
+        initial_code = new_obj.last_change_code
+        new_obj.code = uuid.uuid4()
         session.commit()
-        assert land.last_change_code != \
+        assert new_obj.last_change_code != \
             initial_code
 
     def test_date_inserted_on_build(self, session):
@@ -105,27 +105,27 @@ class TestLandFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on build.
         """
-        land = LandFactory.build(
+        new_obj = LandFactory.build(
             session=session)
-        assert land.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            land.insert_utc_date_time, datetime)
+            new_obj.insert_utc_date_time, datetime)
 
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
         insert_utc_date_time attribute on initial save.
         """
-        land = LandFactory.build(
+        new_obj = LandFactory.build(
             session=session)
-        assert land.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            land.insert_utc_date_time, datetime)
+            new_obj.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        land.code = uuid.uuid4()
-        session.add(land)
+        new_obj.code = uuid.uuid4()
+        session.add(new_obj)
         session.commit()
-        assert land.insert_utc_date_time > \
+        assert new_obj.insert_utc_date_time > \
             initial_time
 
     def test_date_inserted_on_second_save(self, session):
@@ -133,43 +133,43 @@ class TestLandFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on second save.
         """
-        land = LandFactory(
+        new_obj = LandFactory(
             session=session)
-        assert land.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            land.insert_utc_date_time, datetime)
-        initial_time = land.insert_utc_date_time
-        land.code = uuid.uuid4()
+            new_obj.insert_utc_date_time, datetime)
+        initial_time = new_obj.insert_utc_date_time
+        new_obj.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert land.insert_utc_date_time == initial_time
+        assert new_obj.insert_utc_date_time == initial_time
 
     def test_date_updated_on_build(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on build.
         """
-        land = LandFactory.build(
+        new_obj = LandFactory.build(
             session=session)
-        assert land.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            land.last_update_utc_date_time, datetime)
+            new_obj.last_update_utc_date_time, datetime)
 
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on initial save.
         """
-        land = LandFactory.build(
+        new_obj = LandFactory.build(
             session=session)
-        assert land.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            land.last_update_utc_date_time, datetime)
+            new_obj.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        land.code = uuid.uuid4()
-        session.add(land)
+        new_obj.code = uuid.uuid4()
+        session.add(new_obj)
         session.commit()
-        assert land.last_update_utc_date_time > \
+        assert new_obj.last_update_utc_date_time > \
             initial_time
 
     def test_date_updated_on_second_save(self, session):
@@ -177,16 +177,16 @@ class TestLandFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on second save.
         """
-        land = LandFactory(
+        new_obj = LandFactory(
             session=session)
-        assert land.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            land.last_update_utc_date_time, datetime)
-        initial_time = land.last_update_utc_date_time
-        land.code = uuid.uuid4()
+            new_obj.last_update_utc_date_time, datetime)
+        initial_time = new_obj.last_update_utc_date_time
+        new_obj.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert land.last_update_utc_date_time > \
+        assert new_obj.last_update_utc_date_time > \
             initial_time
 
     def test_model_deletion(self, session):
@@ -194,13 +194,14 @@ class TestLandFactory:
         Test case for deleting a
         land model.
         """
-        land = LandFactory.create(
+        new_obj = LandFactory.create(
             session=session)
-        session.delete(land)
+        session.delete(new_obj)
         session.commit()
-        deleted_land = session.query(Land).filter_by(
+        deleted_land = session.query(
+            Land).filter_by(
             _land_id=(
-                land.land_id)
+                new_obj.land_id)
         ).first()
         assert deleted_land is None
 
@@ -209,22 +210,22 @@ class TestLandFactory:
         Test case for checking the data types of
         the land attributes.
         """
-        land = LandFactory.create(
+        obj = LandFactory.create(
             session=session)
-        assert isinstance(land.land_id, int)
-        assert isinstance(land.code, uuid.UUID)
-        assert isinstance(land.last_change_code, int)
-        assert isinstance(land.insert_user_id, uuid.UUID)
-        assert isinstance(land.last_update_user_id, uuid.UUID)
-        assert land.description == "" or isinstance(
-            land.description, str)
-        assert isinstance(land.display_order, int)
-        assert isinstance(land.is_active, bool)
-        assert land.lookup_enum_name == "" or isinstance(
-            land.lookup_enum_name, str)
-        assert land.name == "" or isinstance(
-            land.name, str)
-        assert isinstance(land.pac_id, int)
+        assert isinstance(obj.land_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert obj.description == "" or isinstance(
+            obj.description, str)
+        assert isinstance(obj.display_order, int)
+        assert isinstance(obj.is_active, bool)
+        assert obj.lookup_enum_name == "" or isinstance(
+            obj.lookup_enum_name, str)
+        assert obj.name == "" or isinstance(
+            obj.name, str)
+        assert isinstance(obj.pac_id, int)
         # description,
         # displayOrder,
         # isActive,
@@ -233,9 +234,9 @@ class TestLandFactory:
         # pacID
 
         assert isinstance(
-            land.pac_code_peek, uuid.UUID)
-        assert isinstance(land.insert_utc_date_time, datetime)
-        assert isinstance(land.last_update_utc_date_time, datetime)
+            obj.pac_code_peek, uuid.UUID)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     def test_unique_code_constraint(self, session):
         """
@@ -257,13 +258,13 @@ class TestLandFactory:
         Test case for checking the default values of
         the land fields.
         """
-        land = Land()
-        assert land.code is not None
-        assert land.last_change_code is not None
-        assert land.insert_user_id == uuid.UUID(int=0)
-        assert land.last_update_user_id == uuid.UUID(int=0)
-        assert land.insert_utc_date_time is not None
-        assert land.last_update_utc_date_time is not None
+        new_obj = Land()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id == uuid.UUID(int=0)
+        assert new_obj.last_update_user_id == uuid.UUID(int=0)
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         # description,
         # displayOrder,
         # isActive,
@@ -272,14 +273,14 @@ class TestLandFactory:
         # PacID
 
         assert isinstance(
-            land.pac_code_peek, uuid.UUID)
-        assert land is not None
-        assert land.description == ""
-        assert land.display_order == 0
-        assert land.is_active is False
-        assert land.lookup_enum_name == ""
-        assert land.name == ""
-        assert land.pac_id == 0
+            new_obj.pac_code_peek, uuid.UUID)
+        assert new_obj is not None
+        assert new_obj.description == ""
+        assert new_obj.display_order == 0
+        assert new_obj.is_active is False
+        assert new_obj.lookup_enum_name == ""
+        assert new_obj.name == ""
+        assert new_obj.pac_id == 0
 
     def test_last_change_code_concurrency(self, session):
         """
@@ -305,18 +306,21 @@ class TestLandFactory:
             None
         """
 
-        land = LandFactory.create(
+        new_obj = LandFactory.create(
             session=session)
-        original_last_change_code = land.last_change_code
-        land_1 = session.query(Land).filter_by(
+        original_last_change_code = \
+            new_obj.last_change_code
+        land_1 = session.query(
+            Land).filter_by(
             _land_id=(
-                land.land_id)
+                new_obj.land_id)
         ).first()
         land_1.code = uuid.uuid4()
         session.commit()
-        land_2 = session.query(Land).filter_by(
+        land_2 = session.query(
+            Land).filter_by(
             _land_id=(
-                land.land_id)
+                new_obj.land_id)
         ).first()
         land_2.code = uuid.uuid4()
         session.commit()
@@ -348,10 +352,9 @@ class TestLandFactory:
                 session violate any integrity constraints.
 
         """
-        land = LandFactory.create(
+        new_obj = LandFactory.create(
             session=session)
-        land.pac_id = 99999
+        new_obj.pac_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-

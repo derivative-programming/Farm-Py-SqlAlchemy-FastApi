@@ -40,6 +40,6 @@ class TestPacUserTriStateFilterListGetModelRequestFactoryAsync:
                 session=session
             )
         )
-        assert isinstance(model_instance,
-                          PacUserTriStateFilterListGetModelRequest)
-
+        assert isinstance(
+            model_instance,
+            PacUserTriStateFilterListGetModelRequest)

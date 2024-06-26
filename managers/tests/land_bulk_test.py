@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.land import LandManager
+from managers.land import (
+    LandManager)
 from models import Land
-from models.factory import LandFactory
+from models.factory import (
+    LandFactory)
 
 
 class TestLandBulkManager:
@@ -28,7 +30,7 @@ class TestLandBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def land_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `LandManager` for testing.
@@ -40,7 +42,7 @@ class TestLandBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        land_manager: LandManager,
+        obj_manager: LandManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestLandBulkManager:
         1. Generate a list of land data using the
             `LandFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `land_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated land data.
         3. Verify that the number of lands
@@ -79,35 +81,36 @@ class TestLandBulkManager:
         lands_data = [
             await LandFactory.build_async(session) for _ in range(5)]
 
-        lands = await land_manager.add_bulk(
+        lands = await obj_manager.add_bulk(
             lands_data)
 
         assert len(lands) == 5
 
-        for updated_land in lands:
+        for updated_obj in lands:
             result = await session.execute(
                 select(Land).filter(
-                    Land._land_id == updated_land.land_id  # type: ignore
+                    Land._land_id == (
+                        updated_obj.land_id)  # type: ignore
                 )
             )
-            fetched_land = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_land,
+                fetched_obj,
                 Land)
 
-            assert str(fetched_land.insert_user_id) == (
-                str(land_manager._session_context.customer_code))
-            assert str(fetched_land.last_update_user_id) == (
-                str(land_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_land.land_id == \
-                updated_land.land_id
+            assert fetched_obj.land_id == \
+                updated_obj.land_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        land_manager: LandManager,
+        obj_manager: LandManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestLandBulkManager:
             the updated codes in the database.
 
         Args:
-            land_manager (LandManager):
+            obj_manager (LandManager):
                 An instance of the
                 `LandManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestLandBulkManager:
             None
         """
         # Mocking land instances
-        land1 = await LandFactory. \
+        obj_1 = await LandFactory. \
             create_async(
                 session=session)
-        land2 = await LandFactory. \
+        obj_2 = await LandFactory. \
             create_async(
                 session=session)
-        logging.info(land1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestLandBulkManager:
         updates = [
             {
                 "land_id":
-                    land1.land_id,
+                    obj_1.land_id,
                 "code": code_updated1
             },
             {
                 "land_id":
-                    land2.land_id,
+                    obj_2.land_id,
                 "code": code_updated2
             }
         ]
-        updated_lands = await land_manager.update_bulk(
+        updated_lands = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestLandBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        lands = await land_manager.get_list()
+        lands = await obj_manager.get_list()
         logging.info(lands[0]
                      .__dict__)
         logging.info(lands[1]
@@ -192,40 +195,40 @@ class TestLandBulkManager:
 
         assert str(updated_lands[0]
                    .last_update_user_id) == (
-            str(land_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_lands[1]
                    .last_update_user_id) == (
-            str(land_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(Land).filter(
                 Land._land_id == 1)  # type: ignore
         )
-        fetched_land = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_land,
+        assert isinstance(fetched_obj,
                           Land)
 
-        assert fetched_land.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(Land).filter(
                 Land._land_id == 2)  # type: ignore
         )
-        fetched_land = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_land,
+        assert isinstance(fetched_obj,
                           Land)
 
-        assert fetched_land.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_land_id(
         self,
-        land_manager: LandManager,
+        obj_manager: LandManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestLandBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No lands to update since land_id is missing
+        # No lands to update since
+        # land_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await land_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_land_not_found(
         self,
-        land_manager: LandManager,
+        obj_manager: LandManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestLandBulkManager:
             where each update
             contains a land_id and a code.
         2. Calls the update_bulk method of the
-            land_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the land was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestLandBulkManager:
         updates = [{"land_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await land_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        land_manager: LandManager,
+        obj_manager: LandManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestLandBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param land_manager: An instance of the
+        :param obj_manager: An instance of the
             LandManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestLandBulkManager:
         updates = [{"land_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await land_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        land_manager: LandManager,
+        obj_manager: LandManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestLandBulkManager:
             using the LandFactory.
         2. Delete the lands using the
             delete_bulk method
-            of the land_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the lands no longer exist in the database.
+            checking if the lands
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The lands should no longer exist in the database.
+        - The lands should
+            no longer exist in the database.
 
         """
 
-        land1 = await LandFactory.create_async(
+        obj_1 = await LandFactory.create_async(
             session=session)
 
-        land2 = await LandFactory.create_async(
+        obj_2 = await LandFactory.create_async(
             session=session)
 
         # Delete lands
-        land_ids = [land1.land_id,
-                     land2.land_id]
-        result = await land_manager.delete_bulk(
+        land_ids = [
+            obj_1.land_id,
+            obj_2.land_id
+        ]
+        result = await obj_manager.delete_bulk(
             land_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestLandBulkManager:
         for land_id in land_ids:
             execute_result = await session.execute(
                 select(Land).filter(
-                    Land._land_id == land_id)  # type: ignore
+                    Land._land_id == (
+                        land_id))  # type: ignore
             )
-            fetched_land = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_land is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_lands_not_found(
         self,
-        land_manager: LandManager,
+        obj_manager: LandManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        lands when some lands are not found.
+        lands when some
+        lands are not found.
 
         Steps:
         1. Create a land using the
@@ -392,17 +402,17 @@ class TestLandBulkManager:
         when some lands with the specified IDs are
         not found in the database.
         """
-        land1 = await LandFactory.create_async(
+        obj_1 = await LandFactory.create_async(
             session=session)
 
-        assert isinstance(land1,
+        assert isinstance(obj_1,
                           Land)
 
         # Delete lands
         land_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await land_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 land_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestLandBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        land_manager: LandManager
+        obj_manager: LandManager
     ):
         """
         Test case to verify the behavior of deleting
         lands with an empty list.
 
         Args:
-            land_manager (LandManager): The
+            obj_manager (LandManager): The
                 instance of the
                 LandManager class.
 
@@ -430,7 +440,7 @@ class TestLandBulkManager:
 
         # Delete lands with an empty list
         land_ids = []
-        result = await land_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             land_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestLandBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        land_manager: LandManager,
+        obj_manager: LandManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestLandBulkManager:
         method when invalid land IDs are provided.
 
         Args:
-            land_manager (LandManager): The
+            obj_manager (LandManager): The
                 instance of the
                 LandManager class.
             session (AsyncSession): The async session object.
@@ -463,8 +473,7 @@ class TestLandBulkManager:
         land_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await land_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 land_ids)
 
         await session.rollback()
-

@@ -7,7 +7,7 @@ class in the models.factory package.
 
 from decimal import Decimal  # noqa: F401
 import time
-import math
+import math  # noqa: F401
 import uuid  # noqa: F401
 import logging
 from datetime import datetime, date, timedelta  # noqa: F401
@@ -56,48 +56,48 @@ class TestTriStateFilterFactory:
         """
         Test case for creating a tri_state_filter.
         """
-        tri_state_filter = TriStateFilterFactory.create(
+        new_obj = TriStateFilterFactory.create(
             session=session)
-        assert tri_state_filter.tri_state_filter_id is not None
+        assert new_obj.tri_state_filter_id is not None
 
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
-        tri_state_filter = TriStateFilterFactory.create(
+        new_obj = TriStateFilterFactory.create(
             session=session)
-        assert isinstance(tri_state_filter.code, uuid.UUID)
+        assert isinstance(new_obj.code, uuid.UUID)
 
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
         the last_change_code attribute on build.
         """
-        tri_state_filter: TriStateFilter = TriStateFilterFactory.build(
+        new_obj: TriStateFilter = TriStateFilterFactory.build(
             session=session)
-        assert tri_state_filter.last_change_code == 0
+        assert new_obj.last_change_code == 0
 
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on creation.
         """
-        tri_state_filter: TriStateFilter = TriStateFilterFactory.create(
+        new_obj: TriStateFilter = TriStateFilterFactory.create(
             session=session)
-        assert tri_state_filter.last_change_code == 1
+        assert new_obj.last_change_code == 1
 
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on update.
         """
-        tri_state_filter = TriStateFilterFactory.create(
+        new_obj = TriStateFilterFactory.create(
             session=session)
-        initial_code = tri_state_filter.last_change_code
-        tri_state_filter.code = uuid.uuid4()
+        initial_code = new_obj.last_change_code
+        new_obj.code = uuid.uuid4()
         session.commit()
-        assert tri_state_filter.last_change_code != \
+        assert new_obj.last_change_code != \
             initial_code
 
     def test_date_inserted_on_build(self, session):
@@ -105,27 +105,27 @@ class TestTriStateFilterFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on build.
         """
-        tri_state_filter = TriStateFilterFactory.build(
+        new_obj = TriStateFilterFactory.build(
             session=session)
-        assert tri_state_filter.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            tri_state_filter.insert_utc_date_time, datetime)
+            new_obj.insert_utc_date_time, datetime)
 
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
         insert_utc_date_time attribute on initial save.
         """
-        tri_state_filter = TriStateFilterFactory.build(
+        new_obj = TriStateFilterFactory.build(
             session=session)
-        assert tri_state_filter.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            tri_state_filter.insert_utc_date_time, datetime)
+            new_obj.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        tri_state_filter.code = uuid.uuid4()
-        session.add(tri_state_filter)
+        new_obj.code = uuid.uuid4()
+        session.add(new_obj)
         session.commit()
-        assert tri_state_filter.insert_utc_date_time > \
+        assert new_obj.insert_utc_date_time > \
             initial_time
 
     def test_date_inserted_on_second_save(self, session):
@@ -133,43 +133,43 @@ class TestTriStateFilterFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on second save.
         """
-        tri_state_filter = TriStateFilterFactory(
+        new_obj = TriStateFilterFactory(
             session=session)
-        assert tri_state_filter.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            tri_state_filter.insert_utc_date_time, datetime)
-        initial_time = tri_state_filter.insert_utc_date_time
-        tri_state_filter.code = uuid.uuid4()
+            new_obj.insert_utc_date_time, datetime)
+        initial_time = new_obj.insert_utc_date_time
+        new_obj.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert tri_state_filter.insert_utc_date_time == initial_time
+        assert new_obj.insert_utc_date_time == initial_time
 
     def test_date_updated_on_build(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on build.
         """
-        tri_state_filter = TriStateFilterFactory.build(
+        new_obj = TriStateFilterFactory.build(
             session=session)
-        assert tri_state_filter.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            tri_state_filter.last_update_utc_date_time, datetime)
+            new_obj.last_update_utc_date_time, datetime)
 
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on initial save.
         """
-        tri_state_filter = TriStateFilterFactory.build(
+        new_obj = TriStateFilterFactory.build(
             session=session)
-        assert tri_state_filter.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            tri_state_filter.last_update_utc_date_time, datetime)
+            new_obj.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        tri_state_filter.code = uuid.uuid4()
-        session.add(tri_state_filter)
+        new_obj.code = uuid.uuid4()
+        session.add(new_obj)
         session.commit()
-        assert tri_state_filter.last_update_utc_date_time > \
+        assert new_obj.last_update_utc_date_time > \
             initial_time
 
     def test_date_updated_on_second_save(self, session):
@@ -177,16 +177,16 @@ class TestTriStateFilterFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on second save.
         """
-        tri_state_filter = TriStateFilterFactory(
+        new_obj = TriStateFilterFactory(
             session=session)
-        assert tri_state_filter.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            tri_state_filter.last_update_utc_date_time, datetime)
-        initial_time = tri_state_filter.last_update_utc_date_time
-        tri_state_filter.code = uuid.uuid4()
+            new_obj.last_update_utc_date_time, datetime)
+        initial_time = new_obj.last_update_utc_date_time
+        new_obj.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert tri_state_filter.last_update_utc_date_time > \
+        assert new_obj.last_update_utc_date_time > \
             initial_time
 
     def test_model_deletion(self, session):
@@ -194,13 +194,14 @@ class TestTriStateFilterFactory:
         Test case for deleting a
         tri_state_filter model.
         """
-        tri_state_filter = TriStateFilterFactory.create(
+        new_obj = TriStateFilterFactory.create(
             session=session)
-        session.delete(tri_state_filter)
+        session.delete(new_obj)
         session.commit()
-        deleted_tri_state_filter = session.query(TriStateFilter).filter_by(
+        deleted_tri_state_filter = session.query(
+            TriStateFilter).filter_by(
             _tri_state_filter_id=(
-                tri_state_filter.tri_state_filter_id)
+                new_obj.tri_state_filter_id)
         ).first()
         assert deleted_tri_state_filter is None
 
@@ -209,23 +210,23 @@ class TestTriStateFilterFactory:
         Test case for checking the data types of
         the tri_state_filter attributes.
         """
-        tri_state_filter = TriStateFilterFactory.create(
+        obj = TriStateFilterFactory.create(
             session=session)
-        assert isinstance(tri_state_filter.tri_state_filter_id, int)
-        assert isinstance(tri_state_filter.code, uuid.UUID)
-        assert isinstance(tri_state_filter.last_change_code, int)
-        assert isinstance(tri_state_filter.insert_user_id, uuid.UUID)
-        assert isinstance(tri_state_filter.last_update_user_id, uuid.UUID)
-        assert tri_state_filter.description == "" or isinstance(
-            tri_state_filter.description, str)
-        assert isinstance(tri_state_filter.display_order, int)
-        assert isinstance(tri_state_filter.is_active, bool)
-        assert tri_state_filter.lookup_enum_name == "" or isinstance(
-            tri_state_filter.lookup_enum_name, str)
-        assert tri_state_filter.name == "" or isinstance(
-            tri_state_filter.name, str)
-        assert isinstance(tri_state_filter.pac_id, int)
-        assert isinstance(tri_state_filter.state_int_value, int)
+        assert isinstance(obj.tri_state_filter_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert obj.description == "" or isinstance(
+            obj.description, str)
+        assert isinstance(obj.display_order, int)
+        assert isinstance(obj.is_active, bool)
+        assert obj.lookup_enum_name == "" or isinstance(
+            obj.lookup_enum_name, str)
+        assert obj.name == "" or isinstance(
+            obj.name, str)
+        assert isinstance(obj.pac_id, int)
+        assert isinstance(obj.state_int_value, int)
         # description,
         # displayOrder,
         # isActive,
@@ -234,10 +235,10 @@ class TestTriStateFilterFactory:
         # pacID
 
         assert isinstance(
-            tri_state_filter.pac_code_peek, uuid.UUID)
+            obj.pac_code_peek, uuid.UUID)
         # stateIntValue,
-        assert isinstance(tri_state_filter.insert_utc_date_time, datetime)
-        assert isinstance(tri_state_filter.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     def test_unique_code_constraint(self, session):
         """
@@ -259,13 +260,13 @@ class TestTriStateFilterFactory:
         Test case for checking the default values of
         the tri_state_filter fields.
         """
-        tri_state_filter = TriStateFilter()
-        assert tri_state_filter.code is not None
-        assert tri_state_filter.last_change_code is not None
-        assert tri_state_filter.insert_user_id == uuid.UUID(int=0)
-        assert tri_state_filter.last_update_user_id == uuid.UUID(int=0)
-        assert tri_state_filter.insert_utc_date_time is not None
-        assert tri_state_filter.last_update_utc_date_time is not None
+        new_obj = TriStateFilter()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id == uuid.UUID(int=0)
+        assert new_obj.last_update_user_id == uuid.UUID(int=0)
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         # description,
         # displayOrder,
         # isActive,
@@ -274,16 +275,16 @@ class TestTriStateFilterFactory:
         # PacID
 
         assert isinstance(
-            tri_state_filter.pac_code_peek, uuid.UUID)
+            new_obj.pac_code_peek, uuid.UUID)
         # stateIntValue,
-        assert tri_state_filter is not None
-        assert tri_state_filter.description == ""
-        assert tri_state_filter.display_order == 0
-        assert tri_state_filter.is_active is False
-        assert tri_state_filter.lookup_enum_name == ""
-        assert tri_state_filter.name == ""
-        assert tri_state_filter.pac_id == 0
-        assert tri_state_filter.state_int_value == 0
+        assert new_obj is not None
+        assert new_obj.description == ""
+        assert new_obj.display_order == 0
+        assert new_obj.is_active is False
+        assert new_obj.lookup_enum_name == ""
+        assert new_obj.name == ""
+        assert new_obj.pac_id == 0
+        assert new_obj.state_int_value == 0
 
     def test_last_change_code_concurrency(self, session):
         """
@@ -309,18 +310,21 @@ class TestTriStateFilterFactory:
             None
         """
 
-        tri_state_filter = TriStateFilterFactory.create(
+        new_obj = TriStateFilterFactory.create(
             session=session)
-        original_last_change_code = tri_state_filter.last_change_code
-        tri_state_filter_1 = session.query(TriStateFilter).filter_by(
+        original_last_change_code = \
+            new_obj.last_change_code
+        tri_state_filter_1 = session.query(
+            TriStateFilter).filter_by(
             _tri_state_filter_id=(
-                tri_state_filter.tri_state_filter_id)
+                new_obj.tri_state_filter_id)
         ).first()
         tri_state_filter_1.code = uuid.uuid4()
         session.commit()
-        tri_state_filter_2 = session.query(TriStateFilter).filter_by(
+        tri_state_filter_2 = session.query(
+            TriStateFilter).filter_by(
             _tri_state_filter_id=(
-                tri_state_filter.tri_state_filter_id)
+                new_obj.tri_state_filter_id)
         ).first()
         tri_state_filter_2.code = uuid.uuid4()
         session.commit()
@@ -352,11 +356,10 @@ class TestTriStateFilterFactory:
                 session violate any integrity constraints.
 
         """
-        tri_state_filter = TriStateFilterFactory.create(
+        new_obj = TriStateFilterFactory.create(
             session=session)
-        tri_state_filter.pac_id = 99999
+        new_obj.pac_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
     # stateIntValue,
-

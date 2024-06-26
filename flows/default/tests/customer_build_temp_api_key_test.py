@@ -21,7 +21,7 @@ from flows.customer_build_temp_api_key import (
     FlowCustomerBuildTempApiKey,
     FlowCustomerBuildTempApiKeyResult)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.customer import (
     CustomerFactory)
 
@@ -32,7 +32,7 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
     `FlowCustomerBuildTempApiKeyResult` class.
     """
 
-    def test_flow_customer_build_temp_api_key_result_to_json(self):
+    def test_flow_result_to_json(self):
         """
         Test the `to_json` method of the
         `FlowCustomerBuildTempApiKeyResult` class.
@@ -63,9 +63,12 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
         """
 
         session_context = SessionContext(dict(), session)
-        flow = FlowCustomerBuildTempApiKey(session_context)
+        flow = FlowCustomerBuildTempApiKey(
+            session_context)
 
-        customer = await CustomerFactory.create_async(session)
+        customer = await \
+            CustomerFactory.create_async(
+                session)
 
         customer_bus_obj = CustomerBusObj(session_context)
         customer_bus_obj.load_from_obj_instance(customer)
@@ -112,4 +115,3 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
         #     request=request_instance
         #     )
         # assert isinstance(result,FlowCustomerBuildTempApiKeyResult)
-

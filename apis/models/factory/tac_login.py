@@ -58,14 +58,12 @@ class TacLoginPostModelRequestFactory(
             An instance of
             TacLoginPostModelRequest.
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
 
 
         obj = model_class(*args, **kwargs)
-
 
         return obj
 
@@ -92,7 +90,6 @@ class TacLoginPostModelRequestFactory(
 
         obj = model_class(*args, **kwargs)
 
-
         return obj
 
     @classmethod
@@ -115,10 +112,9 @@ class TacLoginPostModelRequestFactory(
         """
 
 
-        obj = TacLoginPostModelRequestFactory.build(
-            session=None, *args, **kwargs
-        )
-
+        obj = TacLoginPostModelRequestFactory \
+            .build(
+                session=None, *args, **kwargs
+            )
 
         return obj
-

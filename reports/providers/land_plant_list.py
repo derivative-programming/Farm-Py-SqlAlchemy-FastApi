@@ -166,7 +166,6 @@ class ReportProviderLandPlantList():
             '%' + some_phone_number + '%')
         query_dict["like_some_email_address"] = (
             '%' + some_email_address + '%')
-
         query_dict["page_number"] = (
             page_number)
         query_dict["item_count_per_page"] = (
@@ -178,11 +177,19 @@ class ReportProviderLandPlantList():
         query_dict["user_id"] = (
             str(self._session_context.customer_code))
 
-        if ReportProviderLandPlantList._cached_sql_query == "":
-            # Prioritize 'land_plant_list.inc.sql' if it exists
-            inc_file_path = "reports/providers/sql/land_plant_list.inc.sql"
-            gen_file_path = "reports/providers/sql/land_plant_list.gen.sql"
-
+        if ReportProviderLandPlantList \
+                ._cached_sql_query == "":
+            # Prioritize
+            # 'land_plant_list.inc.sql'
+            # if it exists
+            inc_file_path = (
+                "reports/providers/sql/"
+                "land_plant_list.inc.sql"
+            )
+            gen_file_path = (
+                "reports/providers/sql/"
+                "land_plant_list.gen.sql"
+            )
             if os.path.exists(inc_file_path):
                 file_to_read = inc_file_path
             elif os.path.exists(gen_file_path):

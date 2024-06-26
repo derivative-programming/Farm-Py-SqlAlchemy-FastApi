@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.plant import PlantManager
+from managers.plant import (
+    PlantManager)
 from models import Plant
-from models.factory import PlantFactory
+from models.factory import (
+    PlantFactory)
 
 
 class TestPlantBulkManager:
@@ -28,7 +30,7 @@ class TestPlantBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def plant_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `PlantManager` for testing.
@@ -40,7 +42,7 @@ class TestPlantBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestPlantBulkManager:
         1. Generate a list of plant data using the
             `PlantFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `plant_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated plant data.
         3. Verify that the number of plants
@@ -79,35 +81,36 @@ class TestPlantBulkManager:
         plants_data = [
             await PlantFactory.build_async(session) for _ in range(5)]
 
-        plants = await plant_manager.add_bulk(
+        plants = await obj_manager.add_bulk(
             plants_data)
 
         assert len(plants) == 5
 
-        for updated_plant in plants:
+        for updated_obj in plants:
             result = await session.execute(
                 select(Plant).filter(
-                    Plant._plant_id == updated_plant.plant_id  # type: ignore
+                    Plant._plant_id == (
+                        updated_obj.plant_id)  # type: ignore
                 )
             )
-            fetched_plant = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_plant,
+                fetched_obj,
                 Plant)
 
-            assert str(fetched_plant.insert_user_id) == (
-                str(plant_manager._session_context.customer_code))
-            assert str(fetched_plant.last_update_user_id) == (
-                str(plant_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_plant.plant_id == \
-                updated_plant.plant_id
+            assert fetched_obj.plant_id == \
+                updated_obj.plant_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestPlantBulkManager:
             the updated codes in the database.
 
         Args:
-            plant_manager (PlantManager):
+            obj_manager (PlantManager):
                 An instance of the
                 `PlantManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestPlantBulkManager:
             None
         """
         # Mocking plant instances
-        plant1 = await PlantFactory. \
+        obj_1 = await PlantFactory. \
             create_async(
                 session=session)
-        plant2 = await PlantFactory. \
+        obj_2 = await PlantFactory. \
             create_async(
                 session=session)
-        logging.info(plant1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestPlantBulkManager:
         updates = [
             {
                 "plant_id":
-                    plant1.plant_id,
+                    obj_1.plant_id,
                 "code": code_updated1
             },
             {
                 "plant_id":
-                    plant2.plant_id,
+                    obj_2.plant_id,
                 "code": code_updated2
             }
         ]
-        updated_plants = await plant_manager.update_bulk(
+        updated_plants = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestPlantBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        plants = await plant_manager.get_list()
+        plants = await obj_manager.get_list()
         logging.info(plants[0]
                      .__dict__)
         logging.info(plants[1]
@@ -192,40 +195,40 @@ class TestPlantBulkManager:
 
         assert str(updated_plants[0]
                    .last_update_user_id) == (
-            str(plant_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_plants[1]
                    .last_update_user_id) == (
-            str(plant_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(Plant).filter(
                 Plant._plant_id == 1)  # type: ignore
         )
-        fetched_plant = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_plant,
+        assert isinstance(fetched_obj,
                           Plant)
 
-        assert fetched_plant.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(Plant).filter(
                 Plant._plant_id == 2)  # type: ignore
         )
-        fetched_plant = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_plant,
+        assert isinstance(fetched_obj,
                           Plant)
 
-        assert fetched_plant.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_plant_id(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestPlantBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No plants to update since plant_id is missing
+        # No plants to update since
+        # plant_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await plant_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_plant_not_found(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestPlantBulkManager:
             where each update
             contains a plant_id and a code.
         2. Calls the update_bulk method of the
-            plant_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the plant was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestPlantBulkManager:
         updates = [{"plant_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await plant_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestPlantBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param plant_manager: An instance of the
+        :param obj_manager: An instance of the
             PlantManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestPlantBulkManager:
         updates = [{"plant_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await plant_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestPlantBulkManager:
             using the PlantFactory.
         2. Delete the plants using the
             delete_bulk method
-            of the plant_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the plants no longer exist in the database.
+            checking if the plants
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The plants should no longer exist in the database.
+        - The plants should
+            no longer exist in the database.
 
         """
 
-        plant1 = await PlantFactory.create_async(
+        obj_1 = await PlantFactory.create_async(
             session=session)
 
-        plant2 = await PlantFactory.create_async(
+        obj_2 = await PlantFactory.create_async(
             session=session)
 
         # Delete plants
-        plant_ids = [plant1.plant_id,
-                     plant2.plant_id]
-        result = await plant_manager.delete_bulk(
+        plant_ids = [
+            obj_1.plant_id,
+            obj_2.plant_id
+        ]
+        result = await obj_manager.delete_bulk(
             plant_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestPlantBulkManager:
         for plant_id in plant_ids:
             execute_result = await session.execute(
                 select(Plant).filter(
-                    Plant._plant_id == plant_id)  # type: ignore
+                    Plant._plant_id == (
+                        plant_id))  # type: ignore
             )
-            fetched_plant = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_plant is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_plants_not_found(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        plants when some plants are not found.
+        plants when some
+        plants are not found.
 
         Steps:
         1. Create a plant using the
@@ -392,17 +402,17 @@ class TestPlantBulkManager:
         when some plants with the specified IDs are
         not found in the database.
         """
-        plant1 = await PlantFactory.create_async(
+        obj_1 = await PlantFactory.create_async(
             session=session)
 
-        assert isinstance(plant1,
+        assert isinstance(obj_1,
                           Plant)
 
         # Delete plants
         plant_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await plant_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 plant_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestPlantBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        plant_manager: PlantManager
+        obj_manager: PlantManager
     ):
         """
         Test case to verify the behavior of deleting
         plants with an empty list.
 
         Args:
-            plant_manager (PlantManager): The
+            obj_manager (PlantManager): The
                 instance of the
                 PlantManager class.
 
@@ -430,7 +440,7 @@ class TestPlantBulkManager:
 
         # Delete plants with an empty list
         plant_ids = []
-        result = await plant_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             plant_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestPlantBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestPlantBulkManager:
         method when invalid plant IDs are provided.
 
         Args:
-            plant_manager (PlantManager): The
+            obj_manager (PlantManager): The
                 instance of the
                 PlantManager class.
             session (AsyncSession): The async session object.
@@ -463,7 +473,7 @@ class TestPlantBulkManager:
         plant_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await plant_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 plant_ids)
 
         await session.rollback()

@@ -34,10 +34,11 @@ class TestErrorLogConfigResolveErrorLogPostModelRequestFactoryAsync:
         class.
         """
 
-        model_instance = (
-            await ErrorLogConfigResolveErrorLogPostModelRequestFactory.create_async(
+        model_instance = await \
+            ErrorLogConfigResolveErrorLogPostModelRequestFactory \
+            .create_async(
                 session=session)
-        )
-        assert isinstance(model_instance,
-                          ErrorLogConfigResolveErrorLogPostModelRequest)
 
+        assert isinstance(
+            model_instance,
+            ErrorLogConfigResolveErrorLogPostModelRequest)

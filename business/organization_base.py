@@ -882,4 +882,3 @@ class OrganizationBaseBusObj(BaseBusObj):
         tac = await self.get_tac_id_rel_obj()
 
         return tac
-

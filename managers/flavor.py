@@ -559,18 +559,19 @@ class FlavorManager:
         """
         logging.info(
             "FlavorManager.add_bulk")
-        for flavor in flavors:
+        for list_item in flavors:
             flavor_id = \
-                flavor.flavor_id
-            code = flavor.code
-            if flavor.flavor_id is not None and flavor.flavor_id > 0:
+                list_item.flavor_id
+            code = list_item.code
+            if list_item.flavor_id is not None and \
+                    list_item.flavor_id > 0:
                 raise ValueError(
                     "Flavor is already added"
                     f": {str(code)} {str(flavor_id)}"
                 )
-            flavor.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            flavor.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(flavors)
         await self._session_context.session.flush()
@@ -790,4 +791,3 @@ class FlavorManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-

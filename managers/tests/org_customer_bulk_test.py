@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.org_customer import OrgCustomerManager
+from managers.org_customer import (
+    OrgCustomerManager)
 from models import OrgCustomer
-from models.factory import OrgCustomerFactory
+from models.factory import (
+    OrgCustomerFactory)
 
 
 class TestOrgCustomerBulkManager:
@@ -28,7 +30,7 @@ class TestOrgCustomerBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def org_customer_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `OrgCustomerManager` for testing.
@@ -40,7 +42,7 @@ class TestOrgCustomerBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestOrgCustomerBulkManager:
         1. Generate a list of org_customer data using the
             `OrgCustomerFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `org_customer_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated org_customer data.
         3. Verify that the number of org_customers
@@ -79,35 +81,36 @@ class TestOrgCustomerBulkManager:
         org_customers_data = [
             await OrgCustomerFactory.build_async(session) for _ in range(5)]
 
-        org_customers = await org_customer_manager.add_bulk(
+        org_customers = await obj_manager.add_bulk(
             org_customers_data)
 
         assert len(org_customers) == 5
 
-        for updated_org_customer in org_customers:
+        for updated_obj in org_customers:
             result = await session.execute(
                 select(OrgCustomer).filter(
-                    OrgCustomer._org_customer_id == updated_org_customer.org_customer_id  # type: ignore
+                    OrgCustomer._org_customer_id == (
+                        updated_obj.org_customer_id)  # type: ignore
                 )
             )
-            fetched_org_customer = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_org_customer,
+                fetched_obj,
                 OrgCustomer)
 
-            assert str(fetched_org_customer.insert_user_id) == (
-                str(org_customer_manager._session_context.customer_code))
-            assert str(fetched_org_customer.last_update_user_id) == (
-                str(org_customer_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_org_customer.org_customer_id == \
-                updated_org_customer.org_customer_id
+            assert fetched_obj.org_customer_id == \
+                updated_obj.org_customer_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestOrgCustomerBulkManager:
             the updated codes in the database.
 
         Args:
-            org_customer_manager (OrgCustomerManager):
+            obj_manager (OrgCustomerManager):
                 An instance of the
                 `OrgCustomerManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestOrgCustomerBulkManager:
             None
         """
         # Mocking org_customer instances
-        org_customer1 = await OrgCustomerFactory. \
+        obj_1 = await OrgCustomerFactory. \
             create_async(
                 session=session)
-        org_customer2 = await OrgCustomerFactory. \
+        obj_2 = await OrgCustomerFactory. \
             create_async(
                 session=session)
-        logging.info(org_customer1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestOrgCustomerBulkManager:
         updates = [
             {
                 "org_customer_id":
-                    org_customer1.org_customer_id,
+                    obj_1.org_customer_id,
                 "code": code_updated1
             },
             {
                 "org_customer_id":
-                    org_customer2.org_customer_id,
+                    obj_2.org_customer_id,
                 "code": code_updated2
             }
         ]
-        updated_org_customers = await org_customer_manager.update_bulk(
+        updated_org_customers = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestOrgCustomerBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        org_customers = await org_customer_manager.get_list()
+        org_customers = await obj_manager.get_list()
         logging.info(org_customers[0]
                      .__dict__)
         logging.info(org_customers[1]
@@ -192,40 +195,40 @@ class TestOrgCustomerBulkManager:
 
         assert str(updated_org_customers[0]
                    .last_update_user_id) == (
-            str(org_customer_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_org_customers[1]
                    .last_update_user_id) == (
-            str(org_customer_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(OrgCustomer).filter(
                 OrgCustomer._org_customer_id == 1)  # type: ignore
         )
-        fetched_org_customer = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_org_customer,
+        assert isinstance(fetched_obj,
                           OrgCustomer)
 
-        assert fetched_org_customer.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(OrgCustomer).filter(
                 OrgCustomer._org_customer_id == 2)  # type: ignore
         )
-        fetched_org_customer = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_org_customer,
+        assert isinstance(fetched_obj,
                           OrgCustomer)
 
-        assert fetched_org_customer.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_org_customer_id(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestOrgCustomerBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No org_customers to update since org_customer_id is missing
+        # No org_customers to update since
+        # org_customer_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await org_customer_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_org_customer_not_found(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestOrgCustomerBulkManager:
             where each update
             contains a org_customer_id and a code.
         2. Calls the update_bulk method of the
-            org_customer_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the org_customer was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestOrgCustomerBulkManager:
         updates = [{"org_customer_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await org_customer_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestOrgCustomerBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param org_customer_manager: An instance of the
+        :param obj_manager: An instance of the
             OrgCustomerManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestOrgCustomerBulkManager:
         updates = [{"org_customer_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await org_customer_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestOrgCustomerBulkManager:
             using the OrgCustomerFactory.
         2. Delete the org_customers using the
             delete_bulk method
-            of the org_customer_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the org_customers no longer exist in the database.
+            checking if the org_customers
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The org_customers should no longer exist in the database.
+        - The org_customers should
+            no longer exist in the database.
 
         """
 
-        org_customer1 = await OrgCustomerFactory.create_async(
+        obj_1 = await OrgCustomerFactory.create_async(
             session=session)
 
-        org_customer2 = await OrgCustomerFactory.create_async(
+        obj_2 = await OrgCustomerFactory.create_async(
             session=session)
 
         # Delete org_customers
-        org_customer_ids = [org_customer1.org_customer_id,
-                     org_customer2.org_customer_id]
-        result = await org_customer_manager.delete_bulk(
+        org_customer_ids = [
+            obj_1.org_customer_id,
+            obj_2.org_customer_id
+        ]
+        result = await obj_manager.delete_bulk(
             org_customer_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestOrgCustomerBulkManager:
         for org_customer_id in org_customer_ids:
             execute_result = await session.execute(
                 select(OrgCustomer).filter(
-                    OrgCustomer._org_customer_id == org_customer_id)  # type: ignore
+                    OrgCustomer._org_customer_id == (
+                        org_customer_id))  # type: ignore
             )
-            fetched_org_customer = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_org_customer is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_org_customers_not_found(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        org_customers when some org_customers are not found.
+        org_customers when some
+        org_customers are not found.
 
         Steps:
         1. Create a org_customer using the
@@ -392,17 +402,17 @@ class TestOrgCustomerBulkManager:
         when some org_customers with the specified IDs are
         not found in the database.
         """
-        org_customer1 = await OrgCustomerFactory.create_async(
+        obj_1 = await OrgCustomerFactory.create_async(
             session=session)
 
-        assert isinstance(org_customer1,
+        assert isinstance(obj_1,
                           OrgCustomer)
 
         # Delete org_customers
         org_customer_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await org_customer_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 org_customer_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestOrgCustomerBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        org_customer_manager: OrgCustomerManager
+        obj_manager: OrgCustomerManager
     ):
         """
         Test case to verify the behavior of deleting
         org_customers with an empty list.
 
         Args:
-            org_customer_manager (OrgCustomerManager): The
+            obj_manager (OrgCustomerManager): The
                 instance of the
                 OrgCustomerManager class.
 
@@ -430,7 +440,7 @@ class TestOrgCustomerBulkManager:
 
         # Delete org_customers with an empty list
         org_customer_ids = []
-        result = await org_customer_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             org_customer_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestOrgCustomerBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestOrgCustomerBulkManager:
         method when invalid org_customer IDs are provided.
 
         Args:
-            org_customer_manager (OrgCustomerManager): The
+            obj_manager (OrgCustomerManager): The
                 instance of the
                 OrgCustomerManager class.
             session (AsyncSession): The async session object.
@@ -463,8 +473,7 @@ class TestOrgCustomerBulkManager:
         org_customer_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await org_customer_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 org_customer_ids)
 
         await session.rollback()
-

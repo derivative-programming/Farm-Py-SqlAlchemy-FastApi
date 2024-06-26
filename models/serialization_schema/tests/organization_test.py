@@ -1,4 +1,4 @@
-# organization_test.py
+# models/serialization_schema/tests/organization_test.py
 # pylint: disable=redefined-outer-name
 # pylint: disable=unused-import
 
@@ -15,13 +15,15 @@ transmitted over a network.
 
 The tests in this module cover the serialization
 and deserialization of Organization
-instances using the OrganizationSchema class. They verify
+instances using the OrganizationSchema
+class. They verify
 that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a Organization instance.
 
-The OrganizationSchema class is used to define
+The OrganizationSchema class
+is used to define
 the serialization and deserialization
 rules for Organization instances. It
 specifies how each attribute of a
@@ -56,7 +58,7 @@ logger = get_logger(__name__)
 
 
 @pytest.fixture(scope="function")
-def organization(
+def new_obj(
     session
 ) -> Organization:
     """
@@ -109,7 +111,7 @@ class TestOrganizationSchema:
 
     def test_organization_serialization(
         self,
-        organization: Organization
+        new_obj: Organization
     ):
         """
         Test the serialization of a
@@ -122,34 +124,34 @@ class TestOrganizationSchema:
         """
 
         schema = OrganizationSchema()
-        organization_data = schema.dump(organization)
+        organization_data = schema.dump(new_obj)
 
         assert isinstance(organization_data, dict)
 
         result = organization_data
 
-        assert result['code'] == str(organization.code)
+        assert result['code'] == str(new_obj.code)
         assert result['last_change_code'] == (
-            organization.last_change_code)
+            new_obj.last_change_code)
         assert result['insert_user_id'] == (
-            str(organization.insert_user_id))
+            str(new_obj.insert_user_id))
         assert result['last_update_user_id'] == (
-            str(organization.last_update_user_id))
+            str(new_obj.last_update_user_id))
 
         assert result['name'] == (
-            organization.name)
+            new_obj.name)
         assert result['tac_id'] == (
-            organization.tac_id)
+            new_obj.tac_id)
         assert result['insert_utc_date_time'] == (
-            organization.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
-            organization.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert result['tac_code_peek'] == (  # TacID
-            str(organization.tac_code_peek))
+            str(new_obj.tac_code_peek))
 
     def test_organization_deserialization(
         self,
-        organization
+        new_obj: Organization
     ):
         """
         Test the deserialization of a
@@ -168,56 +170,56 @@ class TestOrganizationSchema:
         """
 
         schema = OrganizationSchema()
-        serialized_data = schema.dump(organization)
+        serialized_data = schema.dump(new_obj)
         deserialized_data = schema.load(serialized_data)
 
         assert deserialized_data['code'] == \
-            organization.code
+            new_obj.code
         assert deserialized_data['last_change_code'] == (
-            organization.last_change_code)
+            new_obj.last_change_code)
         assert deserialized_data['insert_user_id'] == (
-            organization.insert_user_id)
+            new_obj.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
-            organization.last_update_user_id)
+            new_obj.last_update_user_id)
         assert deserialized_data['name'] == (
-            organization.name)
+            new_obj.name)
         assert deserialized_data['tac_id'] == (
-            organization.tac_id)
+            new_obj.tac_id)
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
-            organization.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
-            organization.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert deserialized_data[(  # TacID
             'tac_code_peek')] == (
-            organization.tac_code_peek)
+            new_obj.tac_code_peek)
 
-        new_organization = Organization(
+        obj_from_dict = Organization(
             **deserialized_data)
 
-        assert isinstance(new_organization,
+        assert isinstance(new_obj,
                           Organization)
 
-        # Now compare the new_organization attributes with
+        # Now compare the new_obj attributes with
         # the organization attributes
-        assert new_organization.code == \
-            organization.code
-        assert new_organization.last_change_code == \
-            organization.last_change_code
-        assert new_organization.insert_user_id == \
-            organization.insert_user_id
-        assert new_organization.last_update_user_id == \
-            organization.last_update_user_id
-        assert new_organization.name == (
-            organization.name)
-        assert new_organization.tac_id == (
-            organization.tac_id)
+        assert obj_from_dict.code == \
+            new_obj.code
+        assert obj_from_dict.last_change_code == \
+            new_obj.last_change_code
+        assert obj_from_dict.insert_user_id == \
+            new_obj.insert_user_id
+        assert obj_from_dict.last_update_user_id == \
+            new_obj.last_update_user_id
+        assert obj_from_dict.name == (
+            new_obj.name)
+        assert obj_from_dict.tac_id == (
+            new_obj.tac_id)
 
-        assert new_organization.insert_utc_date_time.isoformat() == (
-            organization.insert_utc_date_time.isoformat())
-        assert new_organization.last_update_utc_date_time.isoformat() == (
-            organization.last_update_utc_date_time.isoformat())
-        assert new_organization.tac_code_peek == (  # TacID
-            organization.tac_code_peek)
+        assert obj_from_dict.insert_utc_date_time.isoformat() == (
+            new_obj.insert_utc_date_time.isoformat())
+        assert obj_from_dict.last_update_utc_date_time.isoformat() == (
+            new_obj.last_update_utc_date_time.isoformat())
+        assert obj_from_dict.tac_code_peek == (  # TacID
+            new_obj.tac_code_peek)
 
     def test_from_json(self):
         """
@@ -279,7 +281,7 @@ class TestOrganizationSchema:
 
     def test_to_json(
         self,
-        organization: Organization
+        new_obj: Organization
     ):
         """
         Test the conversion of a
@@ -298,65 +300,64 @@ class TestOrganizationSchema:
         # to JSON using the schema
         organization_schema = OrganizationSchema()
         organization_dict = organization_schema.dump(
-            organization)
+            new_obj)
 
         # Convert the organization_dict to JSON string
         organization_json = json.dumps(
             organization_dict)
 
         # Convert the JSON strings back to dictionaries
-        organization_dict_from_json = json.loads(
+        dict_from_json = json.loads(
             organization_json)
         # sample_dict_from_json = json.loads(self.sample_data)
 
         logging.info(
-            "organization_dict_from_json.keys() %s",
-            organization_dict_from_json.keys())
+            "dict_from_json.keys() %s",
+            dict_from_json.keys())
 
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
 
         # Verify the keys in both dictionaries match
-        assert set(organization_dict_from_json.keys()) == (
+        assert set(dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
-            f"Got: {set(organization_dict_from_json.keys())}"
+            f"Got: {set(dict_from_json.keys())}"
         )
 
-        assert organization_dict_from_json['code'] == \
-            str(organization.code), (
+        assert dict_from_json['code'] == \
+            str(new_obj.code), (
             "failed on code"
         )
-        assert organization_dict_from_json['last_change_code'] == (
-            organization.last_change_code), (
+        assert dict_from_json['last_change_code'] == (
+            new_obj.last_change_code), (
             "failed on last_change_code"
         )
-        assert organization_dict_from_json['insert_user_id'] == (
-            str(organization.insert_user_id)), (
+        assert dict_from_json['insert_user_id'] == (
+            str(new_obj.insert_user_id)), (
             "failed on insert_user_id"
         )
-        assert organization_dict_from_json['last_update_user_id'] == (
-            str(organization.last_update_user_id)), (
+        assert dict_from_json['last_update_user_id'] == (
+            str(new_obj.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-        assert organization_dict_from_json['name'] == (
-            organization.name), (
+        assert dict_from_json['name'] == (
+            new_obj.name), (
             "failed on name"
         )
-        assert organization_dict_from_json['tac_id'] == (
-            organization.tac_id), (
+        assert dict_from_json['tac_id'] == (
+            new_obj.tac_id), (
             "failed on tac_id"
         )
-        assert organization_dict_from_json['insert_utc_date_time'] == (
-            organization.insert_utc_date_time.isoformat()), (
+        assert dict_from_json['insert_utc_date_time'] == (
+            new_obj.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
         )
-        assert organization_dict_from_json['last_update_utc_date_time'] == (
-            organization.last_update_utc_date_time.isoformat()), (
+        assert dict_from_json['last_update_utc_date_time'] == (
+            new_obj.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-        assert organization_dict_from_json[(  # TacID
+        assert dict_from_json[(  # TacID
             'tac_code_peek')] == (
-            str(organization.tac_code_peek)), (
+            str(new_obj.tac_code_peek)), (
             "failed on tac_code_peek"
         )
-

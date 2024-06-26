@@ -60,7 +60,8 @@ class PacFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                Pac: An instance of the
+                Pac:
+                    An instance of the
                     Pac model.
 
         """
@@ -133,7 +134,8 @@ class PacFactory(factory.Factory):
         """
 
 
-        obj = PacFactory.build(session=None, *args, **kwargs)
+        obj = PacFactory \
+            .build(session=None, *args, **kwargs)
 
 
         session.add(obj)
@@ -159,10 +161,10 @@ class PacFactory(factory.Factory):
         """
 
 
-        obj = PacFactory.build(session=None, *args, **kwargs)
+        obj = PacFactory \
+            .build(session=None, *args, **kwargs)
 
 
         # session.add(obj)
         # await session.flush()
         return obj
-

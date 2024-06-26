@@ -9,7 +9,7 @@ class.
 """
 
 import uuid  # noqa: F401
-import math
+import math  # noqa: F401
 
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
@@ -17,7 +17,7 @@ from unittest.mock import AsyncMock, patch, Mock
 
 import pytest
 
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from helpers.session_context import SessionContext
 
 from ..factory.tac_farm_dashboard import (
@@ -128,8 +128,9 @@ class TacFarmDashboardGetModelRequestFactoryAsync:
             TacFarmDashboardGetModelRequestFactory
             .create_async(session=session)
         )
-        assert isinstance(model_instance,
-                          TacFarmDashboardGetModelRequest)
+        assert isinstance(
+            model_instance,
+            TacFarmDashboardGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)
         assert isinstance(model_instance.item_count_per_page, int)
@@ -147,6 +148,8 @@ class MockReportItemTacFarmDashboard:
         self.field_one_plant_list_link_land_code = uuid.uuid4()
         self.conditional_btn_example_link_land_code = uuid.uuid4()
         self.is_conditional_btn_available = True
+
+
 @pytest.fixture
 def session_context():
     """
@@ -178,7 +181,8 @@ async def test_process_request(session_context, report_request, report_items):
     TacFarmDashboardGetModelResponse class.
     """
     with patch(
-        'apis.models.tac_farm_dashboard.ReportManagerTacFarmDashboard',
+        "apis.models.tac_farm_dashboard"
+        ".ReportManagerTacFarmDashboard",
         autospec=True
     ) as mock_report_manager:
         mock_report_manager_instance = \
@@ -197,12 +201,13 @@ async def test_process_request(session_context, report_request, report_items):
         assert len(response.items) == len(report_items)
 
         for response_item, report_item in zip(response.items, report_items):
-            assert isinstance(response_item,
-                              TacFarmDashboardGetModelResponseItem)
+            assert isinstance(
+                response_item,
+                TacFarmDashboardGetModelResponseItem
+            )
             assert response_item.field_one_plant_list_link_land_code == \
                 report_item.field_one_plant_list_link_land_code
             assert response_item.conditional_btn_example_link_land_code == \
                 report_item.conditional_btn_example_link_land_code
             assert response_item.is_conditional_btn_available == \
                 report_item.is_conditional_btn_available
-

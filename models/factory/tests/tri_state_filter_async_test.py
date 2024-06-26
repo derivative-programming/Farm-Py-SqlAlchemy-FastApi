@@ -8,7 +8,7 @@ operations of the TriStateFilterFactory class.
 """
 
 import asyncio
-import math
+import math  # noqa: F401
 import time
 import uuid  # noqa: F401
 from datetime import date, datetime, timedelta  # noqa: F401
@@ -405,24 +405,24 @@ class TestTriStateFilterFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        tri_state_filter = await \
+        obj = await \
             TriStateFilterFactory.create_async(
                 session=session)
-        assert isinstance(tri_state_filter.tri_state_filter_id, int)
-        assert isinstance(tri_state_filter.code, uuid.UUID)
-        assert isinstance(tri_state_filter.last_change_code, int)
-        assert isinstance(tri_state_filter.insert_user_id, uuid.UUID)
-        assert isinstance(tri_state_filter.last_update_user_id, uuid.UUID)
-        assert tri_state_filter.description == "" or isinstance(
-            tri_state_filter.description, str)
-        assert isinstance(tri_state_filter.display_order, int)
-        assert isinstance(tri_state_filter.is_active, bool)
-        assert tri_state_filter.lookup_enum_name == "" or isinstance(
-            tri_state_filter.lookup_enum_name, str)
-        assert tri_state_filter.name == "" or isinstance(
-            tri_state_filter.name, str)
-        assert isinstance(tri_state_filter.pac_id, int)
-        assert isinstance(tri_state_filter.state_int_value, int)
+        assert isinstance(obj.tri_state_filter_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert obj.description == "" or isinstance(
+            obj.description, str)
+        assert isinstance(obj.display_order, int)
+        assert isinstance(obj.is_active, bool)
+        assert obj.lookup_enum_name == "" or isinstance(
+            obj.lookup_enum_name, str)
+        assert obj.name == "" or isinstance(
+            obj.name, str)
+        assert isinstance(obj.pac_id, int)
+        assert isinstance(obj.state_int_value, int)
         # Check for the peek values
         # description,
         # displayOrder,
@@ -431,11 +431,11 @@ class TestTriStateFilterFactoryAsync:
         # name,
         # pacID
 
-        assert isinstance(tri_state_filter.pac_code_peek, uuid.UUID)
+        assert isinstance(obj.pac_code_peek, uuid.UUID)
         # stateIntValue,
 
-        assert isinstance(tri_state_filter.insert_utc_date_time, datetime)
-        assert isinstance(tri_state_filter.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
@@ -460,12 +460,13 @@ class TestTriStateFilterFactoryAsync:
         each tri_state_filter.
         """
 
-        tri_state_filter_1 = await TriStateFilterFactory.create_async(
+        obj_1 = await TriStateFilterFactory.create_async(
             session=session)
-        tri_state_filter_2 = await TriStateFilterFactory.create_async(
+        obj_2 = await TriStateFilterFactory.create_async(
             session=session)
-        tri_state_filter_2.code = tri_state_filter_1.code
-        session.add_all([tri_state_filter_1, tri_state_filter_2])
+        obj_2.code = obj_1.code
+        session.add_all([obj_1,
+                         obj_2])
         with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
@@ -483,13 +484,13 @@ class TestTriStateFilterFactoryAsync:
         or empty, and that the data types of certain fields are correct.
         """
 
-        tri_state_filter = TriStateFilter()
-        assert tri_state_filter.code is not None
-        assert tri_state_filter.last_change_code is not None
-        assert tri_state_filter.insert_user_id is not None
-        assert tri_state_filter.last_update_user_id is not None
-        assert tri_state_filter.insert_utc_date_time is not None
-        assert tri_state_filter.last_update_utc_date_time is not None
+        new_obj = TriStateFilter()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id is not None
+        assert new_obj.last_update_user_id is not None
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
 
         # description,
         # displayOrder,
@@ -498,15 +499,15 @@ class TestTriStateFilterFactoryAsync:
         # name,
         # PacID
 
-        assert isinstance(tri_state_filter.pac_code_peek, uuid.UUID)
+        assert isinstance(new_obj.pac_code_peek, uuid.UUID)
         # stateIntValue,
-        assert tri_state_filter.description == ""
-        assert tri_state_filter.display_order == 0
-        assert tri_state_filter.is_active is False
-        assert tri_state_filter.lookup_enum_name == ""
-        assert tri_state_filter.name == ""
-        assert tri_state_filter.pac_id == 0
-        assert tri_state_filter.state_int_value == 0
+        assert new_obj.description == ""
+        assert new_obj.display_order == 0
+        assert new_obj.is_active is False
+        assert new_obj.lookup_enum_name == ""
+        assert new_obj.name == ""
+        assert new_obj.pac_id == 0
+        assert new_obj.state_int_value == 0
 
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
@@ -554,24 +555,24 @@ class TestTriStateFilterFactoryAsync:
             TriStateFilter._tri_state_filter_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 tri_state_filter.tri_state_filter_id))
         result = await session.execute(stmt)
-        tri_state_filter_1 = result.scalars().first()
+        obj_1 = result.scalars().first()
 
-        # tri_state_filter_1 = await session.query(TriStateFilter).filter_by(
+        # obj_1 = await session.query(TriStateFilter).filter_by(
         # tri_state_filter_id=tri_state_filter.tri_state_filter_id).first()
-        tri_state_filter_1.code = uuid.uuid4()
+        obj_1.code = uuid.uuid4()
         await session.commit()
 
         stmt = select(TriStateFilter).where(
             TriStateFilter._tri_state_filter_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 tri_state_filter.tri_state_filter_id))
         result = await session.execute(stmt)
-        tri_state_filter_2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
-        # tri_state_filter_2 = await session.query(TriStateFilter).filter_by(
+        # obj_2 = await session.query(TriStateFilter).filter_by(
         # tri_state_filter_id=tri_state_filter.tri_state_filter_id).first()
-        tri_state_filter_2.code = uuid.uuid4()
+        obj_2.code = uuid.uuid4()
         await session.commit()
-        assert tri_state_filter_2.last_change_code != original_last_change_code
+        assert obj_2.last_change_code != original_last_change_code
     # description,
     # displayOrder,
     # isActive,
@@ -604,4 +605,3 @@ class TestTriStateFilterFactoryAsync:
             await session.commit()
         await session.rollback()
     # stateIntValue,
-

@@ -34,10 +34,11 @@ class TestPlantUserDeletePostModelRequestFactoryAsync:
         class.
         """
 
-        model_instance = (
-            await PlantUserDeletePostModelRequestFactory.create_async(
+        model_instance = await \
+            PlantUserDeletePostModelRequestFactory \
+            .create_async(
                 session=session)
-        )
-        assert isinstance(model_instance,
-                          PlantUserDeletePostModelRequest)
 
+        assert isinstance(
+            model_instance,
+            PlantUserDeletePostModelRequest)

@@ -9,7 +9,8 @@ import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 import pytest
-import flows.constants.land_user_plant_multi_select_to_editable as FlowConstants
+import flows.constants.land_user_plant_multi_select_to_editable \
+    as FlowConstants  # noqa: F401
 from flows.base.land_user_plant_multi_select_to_editable import (
     BaseFlowLandUserPlantMultiSelectToEditable)
 from helpers.session_context import SessionContext
@@ -40,8 +41,10 @@ class TestBaseFlowLandUserPlantMultiSelectToEditable():
             None
         """
         session_context = SessionContext(dict(), session)
-        flow = BaseFlowLandUserPlantMultiSelectToEditable(session_context)
-        land = await LandFactory.create_async(session)
+        flow = BaseFlowLandUserPlantMultiSelectToEditable(
+            session_context)
+        land = await \
+            LandFactory.create_async(session)
         plant_code_list_csv: str = ""
         # Call the method being tested
         await flow._process_validation_rules(
@@ -88,8 +91,10 @@ class TestBaseFlowLandUserPlantMultiSelectToEditable():
             None
         """
         session_context = SessionContext(dict(), session)
-        land = await LandFactory.create_async(session)
-        flow = BaseFlowLandUserPlantMultiSelectToEditable(session_context)
+        land = await \
+            LandFactory.create_async(session)
+        flow = BaseFlowLandUserPlantMultiSelectToEditable(
+            session_context)
         role_required = "User"
         if len(role_required) > 0:
             await flow._process_security_rules(land)
@@ -97,4 +102,3 @@ class TestBaseFlowLandUserPlantMultiSelectToEditable():
             assert flow.queued_validation_errors[''] == (
                 f"Unauthorized access. {role_required} role not found.")
             session_context.role_name_csv = role_required
-

@@ -147,4 +147,3 @@ class ErrorLogFluentBusObj(ErrorLogBaseBusObj):
         self.pac_id = value
         return self
     # url,
-

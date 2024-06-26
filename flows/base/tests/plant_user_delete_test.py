@@ -9,7 +9,8 @@ import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 import pytest
-import flows.constants.plant_user_delete as FlowConstants
+import flows.constants.plant_user_delete \
+    as FlowConstants  # noqa: F401
 from flows.base.plant_user_delete import (
     BaseFlowPlantUserDelete)
 from helpers.session_context import SessionContext
@@ -40,8 +41,10 @@ class TestBaseFlowPlantUserDelete():
             None
         """
         session_context = SessionContext(dict(), session)
-        flow = BaseFlowPlantUserDelete(session_context)
-        plant = await PlantFactory.create_async(session)
+        flow = BaseFlowPlantUserDelete(
+            session_context)
+        plant = await \
+            PlantFactory.create_async(session)
 
         # Call the method being tested
         await flow._process_validation_rules(
@@ -83,8 +86,10 @@ class TestBaseFlowPlantUserDelete():
             None
         """
         session_context = SessionContext(dict(), session)
-        plant = await PlantFactory.create_async(session)
-        flow = BaseFlowPlantUserDelete(session_context)
+        plant = await \
+            PlantFactory.create_async(session)
+        flow = BaseFlowPlantUserDelete(
+            session_context)
         role_required = "User"
         if len(role_required) > 0:
             await flow._process_security_rules(plant)
@@ -92,4 +97,3 @@ class TestBaseFlowPlantUserDelete():
             assert flow.queued_validation_errors[''] == (
                 f"Unauthorized access. {role_required} role not found.")
             session_context.role_name_csv = role_required
-

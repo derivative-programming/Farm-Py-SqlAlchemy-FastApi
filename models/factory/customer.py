@@ -80,7 +80,8 @@ class CustomerFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                Customer: An instance of the
+                Customer:
+                    An instance of the
                     Customer model.
 
         """
@@ -169,7 +170,8 @@ class CustomerFactory(factory.Factory):
             tac_id_tac_instance.tac_id)
         kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
 
-        obj = CustomerFactory.build(session=None, *args, **kwargs)
+        obj = CustomerFactory \
+            .build(session=None, *args, **kwargs)
         obj.tac_id = (  # TacID
             tac_id_tac_instance.tac_id)
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
@@ -201,7 +203,8 @@ class CustomerFactory(factory.Factory):
             tac_id_tac_instance.tac_id)
         kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
 
-        obj = CustomerFactory.build(session=None, *args, **kwargs)
+        obj = CustomerFactory \
+            .build(session=None, *args, **kwargs)
         obj.tac_id = (  # TacID
             tac_id_tac_instance.tac_id)
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
@@ -209,4 +212,3 @@ class CustomerFactory(factory.Factory):
         # session.add(obj)
         # await session.flush()
         return obj
-

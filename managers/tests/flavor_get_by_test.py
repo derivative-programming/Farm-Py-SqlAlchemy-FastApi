@@ -16,9 +16,11 @@ from sqlalchemy.future import select
 
 import models
 from helpers.session_context import SessionContext
-from managers.flavor import FlavorManager
+from managers.flavor import (
+    FlavorManager)
 from models import Flavor
-from models.factory import FlavorFactory
+from models.factory import (
+    FlavorFactory)
 
 
 class TestFlavorGetByManager:
@@ -28,7 +30,7 @@ class TestFlavorGetByManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def flavor_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `FlavorManager` for testing.
@@ -40,7 +42,7 @@ class TestFlavorGetByManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        flavor_manager: FlavorManager
+        obj_manager: FlavorManager
     ):
         """
         Test case for the `build` method of
@@ -53,7 +55,7 @@ class TestFlavorGetByManager:
 
         # Call the build function of the manager
         flavor = await \
-            flavor_manager.build(
+            obj_manager.build(
                 **mock_data)
 
         # Assert that the returned object is an instance of
@@ -69,34 +71,34 @@ class TestFlavorGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
-        flavor_manager: FlavorManager,
+        obj_manager: FlavorManager,
         session: AsyncSession
     ):
         """
         Test case for the `get_by_id` method of
         `FlavorManager`.
         """
-        test_flavor = await \
+        new_obj = await \
             FlavorFactory.create_async(
                 session)
 
         flavor = await \
-            flavor_manager.get_by_id(
-                test_flavor.flavor_id)
+            obj_manager.get_by_id(
+                new_obj.flavor_id)
 
         assert isinstance(
             flavor,
             Flavor)
 
-        assert test_flavor.flavor_id == \
+        assert new_obj.flavor_id == \
             flavor.flavor_id
-        assert test_flavor.code == \
+        assert new_obj.code == \
             flavor.code
 
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
-        flavor_manager: FlavorManager
+        obj_manager: FlavorManager
     ):
         """
         Test case for the `get_by_id` method of
@@ -107,7 +109,7 @@ class TestFlavorGetByManager:
         non_existent_id = 9999  # An ID that's not in the database
 
         retrieved_flavor = await \
-            flavor_manager.get_by_id(
+            obj_manager.get_by_id(
                 non_existent_id)
 
         assert retrieved_flavor is None
@@ -115,7 +117,7 @@ class TestFlavorGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_code_returns_flavor(
         self,
-        flavor_manager: FlavorManager,
+        obj_manager: FlavorManager,
         session: AsyncSession
     ):
         """
@@ -125,27 +127,27 @@ class TestFlavorGetByManager:
         returned by its code.
         """
 
-        test_flavor = await \
+        new_obj = await \
             FlavorFactory.create_async(
                 session)
 
         flavor = await \
-            flavor_manager.get_by_code(
-                test_flavor.code)
+            obj_manager.get_by_code(
+                new_obj.code)
 
         assert isinstance(
             flavor,
             Flavor)
 
-        assert test_flavor.flavor_id == \
+        assert new_obj.flavor_id == \
             flavor.flavor_id
-        assert test_flavor.code == \
+        assert new_obj.code == \
             flavor.code
 
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
-        flavor_manager: FlavorManager
+        obj_manager: FlavorManager
     ):
         """
         Test case for the `get_by_code` method of
@@ -156,7 +158,7 @@ class TestFlavorGetByManager:
         random_code = uuid.uuid4()
 
         flavor = await \
-            flavor_manager.get_by_code(
+            obj_manager.get_by_code(
                 random_code)
 
         assert flavor is None
@@ -171,7 +173,7 @@ class TestFlavorGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_pac_id_existing(
         self,
-        flavor_manager: FlavorManager,
+        obj_manager: FlavorManager,
         session: AsyncSession
     ):
         """
@@ -184,7 +186,7 @@ class TestFlavorGetByManager:
         1. Create a flavor using the
             FlavorFactory.
         2. Fetch the flavor using the
-            `get_by_pac_id` method of the flavor_manager.
+            `get_by_pac_id` method of the obj_manager.
         3. Assert that the fetched flavors list contains
             only one flavor.
         4. Assert that the fetched flavor
@@ -203,34 +205,34 @@ class TestFlavorGetByManager:
         """
         # Add a flavor with a specific
         # pac_id
-        flavor1 = await FlavorFactory.create_async(
+        obj_1 = await FlavorFactory.create_async(
             session=session)
 
         # Fetch the flavor using
         # the manager function
 
-        fetched_flavors = await \
-            flavor_manager.get_by_pac_id(
-                flavor1.pac_id)
-        assert len(fetched_flavors) == 1
-        assert isinstance(fetched_flavors[0],
+        fetched_objs = await \
+            obj_manager.get_by_pac_id(
+                obj_1.pac_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           Flavor)
-        assert fetched_flavors[0].code == \
-            flavor1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.Pac).where(
-            models.Pac._pac_id == flavor1.pac_id)  # type: ignore  # noqa: E501
+            models.Pac._pac_id == obj_1.pac_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         pac = result.scalars().first()
 
         assert isinstance(pac, models.Pac)
 
-        assert fetched_flavors[0].pac_code_peek == pac.code
+        assert fetched_objs[0].pac_code_peek == pac.code
 
     @pytest.mark.asyncio
     async def test_get_by_pac_id_nonexistent(
         self,
-        flavor_manager: FlavorManager
+        obj_manager: FlavorManager
     ):
         """
         Test case to verify the behavior of the
@@ -243,15 +245,15 @@ class TestFlavorGetByManager:
 
         non_existent_id = 999
 
-        fetched_flavors = await \
-            flavor_manager.get_by_pac_id(
+        fetched_objs = await \
+            obj_manager.get_by_pac_id(
                 non_existent_id)
-        assert len(fetched_flavors) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_pac_id_invalid_type(
         self,
-        flavor_manager: FlavorManager,
+        obj_manager: FlavorManager,
         session: AsyncSession
     ):
         """
@@ -259,7 +261,7 @@ class TestFlavorGetByManager:
         `get_by_pac_id` method when an invalid pac ID is provided.
 
         Args:
-            flavor_manager (FlavorManager): An
+            obj_manager (FlavorManager): An
                 instance of the FlavorManager class.
             session (AsyncSession): An instance
                 of the AsyncSession class.
@@ -275,8 +277,7 @@ class TestFlavorGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await flavor_manager.get_by_pac_id(
+            await obj_manager.get_by_pac_id(
                 invalid_id)  # type: ignore
 
         await session.rollback()
-

@@ -24,17 +24,17 @@ the following endpoints:
 """
 
 import logging
-import tempfile
+import tempfile  # noqa: F401
 import traceback
 import uuid
 
-from fastapi import APIRouter, Depends, Path
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, Depends, Path  # noqa: F401
+from fastapi.responses import FileResponse  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import apis.models as api_models
-import apis.models.init as api_init_models
-import reports
+import apis.models.init as api_init_models  # noqa: F401
+import reports  # noqa: F401
 from database import get_db
 from helpers import SessionContext, api_key_header
 
@@ -78,7 +78,8 @@ class TacFarmDashboardRouter(BaseRouter):
 
     @staticmethod
     @router.get(
-        "/api/v1_0/tac-farm-dashboard/{tac_code}/init",
+        "/api/v1_0/tac-farm-dashboard"
+        "/{tac_code}/init",
         response_model=(
             api_init_models.
             TacFarmDashboardInitReportGetInitModelResponse
@@ -105,7 +106,8 @@ class TacFarmDashboardRouter(BaseRouter):
         """
 
         logging.info(
-            'TacFarmDashboardRouter.request_get_init start. tacCode:%s',
+            "TacFarmDashboardRouter"
+            ".request_get_init start. tacCode:%s",
             tac_code)
         auth_dict = BaseRouter.implementation_check(
             TacFarmDashboardRouterConfig
@@ -119,6 +121,11 @@ class TacFarmDashboardRouter(BaseRouter):
         auth_dict = BaseRouter.authorization_check(
             TacFarmDashboardRouterConfig.is_public, api_key)
 
+        init_request = (
+            api_init_models.
+            TacFarmDashboardInitReportGetInitModelRequest()
+        )
+
         # Start a transaction
         async with session:
             try:
@@ -128,10 +135,7 @@ class TacFarmDashboardRouter(BaseRouter):
                     "TacCode",
                     tac_code
                 )
-                init_request = (
-                    api_init_models.
-                    TacFarmDashboardInitReportGetInitModelRequest()
-                )
+
                 response = await init_request.process_request(
                     session_context,
                     tac_code,
@@ -158,14 +162,17 @@ class TacFarmDashboardRouter(BaseRouter):
                 else:
                     await session.rollback()
         response_data = response.model_dump_json()
-        logging.info('TacFarmDashboardRouter.init get result:%s',
-                     response_data)
+        logging.info(
+            "TacFarmDashboardRouter"
+            ".init get result:%s",
+            response_data)
         return response
 
 
     @staticmethod
     @router.get(
-        "/api/v1_0/tac-farm-dashboard/{tac_code}",
+        "/api/v1_0/tac-farm-dashboard"
+        "/{tac_code}",
         response_model=(
             api_models
             .TacFarmDashboardGetModelResponse
@@ -174,7 +181,8 @@ class TacFarmDashboardRouter(BaseRouter):
     async def request_get_with_id(
         tac_code: uuid.UUID = Path(..., description=TAC_CODE),
         request_model:
-            api_models.TacFarmDashboardGetModelRequest = Depends(),
+            api_models.TacFarmDashboardGetModelRequest = (
+                Depends()),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -184,7 +192,8 @@ class TacFarmDashboardRouter(BaseRouter):
 
         Args:
             tac_code (uuid.UUID): The unique identifier for the tac.
-            request_model (api_models.TacFarmDashboardGetModelRequest):
+            request_model (api_models.
+            TacFarmDashboardGetModelRequest):
                 The request model for the API.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
@@ -200,7 +209,8 @@ class TacFarmDashboardRouter(BaseRouter):
         """
 
         logging.info(
-            'TacFarmDashboardRouter.request_get_with_id start. tacCode:%s',
+            "TacFarmDashboardRouter"
+            ".request_get_with_id start. tacCode:%s",
             tac_code)
         auth_dict = BaseRouter.implementation_check(
             TacFarmDashboardRouterConfig
@@ -229,7 +239,8 @@ class TacFarmDashboardRouter(BaseRouter):
                     tac_code,
                     request_model
                 )
-                logging.info('TacFarmDashboardRouter success')
+                logging.info(
+                    'TacFarmDashboardRouter success')
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info(
                     EXCEPTION_OCCURRED,
@@ -256,13 +267,15 @@ class TacFarmDashboardRouter(BaseRouter):
 
     @staticmethod
     @router.get(
-        "/api/v1_0/tac-farm-dashboard/{tac_code}/to-csv",
+        "/api/v1_0/tac-farm-dashboard"
+        "/{tac_code}/to-csv",
         response_class=FileResponse,
         summary="Tac Farm Dashboard Report to CSV")
     async def request_get_with_id_to_csv(
         tac_code: uuid.UUID = Path(..., description=TAC_CODE),
         request_model:
-            api_models.TacFarmDashboardGetModelRequest = Depends(),
+            api_models.TacFarmDashboardGetModelRequest = (
+                Depends()),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -272,7 +285,8 @@ class TacFarmDashboardRouter(BaseRouter):
 
         Args:
             tac_code (uuid.UUID): The unique identifier for the tac.
-            request_model (api_models.TacFarmDashboardGetModelRequest):
+            request_model (api_models.
+            TacFarmDashboardGetModelRequest):
                 The request model for the API.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
@@ -325,8 +339,9 @@ class TacFarmDashboardRouter(BaseRouter):
                     tac_code,
                     request_model
                 )
-                report_manager = reports.ReportManagerTacFarmDashboard(
-                    session_context)
+                report_manager = \
+                    reports.ReportManagerTacFarmDashboard(
+                        session_context)
 
                 report_items = [response_item.build_report_item() for
                                 response_item in response.items]
@@ -351,16 +366,18 @@ class TacFarmDashboardRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            'TacFarmDashboardRouter.submit get result:%s', response_data
+            "TacFarmDashboardRouter"
+            ".submit get result:%s",
+            response_data
         )
 
         uuid_value = uuid.uuid4()
 
         output_file_name = (
-            f'tac_farm_dashboard_{str(tac_code)}_{str(uuid_value)}.csv'
+            "tac_farm_dashboard_"
+            f"{str(tac_code)}_{str(uuid_value)}.csv"
         )
         return FileResponse(
             tmp_file_path,
             media_type='text/csv',
             filename=output_file_name)
-

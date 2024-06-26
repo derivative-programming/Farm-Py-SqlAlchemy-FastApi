@@ -20,7 +20,7 @@ from flows.base.flow_validation_error import FlowValidationError
 from flows.tac_farm_dashboard_init_report import (
     FlowTacFarmDashboardInitReport,
     FlowTacFarmDashboardInitReportResult)
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 
@@ -93,7 +93,8 @@ class TacFarmDashboardInitReportGetInitModelRequest(
             if tac_bus_obj.get_tac_obj() is None:
                 logging.info("Invalid tac_code")
                 raise ValueError("Invalid tac_code")
-            flow = FlowTacFarmDashboardInitReport(session_context)
+            flow = FlowTacFarmDashboardInitReport(
+                session_context)
             logging.info(
                 "process request..."
                 "TacFarmDashboardInitReport"
@@ -105,9 +106,10 @@ class TacFarmDashboardInitReportGetInitModelRequest(
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error..."
-                         "TacFarmDashboardInitReport"
-                         "GetInitModelRequest")
+            logging.info(
+                "error..."
+                "TacFarmDashboardInitReport"
+                "GetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
@@ -116,4 +118,3 @@ class TacFarmDashboardInitReportGetInitModelRequest(
                 val_error.message = ve.error_dict[key]
                 response.validation_errors.append(val_error)
         return response
-

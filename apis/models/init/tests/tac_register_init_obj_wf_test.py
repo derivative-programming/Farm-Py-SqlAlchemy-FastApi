@@ -113,7 +113,8 @@ async def test_process_request(flow_response):
     """
     mock_session_context = Mock(spec=SessionContext)
     mock_tac_bus_obj = patch(
-        'apis.models.init.tac_register_init_obj_wf.TacBusObj',
+        "apis.models.init.tac_register_init_obj_wf."
+        "TacBusObj",
         autospec=True).start()
     mock_flow = patch(
         "apis.models.init.tac_register_init_obj_wf."
@@ -139,4 +140,3 @@ async def test_process_request(flow_response):
     mock_flow_instance.process.assert_called_once()
 
     patch.stopall()
-

@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.error_log import ErrorLogManager
+from managers.error_log import (
+    ErrorLogManager)
 from models import ErrorLog
-from models.factory import ErrorLogFactory
+from models.factory import (
+    ErrorLogFactory)
 
 
 class TestErrorLogBulkManager:
@@ -28,7 +30,7 @@ class TestErrorLogBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def error_log_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `ErrorLogManager` for testing.
@@ -40,7 +42,7 @@ class TestErrorLogBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        error_log_manager: ErrorLogManager,
+        obj_manager: ErrorLogManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestErrorLogBulkManager:
         1. Generate a list of error_log data using the
             `ErrorLogFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `error_log_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated error_log data.
         3. Verify that the number of error_logs
@@ -79,35 +81,36 @@ class TestErrorLogBulkManager:
         error_logs_data = [
             await ErrorLogFactory.build_async(session) for _ in range(5)]
 
-        error_logs = await error_log_manager.add_bulk(
+        error_logs = await obj_manager.add_bulk(
             error_logs_data)
 
         assert len(error_logs) == 5
 
-        for updated_error_log in error_logs:
+        for updated_obj in error_logs:
             result = await session.execute(
                 select(ErrorLog).filter(
-                    ErrorLog._error_log_id == updated_error_log.error_log_id  # type: ignore
+                    ErrorLog._error_log_id == (
+                        updated_obj.error_log_id)  # type: ignore
                 )
             )
-            fetched_error_log = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_error_log,
+                fetched_obj,
                 ErrorLog)
 
-            assert str(fetched_error_log.insert_user_id) == (
-                str(error_log_manager._session_context.customer_code))
-            assert str(fetched_error_log.last_update_user_id) == (
-                str(error_log_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_error_log.error_log_id == \
-                updated_error_log.error_log_id
+            assert fetched_obj.error_log_id == \
+                updated_obj.error_log_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        error_log_manager: ErrorLogManager,
+        obj_manager: ErrorLogManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestErrorLogBulkManager:
             the updated codes in the database.
 
         Args:
-            error_log_manager (ErrorLogManager):
+            obj_manager (ErrorLogManager):
                 An instance of the
                 `ErrorLogManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestErrorLogBulkManager:
             None
         """
         # Mocking error_log instances
-        error_log1 = await ErrorLogFactory. \
+        obj_1 = await ErrorLogFactory. \
             create_async(
                 session=session)
-        error_log2 = await ErrorLogFactory. \
+        obj_2 = await ErrorLogFactory. \
             create_async(
                 session=session)
-        logging.info(error_log1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestErrorLogBulkManager:
         updates = [
             {
                 "error_log_id":
-                    error_log1.error_log_id,
+                    obj_1.error_log_id,
                 "code": code_updated1
             },
             {
                 "error_log_id":
-                    error_log2.error_log_id,
+                    obj_2.error_log_id,
                 "code": code_updated2
             }
         ]
-        updated_error_logs = await error_log_manager.update_bulk(
+        updated_error_logs = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestErrorLogBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        error_logs = await error_log_manager.get_list()
+        error_logs = await obj_manager.get_list()
         logging.info(error_logs[0]
                      .__dict__)
         logging.info(error_logs[1]
@@ -192,40 +195,40 @@ class TestErrorLogBulkManager:
 
         assert str(updated_error_logs[0]
                    .last_update_user_id) == (
-            str(error_log_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_error_logs[1]
                    .last_update_user_id) == (
-            str(error_log_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(ErrorLog).filter(
                 ErrorLog._error_log_id == 1)  # type: ignore
         )
-        fetched_error_log = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_error_log,
+        assert isinstance(fetched_obj,
                           ErrorLog)
 
-        assert fetched_error_log.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(ErrorLog).filter(
                 ErrorLog._error_log_id == 2)  # type: ignore
         )
-        fetched_error_log = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_error_log,
+        assert isinstance(fetched_obj,
                           ErrorLog)
 
-        assert fetched_error_log.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_error_log_id(
         self,
-        error_log_manager: ErrorLogManager,
+        obj_manager: ErrorLogManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestErrorLogBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No error_logs to update since error_log_id is missing
+        # No error_logs to update since
+        # error_log_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await error_log_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_error_log_not_found(
         self,
-        error_log_manager: ErrorLogManager,
+        obj_manager: ErrorLogManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestErrorLogBulkManager:
             where each update
             contains a error_log_id and a code.
         2. Calls the update_bulk method of the
-            error_log_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the error_log was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestErrorLogBulkManager:
         updates = [{"error_log_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await error_log_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        error_log_manager: ErrorLogManager,
+        obj_manager: ErrorLogManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestErrorLogBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param error_log_manager: An instance of the
+        :param obj_manager: An instance of the
             ErrorLogManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestErrorLogBulkManager:
         updates = [{"error_log_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await error_log_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        error_log_manager: ErrorLogManager,
+        obj_manager: ErrorLogManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestErrorLogBulkManager:
             using the ErrorLogFactory.
         2. Delete the error_logs using the
             delete_bulk method
-            of the error_log_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the error_logs no longer exist in the database.
+            checking if the error_logs
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The error_logs should no longer exist in the database.
+        - The error_logs should
+            no longer exist in the database.
 
         """
 
-        error_log1 = await ErrorLogFactory.create_async(
+        obj_1 = await ErrorLogFactory.create_async(
             session=session)
 
-        error_log2 = await ErrorLogFactory.create_async(
+        obj_2 = await ErrorLogFactory.create_async(
             session=session)
 
         # Delete error_logs
-        error_log_ids = [error_log1.error_log_id,
-                     error_log2.error_log_id]
-        result = await error_log_manager.delete_bulk(
+        error_log_ids = [
+            obj_1.error_log_id,
+            obj_2.error_log_id
+        ]
+        result = await obj_manager.delete_bulk(
             error_log_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestErrorLogBulkManager:
         for error_log_id in error_log_ids:
             execute_result = await session.execute(
                 select(ErrorLog).filter(
-                    ErrorLog._error_log_id == error_log_id)  # type: ignore
+                    ErrorLog._error_log_id == (
+                        error_log_id))  # type: ignore
             )
-            fetched_error_log = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_error_log is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_error_logs_not_found(
         self,
-        error_log_manager: ErrorLogManager,
+        obj_manager: ErrorLogManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        error_logs when some error_logs are not found.
+        error_logs when some
+        error_logs are not found.
 
         Steps:
         1. Create a error_log using the
@@ -392,17 +402,17 @@ class TestErrorLogBulkManager:
         when some error_logs with the specified IDs are
         not found in the database.
         """
-        error_log1 = await ErrorLogFactory.create_async(
+        obj_1 = await ErrorLogFactory.create_async(
             session=session)
 
-        assert isinstance(error_log1,
+        assert isinstance(obj_1,
                           ErrorLog)
 
         # Delete error_logs
         error_log_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await error_log_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 error_log_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestErrorLogBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        error_log_manager: ErrorLogManager
+        obj_manager: ErrorLogManager
     ):
         """
         Test case to verify the behavior of deleting
         error_logs with an empty list.
 
         Args:
-            error_log_manager (ErrorLogManager): The
+            obj_manager (ErrorLogManager): The
                 instance of the
                 ErrorLogManager class.
 
@@ -430,7 +440,7 @@ class TestErrorLogBulkManager:
 
         # Delete error_logs with an empty list
         error_log_ids = []
-        result = await error_log_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             error_log_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestErrorLogBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        error_log_manager: ErrorLogManager,
+        obj_manager: ErrorLogManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestErrorLogBulkManager:
         method when invalid error_log IDs are provided.
 
         Args:
-            error_log_manager (ErrorLogManager): The
+            obj_manager (ErrorLogManager): The
                 instance of the
                 ErrorLogManager class.
             session (AsyncSession): The async session object.
@@ -463,8 +473,7 @@ class TestErrorLogBulkManager:
         error_log_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await error_log_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 error_log_ids)
 
         await session.rollback()
-

@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.tri_state_filter import TriStateFilterManager
+from managers.tri_state_filter import (
+    TriStateFilterManager)
 from models import TriStateFilter
-from models.factory import TriStateFilterFactory
+from models.factory import (
+    TriStateFilterFactory)
 
 
 class TestTriStateFilterBulkManager:
@@ -28,7 +30,7 @@ class TestTriStateFilterBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def tri_state_filter_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `TriStateFilterManager` for testing.
@@ -40,7 +42,7 @@ class TestTriStateFilterBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestTriStateFilterBulkManager:
         1. Generate a list of tri_state_filter data using the
             `TriStateFilterFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `tri_state_filter_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated tri_state_filter data.
         3. Verify that the number of tri_state_filters
@@ -79,35 +81,36 @@ class TestTriStateFilterBulkManager:
         tri_state_filters_data = [
             await TriStateFilterFactory.build_async(session) for _ in range(5)]
 
-        tri_state_filters = await tri_state_filter_manager.add_bulk(
+        tri_state_filters = await obj_manager.add_bulk(
             tri_state_filters_data)
 
         assert len(tri_state_filters) == 5
 
-        for updated_tri_state_filter in tri_state_filters:
+        for updated_obj in tri_state_filters:
             result = await session.execute(
                 select(TriStateFilter).filter(
-                    TriStateFilter._tri_state_filter_id == updated_tri_state_filter.tri_state_filter_id  # type: ignore
+                    TriStateFilter._tri_state_filter_id == (
+                        updated_obj.tri_state_filter_id)  # type: ignore
                 )
             )
-            fetched_tri_state_filter = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_tri_state_filter,
+                fetched_obj,
                 TriStateFilter)
 
-            assert str(fetched_tri_state_filter.insert_user_id) == (
-                str(tri_state_filter_manager._session_context.customer_code))
-            assert str(fetched_tri_state_filter.last_update_user_id) == (
-                str(tri_state_filter_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_tri_state_filter.tri_state_filter_id == \
-                updated_tri_state_filter.tri_state_filter_id
+            assert fetched_obj.tri_state_filter_id == \
+                updated_obj.tri_state_filter_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestTriStateFilterBulkManager:
             the updated codes in the database.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager):
+            obj_manager (TriStateFilterManager):
                 An instance of the
                 `TriStateFilterManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestTriStateFilterBulkManager:
             None
         """
         # Mocking tri_state_filter instances
-        tri_state_filter1 = await TriStateFilterFactory. \
+        obj_1 = await TriStateFilterFactory. \
             create_async(
                 session=session)
-        tri_state_filter2 = await TriStateFilterFactory. \
+        obj_2 = await TriStateFilterFactory. \
             create_async(
                 session=session)
-        logging.info(tri_state_filter1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestTriStateFilterBulkManager:
         updates = [
             {
                 "tri_state_filter_id":
-                    tri_state_filter1.tri_state_filter_id,
+                    obj_1.tri_state_filter_id,
                 "code": code_updated1
             },
             {
                 "tri_state_filter_id":
-                    tri_state_filter2.tri_state_filter_id,
+                    obj_2.tri_state_filter_id,
                 "code": code_updated2
             }
         ]
-        updated_tri_state_filters = await tri_state_filter_manager.update_bulk(
+        updated_tri_state_filters = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestTriStateFilterBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        tri_state_filters = await tri_state_filter_manager.get_list()
+        tri_state_filters = await obj_manager.get_list()
         logging.info(tri_state_filters[0]
                      .__dict__)
         logging.info(tri_state_filters[1]
@@ -192,40 +195,40 @@ class TestTriStateFilterBulkManager:
 
         assert str(updated_tri_state_filters[0]
                    .last_update_user_id) == (
-            str(tri_state_filter_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_tri_state_filters[1]
                    .last_update_user_id) == (
-            str(tri_state_filter_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(TriStateFilter).filter(
                 TriStateFilter._tri_state_filter_id == 1)  # type: ignore
         )
-        fetched_tri_state_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_tri_state_filter,
+        assert isinstance(fetched_obj,
                           TriStateFilter)
 
-        assert fetched_tri_state_filter.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(TriStateFilter).filter(
                 TriStateFilter._tri_state_filter_id == 2)  # type: ignore
         )
-        fetched_tri_state_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_tri_state_filter,
+        assert isinstance(fetched_obj,
                           TriStateFilter)
 
-        assert fetched_tri_state_filter.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_tri_state_filter_id(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestTriStateFilterBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No tri_state_filters to update since tri_state_filter_id is missing
+        # No tri_state_filters to update since
+        # tri_state_filter_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await tri_state_filter_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_tri_state_filter_not_found(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestTriStateFilterBulkManager:
             where each update
             contains a tri_state_filter_id and a code.
         2. Calls the update_bulk method of the
-            tri_state_filter_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the tri_state_filter was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestTriStateFilterBulkManager:
         updates = [{"tri_state_filter_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await tri_state_filter_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestTriStateFilterBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param tri_state_filter_manager: An instance of the
+        :param obj_manager: An instance of the
             TriStateFilterManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestTriStateFilterBulkManager:
         updates = [{"tri_state_filter_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await tri_state_filter_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestTriStateFilterBulkManager:
             using the TriStateFilterFactory.
         2. Delete the tri_state_filters using the
             delete_bulk method
-            of the tri_state_filter_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the tri_state_filters no longer exist in the database.
+            checking if the tri_state_filters
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The tri_state_filters should no longer exist in the database.
+        - The tri_state_filters should
+            no longer exist in the database.
 
         """
 
-        tri_state_filter1 = await TriStateFilterFactory.create_async(
+        obj_1 = await TriStateFilterFactory.create_async(
             session=session)
 
-        tri_state_filter2 = await TriStateFilterFactory.create_async(
+        obj_2 = await TriStateFilterFactory.create_async(
             session=session)
 
         # Delete tri_state_filters
-        tri_state_filter_ids = [tri_state_filter1.tri_state_filter_id,
-                     tri_state_filter2.tri_state_filter_id]
-        result = await tri_state_filter_manager.delete_bulk(
+        tri_state_filter_ids = [
+            obj_1.tri_state_filter_id,
+            obj_2.tri_state_filter_id
+        ]
+        result = await obj_manager.delete_bulk(
             tri_state_filter_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestTriStateFilterBulkManager:
         for tri_state_filter_id in tri_state_filter_ids:
             execute_result = await session.execute(
                 select(TriStateFilter).filter(
-                    TriStateFilter._tri_state_filter_id == tri_state_filter_id)  # type: ignore
+                    TriStateFilter._tri_state_filter_id == (
+                        tri_state_filter_id))  # type: ignore
             )
-            fetched_tri_state_filter = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_tri_state_filter is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_tri_state_filters_not_found(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        tri_state_filters when some tri_state_filters are not found.
+        tri_state_filters when some
+        tri_state_filters are not found.
 
         Steps:
         1. Create a tri_state_filter using the
@@ -392,17 +402,17 @@ class TestTriStateFilterBulkManager:
         when some tri_state_filters with the specified IDs are
         not found in the database.
         """
-        tri_state_filter1 = await TriStateFilterFactory.create_async(
+        obj_1 = await TriStateFilterFactory.create_async(
             session=session)
 
-        assert isinstance(tri_state_filter1,
+        assert isinstance(obj_1,
                           TriStateFilter)
 
         # Delete tri_state_filters
         tri_state_filter_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await tri_state_filter_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 tri_state_filter_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestTriStateFilterBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        tri_state_filter_manager: TriStateFilterManager
+        obj_manager: TriStateFilterManager
     ):
         """
         Test case to verify the behavior of deleting
         tri_state_filters with an empty list.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): The
+            obj_manager (TriStateFilterManager): The
                 instance of the
                 TriStateFilterManager class.
 
@@ -430,7 +440,7 @@ class TestTriStateFilterBulkManager:
 
         # Delete tri_state_filters with an empty list
         tri_state_filter_ids = []
-        result = await tri_state_filter_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             tri_state_filter_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestTriStateFilterBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestTriStateFilterBulkManager:
         method when invalid tri_state_filter IDs are provided.
 
         Args:
-            tri_state_filter_manager (TriStateFilterManager): The
+            obj_manager (TriStateFilterManager): The
                 instance of the
                 TriStateFilterManager class.
             session (AsyncSession): The async session object.
@@ -463,8 +473,7 @@ class TestTriStateFilterBulkManager:
         tri_state_filter_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await tri_state_filter_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 tri_state_filter_ids)
 
         await session.rollback()
-

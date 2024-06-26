@@ -207,7 +207,8 @@ async def test_process_request(flow_response):
     """
     mock_session_context = Mock(spec=SessionContext)
     mock_land_bus_obj = patch(
-        'apis.models.init.land_add_plant_init_obj_wf.LandBusObj',
+        "apis.models.init.land_add_plant_init_obj_wf."
+        "LandBusObj",
         autospec=True).start()
     mock_flow = patch(
         "apis.models.init.land_add_plant_init_obj_wf."

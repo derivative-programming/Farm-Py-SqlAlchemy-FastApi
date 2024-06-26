@@ -70,7 +70,8 @@ class OrgApiKeyFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                OrgApiKey: An instance of the
+                OrgApiKey:
+                    An instance of the
                     OrgApiKey model.
 
         """
@@ -185,7 +186,8 @@ class OrgApiKeyFactory(factory.Factory):
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
 
-        obj = OrgApiKeyFactory.build(session=None, *args, **kwargs)
+        obj = OrgApiKeyFactory \
+            .build(session=None, *args, **kwargs)
         obj.organization_id = (  # OrganizationID
             organization_id_organization_instance.organization_id)
         obj.org_customer_id = (  # OrgCustomerID
@@ -227,7 +229,8 @@ class OrgApiKeyFactory(factory.Factory):
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
 
-        obj = OrgApiKeyFactory.build(session=None, *args, **kwargs)
+        obj = OrgApiKeyFactory \
+            .build(session=None, *args, **kwargs)
         obj.organization_id = (  # OrganizationID
             organization_id_organization_instance.organization_id)
         obj.org_customer_id = (  # OrgCustomerID
@@ -239,4 +242,3 @@ class OrgApiKeyFactory(factory.Factory):
         # session.add(obj)
         # await session.flush()
         return obj
-

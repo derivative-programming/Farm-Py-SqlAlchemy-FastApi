@@ -21,7 +21,7 @@ from flows.land_user_plant_multi_select_to_editable import (
     FlowLandUserPlantMultiSelectToEditable,
     FlowLandUserPlantMultiSelectToEditableResult)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.land import (
     LandFactory)
 
@@ -32,7 +32,7 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
     `FlowLandUserPlantMultiSelectToEditableResult` class.
     """
 
-    def test_flow_land_user_plant_multi_select_to_editable_result_to_json(self):
+    def test_flow_result_to_json(self):
         """
         Test the `to_json` method of the
         `FlowLandUserPlantMultiSelectToEditableResult` class.
@@ -62,9 +62,12 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
         """
 
         session_context = SessionContext(dict(), session)
-        flow = FlowLandUserPlantMultiSelectToEditable(session_context)
+        flow = FlowLandUserPlantMultiSelectToEditable(
+            session_context)
 
-        land = await LandFactory.create_async(session)
+        land = await \
+            LandFactory.create_async(
+                session)
 
         land_bus_obj = LandBusObj(session_context)
         land_bus_obj.load_from_obj_instance(land)
@@ -111,4 +114,3 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
         #     request=request_instance
         #     )
         # assert isinstance(result,FlowLandUserPlantMultiSelectToEditableResult)
-

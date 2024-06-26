@@ -16,9 +16,11 @@ from sqlalchemy.future import select
 
 import models
 from helpers.session_context import SessionContext
-from managers.customer import CustomerManager
+from managers.customer import (
+    CustomerManager)
 from models import Customer
-from models.factory import CustomerFactory
+from models.factory import (
+    CustomerFactory)
 
 
 class TestCustomerGetByManager:
@@ -28,7 +30,7 @@ class TestCustomerGetByManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def customer_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `CustomerManager` for testing.
@@ -40,7 +42,7 @@ class TestCustomerGetByManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        customer_manager: CustomerManager
+        obj_manager: CustomerManager
     ):
         """
         Test case for the `build` method of
@@ -53,7 +55,7 @@ class TestCustomerGetByManager:
 
         # Call the build function of the manager
         customer = await \
-            customer_manager.build(
+            obj_manager.build(
                 **mock_data)
 
         # Assert that the returned object is an instance of
@@ -69,34 +71,34 @@ class TestCustomerGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
         Test case for the `get_by_id` method of
         `CustomerManager`.
         """
-        test_customer = await \
+        new_obj = await \
             CustomerFactory.create_async(
                 session)
 
         customer = await \
-            customer_manager.get_by_id(
-                test_customer.customer_id)
+            obj_manager.get_by_id(
+                new_obj.customer_id)
 
         assert isinstance(
             customer,
             Customer)
 
-        assert test_customer.customer_id == \
+        assert new_obj.customer_id == \
             customer.customer_id
-        assert test_customer.code == \
+        assert new_obj.code == \
             customer.code
 
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
-        customer_manager: CustomerManager
+        obj_manager: CustomerManager
     ):
         """
         Test case for the `get_by_id` method of
@@ -107,7 +109,7 @@ class TestCustomerGetByManager:
         non_existent_id = 9999  # An ID that's not in the database
 
         retrieved_customer = await \
-            customer_manager.get_by_id(
+            obj_manager.get_by_id(
                 non_existent_id)
 
         assert retrieved_customer is None
@@ -115,7 +117,7 @@ class TestCustomerGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_code_returns_customer(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -125,27 +127,27 @@ class TestCustomerGetByManager:
         returned by its code.
         """
 
-        test_customer = await \
+        new_obj = await \
             CustomerFactory.create_async(
                 session)
 
         customer = await \
-            customer_manager.get_by_code(
-                test_customer.code)
+            obj_manager.get_by_code(
+                new_obj.code)
 
         assert isinstance(
             customer,
             Customer)
 
-        assert test_customer.customer_id == \
+        assert new_obj.customer_id == \
             customer.customer_id
-        assert test_customer.code == \
+        assert new_obj.code == \
             customer.code
 
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
-        customer_manager: CustomerManager
+        obj_manager: CustomerManager
     ):
         """
         Test case for the `get_by_code` method of
@@ -156,7 +158,7 @@ class TestCustomerGetByManager:
         random_code = uuid.uuid4()
 
         customer = await \
-            customer_manager.get_by_code(
+            obj_manager.get_by_code(
                 random_code)
 
         assert customer is None
@@ -186,7 +188,7 @@ class TestCustomerGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_tac_id_existing(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -199,7 +201,7 @@ class TestCustomerGetByManager:
         1. Create a customer using the
             CustomerFactory.
         2. Fetch the customer using the
-            `get_by_tac_id` method of the customer_manager.
+            `get_by_tac_id` method of the obj_manager.
         3. Assert that the fetched customers list contains
             only one customer.
         4. Assert that the fetched customer
@@ -218,34 +220,34 @@ class TestCustomerGetByManager:
         """
         # Add a customer with a specific
         # tac_id
-        customer1 = await CustomerFactory.create_async(
+        obj_1 = await CustomerFactory.create_async(
             session=session)
 
         # Fetch the customer using
         # the manager function
 
-        fetched_customers = await \
-            customer_manager.get_by_tac_id(
-                customer1.tac_id)
-        assert len(fetched_customers) == 1
-        assert isinstance(fetched_customers[0],
+        fetched_objs = await \
+            obj_manager.get_by_tac_id(
+                obj_1.tac_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           Customer)
-        assert fetched_customers[0].code == \
-            customer1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.Tac).where(
-            models.Tac._tac_id == customer1.tac_id)  # type: ignore  # noqa: E501
+            models.Tac._tac_id == obj_1.tac_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         tac = result.scalars().first()
 
         assert isinstance(tac, models.Tac)
 
-        assert fetched_customers[0].tac_code_peek == tac.code
+        assert fetched_objs[0].tac_code_peek == tac.code
 
     @pytest.mark.asyncio
     async def test_get_by_tac_id_nonexistent(
         self,
-        customer_manager: CustomerManager
+        obj_manager: CustomerManager
     ):
         """
         Test case to verify the behavior of the
@@ -258,15 +260,15 @@ class TestCustomerGetByManager:
 
         non_existent_id = 999
 
-        fetched_customers = await \
-            customer_manager.get_by_tac_id(
+        fetched_objs = await \
+            obj_manager.get_by_tac_id(
                 non_existent_id)
-        assert len(fetched_customers) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_tac_id_invalid_type(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -274,7 +276,7 @@ class TestCustomerGetByManager:
         `get_by_tac_id` method when an invalid tac ID is provided.
 
         Args:
-            customer_manager (CustomerManager): An
+            obj_manager (CustomerManager): An
                 instance of the CustomerManager class.
             session (AsyncSession): An instance
                 of the AsyncSession class.
@@ -290,10 +292,9 @@ class TestCustomerGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await customer_manager.get_by_tac_id(
+            await obj_manager.get_by_tac_id(
                 invalid_id)  # type: ignore
 
         await session.rollback()
     # uTCOffsetInMinutes,
     # zip,
-

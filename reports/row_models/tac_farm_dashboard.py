@@ -10,7 +10,7 @@ import uuid  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from datetime import datetime, date  # noqa: F401
 
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 
 
 class ReportItemTacFarmDashboard():
@@ -41,4 +41,3 @@ class ReportItemTacFarmDashboard():
             TypeConversion.get_uuid(data["conditional_btn_example_link_land_code"]))
         self.is_conditional_btn_available = (
             bool(data["is_conditional_btn_available"]))
-

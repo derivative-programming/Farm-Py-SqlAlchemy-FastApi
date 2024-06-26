@@ -1020,4 +1020,3 @@ class CustomerRoleBaseBusObj(BaseBusObj):
     # isPlaceholder,
     # placeholder,
     # RoleID
-

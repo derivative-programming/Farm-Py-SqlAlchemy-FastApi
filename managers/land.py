@@ -548,18 +548,19 @@ class LandManager:
         """
         logging.info(
             "LandManager.add_bulk")
-        for land in lands:
+        for list_item in lands:
             land_id = \
-                land.land_id
-            code = land.code
-            if land.land_id is not None and land.land_id > 0:
+                list_item.land_id
+            code = list_item.code
+            if list_item.land_id is not None and \
+                    list_item.land_id > 0:
                 raise ValueError(
                     "Land is already added"
                     f": {str(code)} {str(land_id)}"
                 )
-            land.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            land.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(lands)
         await self._session_context.session.flush()
@@ -779,4 +780,3 @@ class LandManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-

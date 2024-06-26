@@ -117,4 +117,3 @@ class TacFluentBusObj(TacBaseBusObj):
 
         self.pac_id = value
         return self
-

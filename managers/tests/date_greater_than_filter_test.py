@@ -1,4 +1,4 @@
-# models/managers/tests/date_greater_than_filter_test.py
+# managers/tests/date_greater_than_filter_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
@@ -16,10 +16,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.date_greater_than_filter import DateGreaterThanFilterManager
+from managers.date_greater_than_filter import (
+    DateGreaterThanFilterManager)
 from models import DateGreaterThanFilter
-from models.factory import DateGreaterThanFilterFactory
-from models.serialization_schema.date_greater_than_filter import DateGreaterThanFilterSchema
+from models.factory import (
+    DateGreaterThanFilterFactory)
+from models.serialization_schema.date_greater_than_filter import (
+    DateGreaterThanFilterSchema)
 
 
 class TestDateGreaterThanFilterManager:
@@ -29,7 +32,7 @@ class TestDateGreaterThanFilterManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def date_greater_than_filter_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `DateGreaterThanFilterManager` for testing.
@@ -41,7 +44,7 @@ class TestDateGreaterThanFilterManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager
+        obj_manager: DateGreaterThanFilterManager
     ):
         """
         Test case for the `build` method of
@@ -54,10 +57,11 @@ class TestDateGreaterThanFilterManager:
 
         # Call the build function of the manager
         date_greater_than_filter = await \
-            date_greater_than_filter_manager.build(
+            obj_manager.build(
                 **mock_data)
 
-        # Assert that the returned object is an instance of DateGreaterThanFilter
+        # Assert that the returned object is an
+        # instance of DateGreaterThanFilter
         assert isinstance(
             date_greater_than_filter,
             DateGreaterThanFilter)
@@ -69,7 +73,7 @@ class TestDateGreaterThanFilterManager:
     @pytest.mark.asyncio
     async def test_build_with_missing_data(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -84,14 +88,14 @@ class TestDateGreaterThanFilterManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.build(**mock_data)
+            await obj_manager.build(**mock_data)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_add_correctly_adds_date_greater_than_filter_to_database(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -99,49 +103,51 @@ class TestDateGreaterThanFilterManager:
         `DateGreaterThanFilterManager` that checks if a
         date_greater_than_filter is correctly added to the database.
         """
-        test_date_greater_than_filter = await \
+        new_obj = await \
             DateGreaterThanFilterFactory.build_async(
                 session)
 
-        assert test_date_greater_than_filter.date_greater_than_filter_id == 0
+        assert new_obj.date_greater_than_filter_id == 0
 
         # Add the date_greater_than_filter using the
         # manager's add method
-        added_date_greater_than_filter = await \
-            date_greater_than_filter_manager.add(
-                date_greater_than_filter=test_date_greater_than_filter)
+        added_obj = await \
+            obj_manager.add(
+                date_greater_than_filter=new_obj)
 
-        assert isinstance(added_date_greater_than_filter,
+        assert isinstance(added_obj,
                           DateGreaterThanFilter)
 
-        assert str(added_date_greater_than_filter.insert_user_id) == (
-            str(date_greater_than_filter_manager._session_context.customer_code))
-        assert str(added_date_greater_than_filter.last_update_user_id) == (
-            str(date_greater_than_filter_manager._session_context.customer_code))
+        assert str(added_obj.insert_user_id) == (
+            str(obj_manager._session_context.customer_code))
+        assert str(added_obj.last_update_user_id) == (
+            str(obj_manager._session_context.customer_code))
 
-        assert added_date_greater_than_filter.date_greater_than_filter_id > 0
+        assert added_obj.date_greater_than_filter_id > 0
 
         # Fetch the date_greater_than_filter from
         # the database directly
         result = await session.execute(
             select(DateGreaterThanFilter).filter(
-                DateGreaterThanFilter._date_greater_than_filter_id == added_date_greater_than_filter.date_greater_than_filter_id  # type: ignore
+                DateGreaterThanFilter._date_greater_than_filter_id == (
+                    added_obj.date_greater_than_filter_id)  # type: ignore
             )
         )
-        fetched_date_greater_than_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
         # Assert that the fetched date_greater_than_filter
         # is not None and matches the
         # added date_greater_than_filter
-        assert fetched_date_greater_than_filter is not None
-        assert isinstance(fetched_date_greater_than_filter,
+        assert fetched_obj is not None
+        assert isinstance(fetched_obj,
                           DateGreaterThanFilter)
-        assert fetched_date_greater_than_filter.date_greater_than_filter_id == added_date_greater_than_filter.date_greater_than_filter_id
+        assert fetched_obj.date_greater_than_filter_id == \
+            added_obj.date_greater_than_filter_id
 
     @pytest.mark.asyncio
     async def test_add_returns_correct_date_greater_than_filter_object(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -152,42 +158,42 @@ class TestDateGreaterThanFilterManager:
         # Create a test date_greater_than_filter
         # using the DateGreaterThanFilterFactory
         # without persisting it to the database
-        test_date_greater_than_filter = await \
+        new_obj = await \
             DateGreaterThanFilterFactory.build_async(
                 session)
 
-        assert test_date_greater_than_filter.date_greater_than_filter_id == 0
+        assert new_obj.date_greater_than_filter_id == 0
 
-        test_date_greater_than_filter.code = uuid.uuid4()
+        new_obj.code = uuid.uuid4()
 
         # Add the date_greater_than_filter using
         # the manager's add method
-        added_date_greater_than_filter = await \
-            date_greater_than_filter_manager.add(
-                date_greater_than_filter=test_date_greater_than_filter)
+        added_obj = await \
+            obj_manager.add(
+                date_greater_than_filter=new_obj)
 
-        assert isinstance(added_date_greater_than_filter,
+        assert isinstance(added_obj,
                           DateGreaterThanFilter)
 
-        assert str(added_date_greater_than_filter.insert_user_id) == (
-            str(date_greater_than_filter_manager._session_context.customer_code))
-        assert str(added_date_greater_than_filter.last_update_user_id) == (
-            str(date_greater_than_filter_manager._session_context.customer_code))
+        assert str(added_obj.insert_user_id) == (
+            str(obj_manager._session_context.customer_code))
+        assert str(added_obj.last_update_user_id) == (
+            str(obj_manager._session_context.customer_code))
 
-        assert added_date_greater_than_filter.date_greater_than_filter_id > 0
+        assert added_obj.date_greater_than_filter_id > 0
 
         # Assert that the returned
         # date_greater_than_filter matches the
         # test date_greater_than_filter
-        assert added_date_greater_than_filter.date_greater_than_filter_id == \
-            test_date_greater_than_filter.date_greater_than_filter_id
-        assert added_date_greater_than_filter.code == \
-            test_date_greater_than_filter.code
+        assert added_obj.date_greater_than_filter_id == \
+            new_obj.date_greater_than_filter_id
+        assert added_obj.code == \
+            new_obj.code
 
     @pytest.mark.asyncio
     async def test_update(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -196,48 +202,49 @@ class TestDateGreaterThanFilterManager:
         that checks if a date_greater_than_filter
         is correctly updated.
         """
-        test_date_greater_than_filter = await \
+        new_obj = await \
             DateGreaterThanFilterFactory.create_async(
                 session)
 
-        test_date_greater_than_filter.code = uuid.uuid4()
+        new_obj.code = uuid.uuid4()
 
-        updated_date_greater_than_filter = await \
-            date_greater_than_filter_manager.update(
-                date_greater_than_filter=test_date_greater_than_filter)
+        updated_obj = await \
+            obj_manager.update(
+                date_greater_than_filter=new_obj)
 
-        assert isinstance(updated_date_greater_than_filter,
+        assert isinstance(updated_obj,
                           DateGreaterThanFilter)
 
-        assert str(updated_date_greater_than_filter.last_update_user_id) == str(
-            date_greater_than_filter_manager._session_context.customer_code)
+        assert str(updated_obj.last_update_user_id) == str(
+            obj_manager._session_context.customer_code)
 
-        assert updated_date_greater_than_filter.date_greater_than_filter_id == \
-            test_date_greater_than_filter.date_greater_than_filter_id
-        assert updated_date_greater_than_filter.code == \
-            test_date_greater_than_filter.code
+        assert updated_obj.date_greater_than_filter_id == \
+            new_obj.date_greater_than_filter_id
+        assert updated_obj.code == \
+            new_obj.code
 
         result = await session.execute(
             select(DateGreaterThanFilter).filter(
-                DateGreaterThanFilter._date_greater_than_filter_id == test_date_greater_than_filter.date_greater_than_filter_id)  # type: ignore
+                DateGreaterThanFilter._date_greater_than_filter_id == (
+                    new_obj.date_greater_than_filter_id))  # type: ignore
         )
 
-        fetched_date_greater_than_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert updated_date_greater_than_filter.date_greater_than_filter_id == \
-            fetched_date_greater_than_filter.date_greater_than_filter_id
-        assert updated_date_greater_than_filter.code == \
-            fetched_date_greater_than_filter.code
+        assert updated_obj.date_greater_than_filter_id == \
+            fetched_obj.date_greater_than_filter_id
+        assert updated_obj.code == \
+            fetched_obj.code
 
-        assert test_date_greater_than_filter.date_greater_than_filter_id == \
-            fetched_date_greater_than_filter.date_greater_than_filter_id
-        assert test_date_greater_than_filter.code == \
-            fetched_date_greater_than_filter.code
+        assert new_obj.date_greater_than_filter_id == \
+            fetched_obj.date_greater_than_filter_id
+        assert new_obj.code == \
+            fetched_obj.code
 
     @pytest.mark.asyncio
     async def test_update_via_dict(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -246,50 +253,51 @@ class TestDateGreaterThanFilterManager:
         that checks if a date_greater_than_filter is
         correctly updated using a dictionary.
         """
-        test_date_greater_than_filter = await \
+        new_obj = await \
             DateGreaterThanFilterFactory.create_async(
                 session)
 
         new_code = uuid.uuid4()
 
-        updated_date_greater_than_filter = await \
-            date_greater_than_filter_manager.update(
-                date_greater_than_filter=test_date_greater_than_filter,
+        updated_obj = await \
+            obj_manager.update(
+                date_greater_than_filter=new_obj,
                 code=new_code
             )
 
-        assert isinstance(updated_date_greater_than_filter,
+        assert isinstance(updated_obj,
                           DateGreaterThanFilter)
 
-        assert str(updated_date_greater_than_filter.last_update_user_id) == str(
-            date_greater_than_filter_manager._session_context.customer_code
+        assert str(updated_obj.last_update_user_id) == str(
+            obj_manager._session_context.customer_code
         )
 
-        assert updated_date_greater_than_filter.date_greater_than_filter_id == \
-            test_date_greater_than_filter.date_greater_than_filter_id
-        assert updated_date_greater_than_filter.code == new_code
+        assert updated_obj.date_greater_than_filter_id == \
+            new_obj.date_greater_than_filter_id
+        assert updated_obj.code == new_code
 
         result = await session.execute(
             select(DateGreaterThanFilter).filter(
-                DateGreaterThanFilter._date_greater_than_filter_id == test_date_greater_than_filter.date_greater_than_filter_id)  # type: ignore
+                DateGreaterThanFilter._date_greater_than_filter_id == (
+                    new_obj.date_greater_than_filter_id))  # type: ignore
         )
 
-        fetched_date_greater_than_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert updated_date_greater_than_filter.date_greater_than_filter_id == \
-            fetched_date_greater_than_filter.date_greater_than_filter_id
-        assert updated_date_greater_than_filter.code == \
-            fetched_date_greater_than_filter.code
+        assert updated_obj.date_greater_than_filter_id == \
+            fetched_obj.date_greater_than_filter_id
+        assert updated_obj.code == \
+            fetched_obj.code
 
-        assert test_date_greater_than_filter.date_greater_than_filter_id == \
-            fetched_date_greater_than_filter.date_greater_than_filter_id
+        assert new_obj.date_greater_than_filter_id == \
+            fetched_obj.date_greater_than_filter_id
         assert new_code == \
-            fetched_date_greater_than_filter.code
+            fetched_obj.code
 
     @pytest.mark.asyncio
     async def test_update_invalid_date_greater_than_filter(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager
+        obj_manager: DateGreaterThanFilterManager
     ):
         """
         Test case for the `update` method of
@@ -302,17 +310,17 @@ class TestDateGreaterThanFilterManager:
 
         new_code = uuid.uuid4()
 
-        updated_date_greater_than_filter = await (
-            date_greater_than_filter_manager.update(
+        updated_obj = await (
+            obj_manager.update(
                 date_greater_than_filter, code=new_code))  # type: ignore
 
         # Assertions
-        assert updated_date_greater_than_filter is None
+        assert updated_obj is None
 
     @pytest.mark.asyncio
     async def test_update_with_nonexistent_attribute(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -320,15 +328,15 @@ class TestDateGreaterThanFilterManager:
         `DateGreaterThanFilterManager`
         with a nonexistent attribute.
         """
-        test_date_greater_than_filter = await \
+        new_obj = await \
             DateGreaterThanFilterFactory.create_async(
                 session)
 
         new_code = uuid.uuid4()
 
         with pytest.raises(ValueError):
-            await date_greater_than_filter_manager.update(
-                date_greater_than_filter=test_date_greater_than_filter,
+            await obj_manager.update(
+                date_greater_than_filter=new_obj,
                 xxx=new_code
             )
 
@@ -337,66 +345,70 @@ class TestDateGreaterThanFilterManager:
     @pytest.mark.asyncio
     async def test_delete(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
         Test case for the `delete` method of
         `DateGreaterThanFilterManager`.
         """
-        date_greater_than_filter_data = await DateGreaterThanFilterFactory.create_async(
+        new_obj = await DateGreaterThanFilterFactory.create_async(
             session)
 
         result = await session.execute(
             select(DateGreaterThanFilter).filter(
-                DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter_data.date_greater_than_filter_id)  # type: ignore
+                DateGreaterThanFilter._date_greater_than_filter_id == (
+                    new_obj.date_greater_than_filter_id))  # type: ignore
         )
-        fetched_date_greater_than_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_date_greater_than_filter,
+        assert isinstance(fetched_obj,
                           DateGreaterThanFilter)
 
-        assert fetched_date_greater_than_filter.date_greater_than_filter_id == \
-            date_greater_than_filter_data.date_greater_than_filter_id
+        assert fetched_obj.date_greater_than_filter_id == \
+            new_obj.date_greater_than_filter_id
 
-        await date_greater_than_filter_manager.delete(
-            date_greater_than_filter_id=date_greater_than_filter_data.date_greater_than_filter_id)
+        await obj_manager.delete(
+            date_greater_than_filter_id=new_obj.date_greater_than_filter_id)
 
         result = await session.execute(
             select(DateGreaterThanFilter).filter(
-                DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter_data.date_greater_than_filter_id)  # type: ignore
+                DateGreaterThanFilter._date_greater_than_filter_id == (
+                    new_obj.date_greater_than_filter_id))  # type: ignore
         )
-        fetched_date_greater_than_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert fetched_date_greater_than_filter is None
+        assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_nonexistent(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
-        Test case to verify the behavior of deleting a nonexistent date_greater_than_filter.
+        Test case to verify the behavior of deleting a nonexistent
+        date_greater_than_filter.
 
         This test case ensures that when the delete method
-        is called with the ID of a nonexistent date_greater_than_filter,
+        is called with the ID of a nonexistent
+        date_greater_than_filter,
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param date_greater_than_filter_manager: The instance of the
+        :param obj_manager: The instance of the
             DateGreaterThanFilterManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.delete(999)
+            await obj_manager.delete(999)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_invalid_type(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -404,13 +416,13 @@ class TestDateGreaterThanFilterManager:
         with an invalid type.
 
         This test case ensures that when the `delete` method
-        of the `date_greater_than_filter_manager` is called with an invalid type,
+        of the `obj_manager` is called with an invalid type,
         an exception is raised. The test case expects the
         `delete` method to raise an exception, and if it doesn't,
         the test case will fail.
 
         Args:
-            date_greater_than_filter_manager
+            obj_manager
             (DateGreaterThanFilterManager): An
                 instance of the
                 `DateGreaterThanFilterManager` class.
@@ -424,14 +436,14 @@ class TestDateGreaterThanFilterManager:
 
         """
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.delete("999")  # type: ignore
+            await obj_manager.delete("999")  # type: ignore
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_get_list(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -443,44 +455,50 @@ class TestDateGreaterThanFilterManager:
 
         Steps:
         1. Call the `get_list` method of the
-            `date_greater_than_filter_manager` instance.
+            `obj_manager` instance.
         2. Assert that the returned list is empty.
         3. Create 5 date_greater_than_filter objects using the
             `DateGreaterThanFilterFactory.create_async` method.
-        4. Assert that the `date_greater_than_filters_data` variable is of type `List`.
+        4. Assert that the
+            `date_greater_than_filters_data` variable
+            is of type `List`.
         5. Call the `get_list` method of the
-            `date_greater_than_filter_manager` instance again.
+            `obj_manager` instance again.
         6. Assert that the returned list contains 5 date_greater_than_filters.
         7. Assert that all elements in the returned list are
-            instances of the `DateGreaterThanFilter` class.
+            instances of the
+            `DateGreaterThanFilter` class.
         """
 
-        date_greater_than_filters = await date_greater_than_filter_manager.get_list()
+        date_greater_than_filters = await obj_manager.get_list()
 
         assert len(date_greater_than_filters) == 0
 
         date_greater_than_filters_data = (
-            [await DateGreaterThanFilterFactory.create_async(session) for _ in range(5)])
+            [await DateGreaterThanFilterFactory.create_async(session)
+             for _ in range(5)])
 
         assert isinstance(date_greater_than_filters_data, List)
 
-        date_greater_than_filters = await date_greater_than_filter_manager.get_list()
+        date_greater_than_filters = await obj_manager.get_list()
 
         assert len(date_greater_than_filters) == 5
         assert all(isinstance(
-            date_greater_than_filter, DateGreaterThanFilter) for date_greater_than_filter in date_greater_than_filters)
+            date_greater_than_filter,
+            DateGreaterThanFilter
+        ) for date_greater_than_filter in date_greater_than_filters)
 
     @pytest.mark.asyncio
     async def test_to_json(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
         Test the 'to_json' method of the DateGreaterThanFilterManager class.
 
         Args:
-            date_greater_than_filter_manager
+            obj_manager
             (DateGreaterThanFilterManager): An
                 instance of the
                 DateGreaterThanFilterManager class.
@@ -496,7 +514,7 @@ class TestDateGreaterThanFilterManager:
             DateGreaterThanFilterFactory.build_async(
                 session)
 
-        json_data = date_greater_than_filter_manager.to_json(
+        json_data = obj_manager.to_json(
             date_greater_than_filter)
 
         assert json_data is not None
@@ -504,14 +522,14 @@ class TestDateGreaterThanFilterManager:
     @pytest.mark.asyncio
     async def test_to_dict(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
         Test the to_dict method of the DateGreaterThanFilterManager class.
 
         Args:
-            date_greater_than_filter_manager
+            obj_manager
             (DateGreaterThanFilterManager): An
                 instance of the
                 DateGreaterThanFilterManager class.
@@ -525,7 +543,7 @@ class TestDateGreaterThanFilterManager:
                 session)
 
         dict_data = \
-            date_greater_than_filter_manager.to_dict(
+            obj_manager.to_dict(
                 date_greater_than_filter)
 
         assert dict_data is not None
@@ -533,14 +551,16 @@ class TestDateGreaterThanFilterManager:
     @pytest.mark.asyncio
     async def test_from_json(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
-        Test the `from_json` method of the `DateGreaterThanFilterManager` class.
+        Test the `from_json` method of the
+        `DateGreaterThanFilterManager` class.
 
         This method tests the functionality of the
-        `from_json` method of the `DateGreaterThanFilterManager` class.
+        `from_json` method of the
+        `DateGreaterThanFilterManager` class.
         It creates a date_greater_than_filter using
         the `DateGreaterThanFilterFactory`
         and converts it to JSON using the `to_json` method.
@@ -551,7 +571,7 @@ class TestDateGreaterThanFilterManager:
         the same code as the original date_greater_than_filter.
 
         Args:
-            date_greater_than_filter_manager
+            obj_manager
             (DateGreaterThanFilterManager): An
                 instance of the
                 `DateGreaterThanFilterManager` class.
@@ -564,11 +584,11 @@ class TestDateGreaterThanFilterManager:
             DateGreaterThanFilterFactory.create_async(
                 session)
 
-        json_data = date_greater_than_filter_manager.to_json(
+        json_data = obj_manager.to_json(
             date_greater_than_filter)
 
         deserialized_date_greater_than_filter = await \
-                date_greater_than_filter_manager.from_json(json_data)
+            obj_manager.from_json(json_data)
 
         assert isinstance(deserialized_date_greater_than_filter,
                           DateGreaterThanFilter)
@@ -578,7 +598,7 @@ class TestDateGreaterThanFilterManager:
     @pytest.mark.asyncio
     async def test_from_dict(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -591,10 +611,11 @@ class TestDateGreaterThanFilterManager:
         date_greater_than_filter object.
 
         Args:
-            date_greater_than_filter_manager
+            obj_manager
             (DateGreaterThanFilterManager): An instance
                 of the `DateGreaterThanFilterManager` class.
-            session (AsyncSession): An instance of the `AsyncSession` class.
+            session (AsyncSession): An instance of the
+            `AsyncSession` class.
 
         Returns:
             None
@@ -608,13 +629,13 @@ class TestDateGreaterThanFilterManager:
 
         schema = DateGreaterThanFilterSchema()
 
-        date_greater_than_filter_data = schema.dump(date_greater_than_filter)
+        new_obj = schema.dump(date_greater_than_filter)
 
-        assert isinstance(date_greater_than_filter_data, dict)
+        assert isinstance(new_obj, dict)
 
         deserialized_date_greater_than_filter = await \
-            date_greater_than_filter_manager.from_dict(
-                date_greater_than_filter_data)
+            obj_manager.from_dict(
+                new_obj)
 
         assert isinstance(deserialized_date_greater_than_filter,
                           DateGreaterThanFilter)
@@ -625,7 +646,7 @@ class TestDateGreaterThanFilterManager:
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -641,32 +662,34 @@ class TestDateGreaterThanFilterManager:
         Steps:
         1. Create 5 date_greater_than_filter objects using
             the DateGreaterThanFilterFactory.
-        2. Call the count method of the date_greater_than_filter_manager.
+        2. Call the count method of the obj_manager.
         3. Assert that the count is equal to 5.
 
         """
         date_greater_than_filters_data = (
-            [await DateGreaterThanFilterFactory.create_async(session) for _ in range(5)])
+            [await DateGreaterThanFilterFactory.create_async(session)
+             for _ in range(5)])
 
         assert isinstance(date_greater_than_filters_data, List)
 
-        count = await date_greater_than_filter_manager.count()
+        count = await obj_manager.count()
 
         assert count == 5
 
     @pytest.mark.asyncio
     async def test_count_empty_database(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager
+        obj_manager: DateGreaterThanFilterManager
     ):
         """
         Test the count method when the database is empty.
 
         This test case checks if the count method of the
-        DateGreaterThanFilterManager class returns 0 when the database is empty.
+        DateGreaterThanFilterManager class
+        returns 0 when the database is empty.
 
         Args:
-            date_greater_than_filter_manager
+            obj_manager
             (DateGreaterThanFilterManager): An
                 instance of the
                 DateGreaterThanFilterManager class.
@@ -675,14 +698,14 @@ class TestDateGreaterThanFilterManager:
             None
         """
 
-        count = await date_greater_than_filter_manager.count()
+        count = await obj_manager.count()
 
         assert count == 0
 
     @pytest.mark.asyncio
     async def test_refresh_basic(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -701,61 +724,63 @@ class TestDateGreaterThanFilterManager:
             it reflects the updated code.
 
         Args:
-            date_greater_than_filter_manager
+            obj_manager
             (DateGreaterThanFilterManager): The
                 manager responsible
                 for date_greater_than_filter operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a date_greater_than_filter
-        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(
+        obj_1 = await DateGreaterThanFilterFactory.create_async(
             session=session)
 
         # Retrieve the date_greater_than_filter from the database
         result = await session.execute(
             select(DateGreaterThanFilter).filter(
-                DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter1.date_greater_than_filter_id)  # type: ignore
+                DateGreaterThanFilter._date_greater_than_filter_id == (
+                    obj_1.date_greater_than_filter_id))  # type: ignore
         )  # type: ignore
-        date_greater_than_filter2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
         # Verify that the retrieved date_greater_than_filter
         # matches the added date_greater_than_filter
-        assert date_greater_than_filter1.code == \
-            date_greater_than_filter2.code
+        assert obj_1.code == \
+            obj_2.code
 
         # Update the date_greater_than_filter's code
         updated_code1 = uuid.uuid4()
-        date_greater_than_filter1.code = updated_code1
-        updated_date_greater_than_filter1 = await date_greater_than_filter_manager.update(
-            date_greater_than_filter1)
+        obj_1.code = updated_code1
+        updated_obj_1 = await obj_manager.update(
+            obj_1)
 
         # Verify that the updated date_greater_than_filter
         # is of type DateGreaterThanFilter
         # and has the updated code
-        assert isinstance(updated_date_greater_than_filter1,
+        assert isinstance(updated_obj_1,
                           DateGreaterThanFilter)
 
-        assert updated_date_greater_than_filter1.code == updated_code1
+        assert updated_obj_1.code == updated_code1
 
         # Refresh the original date_greater_than_filter instance
-        refreshed_date_greater_than_filter2 = await date_greater_than_filter_manager.refresh(
-            date_greater_than_filter2)
+        refreshed_obj_2 = await obj_manager.refresh(
+            obj_2)
 
         # Verify that the refreshed date_greater_than_filter
         # reflects the updated code
-        assert refreshed_date_greater_than_filter2.code == updated_code1
+        assert refreshed_obj_2.code == updated_code1
 
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_date_greater_than_filter(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
-        Test case to verify the behavior of refreshing a nonexistent date_greater_than_filter.
+        Test case to verify the behavior of refreshing a
+        nonexistent date_greater_than_filter.
 
         Args:
-            date_greater_than_filter_manager
+            obj_manager
             (DateGreaterThanFilterManager): The
                 instance of the
                 DateGreaterThanFilterManager class.
@@ -772,7 +797,7 @@ class TestDateGreaterThanFilterManager:
             date_greater_than_filter_id=999)
 
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.refresh(
+            await obj_manager.refresh(
                 date_greater_than_filter)
 
         await session.rollback()
@@ -780,7 +805,7 @@ class TestDateGreaterThanFilterManager:
     @pytest.mark.asyncio
     async def test_exists_with_existing_date_greater_than_filter(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -788,7 +813,7 @@ class TestDateGreaterThanFilterManager:
         exists using the manager function.
 
         Args:
-            date_greater_than_filter_manager
+            obj_manager
             (DateGreaterThanFilterManager): The
                 date_greater_than_filter manager instance.
             session (AsyncSession): The async session object.
@@ -797,26 +822,28 @@ class TestDateGreaterThanFilterManager:
             None
         """
         # Add a date_greater_than_filter
-        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(
+        obj_1 = await DateGreaterThanFilterFactory.create_async(
             session=session)
 
         # Check if the date_greater_than_filter exists
         # using the manager function
-        assert await date_greater_than_filter_manager.exists(
-            date_greater_than_filter1.date_greater_than_filter_id) is True
+        assert await obj_manager.exists(
+            obj_1.date_greater_than_filter_id) is True
 
     @pytest.mark.asyncio
     async def test_is_equal_with_existing_date_greater_than_filter(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
         Test if the is_equal method of the
-        DateGreaterThanFilterManager class correctly compares two date_greater_than_filters.
+        DateGreaterThanFilterManager
+        class correctly compares two
+        date_greater_than_filters.
 
         Args:
-            date_greater_than_filter_manager
+            obj_manager
             (DateGreaterThanFilterManager): An
                 instance of the
                 DateGreaterThanFilterManager class.
@@ -826,39 +853,39 @@ class TestDateGreaterThanFilterManager:
             None
         """
         # Add a date_greater_than_filter
-        date_greater_than_filter1 = await \
+        obj_1 = await \
             DateGreaterThanFilterFactory.create_async(
                 session=session)
 
-        date_greater_than_filter2 = await \
-            date_greater_than_filter_manager.get_by_id(
-                date_greater_than_filter_id=date_greater_than_filter1.date_greater_than_filter_id)
+        obj_2 = await \
+            obj_manager.get_by_id(
+                date_greater_than_filter_id=obj_1.date_greater_than_filter_id)
 
-        assert date_greater_than_filter_manager.is_equal(
-            date_greater_than_filter1, date_greater_than_filter2) is True
+        assert obj_manager.is_equal(
+            obj_1, obj_2) is True
 
-        date_greater_than_filter1_dict = \
-            date_greater_than_filter_manager.to_dict(
-                date_greater_than_filter1)
+        obj_1_dict = \
+            obj_manager.to_dict(
+                obj_1)
 
         date_greater_than_filter3 = await \
-            date_greater_than_filter_manager.from_dict(
-                date_greater_than_filter1_dict)
+            obj_manager.from_dict(
+                obj_1_dict)
 
-        assert date_greater_than_filter_manager.is_equal(
-            date_greater_than_filter1, date_greater_than_filter3) is True
+        assert obj_manager.is_equal(
+            obj_1, date_greater_than_filter3) is True
 
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_date_greater_than_filter(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager
+        obj_manager: DateGreaterThanFilterManager
     ):
         """
         Test case to check if a date_greater_than_filter with a
         non-existent ID exists in the database.
 
         Args:
-            date_greater_than_filter_manager
+            obj_manager
             (DateGreaterThanFilterManager): The
                 instance of the DateGreaterThanFilterManager class.
 
@@ -868,12 +895,12 @@ class TestDateGreaterThanFilterManager:
         """
         non_existent_id = 999
 
-        assert await date_greater_than_filter_manager.exists(non_existent_id) is False
+        assert await obj_manager.exists(non_existent_id) is False
 
     @pytest.mark.asyncio
     async def test_exists_with_invalid_id_type(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -881,7 +908,7 @@ class TestDateGreaterThanFilterManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            date_greater_than_filter_manager
+            obj_manager
             (DateGreaterThanFilterManager): The instance
                 of the DateGreaterThanFilterManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -895,7 +922,6 @@ class TestDateGreaterThanFilterManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.exists(invalid_id)  # type: ignore  # noqa: E501
+            await obj_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-

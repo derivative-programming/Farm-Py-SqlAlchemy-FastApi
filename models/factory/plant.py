@@ -96,7 +96,8 @@ class PlantFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                Plant: An instance of the
+                Plant:
+                    An instance of the
                     Plant model.
 
         """
@@ -240,7 +241,8 @@ class PlantFactory(factory.Factory):
             flvr_foreign_key_id_flavor_instance.code)
 # endset
 
-        obj = PlantFactory.build(session=None, *args, **kwargs)
+        obj = PlantFactory \
+            .build(session=None, *args, **kwargs)
 
         obj.land_id = (  # LandID
             land_id_land_instance.land_id)
@@ -292,7 +294,8 @@ class PlantFactory(factory.Factory):
             flvr_foreign_key_id_flavor_instance.code)
 # endset
 
-        obj = PlantFactory.build(session=None, *args, **kwargs)
+        obj = PlantFactory \
+            .build(session=None, *args, **kwargs)
 
         obj.land_id = (  # LandID
             land_id_land_instance.land_id)

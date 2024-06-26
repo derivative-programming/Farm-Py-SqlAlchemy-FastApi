@@ -1,4 +1,4 @@
-# models/managers/tests/organization_test.py
+# managers/tests/organization_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
@@ -16,10 +16,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.organization import OrganizationManager
+from managers.organization import (
+    OrganizationManager)
 from models import Organization
-from models.factory import OrganizationFactory
-from models.serialization_schema.organization import OrganizationSchema
+from models.factory import (
+    OrganizationFactory)
+from models.serialization_schema.organization import (
+    OrganizationSchema)
 
 
 class TestOrganizationManager:
@@ -29,7 +32,7 @@ class TestOrganizationManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def organization_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `OrganizationManager` for testing.
@@ -41,7 +44,7 @@ class TestOrganizationManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        organization_manager: OrganizationManager
+        obj_manager: OrganizationManager
     ):
         """
         Test case for the `build` method of
@@ -54,10 +57,11 @@ class TestOrganizationManager:
 
         # Call the build function of the manager
         organization = await \
-            organization_manager.build(
+            obj_manager.build(
                 **mock_data)
 
-        # Assert that the returned object is an instance of Organization
+        # Assert that the returned object is an
+        # instance of Organization
         assert isinstance(
             organization,
             Organization)
@@ -69,7 +73,7 @@ class TestOrganizationManager:
     @pytest.mark.asyncio
     async def test_build_with_missing_data(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -84,14 +88,14 @@ class TestOrganizationManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await organization_manager.build(**mock_data)
+            await obj_manager.build(**mock_data)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_add_correctly_adds_organization_to_database(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -99,49 +103,51 @@ class TestOrganizationManager:
         `OrganizationManager` that checks if a
         organization is correctly added to the database.
         """
-        test_organization = await \
+        new_obj = await \
             OrganizationFactory.build_async(
                 session)
 
-        assert test_organization.organization_id == 0
+        assert new_obj.organization_id == 0
 
         # Add the organization using the
         # manager's add method
-        added_organization = await \
-            organization_manager.add(
-                organization=test_organization)
+        added_obj = await \
+            obj_manager.add(
+                organization=new_obj)
 
-        assert isinstance(added_organization,
+        assert isinstance(added_obj,
                           Organization)
 
-        assert str(added_organization.insert_user_id) == (
-            str(organization_manager._session_context.customer_code))
-        assert str(added_organization.last_update_user_id) == (
-            str(organization_manager._session_context.customer_code))
+        assert str(added_obj.insert_user_id) == (
+            str(obj_manager._session_context.customer_code))
+        assert str(added_obj.last_update_user_id) == (
+            str(obj_manager._session_context.customer_code))
 
-        assert added_organization.organization_id > 0
+        assert added_obj.organization_id > 0
 
         # Fetch the organization from
         # the database directly
         result = await session.execute(
             select(Organization).filter(
-                Organization._organization_id == added_organization.organization_id  # type: ignore
+                Organization._organization_id == (
+                    added_obj.organization_id)  # type: ignore
             )
         )
-        fetched_organization = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
         # Assert that the fetched organization
         # is not None and matches the
         # added organization
-        assert fetched_organization is not None
-        assert isinstance(fetched_organization,
+        assert fetched_obj is not None
+        assert isinstance(fetched_obj,
                           Organization)
-        assert fetched_organization.organization_id == added_organization.organization_id
+        assert fetched_obj.organization_id == \
+            added_obj.organization_id
 
     @pytest.mark.asyncio
     async def test_add_returns_correct_organization_object(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -152,42 +158,42 @@ class TestOrganizationManager:
         # Create a test organization
         # using the OrganizationFactory
         # without persisting it to the database
-        test_organization = await \
+        new_obj = await \
             OrganizationFactory.build_async(
                 session)
 
-        assert test_organization.organization_id == 0
+        assert new_obj.organization_id == 0
 
-        test_organization.code = uuid.uuid4()
+        new_obj.code = uuid.uuid4()
 
         # Add the organization using
         # the manager's add method
-        added_organization = await \
-            organization_manager.add(
-                organization=test_organization)
+        added_obj = await \
+            obj_manager.add(
+                organization=new_obj)
 
-        assert isinstance(added_organization,
+        assert isinstance(added_obj,
                           Organization)
 
-        assert str(added_organization.insert_user_id) == (
-            str(organization_manager._session_context.customer_code))
-        assert str(added_organization.last_update_user_id) == (
-            str(organization_manager._session_context.customer_code))
+        assert str(added_obj.insert_user_id) == (
+            str(obj_manager._session_context.customer_code))
+        assert str(added_obj.last_update_user_id) == (
+            str(obj_manager._session_context.customer_code))
 
-        assert added_organization.organization_id > 0
+        assert added_obj.organization_id > 0
 
         # Assert that the returned
         # organization matches the
         # test organization
-        assert added_organization.organization_id == \
-            test_organization.organization_id
-        assert added_organization.code == \
-            test_organization.code
+        assert added_obj.organization_id == \
+            new_obj.organization_id
+        assert added_obj.code == \
+            new_obj.code
 
     @pytest.mark.asyncio
     async def test_update(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -196,48 +202,49 @@ class TestOrganizationManager:
         that checks if a organization
         is correctly updated.
         """
-        test_organization = await \
+        new_obj = await \
             OrganizationFactory.create_async(
                 session)
 
-        test_organization.code = uuid.uuid4()
+        new_obj.code = uuid.uuid4()
 
-        updated_organization = await \
-            organization_manager.update(
-                organization=test_organization)
+        updated_obj = await \
+            obj_manager.update(
+                organization=new_obj)
 
-        assert isinstance(updated_organization,
+        assert isinstance(updated_obj,
                           Organization)
 
-        assert str(updated_organization.last_update_user_id) == str(
-            organization_manager._session_context.customer_code)
+        assert str(updated_obj.last_update_user_id) == str(
+            obj_manager._session_context.customer_code)
 
-        assert updated_organization.organization_id == \
-            test_organization.organization_id
-        assert updated_organization.code == \
-            test_organization.code
+        assert updated_obj.organization_id == \
+            new_obj.organization_id
+        assert updated_obj.code == \
+            new_obj.code
 
         result = await session.execute(
             select(Organization).filter(
-                Organization._organization_id == test_organization.organization_id)  # type: ignore
+                Organization._organization_id == (
+                    new_obj.organization_id))  # type: ignore
         )
 
-        fetched_organization = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert updated_organization.organization_id == \
-            fetched_organization.organization_id
-        assert updated_organization.code == \
-            fetched_organization.code
+        assert updated_obj.organization_id == \
+            fetched_obj.organization_id
+        assert updated_obj.code == \
+            fetched_obj.code
 
-        assert test_organization.organization_id == \
-            fetched_organization.organization_id
-        assert test_organization.code == \
-            fetched_organization.code
+        assert new_obj.organization_id == \
+            fetched_obj.organization_id
+        assert new_obj.code == \
+            fetched_obj.code
 
     @pytest.mark.asyncio
     async def test_update_via_dict(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -246,50 +253,51 @@ class TestOrganizationManager:
         that checks if a organization is
         correctly updated using a dictionary.
         """
-        test_organization = await \
+        new_obj = await \
             OrganizationFactory.create_async(
                 session)
 
         new_code = uuid.uuid4()
 
-        updated_organization = await \
-            organization_manager.update(
-                organization=test_organization,
+        updated_obj = await \
+            obj_manager.update(
+                organization=new_obj,
                 code=new_code
             )
 
-        assert isinstance(updated_organization,
+        assert isinstance(updated_obj,
                           Organization)
 
-        assert str(updated_organization.last_update_user_id) == str(
-            organization_manager._session_context.customer_code
+        assert str(updated_obj.last_update_user_id) == str(
+            obj_manager._session_context.customer_code
         )
 
-        assert updated_organization.organization_id == \
-            test_organization.organization_id
-        assert updated_organization.code == new_code
+        assert updated_obj.organization_id == \
+            new_obj.organization_id
+        assert updated_obj.code == new_code
 
         result = await session.execute(
             select(Organization).filter(
-                Organization._organization_id == test_organization.organization_id)  # type: ignore
+                Organization._organization_id == (
+                    new_obj.organization_id))  # type: ignore
         )
 
-        fetched_organization = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert updated_organization.organization_id == \
-            fetched_organization.organization_id
-        assert updated_organization.code == \
-            fetched_organization.code
+        assert updated_obj.organization_id == \
+            fetched_obj.organization_id
+        assert updated_obj.code == \
+            fetched_obj.code
 
-        assert test_organization.organization_id == \
-            fetched_organization.organization_id
+        assert new_obj.organization_id == \
+            fetched_obj.organization_id
         assert new_code == \
-            fetched_organization.code
+            fetched_obj.code
 
     @pytest.mark.asyncio
     async def test_update_invalid_organization(
         self,
-        organization_manager: OrganizationManager
+        obj_manager: OrganizationManager
     ):
         """
         Test case for the `update` method of
@@ -302,17 +310,17 @@ class TestOrganizationManager:
 
         new_code = uuid.uuid4()
 
-        updated_organization = await (
-            organization_manager.update(
+        updated_obj = await (
+            obj_manager.update(
                 organization, code=new_code))  # type: ignore
 
         # Assertions
-        assert updated_organization is None
+        assert updated_obj is None
 
     @pytest.mark.asyncio
     async def test_update_with_nonexistent_attribute(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -320,15 +328,15 @@ class TestOrganizationManager:
         `OrganizationManager`
         with a nonexistent attribute.
         """
-        test_organization = await \
+        new_obj = await \
             OrganizationFactory.create_async(
                 session)
 
         new_code = uuid.uuid4()
 
         with pytest.raises(ValueError):
-            await organization_manager.update(
-                organization=test_organization,
+            await obj_manager.update(
+                organization=new_obj,
                 xxx=new_code
             )
 
@@ -337,66 +345,70 @@ class TestOrganizationManager:
     @pytest.mark.asyncio
     async def test_delete(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
         Test case for the `delete` method of
         `OrganizationManager`.
         """
-        organization_data = await OrganizationFactory.create_async(
+        new_obj = await OrganizationFactory.create_async(
             session)
 
         result = await session.execute(
             select(Organization).filter(
-                Organization._organization_id == organization_data.organization_id)  # type: ignore
+                Organization._organization_id == (
+                    new_obj.organization_id))  # type: ignore
         )
-        fetched_organization = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_organization,
+        assert isinstance(fetched_obj,
                           Organization)
 
-        assert fetched_organization.organization_id == \
-            organization_data.organization_id
+        assert fetched_obj.organization_id == \
+            new_obj.organization_id
 
-        await organization_manager.delete(
-            organization_id=organization_data.organization_id)
+        await obj_manager.delete(
+            organization_id=new_obj.organization_id)
 
         result = await session.execute(
             select(Organization).filter(
-                Organization._organization_id == organization_data.organization_id)  # type: ignore
+                Organization._organization_id == (
+                    new_obj.organization_id))  # type: ignore
         )
-        fetched_organization = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert fetched_organization is None
+        assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_nonexistent(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
-        Test case to verify the behavior of deleting a nonexistent organization.
+        Test case to verify the behavior of deleting a nonexistent
+        organization.
 
         This test case ensures that when the delete method
-        is called with the ID of a nonexistent organization,
+        is called with the ID of a nonexistent
+        organization,
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param organization_manager: The instance of the
+        :param obj_manager: The instance of the
             OrganizationManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
-            await organization_manager.delete(999)
+            await obj_manager.delete(999)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_invalid_type(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -404,13 +416,13 @@ class TestOrganizationManager:
         with an invalid type.
 
         This test case ensures that when the `delete` method
-        of the `organization_manager` is called with an invalid type,
+        of the `obj_manager` is called with an invalid type,
         an exception is raised. The test case expects the
         `delete` method to raise an exception, and if it doesn't,
         the test case will fail.
 
         Args:
-            organization_manager
+            obj_manager
             (OrganizationManager): An
                 instance of the
                 `OrganizationManager` class.
@@ -424,14 +436,14 @@ class TestOrganizationManager:
 
         """
         with pytest.raises(Exception):
-            await organization_manager.delete("999")  # type: ignore
+            await obj_manager.delete("999")  # type: ignore
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_get_list(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -443,44 +455,50 @@ class TestOrganizationManager:
 
         Steps:
         1. Call the `get_list` method of the
-            `organization_manager` instance.
+            `obj_manager` instance.
         2. Assert that the returned list is empty.
         3. Create 5 organization objects using the
             `OrganizationFactory.create_async` method.
-        4. Assert that the `organizations_data` variable is of type `List`.
+        4. Assert that the
+            `organizations_data` variable
+            is of type `List`.
         5. Call the `get_list` method of the
-            `organization_manager` instance again.
+            `obj_manager` instance again.
         6. Assert that the returned list contains 5 organizations.
         7. Assert that all elements in the returned list are
-            instances of the `Organization` class.
+            instances of the
+            `Organization` class.
         """
 
-        organizations = await organization_manager.get_list()
+        organizations = await obj_manager.get_list()
 
         assert len(organizations) == 0
 
         organizations_data = (
-            [await OrganizationFactory.create_async(session) for _ in range(5)])
+            [await OrganizationFactory.create_async(session)
+             for _ in range(5)])
 
         assert isinstance(organizations_data, List)
 
-        organizations = await organization_manager.get_list()
+        organizations = await obj_manager.get_list()
 
         assert len(organizations) == 5
         assert all(isinstance(
-            organization, Organization) for organization in organizations)
+            organization,
+            Organization
+        ) for organization in organizations)
 
     @pytest.mark.asyncio
     async def test_to_json(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
         Test the 'to_json' method of the OrganizationManager class.
 
         Args:
-            organization_manager
+            obj_manager
             (OrganizationManager): An
                 instance of the
                 OrganizationManager class.
@@ -496,7 +514,7 @@ class TestOrganizationManager:
             OrganizationFactory.build_async(
                 session)
 
-        json_data = organization_manager.to_json(
+        json_data = obj_manager.to_json(
             organization)
 
         assert json_data is not None
@@ -504,14 +522,14 @@ class TestOrganizationManager:
     @pytest.mark.asyncio
     async def test_to_dict(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
         Test the to_dict method of the OrganizationManager class.
 
         Args:
-            organization_manager
+            obj_manager
             (OrganizationManager): An
                 instance of the
                 OrganizationManager class.
@@ -525,7 +543,7 @@ class TestOrganizationManager:
                 session)
 
         dict_data = \
-            organization_manager.to_dict(
+            obj_manager.to_dict(
                 organization)
 
         assert dict_data is not None
@@ -533,14 +551,16 @@ class TestOrganizationManager:
     @pytest.mark.asyncio
     async def test_from_json(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
-        Test the `from_json` method of the `OrganizationManager` class.
+        Test the `from_json` method of the
+        `OrganizationManager` class.
 
         This method tests the functionality of the
-        `from_json` method of the `OrganizationManager` class.
+        `from_json` method of the
+        `OrganizationManager` class.
         It creates a organization using
         the `OrganizationFactory`
         and converts it to JSON using the `to_json` method.
@@ -551,7 +571,7 @@ class TestOrganizationManager:
         the same code as the original organization.
 
         Args:
-            organization_manager
+            obj_manager
             (OrganizationManager): An
                 instance of the
                 `OrganizationManager` class.
@@ -564,11 +584,11 @@ class TestOrganizationManager:
             OrganizationFactory.create_async(
                 session)
 
-        json_data = organization_manager.to_json(
+        json_data = obj_manager.to_json(
             organization)
 
         deserialized_organization = await \
-                organization_manager.from_json(json_data)
+            obj_manager.from_json(json_data)
 
         assert isinstance(deserialized_organization,
                           Organization)
@@ -578,7 +598,7 @@ class TestOrganizationManager:
     @pytest.mark.asyncio
     async def test_from_dict(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -591,10 +611,11 @@ class TestOrganizationManager:
         organization object.
 
         Args:
-            organization_manager
+            obj_manager
             (OrganizationManager): An instance
                 of the `OrganizationManager` class.
-            session (AsyncSession): An instance of the `AsyncSession` class.
+            session (AsyncSession): An instance of the
+            `AsyncSession` class.
 
         Returns:
             None
@@ -608,13 +629,13 @@ class TestOrganizationManager:
 
         schema = OrganizationSchema()
 
-        organization_data = schema.dump(organization)
+        new_obj = schema.dump(organization)
 
-        assert isinstance(organization_data, dict)
+        assert isinstance(new_obj, dict)
 
         deserialized_organization = await \
-            organization_manager.from_dict(
-                organization_data)
+            obj_manager.from_dict(
+                new_obj)
 
         assert isinstance(deserialized_organization,
                           Organization)
@@ -625,7 +646,7 @@ class TestOrganizationManager:
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -641,32 +662,34 @@ class TestOrganizationManager:
         Steps:
         1. Create 5 organization objects using
             the OrganizationFactory.
-        2. Call the count method of the organization_manager.
+        2. Call the count method of the obj_manager.
         3. Assert that the count is equal to 5.
 
         """
         organizations_data = (
-            [await OrganizationFactory.create_async(session) for _ in range(5)])
+            [await OrganizationFactory.create_async(session)
+             for _ in range(5)])
 
         assert isinstance(organizations_data, List)
 
-        count = await organization_manager.count()
+        count = await obj_manager.count()
 
         assert count == 5
 
     @pytest.mark.asyncio
     async def test_count_empty_database(
         self,
-        organization_manager: OrganizationManager
+        obj_manager: OrganizationManager
     ):
         """
         Test the count method when the database is empty.
 
         This test case checks if the count method of the
-        OrganizationManager class returns 0 when the database is empty.
+        OrganizationManager class
+        returns 0 when the database is empty.
 
         Args:
-            organization_manager
+            obj_manager
             (OrganizationManager): An
                 instance of the
                 OrganizationManager class.
@@ -675,14 +698,14 @@ class TestOrganizationManager:
             None
         """
 
-        count = await organization_manager.count()
+        count = await obj_manager.count()
 
         assert count == 0
 
     @pytest.mark.asyncio
     async def test_refresh_basic(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -701,61 +724,63 @@ class TestOrganizationManager:
             it reflects the updated code.
 
         Args:
-            organization_manager
+            obj_manager
             (OrganizationManager): The
                 manager responsible
                 for organization operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a organization
-        organization1 = await OrganizationFactory.create_async(
+        obj_1 = await OrganizationFactory.create_async(
             session=session)
 
         # Retrieve the organization from the database
         result = await session.execute(
             select(Organization).filter(
-                Organization._organization_id == organization1.organization_id)  # type: ignore
+                Organization._organization_id == (
+                    obj_1.organization_id))  # type: ignore
         )  # type: ignore
-        organization2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
         # Verify that the retrieved organization
         # matches the added organization
-        assert organization1.code == \
-            organization2.code
+        assert obj_1.code == \
+            obj_2.code
 
         # Update the organization's code
         updated_code1 = uuid.uuid4()
-        organization1.code = updated_code1
-        updated_organization1 = await organization_manager.update(
-            organization1)
+        obj_1.code = updated_code1
+        updated_obj_1 = await obj_manager.update(
+            obj_1)
 
         # Verify that the updated organization
         # is of type Organization
         # and has the updated code
-        assert isinstance(updated_organization1,
+        assert isinstance(updated_obj_1,
                           Organization)
 
-        assert updated_organization1.code == updated_code1
+        assert updated_obj_1.code == updated_code1
 
         # Refresh the original organization instance
-        refreshed_organization2 = await organization_manager.refresh(
-            organization2)
+        refreshed_obj_2 = await obj_manager.refresh(
+            obj_2)
 
         # Verify that the refreshed organization
         # reflects the updated code
-        assert refreshed_organization2.code == updated_code1
+        assert refreshed_obj_2.code == updated_code1
 
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_organization(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
-        Test case to verify the behavior of refreshing a nonexistent organization.
+        Test case to verify the behavior of refreshing a
+        nonexistent organization.
 
         Args:
-            organization_manager
+            obj_manager
             (OrganizationManager): The
                 instance of the
                 OrganizationManager class.
@@ -772,7 +797,7 @@ class TestOrganizationManager:
             organization_id=999)
 
         with pytest.raises(Exception):
-            await organization_manager.refresh(
+            await obj_manager.refresh(
                 organization)
 
         await session.rollback()
@@ -780,7 +805,7 @@ class TestOrganizationManager:
     @pytest.mark.asyncio
     async def test_exists_with_existing_organization(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -788,7 +813,7 @@ class TestOrganizationManager:
         exists using the manager function.
 
         Args:
-            organization_manager
+            obj_manager
             (OrganizationManager): The
                 organization manager instance.
             session (AsyncSession): The async session object.
@@ -797,26 +822,28 @@ class TestOrganizationManager:
             None
         """
         # Add a organization
-        organization1 = await OrganizationFactory.create_async(
+        obj_1 = await OrganizationFactory.create_async(
             session=session)
 
         # Check if the organization exists
         # using the manager function
-        assert await organization_manager.exists(
-            organization1.organization_id) is True
+        assert await obj_manager.exists(
+            obj_1.organization_id) is True
 
     @pytest.mark.asyncio
     async def test_is_equal_with_existing_organization(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
         Test if the is_equal method of the
-        OrganizationManager class correctly compares two organizations.
+        OrganizationManager
+        class correctly compares two
+        organizations.
 
         Args:
-            organization_manager
+            obj_manager
             (OrganizationManager): An
                 instance of the
                 OrganizationManager class.
@@ -826,39 +853,39 @@ class TestOrganizationManager:
             None
         """
         # Add a organization
-        organization1 = await \
+        obj_1 = await \
             OrganizationFactory.create_async(
                 session=session)
 
-        organization2 = await \
-            organization_manager.get_by_id(
-                organization_id=organization1.organization_id)
+        obj_2 = await \
+            obj_manager.get_by_id(
+                organization_id=obj_1.organization_id)
 
-        assert organization_manager.is_equal(
-            organization1, organization2) is True
+        assert obj_manager.is_equal(
+            obj_1, obj_2) is True
 
-        organization1_dict = \
-            organization_manager.to_dict(
-                organization1)
+        obj_1_dict = \
+            obj_manager.to_dict(
+                obj_1)
 
         organization3 = await \
-            organization_manager.from_dict(
-                organization1_dict)
+            obj_manager.from_dict(
+                obj_1_dict)
 
-        assert organization_manager.is_equal(
-            organization1, organization3) is True
+        assert obj_manager.is_equal(
+            obj_1, organization3) is True
 
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_organization(
         self,
-        organization_manager: OrganizationManager
+        obj_manager: OrganizationManager
     ):
         """
         Test case to check if a organization with a
         non-existent ID exists in the database.
 
         Args:
-            organization_manager
+            obj_manager
             (OrganizationManager): The
                 instance of the OrganizationManager class.
 
@@ -868,12 +895,12 @@ class TestOrganizationManager:
         """
         non_existent_id = 999
 
-        assert await organization_manager.exists(non_existent_id) is False
+        assert await obj_manager.exists(non_existent_id) is False
 
     @pytest.mark.asyncio
     async def test_exists_with_invalid_id_type(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -881,7 +908,7 @@ class TestOrganizationManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            organization_manager
+            obj_manager
             (OrganizationManager): The instance
                 of the OrganizationManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -895,7 +922,6 @@ class TestOrganizationManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await organization_manager.exists(invalid_id)  # type: ignore  # noqa: E501
+            await obj_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-

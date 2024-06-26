@@ -24,17 +24,17 @@ the following endpoints:
 """
 
 import logging
-import tempfile
+import tempfile  # noqa: F401
 import traceback
 import uuid
 
-from fastapi import APIRouter, Depends, Path
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, Depends, Path  # noqa: F401
+from fastapi.responses import FileResponse  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import apis.models as api_models
-import apis.models.init as api_init_models
-import reports
+import apis.models.init as api_init_models  # noqa: F401
+import reports  # noqa: F401
 from database import get_db
 from helpers import SessionContext, api_key_header
 
@@ -78,7 +78,8 @@ class TacRegisterRouter(BaseRouter):
 
     @staticmethod
     @router.get(
-        "/api/v1_0/tac-register/{tac_code}/init",
+        "/api/v1_0/tac-register"
+        "/{tac_code}/init",
         response_model=(
             api_init_models.
             TacRegisterInitObjWFGetInitModelResponse
@@ -105,7 +106,8 @@ class TacRegisterRouter(BaseRouter):
         """
 
         logging.info(
-            'TacRegisterRouter.request_get_init start. tacCode:%s',
+            "TacRegisterRouter"
+            ".request_get_init start. tacCode:%s",
             tac_code)
         auth_dict = BaseRouter.implementation_check(
             TacRegisterRouterConfig
@@ -119,6 +121,11 @@ class TacRegisterRouter(BaseRouter):
         auth_dict = BaseRouter.authorization_check(
             TacRegisterRouterConfig.is_public, api_key)
 
+        init_request = (
+            api_init_models.
+            TacRegisterInitObjWFGetInitModelRequest()
+        )
+
         # Start a transaction
         async with session:
             try:
@@ -128,10 +135,7 @@ class TacRegisterRouter(BaseRouter):
                     "TacCode",
                     tac_code
                 )
-                init_request = (
-                    api_init_models.
-                    TacRegisterInitObjWFGetInitModelRequest()
-                )
+
                 response = await init_request.process_request(
                     session_context,
                     tac_code,
@@ -158,14 +162,17 @@ class TacRegisterRouter(BaseRouter):
                 else:
                     await session.rollback()
         response_data = response.model_dump_json()
-        logging.info('TacRegisterRouter.init get result:%s',
-                     response_data)
+        logging.info(
+            "TacRegisterRouter"
+            ".init get result:%s",
+            response_data)
         return response
 
 
     @staticmethod
     @router.post(
-        "/api/v1_0/tac-register/{tac_code}",
+        "/api/v1_0/tac-register"
+        "/{tac_code}",
         response_model=(
             api_models
             .TacRegisterPostModelResponse
@@ -246,7 +253,7 @@ class TacRegisterRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            'TacRegisterRouter.submit get result:%s',
+            "TacRegisterRouter"
+            ".submit get result:%s",
             response_data)
         return response
-

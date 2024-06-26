@@ -1,4 +1,4 @@
-# date_greater_than_filter_test.py
+# models/serialization_schema/tests/date_greater_than_filter_test.py
 # pylint: disable=redefined-outer-name
 # pylint: disable=unused-import
 
@@ -15,13 +15,15 @@ transmitted over a network.
 
 The tests in this module cover the serialization
 and deserialization of DateGreaterThanFilter
-instances using the DateGreaterThanFilterSchema class. They verify
+instances using the DateGreaterThanFilterSchema
+class. They verify
 that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a DateGreaterThanFilter instance.
 
-The DateGreaterThanFilterSchema class is used to define
+The DateGreaterThanFilterSchema class
+is used to define
 the serialization and deserialization
 rules for DateGreaterThanFilter instances. It
 specifies how each attribute of a
@@ -56,7 +58,7 @@ logger = get_logger(__name__)
 
 
 @pytest.fixture(scope="function")
-def date_greater_than_filter(
+def new_obj(
     session
 ) -> DateGreaterThanFilter:
     """
@@ -114,7 +116,7 @@ class TestDateGreaterThanFilterSchema:
 
     def test_date_greater_than_filter_serialization(
         self,
-        date_greater_than_filter: DateGreaterThanFilter
+        new_obj: DateGreaterThanFilter
     ):
         """
         Test the serialization of a
@@ -127,44 +129,44 @@ class TestDateGreaterThanFilterSchema:
         """
 
         schema = DateGreaterThanFilterSchema()
-        date_greater_than_filter_data = schema.dump(date_greater_than_filter)
+        date_greater_than_filter_data = schema.dump(new_obj)
 
         assert isinstance(date_greater_than_filter_data, dict)
 
         result = date_greater_than_filter_data
 
-        assert result['code'] == str(date_greater_than_filter.code)
+        assert result['code'] == str(new_obj.code)
         assert result['last_change_code'] == (
-            date_greater_than_filter.last_change_code)
+            new_obj.last_change_code)
         assert result['insert_user_id'] == (
-            str(date_greater_than_filter.insert_user_id))
+            str(new_obj.insert_user_id))
         assert result['last_update_user_id'] == (
-            str(date_greater_than_filter.last_update_user_id))
+            str(new_obj.last_update_user_id))
 
         assert result['day_count'] == (
-            date_greater_than_filter.day_count)
+            new_obj.day_count)
         assert result['description'] == (
-            date_greater_than_filter.description)
+            new_obj.description)
         assert result['display_order'] == (
-            date_greater_than_filter.display_order)
+            new_obj.display_order)
         assert result['is_active'] == (
-            date_greater_than_filter.is_active)
+            new_obj.is_active)
         assert result['lookup_enum_name'] == (
-            date_greater_than_filter.lookup_enum_name)
+            new_obj.lookup_enum_name)
         assert result['name'] == (
-            date_greater_than_filter.name)
+            new_obj.name)
         assert result['pac_id'] == (
-            date_greater_than_filter.pac_id)
+            new_obj.pac_id)
         assert result['insert_utc_date_time'] == (
-            date_greater_than_filter.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
-            date_greater_than_filter.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert result['pac_code_peek'] == (  # PacID
-            str(date_greater_than_filter.pac_code_peek))
+            str(new_obj.pac_code_peek))
 
     def test_date_greater_than_filter_deserialization(
         self,
-        date_greater_than_filter
+        new_obj: DateGreaterThanFilter
     ):
         """
         Test the deserialization of a
@@ -183,76 +185,76 @@ class TestDateGreaterThanFilterSchema:
         """
 
         schema = DateGreaterThanFilterSchema()
-        serialized_data = schema.dump(date_greater_than_filter)
+        serialized_data = schema.dump(new_obj)
         deserialized_data = schema.load(serialized_data)
 
         assert deserialized_data['code'] == \
-            date_greater_than_filter.code
+            new_obj.code
         assert deserialized_data['last_change_code'] == (
-            date_greater_than_filter.last_change_code)
+            new_obj.last_change_code)
         assert deserialized_data['insert_user_id'] == (
-            date_greater_than_filter.insert_user_id)
+            new_obj.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
-            date_greater_than_filter.last_update_user_id)
+            new_obj.last_update_user_id)
         assert deserialized_data['day_count'] == (
-            date_greater_than_filter.day_count)
+            new_obj.day_count)
         assert deserialized_data['description'] == (
-            date_greater_than_filter.description)
+            new_obj.description)
         assert deserialized_data['display_order'] == (
-            date_greater_than_filter.display_order)
+            new_obj.display_order)
         assert deserialized_data['is_active'] == (
-            date_greater_than_filter.is_active)
+            new_obj.is_active)
         assert deserialized_data['lookup_enum_name'] == (
-            date_greater_than_filter.lookup_enum_name)
+            new_obj.lookup_enum_name)
         assert deserialized_data['name'] == (
-            date_greater_than_filter.name)
+            new_obj.name)
         assert deserialized_data['pac_id'] == (
-            date_greater_than_filter.pac_id)
+            new_obj.pac_id)
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
-            date_greater_than_filter.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
-            date_greater_than_filter.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert deserialized_data[(  # PacID
             'pac_code_peek')] == (
-            date_greater_than_filter.pac_code_peek)
+            new_obj.pac_code_peek)
 
-        new_date_greater_than_filter = DateGreaterThanFilter(
+        obj_from_dict = DateGreaterThanFilter(
             **deserialized_data)
 
-        assert isinstance(new_date_greater_than_filter,
+        assert isinstance(new_obj,
                           DateGreaterThanFilter)
 
-        # Now compare the new_date_greater_than_filter attributes with
+        # Now compare the new_obj attributes with
         # the date_greater_than_filter attributes
-        assert new_date_greater_than_filter.code == \
-            date_greater_than_filter.code
-        assert new_date_greater_than_filter.last_change_code == \
-            date_greater_than_filter.last_change_code
-        assert new_date_greater_than_filter.insert_user_id == \
-            date_greater_than_filter.insert_user_id
-        assert new_date_greater_than_filter.last_update_user_id == \
-            date_greater_than_filter.last_update_user_id
-        assert new_date_greater_than_filter.day_count == (
-            date_greater_than_filter.day_count)
-        assert new_date_greater_than_filter.description == (
-            date_greater_than_filter.description)
-        assert new_date_greater_than_filter.display_order == (
-            date_greater_than_filter.display_order)
-        assert new_date_greater_than_filter.is_active == (
-            date_greater_than_filter.is_active)
-        assert new_date_greater_than_filter.lookup_enum_name == (
-            date_greater_than_filter.lookup_enum_name)
-        assert new_date_greater_than_filter.name == (
-            date_greater_than_filter.name)
-        assert new_date_greater_than_filter.pac_id == (
-            date_greater_than_filter.pac_id)
+        assert obj_from_dict.code == \
+            new_obj.code
+        assert obj_from_dict.last_change_code == \
+            new_obj.last_change_code
+        assert obj_from_dict.insert_user_id == \
+            new_obj.insert_user_id
+        assert obj_from_dict.last_update_user_id == \
+            new_obj.last_update_user_id
+        assert obj_from_dict.day_count == (
+            new_obj.day_count)
+        assert obj_from_dict.description == (
+            new_obj.description)
+        assert obj_from_dict.display_order == (
+            new_obj.display_order)
+        assert obj_from_dict.is_active == (
+            new_obj.is_active)
+        assert obj_from_dict.lookup_enum_name == (
+            new_obj.lookup_enum_name)
+        assert obj_from_dict.name == (
+            new_obj.name)
+        assert obj_from_dict.pac_id == (
+            new_obj.pac_id)
 
-        assert new_date_greater_than_filter.insert_utc_date_time.isoformat() == (
-            date_greater_than_filter.insert_utc_date_time.isoformat())
-        assert new_date_greater_than_filter.last_update_utc_date_time.isoformat() == (
-            date_greater_than_filter.last_update_utc_date_time.isoformat())
-        assert new_date_greater_than_filter.pac_code_peek == (  # PacID
-            date_greater_than_filter.pac_code_peek)
+        assert obj_from_dict.insert_utc_date_time.isoformat() == (
+            new_obj.insert_utc_date_time.isoformat())
+        assert obj_from_dict.last_update_utc_date_time.isoformat() == (
+            new_obj.last_update_utc_date_time.isoformat())
+        assert obj_from_dict.pac_code_peek == (  # PacID
+            new_obj.pac_code_peek)
 
     def test_from_json(self):
         """
@@ -324,7 +326,7 @@ class TestDateGreaterThanFilterSchema:
 
     def test_to_json(
         self,
-        date_greater_than_filter: DateGreaterThanFilter
+        new_obj: DateGreaterThanFilter
     ):
         """
         Test the conversion of a
@@ -343,85 +345,84 @@ class TestDateGreaterThanFilterSchema:
         # to JSON using the schema
         date_greater_than_filter_schema = DateGreaterThanFilterSchema()
         date_greater_than_filter_dict = date_greater_than_filter_schema.dump(
-            date_greater_than_filter)
+            new_obj)
 
         # Convert the date_greater_than_filter_dict to JSON string
         date_greater_than_filter_json = json.dumps(
             date_greater_than_filter_dict)
 
         # Convert the JSON strings back to dictionaries
-        date_greater_than_filter_dict_from_json = json.loads(
+        dict_from_json = json.loads(
             date_greater_than_filter_json)
         # sample_dict_from_json = json.loads(self.sample_data)
 
         logging.info(
-            "date_greater_than_filter_dict_from_json.keys() %s",
-            date_greater_than_filter_dict_from_json.keys())
+            "dict_from_json.keys() %s",
+            dict_from_json.keys())
 
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
 
         # Verify the keys in both dictionaries match
-        assert set(date_greater_than_filter_dict_from_json.keys()) == (
+        assert set(dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
-            f"Got: {set(date_greater_than_filter_dict_from_json.keys())}"
+            f"Got: {set(dict_from_json.keys())}"
         )
 
-        assert date_greater_than_filter_dict_from_json['code'] == \
-            str(date_greater_than_filter.code), (
+        assert dict_from_json['code'] == \
+            str(new_obj.code), (
             "failed on code"
         )
-        assert date_greater_than_filter_dict_from_json['last_change_code'] == (
-            date_greater_than_filter.last_change_code), (
+        assert dict_from_json['last_change_code'] == (
+            new_obj.last_change_code), (
             "failed on last_change_code"
         )
-        assert date_greater_than_filter_dict_from_json['insert_user_id'] == (
-            str(date_greater_than_filter.insert_user_id)), (
+        assert dict_from_json['insert_user_id'] == (
+            str(new_obj.insert_user_id)), (
             "failed on insert_user_id"
         )
-        assert date_greater_than_filter_dict_from_json['last_update_user_id'] == (
-            str(date_greater_than_filter.last_update_user_id)), (
+        assert dict_from_json['last_update_user_id'] == (
+            str(new_obj.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-        assert date_greater_than_filter_dict_from_json['day_count'] == (
-            date_greater_than_filter.day_count), (
+        assert dict_from_json['day_count'] == (
+            new_obj.day_count), (
             "failed on day_count"
         )
-        assert date_greater_than_filter_dict_from_json['description'] == (
-            date_greater_than_filter.description), (
+        assert dict_from_json['description'] == (
+            new_obj.description), (
             "failed on description"
         )
-        assert date_greater_than_filter_dict_from_json['display_order'] == (
-            date_greater_than_filter.display_order), (
+        assert dict_from_json['display_order'] == (
+            new_obj.display_order), (
             "failed on display_order"
         )
-        assert date_greater_than_filter_dict_from_json['is_active'] == (
-            date_greater_than_filter.is_active), (
+        assert dict_from_json['is_active'] == (
+            new_obj.is_active), (
             "failed on is_active"
         )
-        assert date_greater_than_filter_dict_from_json['lookup_enum_name'] == (
-            date_greater_than_filter.lookup_enum_name), (
+        assert dict_from_json['lookup_enum_name'] == (
+            new_obj.lookup_enum_name), (
             "failed on lookup_enum_name"
         )
-        assert date_greater_than_filter_dict_from_json['name'] == (
-            date_greater_than_filter.name), (
+        assert dict_from_json['name'] == (
+            new_obj.name), (
             "failed on name"
         )
-        assert date_greater_than_filter_dict_from_json['pac_id'] == (
-            date_greater_than_filter.pac_id), (
+        assert dict_from_json['pac_id'] == (
+            new_obj.pac_id), (
             "failed on pac_id"
         )
-        assert date_greater_than_filter_dict_from_json['insert_utc_date_time'] == (
-            date_greater_than_filter.insert_utc_date_time.isoformat()), (
+        assert dict_from_json['insert_utc_date_time'] == (
+            new_obj.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
         )
-        assert date_greater_than_filter_dict_from_json['last_update_utc_date_time'] == (
-            date_greater_than_filter.last_update_utc_date_time.isoformat()), (
+        assert dict_from_json['last_update_utc_date_time'] == (
+            new_obj.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-        assert date_greater_than_filter_dict_from_json[(  # PacID
+        assert dict_from_json[(  # PacID
             'pac_code_peek')] == (
-            str(date_greater_than_filter.pac_code_peek)), (
+            str(new_obj.pac_code_peek)), (
             "failed on pac_code_peek"
         )
-

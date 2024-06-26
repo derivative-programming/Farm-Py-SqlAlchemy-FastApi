@@ -27,10 +27,12 @@ from apis.models.validation_error import ValidationErrorItem
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
-from reports.pac_user_tri_state_filter_list import ReportManagerPacUserTriStateFilterList
+from reports.pac_user_tri_state_filter_list import (
+    ReportManagerPacUserTriStateFilterList)
 from reports.report_request_validation_error import \
     ReportRequestValidationError
-from reports.row_models.pac_user_tri_state_filter_list import ReportItemPacUserTriStateFilterList
+from reports.row_models.pac_user_tri_state_filter_list import (
+    ReportItemPacUserTriStateFilterList)
 
 
 class PacUserTriStateFilterListGetModelRequest(CamelModel):
@@ -226,11 +228,14 @@ class PacUserTriStateFilterListGetModelResponse(ListModel):
             None
         """
         try:
-            logging.info("loading model..."
-                         "PacUserTriStateFilterListGetModelResponse")
-            generator = ReportManagerPacUserTriStateFilterList(session_context)
-            logging.info("processing..."
-                         "PacUserTriStateFilterListGetModelResponse")
+            logging.info(
+                "loading model..."
+                "PacUserTriStateFilterListGetModelResponse")
+            generator = ReportManagerPacUserTriStateFilterList(
+                session_context)
+            logging.info(
+                "processing..."
+                "PacUserTriStateFilterListGetModelResponse")
             items = await generator.generate(
                 pac_code,
 
@@ -242,7 +247,8 @@ class PacUserTriStateFilterListGetModelResponse(ListModel):
             )
             self.items = list()
             for item in items:
-                report_item = PacUserTriStateFilterListGetModelResponseItem()
+                report_item = \
+                    PacUserTriStateFilterListGetModelResponseItem()
                 report_item.load_report_item(item)
                 self.items.append(report_item)
             self.success = True
@@ -271,4 +277,3 @@ class PacUserTriStateFilterListGetModelResponse(ListModel):
             str: The JSON representation of the response model.
         """
         return self.model_dump_json()
-

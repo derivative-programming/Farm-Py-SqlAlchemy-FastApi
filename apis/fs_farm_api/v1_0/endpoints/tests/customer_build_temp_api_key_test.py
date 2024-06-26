@@ -6,7 +6,7 @@ This module contains unit tests for the
 `customer_build_temp_api_key` endpoint.
 """
 
-import logging
+import logging  # noqa: F401
 import uuid
 import json  # noqa: F401
 from unittest.mock import AsyncMock, patch
@@ -16,13 +16,13 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import apis.fs_farm_api.v1_0.endpoints.tests.test_constants as test_constants
-import models.factory as model_factorys
+import models.factory as model_factorys  # noqa: F401
 from helpers.api_token import ApiToken  # noqa: F401
 from apis import models as apis_models
 from database import get_db
 from main import app
 
-from .....models import (  # pylint: disable=reimported
+from .....models import (  # pylint: disable=reimported  # noqa: F401
     factory as request_factory)
 from ..customer_build_temp_api_key import (
     CustomerBuildTempApiKeyRouterConfig)
@@ -87,7 +87,8 @@ async def test_submit_success(overridden_get_db):
         ) as ac:
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.post(
-                f'/api/v1_0/customer-build-temp-api-key/{customer_code}',
+                "/api/v1_0/customer-build-temp-api-key"
+                f"/{customer_code}",
                 json={},
                 headers={'API_KEY': test_api_key}
             )
@@ -133,7 +134,8 @@ async def test_submit_request_validation_error(overridden_get_db):
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/customer-build-temp-api-key/{customer_code}',
+            "/api/v1_0/customer-build-temp-api-key"
+            f"/{customer_code}",
             json=json.dumps(
                 {
                     "xxxx": "yyyy"
@@ -176,7 +178,8 @@ async def test_submit_authorization_failure_bad_api_key(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/customer-build-temp-api-key/{customer_code}',
+            "/api/v1_0/customer-build-temp-api-key"
+            f"/{customer_code}",
             json={},
             headers={'API_KEY': 'xxx'}
         )
@@ -219,7 +222,8 @@ async def test_submit_authorization_failure_empty_header_key(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/customer-build-temp-api-key/{customer_code}',
+            "/api/v1_0/customer-build-temp-api-key"
+            f"/{customer_code}",
             json={},
             headers={'API_KEY': ''}
         )
@@ -261,7 +265,8 @@ async def test_submit_authorization_failure_no_header(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/customer-build-temp-api-key/{customer_code}',
+            "/api/v1_0/customer-build-temp-api-key"
+            f"/{customer_code}",
             json={}
         )
 
@@ -301,7 +306,8 @@ async def test_submit_endpoint_url_failure(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/customer-build-temp-api-key/{customer_code}/xxxx',
+            "/api/v1_0/customer-build-temp-api-key"
+            f"/{customer_code}/xxxx",
             json={},
             headers={'API_KEY': test_api_key}
         )
@@ -331,7 +337,8 @@ async def test_submit_endpoint_invalid_code_failure(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/customer-build-temp-api-key/{customer_code}',
+            "/api/v1_0/customer-build-temp-api-key"
+            f"/{customer_code}",
             json={},
             headers={'API_KEY': test_api_key}
         )
@@ -378,7 +385,8 @@ async def test_submit_endpoint_method_failure(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/customer-build-temp-api-key/{customer_code}',
+            "/api/v1_0/customer-build-temp-api-key"
+            f"/{customer_code}",
             headers={'API_KEY': test_api_key}
         )
 
@@ -400,4 +408,3 @@ def teardown_module(module):  # pylint: disable=unused-argument
         None
     """
     app.dependency_overrides.clear()
-

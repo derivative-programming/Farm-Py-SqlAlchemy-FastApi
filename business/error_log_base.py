@@ -1179,4 +1179,3 @@ class ErrorLogBaseBusObj(BaseBusObj):
 
         return pac
     # url,
-

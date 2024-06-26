@@ -40,6 +40,6 @@ class TestPlantUserDetailsGetModelRequestFactoryAsync:
                 session=session
             )
         )
-        assert isinstance(model_instance,
-                          PlantUserDetailsGetModelRequest)
-
+        assert isinstance(
+            model_instance,
+            PlantUserDetailsGetModelRequest)

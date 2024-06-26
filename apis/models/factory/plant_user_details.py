@@ -52,14 +52,12 @@ class PlantUserDetailsGetModelRequestFactory(
             PlantUserDetailsGetModelRequest: The built
                 instance of PlantUserDetailsGetModelRequest.
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
 
 
         obj = model_class(*args, **kwargs)
-
 
         return obj
 
@@ -113,10 +111,10 @@ class PlantUserDetailsGetModelRequestFactory(
         """
 
 
-        obj = PlantUserDetailsGetModelRequestFactory.build(
-            session=None,
-            *args, **kwargs
-        )
+        obj = PlantUserDetailsGetModelRequestFactory \
+            .build(
+                session=None,
+                *args, **kwargs
+            )
 
         return obj
-

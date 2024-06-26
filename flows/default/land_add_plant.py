@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 """
 This module contains the
-FlowLandAddPlant class and related classes
+FlowLandAddPlant class
+and related classes
 that handle the addition of a
 plant to a specific
 land in the flow process.
@@ -17,7 +18,7 @@ from flows.base.land_add_plant import (
 from flows.base import LogSeverity
 from business.land import LandBusObj
 from helpers import SessionContext  # noqa: F401
-from helpers import TypeConversion
+from helpers import TypeConversion  # noqa: F401
 
 
 class FlowLandAddPlantResult():
@@ -25,8 +26,6 @@ class FlowLandAddPlantResult():
     Represents the result of the
     FlowLandAddPlant process.
     """
-
-    context_object_code: uuid.UUID = uuid.UUID(int=0)
     land_code: uuid.UUID = uuid.UUID(int=0)
     plant_code: uuid.UUID = uuid.UUID(int=0)
     output_flavor_code: uuid.UUID = uuid.UUID(int=0)
@@ -49,6 +48,7 @@ class FlowLandAddPlantResult():
     output_some_phone_number: str = ""
     output_some_email_address: str = ""
 # endset
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
 
     def __init__(self):
         """
@@ -120,7 +120,8 @@ class FlowLandAddPlant(
     a plant to
     a specific land in the flow process.
 
-    This class extends the BaseFlowLandAddPlant class and
+    This class extends the
+    BaseFlowLandAddPlantclass and
     initializes it with the provided session context.
     """
 
@@ -154,7 +155,8 @@ class FlowLandAddPlant(
         plant to a specific land.
 
         Returns:
-            FlowLandAddPlantResult: The result of the
+            FlowLandAddPlantResult:
+                The result of the
                 FlowLandAddPlant process.
         """
         super()._log_message_and_severity(
@@ -165,7 +167,6 @@ class FlowLandAddPlant(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(land_bus_obj.code)
         )
-
         await super()._process_validation_rules(
             land_bus_obj,
             request_flavor_code,
@@ -188,9 +189,7 @@ class FlowLandAddPlant(
             request_sample_image_upload_file,
 # endset  # noqa: E122
         )
-
         super()._throw_queued_validation_errors()
-
         land_code_output: uuid.UUID = uuid.UUID(int=0)
         plant_code_output: uuid.UUID = uuid.UUID(int=0)
         output_flavor_code_output: uuid.UUID = uuid.UUID(int=0)
@@ -213,7 +212,6 @@ class FlowLandAddPlant(
         output_some_phone_number_output: str = ""
         output_some_email_address_output: str = ""
 # endset
-
         # TODO: add flow logic
 ##GENTrainingBlock[caseFlowLogic]Start
 ##GENLearn[calculatedIsTrueParentChild=true,calculatedIsTargetChildObjectAvailable=true,calculatedIsInitObjWF=false,isLoginPage=false]Start
@@ -239,7 +237,6 @@ class FlowLandAddPlant(
         # request_sample_image_upload_file
 # endset
         # plant.save()
-
         # land_code_output:uuid.UUID = land.code
         # plant_code_output:uuid.UUID = plant.code
         # output_flavor_code_output = plant.flvr_foreign_key.code
@@ -262,12 +259,10 @@ class FlowLandAddPlant(
 # endset
 ##GENLearn[calculatedIsTrueParentChild=true,calculatedIsTargetChildObjectAvailable=true,calculatedIsInitObjWF=false,isLoginPage=false]End
 ##GENTrainingBlock[caseFlowLogic]End
-
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowLandAddPlantResult()
-
         result.context_object_code = land_bus_obj.code
         result.land_code = (
             land_code_output)
@@ -308,7 +303,6 @@ class FlowLandAddPlant(
         result.output_some_email_address = (
             output_some_email_address_output)
 # endset
-
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
@@ -316,5 +310,4 @@ class FlowLandAddPlant(
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
-
         return result

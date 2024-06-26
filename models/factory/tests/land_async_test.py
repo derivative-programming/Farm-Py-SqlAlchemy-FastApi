@@ -8,7 +8,7 @@ operations of the LandFactory class.
 """
 
 import asyncio
-import math
+import math  # noqa: F401
 import time
 import uuid  # noqa: F401
 from datetime import date, datetime, timedelta  # noqa: F401
@@ -405,23 +405,23 @@ class TestLandFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        land = await \
+        obj = await \
             LandFactory.create_async(
                 session=session)
-        assert isinstance(land.land_id, int)
-        assert isinstance(land.code, uuid.UUID)
-        assert isinstance(land.last_change_code, int)
-        assert isinstance(land.insert_user_id, uuid.UUID)
-        assert isinstance(land.last_update_user_id, uuid.UUID)
-        assert land.description == "" or isinstance(
-            land.description, str)
-        assert isinstance(land.display_order, int)
-        assert isinstance(land.is_active, bool)
-        assert land.lookup_enum_name == "" or isinstance(
-            land.lookup_enum_name, str)
-        assert land.name == "" or isinstance(
-            land.name, str)
-        assert isinstance(land.pac_id, int)
+        assert isinstance(obj.land_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert obj.description == "" or isinstance(
+            obj.description, str)
+        assert isinstance(obj.display_order, int)
+        assert isinstance(obj.is_active, bool)
+        assert obj.lookup_enum_name == "" or isinstance(
+            obj.lookup_enum_name, str)
+        assert obj.name == "" or isinstance(
+            obj.name, str)
+        assert isinstance(obj.pac_id, int)
         # Check for the peek values
         # description,
         # displayOrder,
@@ -430,10 +430,10 @@ class TestLandFactoryAsync:
         # name,
         # pacID
 
-        assert isinstance(land.pac_code_peek, uuid.UUID)
+        assert isinstance(obj.pac_code_peek, uuid.UUID)
 
-        assert isinstance(land.insert_utc_date_time, datetime)
-        assert isinstance(land.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
@@ -458,12 +458,13 @@ class TestLandFactoryAsync:
         each land.
         """
 
-        land_1 = await LandFactory.create_async(
+        obj_1 = await LandFactory.create_async(
             session=session)
-        land_2 = await LandFactory.create_async(
+        obj_2 = await LandFactory.create_async(
             session=session)
-        land_2.code = land_1.code
-        session.add_all([land_1, land_2])
+        obj_2.code = obj_1.code
+        session.add_all([obj_1,
+                         obj_2])
         with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
@@ -481,13 +482,13 @@ class TestLandFactoryAsync:
         or empty, and that the data types of certain fields are correct.
         """
 
-        land = Land()
-        assert land.code is not None
-        assert land.last_change_code is not None
-        assert land.insert_user_id is not None
-        assert land.last_update_user_id is not None
-        assert land.insert_utc_date_time is not None
-        assert land.last_update_utc_date_time is not None
+        new_obj = Land()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id is not None
+        assert new_obj.last_update_user_id is not None
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
 
         # description,
         # displayOrder,
@@ -496,13 +497,13 @@ class TestLandFactoryAsync:
         # name,
         # PacID
 
-        assert isinstance(land.pac_code_peek, uuid.UUID)
-        assert land.description == ""
-        assert land.display_order == 0
-        assert land.is_active is False
-        assert land.lookup_enum_name == ""
-        assert land.name == ""
-        assert land.pac_id == 0
+        assert isinstance(new_obj.pac_code_peek, uuid.UUID)
+        assert new_obj.description == ""
+        assert new_obj.display_order == 0
+        assert new_obj.is_active is False
+        assert new_obj.lookup_enum_name == ""
+        assert new_obj.name == ""
+        assert new_obj.pac_id == 0
 
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
@@ -550,24 +551,24 @@ class TestLandFactoryAsync:
             Land._land_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 land.land_id))
         result = await session.execute(stmt)
-        land_1 = result.scalars().first()
+        obj_1 = result.scalars().first()
 
-        # land_1 = await session.query(Land).filter_by(
+        # obj_1 = await session.query(Land).filter_by(
         # land_id=land.land_id).first()
-        land_1.code = uuid.uuid4()
+        obj_1.code = uuid.uuid4()
         await session.commit()
 
         stmt = select(Land).where(
             Land._land_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 land.land_id))
         result = await session.execute(stmt)
-        land_2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
-        # land_2 = await session.query(Land).filter_by(
+        # obj_2 = await session.query(Land).filter_by(
         # land_id=land.land_id).first()
-        land_2.code = uuid.uuid4()
+        obj_2.code = uuid.uuid4()
         await session.commit()
-        assert land_2.last_change_code != original_last_change_code
+        assert obj_2.last_change_code != original_last_change_code
     # description,
     # displayOrder,
     # isActive,
@@ -599,4 +600,3 @@ class TestLandFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-

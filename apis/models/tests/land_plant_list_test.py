@@ -9,7 +9,7 @@ class.
 """
 
 import uuid  # noqa: F401
-import math
+import math  # noqa: F401
 
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
@@ -17,7 +17,7 @@ from unittest.mock import AsyncMock, patch, Mock
 
 import pytest
 
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from helpers.session_context import SessionContext
 
 from ..factory.land_plant_list import (
@@ -218,8 +218,9 @@ class LandPlantListGetModelRequestFactoryAsync:
             LandPlantListGetModelRequestFactory
             .create_async(session=session)
         )
-        assert isinstance(model_instance,
-                          LandPlantListGetModelRequest)
+        assert isinstance(
+            model_instance,
+            LandPlantListGetModelRequest)
         assert isinstance(model_instance.flavor_code, uuid.UUID)
         assert isinstance(model_instance.some_int_val, int)
         assert isinstance(model_instance.some_big_int_val, int)
@@ -277,6 +278,7 @@ class MockReportItemLandPlantList:
         self.update_link_plant_code = uuid.uuid4()
         self.delete_async_button_link_plant_code = uuid.uuid4()
         self.details_link_plant_code = uuid.uuid4()
+# endset
 
 
 @pytest.fixture
@@ -310,7 +312,8 @@ async def test_process_request(session_context, report_request, report_items):
     LandPlantListGetModelResponse class.
     """
     with patch(
-        'apis.models.land_plant_list.ReportManagerLandPlantList',
+        "apis.models.land_plant_list"
+        ".ReportManagerLandPlantList",
         autospec=True
     ) as mock_report_manager:
         mock_report_manager_instance = \
@@ -329,8 +332,10 @@ async def test_process_request(session_context, report_request, report_items):
         assert len(response.items) == len(report_items)
 
         for response_item, report_item in zip(response.items, report_items):
-            assert isinstance(response_item,
-                              LandPlantListGetModelResponseItem)
+            assert isinstance(
+                response_item,
+                LandPlantListGetModelResponseItem
+            )
             assert response_item.plant_code == \
                 report_item.plant_code
             assert response_item.some_int_val == \

@@ -52,14 +52,12 @@ class PacUserLandListGetModelRequestFactory(
             PacUserLandListGetModelRequest: The built
                 instance of PacUserLandListGetModelRequest.
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
 
 
         obj = model_class(*args, **kwargs)
-
 
         return obj
 
@@ -113,10 +111,10 @@ class PacUserLandListGetModelRequestFactory(
         """
 
 
-        obj = PacUserLandListGetModelRequestFactory.build(
-            session=None,
-            *args, **kwargs
-        )
+        obj = PacUserLandListGetModelRequestFactory \
+            .build(
+                session=None,
+                *args, **kwargs
+            )
 
         return obj
-

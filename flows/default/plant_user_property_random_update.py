@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 """
 This module contains the
-FlowPlantUserPropertyRandomUpdate class and related classes
+FlowPlantUserPropertyRandomUpdate class
+and related classes
 that handle the addition of a
  to a specific
 plant in the flow process.
@@ -17,7 +18,7 @@ from flows.base.plant_user_property_random_update import (
 from flows.base import LogSeverity
 from business.plant import PlantBusObj
 from helpers import SessionContext  # noqa: F401
-from helpers import TypeConversion
+from helpers import TypeConversion  # noqa: F401
 
 
 class FlowPlantUserPropertyRandomUpdateResult():
@@ -27,7 +28,6 @@ class FlowPlantUserPropertyRandomUpdateResult():
     """
 
     context_object_code: uuid.UUID = uuid.UUID(int=0)
-
 
     def __init__(self):
         """
@@ -62,7 +62,8 @@ class FlowPlantUserPropertyRandomUpdate(
     a  to
     a specific plant in the flow process.
 
-    This class extends the BaseFlowPlantUserPropertyRandomUpdate class and
+    This class extends the
+    BaseFlowPlantUserPropertyRandomUpdateclass and
     initializes it with the provided session context.
     """
 
@@ -77,7 +78,8 @@ class FlowPlantUserPropertyRandomUpdate(
          to a specific plant.
 
         Returns:
-            FlowPlantUserPropertyRandomUpdateResult: The result of the
+            FlowPlantUserPropertyRandomUpdateResult:
+                The result of the
                 FlowPlantUserPropertyRandomUpdate process.
         """
         super()._log_message_and_severity(
@@ -88,15 +90,12 @@ class FlowPlantUserPropertyRandomUpdate(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(plant_bus_obj.code)
         )
-
         await super()._process_validation_rules(
             plant_bus_obj,
 
 # endset  # noqa: E122
         )
-
         super()._throw_queued_validation_errors()
-
 
         # TODO: add flow logic
 
@@ -105,9 +104,7 @@ class FlowPlantUserPropertyRandomUpdate(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowPlantUserPropertyRandomUpdateResult()
-
         result.context_object_code = plant_bus_obj.code
-
 
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
@@ -116,6 +113,4 @@ class FlowPlantUserPropertyRandomUpdate(
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
-
         return result
-

@@ -9,7 +9,8 @@ import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 import pytest
-import flows.constants.error_log_config_resolve_error_log as FlowConstants
+import flows.constants.error_log_config_resolve_error_log \
+    as FlowConstants  # noqa: F401
 from flows.base.error_log_config_resolve_error_log import (
     BaseFlowErrorLogConfigResolveErrorLog)
 from helpers.session_context import SessionContext
@@ -40,8 +41,10 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
             None
         """
         session_context = SessionContext(dict(), session)
-        flow = BaseFlowErrorLogConfigResolveErrorLog(session_context)
-        error_log = await ErrorLogFactory.create_async(session)
+        flow = BaseFlowErrorLogConfigResolveErrorLog(
+            session_context)
+        error_log = await \
+            ErrorLogFactory.create_async(session)
 
         # Call the method being tested
         await flow._process_validation_rules(
@@ -83,8 +86,10 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
             None
         """
         session_context = SessionContext(dict(), session)
-        error_log = await ErrorLogFactory.create_async(session)
-        flow = BaseFlowErrorLogConfigResolveErrorLog(session_context)
+        error_log = await \
+            ErrorLogFactory.create_async(session)
+        flow = BaseFlowErrorLogConfigResolveErrorLog(
+            session_context)
         role_required = "Config"
         if len(role_required) > 0:
             await flow._process_security_rules(error_log)
@@ -92,4 +97,3 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
             assert flow.queued_validation_errors[''] == (
                 f"Unauthorized access. {role_required} role not found.")
             session_context.role_name_csv = role_required
-

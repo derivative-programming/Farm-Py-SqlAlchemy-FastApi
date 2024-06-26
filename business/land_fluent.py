@@ -117,4 +117,3 @@ class LandFluentBusObj(LandBaseBusObj):
 
         self.pac_id = value
         return self
-

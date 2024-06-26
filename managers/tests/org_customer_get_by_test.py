@@ -16,9 +16,11 @@ from sqlalchemy.future import select
 
 import models
 from helpers.session_context import SessionContext
-from managers.org_customer import OrgCustomerManager
+from managers.org_customer import (
+    OrgCustomerManager)
 from models import OrgCustomer
-from models.factory import OrgCustomerFactory
+from models.factory import (
+    OrgCustomerFactory)
 
 
 class TestOrgCustomerGetByManager:
@@ -28,7 +30,7 @@ class TestOrgCustomerGetByManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def org_customer_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `OrgCustomerManager` for testing.
@@ -40,7 +42,7 @@ class TestOrgCustomerGetByManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        org_customer_manager: OrgCustomerManager
+        obj_manager: OrgCustomerManager
     ):
         """
         Test case for the `build` method of
@@ -53,7 +55,7 @@ class TestOrgCustomerGetByManager:
 
         # Call the build function of the manager
         org_customer = await \
-            org_customer_manager.build(
+            obj_manager.build(
                 **mock_data)
 
         # Assert that the returned object is an instance of
@@ -69,34 +71,34 @@ class TestOrgCustomerGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
         Test case for the `get_by_id` method of
         `OrgCustomerManager`.
         """
-        test_org_customer = await \
+        new_obj = await \
             OrgCustomerFactory.create_async(
                 session)
 
         org_customer = await \
-            org_customer_manager.get_by_id(
-                test_org_customer.org_customer_id)
+            obj_manager.get_by_id(
+                new_obj.org_customer_id)
 
         assert isinstance(
             org_customer,
             OrgCustomer)
 
-        assert test_org_customer.org_customer_id == \
+        assert new_obj.org_customer_id == \
             org_customer.org_customer_id
-        assert test_org_customer.code == \
+        assert new_obj.code == \
             org_customer.code
 
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
-        org_customer_manager: OrgCustomerManager
+        obj_manager: OrgCustomerManager
     ):
         """
         Test case for the `get_by_id` method of
@@ -107,7 +109,7 @@ class TestOrgCustomerGetByManager:
         non_existent_id = 9999  # An ID that's not in the database
 
         retrieved_org_customer = await \
-            org_customer_manager.get_by_id(
+            obj_manager.get_by_id(
                 non_existent_id)
 
         assert retrieved_org_customer is None
@@ -115,7 +117,7 @@ class TestOrgCustomerGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_code_returns_org_customer(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
@@ -125,27 +127,27 @@ class TestOrgCustomerGetByManager:
         returned by its code.
         """
 
-        test_org_customer = await \
+        new_obj = await \
             OrgCustomerFactory.create_async(
                 session)
 
         org_customer = await \
-            org_customer_manager.get_by_code(
-                test_org_customer.code)
+            obj_manager.get_by_code(
+                new_obj.code)
 
         assert isinstance(
             org_customer,
             OrgCustomer)
 
-        assert test_org_customer.org_customer_id == \
+        assert new_obj.org_customer_id == \
             org_customer.org_customer_id
-        assert test_org_customer.code == \
+        assert new_obj.code == \
             org_customer.code
 
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
-        org_customer_manager: OrgCustomerManager
+        obj_manager: OrgCustomerManager
     ):
         """
         Test case for the `get_by_code` method of
@@ -156,7 +158,7 @@ class TestOrgCustomerGetByManager:
         random_code = uuid.uuid4()
 
         org_customer = await \
-            org_customer_manager.get_by_code(
+            obj_manager.get_by_code(
                 random_code)
 
         assert org_customer is None
@@ -166,7 +168,7 @@ class TestOrgCustomerGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_customer_id_existing(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
@@ -180,7 +182,7 @@ class TestOrgCustomerGetByManager:
             OrgCustomerFactory.
         2. Fetch the org_customer using the
             `get_by_customer_id`
-            method of the org_customer_manager.
+            method of the obj_manager.
         3. Assert that the fetched org_customers list has a length of 1.
         4. Assert that the first element in the fetched
             org_customers list is an instance of the
@@ -199,34 +201,34 @@ class TestOrgCustomerGetByManager:
         """
         # Add a org_customer with a specific
         # customer_id
-        org_customer1 = await OrgCustomerFactory.create_async(
+        obj_1 = await OrgCustomerFactory.create_async(
             session=session)
 
         # Fetch the org_customer using the
         # manager function
 
-        fetched_org_customers = await \
-            org_customer_manager.get_by_customer_id(
-                org_customer1.customer_id)
-        assert len(fetched_org_customers) == 1
-        assert isinstance(fetched_org_customers[0],
+        fetched_objs = await \
+            obj_manager.get_by_customer_id(
+                obj_1.customer_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           OrgCustomer)
-        assert fetched_org_customers[0].code == \
-            org_customer1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.Customer).where(
-            models.Customer._customer_id == org_customer1.customer_id)  # type: ignore  # noqa: E501
+            models.Customer._customer_id == obj_1.customer_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         customer = result.scalars().first()
 
         assert isinstance(customer, models.Customer)
 
-        assert fetched_org_customers[0].customer_code_peek == customer.code
+        assert fetched_objs[0].customer_code_peek == customer.code
 
     @pytest.mark.asyncio
     async def test_get_by_customer_id_nonexistent(
         self,
-        org_customer_manager: OrgCustomerManager
+        obj_manager: OrgCustomerManager
     ):
         """
         Test case to verify the behavior of the
@@ -248,15 +250,15 @@ class TestOrgCustomerGetByManager:
         """
         non_existent_id = 999
 
-        fetched_org_customers = (
-            await org_customer_manager.get_by_customer_id(
+        fetched_objs = (
+            await obj_manager.get_by_customer_id(
                 non_existent_id))
-        assert len(fetched_org_customers) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_customer_id_invalid_type(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
@@ -268,7 +270,7 @@ class TestOrgCustomerGetByManager:
         when an invalid ID is passed to the method.
 
         Args:
-            org_customer_manager (OrgCustomerManager): The
+            obj_manager (OrgCustomerManager): The
                 instance of the OrgCustomerManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 
@@ -280,7 +282,7 @@ class TestOrgCustomerGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await org_customer_manager.get_by_customer_id(
+            await obj_manager.get_by_customer_id(
                 invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
@@ -290,7 +292,7 @@ class TestOrgCustomerGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_organization_id_existing(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
@@ -303,7 +305,7 @@ class TestOrgCustomerGetByManager:
         1. Create a org_customer using the
             OrgCustomerFactory.
         2. Fetch the org_customer using the
-            `get_by_organization_id` method of the org_customer_manager.
+            `get_by_organization_id` method of the obj_manager.
         3. Assert that the fetched org_customers list contains
             only one org_customer.
         4. Assert that the fetched org_customer
@@ -322,34 +324,34 @@ class TestOrgCustomerGetByManager:
         """
         # Add a org_customer with a specific
         # organization_id
-        org_customer1 = await OrgCustomerFactory.create_async(
+        obj_1 = await OrgCustomerFactory.create_async(
             session=session)
 
         # Fetch the org_customer using
         # the manager function
 
-        fetched_org_customers = await \
-            org_customer_manager.get_by_organization_id(
-                org_customer1.organization_id)
-        assert len(fetched_org_customers) == 1
-        assert isinstance(fetched_org_customers[0],
+        fetched_objs = await \
+            obj_manager.get_by_organization_id(
+                obj_1.organization_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           OrgCustomer)
-        assert fetched_org_customers[0].code == \
-            org_customer1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.Organization).where(
-            models.Organization._organization_id == org_customer1.organization_id)  # type: ignore  # noqa: E501
+            models.Organization._organization_id == obj_1.organization_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         organization = result.scalars().first()
 
         assert isinstance(organization, models.Organization)
 
-        assert fetched_org_customers[0].organization_code_peek == organization.code
+        assert fetched_objs[0].organization_code_peek == organization.code
 
     @pytest.mark.asyncio
     async def test_get_by_organization_id_nonexistent(
         self,
-        org_customer_manager: OrgCustomerManager
+        obj_manager: OrgCustomerManager
     ):
         """
         Test case to verify the behavior of the
@@ -362,15 +364,15 @@ class TestOrgCustomerGetByManager:
 
         non_existent_id = 999
 
-        fetched_org_customers = await \
-            org_customer_manager.get_by_organization_id(
+        fetched_objs = await \
+            obj_manager.get_by_organization_id(
                 non_existent_id)
-        assert len(fetched_org_customers) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_organization_id_invalid_type(
         self,
-        org_customer_manager: OrgCustomerManager,
+        obj_manager: OrgCustomerManager,
         session: AsyncSession
     ):
         """
@@ -378,7 +380,7 @@ class TestOrgCustomerGetByManager:
         `get_by_organization_id` method when an invalid organization ID is provided.
 
         Args:
-            org_customer_manager (OrgCustomerManager): An
+            obj_manager (OrgCustomerManager): An
                 instance of the OrgCustomerManager class.
             session (AsyncSession): An instance
                 of the AsyncSession class.
@@ -394,8 +396,7 @@ class TestOrgCustomerGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await org_customer_manager.get_by_organization_id(
+            await obj_manager.get_by_organization_id(
                 invalid_id)  # type: ignore
 
         await session.rollback()
-

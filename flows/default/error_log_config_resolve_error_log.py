@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 """
 This module contains the
-FlowErrorLogConfigResolveErrorLog class and related classes
+FlowErrorLogConfigResolveErrorLog class
+and related classes
 that handle the addition of a
  to a specific
 error_log in the flow process.
@@ -17,7 +18,7 @@ from flows.base.error_log_config_resolve_error_log import (
 from flows.base import LogSeverity
 from business.error_log import ErrorLogBusObj
 from helpers import SessionContext  # noqa: F401
-from helpers import TypeConversion
+from helpers import TypeConversion  # noqa: F401
 
 
 class FlowErrorLogConfigResolveErrorLogResult():
@@ -27,7 +28,6 @@ class FlowErrorLogConfigResolveErrorLogResult():
     """
 
     context_object_code: uuid.UUID = uuid.UUID(int=0)
-
 
     def __init__(self):
         """
@@ -62,7 +62,8 @@ class FlowErrorLogConfigResolveErrorLog(
     a  to
     a specific error_log in the flow process.
 
-    This class extends the BaseFlowErrorLogConfigResolveErrorLog class and
+    This class extends the
+    BaseFlowErrorLogConfigResolveErrorLogclass and
     initializes it with the provided session context.
     """
 
@@ -77,7 +78,8 @@ class FlowErrorLogConfigResolveErrorLog(
          to a specific error_log.
 
         Returns:
-            FlowErrorLogConfigResolveErrorLogResult: The result of the
+            FlowErrorLogConfigResolveErrorLogResult:
+                The result of the
                 FlowErrorLogConfigResolveErrorLog process.
         """
         super()._log_message_and_severity(
@@ -88,15 +90,12 @@ class FlowErrorLogConfigResolveErrorLog(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(error_log_bus_obj.code)
         )
-
         await super()._process_validation_rules(
             error_log_bus_obj,
 
 # endset  # noqa: E122
         )
-
         super()._throw_queued_validation_errors()
-
 
         # TODO: add flow logic
 
@@ -105,9 +104,7 @@ class FlowErrorLogConfigResolveErrorLog(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowErrorLogConfigResolveErrorLogResult()
-
         result.context_object_code = error_log_bus_obj.code
-
 
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
@@ -116,6 +113,4 @@ class FlowErrorLogConfigResolveErrorLog(
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
-
         return result
-

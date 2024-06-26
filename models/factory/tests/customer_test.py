@@ -7,7 +7,7 @@ class in the models.factory package.
 
 from decimal import Decimal  # noqa: F401
 import time
-import math
+import math  # noqa: F401
 import uuid  # noqa: F401
 import logging
 from datetime import datetime, date, timedelta  # noqa: F401
@@ -56,48 +56,48 @@ class TestCustomerFactory:
         """
         Test case for creating a customer.
         """
-        customer = CustomerFactory.create(
+        new_obj = CustomerFactory.create(
             session=session)
-        assert customer.customer_id is not None
+        assert new_obj.customer_id is not None
 
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
-        customer = CustomerFactory.create(
+        new_obj = CustomerFactory.create(
             session=session)
-        assert isinstance(customer.code, uuid.UUID)
+        assert isinstance(new_obj.code, uuid.UUID)
 
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
         the last_change_code attribute on build.
         """
-        customer: Customer = CustomerFactory.build(
+        new_obj: Customer = CustomerFactory.build(
             session=session)
-        assert customer.last_change_code == 0
+        assert new_obj.last_change_code == 0
 
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on creation.
         """
-        customer: Customer = CustomerFactory.create(
+        new_obj: Customer = CustomerFactory.create(
             session=session)
-        assert customer.last_change_code == 1
+        assert new_obj.last_change_code == 1
 
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on update.
         """
-        customer = CustomerFactory.create(
+        new_obj = CustomerFactory.create(
             session=session)
-        initial_code = customer.last_change_code
-        customer.code = uuid.uuid4()
+        initial_code = new_obj.last_change_code
+        new_obj.code = uuid.uuid4()
         session.commit()
-        assert customer.last_change_code != \
+        assert new_obj.last_change_code != \
             initial_code
 
     def test_date_inserted_on_build(self, session):
@@ -105,27 +105,27 @@ class TestCustomerFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on build.
         """
-        customer = CustomerFactory.build(
+        new_obj = CustomerFactory.build(
             session=session)
-        assert customer.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            customer.insert_utc_date_time, datetime)
+            new_obj.insert_utc_date_time, datetime)
 
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
         insert_utc_date_time attribute on initial save.
         """
-        customer = CustomerFactory.build(
+        new_obj = CustomerFactory.build(
             session=session)
-        assert customer.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            customer.insert_utc_date_time, datetime)
+            new_obj.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        customer.code = uuid.uuid4()
-        session.add(customer)
+        new_obj.code = uuid.uuid4()
+        session.add(new_obj)
         session.commit()
-        assert customer.insert_utc_date_time > \
+        assert new_obj.insert_utc_date_time > \
             initial_time
 
     def test_date_inserted_on_second_save(self, session):
@@ -133,43 +133,43 @@ class TestCustomerFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on second save.
         """
-        customer = CustomerFactory(
+        new_obj = CustomerFactory(
             session=session)
-        assert customer.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            customer.insert_utc_date_time, datetime)
-        initial_time = customer.insert_utc_date_time
-        customer.code = uuid.uuid4()
+            new_obj.insert_utc_date_time, datetime)
+        initial_time = new_obj.insert_utc_date_time
+        new_obj.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert customer.insert_utc_date_time == initial_time
+        assert new_obj.insert_utc_date_time == initial_time
 
     def test_date_updated_on_build(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on build.
         """
-        customer = CustomerFactory.build(
+        new_obj = CustomerFactory.build(
             session=session)
-        assert customer.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            customer.last_update_utc_date_time, datetime)
+            new_obj.last_update_utc_date_time, datetime)
 
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on initial save.
         """
-        customer = CustomerFactory.build(
+        new_obj = CustomerFactory.build(
             session=session)
-        assert customer.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            customer.last_update_utc_date_time, datetime)
+            new_obj.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        customer.code = uuid.uuid4()
-        session.add(customer)
+        new_obj.code = uuid.uuid4()
+        session.add(new_obj)
         session.commit()
-        assert customer.last_update_utc_date_time > \
+        assert new_obj.last_update_utc_date_time > \
             initial_time
 
     def test_date_updated_on_second_save(self, session):
@@ -177,16 +177,16 @@ class TestCustomerFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on second save.
         """
-        customer = CustomerFactory(
+        new_obj = CustomerFactory(
             session=session)
-        assert customer.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            customer.last_update_utc_date_time, datetime)
-        initial_time = customer.last_update_utc_date_time
-        customer.code = uuid.uuid4()
+            new_obj.last_update_utc_date_time, datetime)
+        initial_time = new_obj.last_update_utc_date_time
+        new_obj.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert customer.last_update_utc_date_time > \
+        assert new_obj.last_update_utc_date_time > \
             initial_time
 
     def test_model_deletion(self, session):
@@ -194,13 +194,14 @@ class TestCustomerFactory:
         Test case for deleting a
         customer model.
         """
-        customer = CustomerFactory.create(
+        new_obj = CustomerFactory.create(
             session=session)
-        session.delete(customer)
+        session.delete(new_obj)
         session.commit()
-        deleted_customer = session.query(Customer).filter_by(
+        deleted_customer = session.query(
+            Customer).filter_by(
             _customer_id=(
-                customer.customer_id)
+                new_obj.customer_id)
         ).first()
         assert deleted_customer is None
 
@@ -209,50 +210,50 @@ class TestCustomerFactory:
         Test case for checking the data types of
         the customer attributes.
         """
-        customer = CustomerFactory.create(
+        obj = CustomerFactory.create(
             session=session)
-        assert isinstance(customer.customer_id, int)
-        assert isinstance(customer.code, uuid.UUID)
-        assert isinstance(customer.last_change_code, int)
-        assert isinstance(customer.insert_user_id, uuid.UUID)
-        assert isinstance(customer.last_update_user_id, uuid.UUID)
-        assert isinstance(customer.active_organization_id, int)
-        assert customer.email == "" or isinstance(
-            customer.email, str)
-        assert isinstance(customer.email_confirmed_utc_date_time,
+        assert isinstance(obj.customer_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert isinstance(obj.active_organization_id, int)
+        assert obj.email == "" or isinstance(
+            obj.email, str)
+        assert isinstance(obj.email_confirmed_utc_date_time,
                           datetime)
-        assert customer.first_name == "" or isinstance(
-            customer.first_name, str)
-        assert isinstance(customer.forgot_password_key_expiration_utc_date_time,
+        assert obj.first_name == "" or isinstance(
+            obj.first_name, str)
+        assert isinstance(obj.forgot_password_key_expiration_utc_date_time,
                           datetime)
-        assert customer.forgot_password_key_value == "" or isinstance(
-            customer.forgot_password_key_value, str)
+        assert obj.forgot_password_key_value == "" or isinstance(
+            obj.forgot_password_key_value, str)
         # fSUserCodeValue
         assert isinstance(
-            customer.fs_user_code_value, uuid.UUID)
-        assert isinstance(customer.is_active, bool)
-        assert isinstance(customer.is_email_allowed, bool)
-        assert isinstance(customer.is_email_confirmed, bool)
-        assert isinstance(customer.is_email_marketing_allowed, bool)
-        assert isinstance(customer.is_locked, bool)
-        assert isinstance(customer.is_multiple_organizations_allowed, bool)
-        assert isinstance(customer.is_verbose_logging_forced, bool)
-        assert isinstance(customer.last_login_utc_date_time,
+            obj.fs_user_code_value, uuid.UUID)
+        assert isinstance(obj.is_active, bool)
+        assert isinstance(obj.is_email_allowed, bool)
+        assert isinstance(obj.is_email_confirmed, bool)
+        assert isinstance(obj.is_email_marketing_allowed, bool)
+        assert isinstance(obj.is_locked, bool)
+        assert isinstance(obj.is_multiple_organizations_allowed, bool)
+        assert isinstance(obj.is_verbose_logging_forced, bool)
+        assert isinstance(obj.last_login_utc_date_time,
                           datetime)
-        assert customer.last_name == "" or isinstance(
-            customer.last_name, str)
-        assert customer.password == "" or isinstance(
-            customer.password, str)
-        assert customer.phone == "" or isinstance(
-            customer.phone, str)
-        assert customer.province == "" or isinstance(
-            customer.province, str)
-        assert isinstance(customer.registration_utc_date_time,
+        assert obj.last_name == "" or isinstance(
+            obj.last_name, str)
+        assert obj.password == "" or isinstance(
+            obj.password, str)
+        assert obj.phone == "" or isinstance(
+            obj.phone, str)
+        assert obj.province == "" or isinstance(
+            obj.province, str)
+        assert isinstance(obj.registration_utc_date_time,
                           datetime)
-        assert isinstance(customer.tac_id, int)
-        assert isinstance(customer.utc_offset_in_minutes, int)
-        assert customer.zip == "" or isinstance(
-            customer.zip, str)
+        assert isinstance(obj.tac_id, int)
+        assert isinstance(obj.utc_offset_in_minutes, int)
+        assert obj.zip == "" or isinstance(
+            obj.zip, str)
         # activeOrganizationID,
         # email,
         # emailConfirmedUTCDateTime
@@ -276,11 +277,11 @@ class TestCustomerFactory:
         # tacID
 
         assert isinstance(
-            customer.tac_code_peek, uuid.UUID)
+            obj.tac_code_peek, uuid.UUID)
         # uTCOffsetInMinutes,
         # zip,
-        assert isinstance(customer.insert_utc_date_time, datetime)
-        assert isinstance(customer.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     def test_unique_code_constraint(self, session):
         """
@@ -302,13 +303,13 @@ class TestCustomerFactory:
         Test case for checking the default values of
         the customer fields.
         """
-        customer = Customer()
-        assert customer.code is not None
-        assert customer.last_change_code is not None
-        assert customer.insert_user_id == uuid.UUID(int=0)
-        assert customer.last_update_user_id == uuid.UUID(int=0)
-        assert customer.insert_utc_date_time is not None
-        assert customer.last_update_utc_date_time is not None
+        new_obj = Customer()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id == uuid.UUID(int=0)
+        assert new_obj.last_update_user_id == uuid.UUID(int=0)
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         # activeOrganizationID,
         # email,
         # emailConfirmedUTCDateTime
@@ -332,37 +333,37 @@ class TestCustomerFactory:
         # TacID
 
         assert isinstance(
-            customer.tac_code_peek, uuid.UUID)
+            new_obj.tac_code_peek, uuid.UUID)
         # uTCOffsetInMinutes,
         # zip,
-        assert customer is not None
-        assert customer.active_organization_id == 0
-        assert customer.email == ""
-        assert customer.email_confirmed_utc_date_time == datetime(1753, 1, 1)
-        assert customer.first_name == ""
-        assert customer.forgot_password_key_expiration_utc_date_time == datetime(1753, 1, 1)
-        assert customer.forgot_password_key_value == ""
+        assert new_obj is not None
+        assert new_obj.active_organization_id == 0
+        assert new_obj.email == ""
+        assert new_obj.email_confirmed_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.first_name == ""
+        assert new_obj.forgot_password_key_expiration_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.forgot_password_key_value == ""
         # fs_user_code_value
         assert isinstance(
-            customer.fs_user_code_value,
+            new_obj.fs_user_code_value,
             uuid.UUID
         )
-        assert customer.is_active is False
-        assert customer.is_email_allowed is False
-        assert customer.is_email_confirmed is False
-        assert customer.is_email_marketing_allowed is False
-        assert customer.is_locked is False
-        assert customer.is_multiple_organizations_allowed is False
-        assert customer.is_verbose_logging_forced is False
-        assert customer.last_login_utc_date_time == datetime(1753, 1, 1)
-        assert customer.last_name == ""
-        assert customer.password == ""
-        assert customer.phone == ""
-        assert customer.province == ""
-        assert customer.registration_utc_date_time == datetime(1753, 1, 1)
-        assert customer.tac_id == 0
-        assert customer.utc_offset_in_minutes == 0
-        assert customer.zip == ""
+        assert new_obj.is_active is False
+        assert new_obj.is_email_allowed is False
+        assert new_obj.is_email_confirmed is False
+        assert new_obj.is_email_marketing_allowed is False
+        assert new_obj.is_locked is False
+        assert new_obj.is_multiple_organizations_allowed is False
+        assert new_obj.is_verbose_logging_forced is False
+        assert new_obj.last_login_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.last_name == ""
+        assert new_obj.password == ""
+        assert new_obj.phone == ""
+        assert new_obj.province == ""
+        assert new_obj.registration_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.tac_id == 0
+        assert new_obj.utc_offset_in_minutes == 0
+        assert new_obj.zip == ""
 
     def test_last_change_code_concurrency(self, session):
         """
@@ -388,18 +389,21 @@ class TestCustomerFactory:
             None
         """
 
-        customer = CustomerFactory.create(
+        new_obj = CustomerFactory.create(
             session=session)
-        original_last_change_code = customer.last_change_code
-        customer_1 = session.query(Customer).filter_by(
+        original_last_change_code = \
+            new_obj.last_change_code
+        customer_1 = session.query(
+            Customer).filter_by(
             _customer_id=(
-                customer.customer_id)
+                new_obj.customer_id)
         ).first()
         customer_1.code = uuid.uuid4()
         session.commit()
-        customer_2 = session.query(Customer).filter_by(
+        customer_2 = session.query(
+            Customer).filter_by(
             _customer_id=(
-                customer.customer_id)
+                new_obj.customer_id)
         ).first()
         customer_2.code = uuid.uuid4()
         session.commit()
@@ -446,12 +450,11 @@ class TestCustomerFactory:
                 session violate any integrity constraints.
 
         """
-        customer = CustomerFactory.create(
+        new_obj = CustomerFactory.create(
             session=session)
-        customer.tac_id = 99999
+        new_obj.tac_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
     # uTCOffsetInMinutes,
     # zip,
-

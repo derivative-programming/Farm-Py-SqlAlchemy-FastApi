@@ -1,4 +1,5 @@
 # apis/models/customer_user_log_out.py
+# pylint: disable=unused-import
 
 """
 This module contains the models for the
@@ -11,7 +12,7 @@ import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 
-from pydantic import UUID4, Field
+from pydantic import UUID4, Field  # noqa: F401
 
 from apis.models.validation_error import ValidationErrorItem
 from business.customer import CustomerBusObj
@@ -19,7 +20,7 @@ from flows.base.flow_validation_error import FlowValidationError
 from flows.customer_user_log_out import (
     FlowCustomerUserLogOut,
     FlowCustomerUserLogOutResult)
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
 
@@ -107,16 +108,19 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
         """
 
         try:
-            logging.info("loading model..."
-                         "CustomerUserLogOutPostModelResponse")
+            logging.info(
+                "loading model..."
+                "CustomerUserLogOutPostModelResponse")
             customer_bus_obj = CustomerBusObj(session_context)
             await customer_bus_obj.load_from_code(code=customer_code)
             if customer_bus_obj.get_customer_obj() is None:
                 logging.info("Invalid customer_code")
                 raise ValueError("Invalid customer_code")
-            flow = FlowCustomerUserLogOut(session_context)
-            logging.info("process flow..."
-                         "CustomerUserLogOutPostModelResponse")
+            flow = FlowCustomerUserLogOut(
+                session_context)
+            logging.info(
+                "process flow..."
+                "CustomerUserLogOutPostModelResponse")
             flow_response = await flow.process(
                 customer_bus_obj,
 
@@ -126,7 +130,9 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
             self.success = True
             self.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error...CustomerUserLogOutPostModelResponse")
+            logging.info(
+                "error..."
+                "CustomerUserLogOutPostModelResponse")
             self.success = False
             self.validation_errors = list()
             for key in ve.error_dict:
@@ -143,4 +149,3 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
             str: The JSON representation of the object.
         """
         return self.model_dump_json()
-

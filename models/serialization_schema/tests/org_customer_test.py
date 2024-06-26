@@ -1,4 +1,4 @@
-# org_customer_test.py
+# models/serialization_schema/tests/org_customer_test.py
 # pylint: disable=redefined-outer-name
 # pylint: disable=unused-import
 
@@ -15,13 +15,15 @@ transmitted over a network.
 
 The tests in this module cover the serialization
 and deserialization of OrgCustomer
-instances using the OrgCustomerSchema class. They verify
+instances using the OrgCustomerSchema
+class. They verify
 that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a OrgCustomer instance.
 
-The OrgCustomerSchema class is used to define
+The OrgCustomerSchema class
+is used to define
 the serialization and deserialization
 rules for OrgCustomer instances. It
 specifies how each attribute of a
@@ -56,7 +58,7 @@ logger = get_logger(__name__)
 
 
 @pytest.fixture(scope="function")
-def org_customer(
+def new_obj(
     session
 ) -> OrgCustomer:
     """
@@ -112,7 +114,7 @@ class TestOrgCustomerSchema:
 
     def test_org_customer_serialization(
         self,
-        org_customer: OrgCustomer
+        new_obj: OrgCustomer
     ):
         """
         Test the serialization of a
@@ -125,38 +127,38 @@ class TestOrgCustomerSchema:
         """
 
         schema = OrgCustomerSchema()
-        org_customer_data = schema.dump(org_customer)
+        org_customer_data = schema.dump(new_obj)
 
         assert isinstance(org_customer_data, dict)
 
         result = org_customer_data
 
-        assert result['code'] == str(org_customer.code)
+        assert result['code'] == str(new_obj.code)
         assert result['last_change_code'] == (
-            org_customer.last_change_code)
+            new_obj.last_change_code)
         assert result['insert_user_id'] == (
-            str(org_customer.insert_user_id))
+            str(new_obj.insert_user_id))
         assert result['last_update_user_id'] == (
-            str(org_customer.last_update_user_id))
+            str(new_obj.last_update_user_id))
 
         assert result['customer_id'] == (
-            org_customer.customer_id)
+            new_obj.customer_id)
         assert result['email'] == (
-            org_customer.email)
+            new_obj.email)
         assert result['organization_id'] == (
-            org_customer.organization_id)
+            new_obj.organization_id)
         assert result['insert_utc_date_time'] == (
-            org_customer.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
-            org_customer.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert result['customer_code_peek'] == (  # CustomerID
-            str(org_customer.customer_code_peek))
+            str(new_obj.customer_code_peek))
         assert result['organization_code_peek'] == (  # OrganizationID
-            str(org_customer.organization_code_peek))
+            str(new_obj.organization_code_peek))
 
     def test_org_customer_deserialization(
         self,
-        org_customer
+        new_obj: OrgCustomer
     ):
         """
         Test the deserialization of a
@@ -175,65 +177,65 @@ class TestOrgCustomerSchema:
         """
 
         schema = OrgCustomerSchema()
-        serialized_data = schema.dump(org_customer)
+        serialized_data = schema.dump(new_obj)
         deserialized_data = schema.load(serialized_data)
 
         assert deserialized_data['code'] == \
-            org_customer.code
+            new_obj.code
         assert deserialized_data['last_change_code'] == (
-            org_customer.last_change_code)
+            new_obj.last_change_code)
         assert deserialized_data['insert_user_id'] == (
-            org_customer.insert_user_id)
+            new_obj.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
-            org_customer.last_update_user_id)
+            new_obj.last_update_user_id)
         assert deserialized_data['customer_id'] == (
-            org_customer.customer_id)
+            new_obj.customer_id)
         assert deserialized_data['email'] == (
-            org_customer.email)
+            new_obj.email)
         assert deserialized_data['organization_id'] == (
-            org_customer.organization_id)
+            new_obj.organization_id)
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
-            org_customer.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
-            org_customer.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert deserialized_data[(  # CustomerID
             'customer_code_peek')] == (
-            org_customer.customer_code_peek)
+            new_obj.customer_code_peek)
         assert deserialized_data[(  # OrganizationID
             'organization_code_peek')] == (
-            org_customer.organization_code_peek)
+            new_obj.organization_code_peek)
 
-        new_org_customer = OrgCustomer(
+        obj_from_dict = OrgCustomer(
             **deserialized_data)
 
-        assert isinstance(new_org_customer,
+        assert isinstance(new_obj,
                           OrgCustomer)
 
-        # Now compare the new_org_customer attributes with
+        # Now compare the new_obj attributes with
         # the org_customer attributes
-        assert new_org_customer.code == \
-            org_customer.code
-        assert new_org_customer.last_change_code == \
-            org_customer.last_change_code
-        assert new_org_customer.insert_user_id == \
-            org_customer.insert_user_id
-        assert new_org_customer.last_update_user_id == \
-            org_customer.last_update_user_id
-        assert new_org_customer.customer_id == (
-            org_customer.customer_id)
-        assert new_org_customer.email == (
-            org_customer.email)
-        assert new_org_customer.organization_id == (
-            org_customer.organization_id)
+        assert obj_from_dict.code == \
+            new_obj.code
+        assert obj_from_dict.last_change_code == \
+            new_obj.last_change_code
+        assert obj_from_dict.insert_user_id == \
+            new_obj.insert_user_id
+        assert obj_from_dict.last_update_user_id == \
+            new_obj.last_update_user_id
+        assert obj_from_dict.customer_id == (
+            new_obj.customer_id)
+        assert obj_from_dict.email == (
+            new_obj.email)
+        assert obj_from_dict.organization_id == (
+            new_obj.organization_id)
 
-        assert new_org_customer.insert_utc_date_time.isoformat() == (
-            org_customer.insert_utc_date_time.isoformat())
-        assert new_org_customer.last_update_utc_date_time.isoformat() == (
-            org_customer.last_update_utc_date_time.isoformat())
-        assert new_org_customer.customer_code_peek == (  # CustomerID
-            org_customer.customer_code_peek)
-        assert new_org_customer.organization_code_peek == (  # OrganizationID
-            org_customer.organization_code_peek)
+        assert obj_from_dict.insert_utc_date_time.isoformat() == (
+            new_obj.insert_utc_date_time.isoformat())
+        assert obj_from_dict.last_update_utc_date_time.isoformat() == (
+            new_obj.last_update_utc_date_time.isoformat())
+        assert obj_from_dict.customer_code_peek == (  # CustomerID
+            new_obj.customer_code_peek)
+        assert obj_from_dict.organization_code_peek == (  # OrganizationID
+            new_obj.organization_code_peek)
 
     def test_from_json(self):
         """
@@ -300,7 +302,7 @@ class TestOrgCustomerSchema:
 
     def test_to_json(
         self,
-        org_customer: OrgCustomer
+        new_obj: OrgCustomer
     ):
         """
         Test the conversion of a
@@ -319,74 +321,73 @@ class TestOrgCustomerSchema:
         # to JSON using the schema
         org_customer_schema = OrgCustomerSchema()
         org_customer_dict = org_customer_schema.dump(
-            org_customer)
+            new_obj)
 
         # Convert the org_customer_dict to JSON string
         org_customer_json = json.dumps(
             org_customer_dict)
 
         # Convert the JSON strings back to dictionaries
-        org_customer_dict_from_json = json.loads(
+        dict_from_json = json.loads(
             org_customer_json)
         # sample_dict_from_json = json.loads(self.sample_data)
 
         logging.info(
-            "org_customer_dict_from_json.keys() %s",
-            org_customer_dict_from_json.keys())
+            "dict_from_json.keys() %s",
+            dict_from_json.keys())
 
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
 
         # Verify the keys in both dictionaries match
-        assert set(org_customer_dict_from_json.keys()) == (
+        assert set(dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
-            f"Got: {set(org_customer_dict_from_json.keys())}"
+            f"Got: {set(dict_from_json.keys())}"
         )
 
-        assert org_customer_dict_from_json['code'] == \
-            str(org_customer.code), (
+        assert dict_from_json['code'] == \
+            str(new_obj.code), (
             "failed on code"
         )
-        assert org_customer_dict_from_json['last_change_code'] == (
-            org_customer.last_change_code), (
+        assert dict_from_json['last_change_code'] == (
+            new_obj.last_change_code), (
             "failed on last_change_code"
         )
-        assert org_customer_dict_from_json['insert_user_id'] == (
-            str(org_customer.insert_user_id)), (
+        assert dict_from_json['insert_user_id'] == (
+            str(new_obj.insert_user_id)), (
             "failed on insert_user_id"
         )
-        assert org_customer_dict_from_json['last_update_user_id'] == (
-            str(org_customer.last_update_user_id)), (
+        assert dict_from_json['last_update_user_id'] == (
+            str(new_obj.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-        assert org_customer_dict_from_json['customer_id'] == (
-            org_customer.customer_id), (
+        assert dict_from_json['customer_id'] == (
+            new_obj.customer_id), (
             "failed on customer_id"
         )
-        assert org_customer_dict_from_json['email'] == (
-            org_customer.email), (
+        assert dict_from_json['email'] == (
+            new_obj.email), (
             "failed on email"
         )
-        assert org_customer_dict_from_json['organization_id'] == (
-            org_customer.organization_id), (
+        assert dict_from_json['organization_id'] == (
+            new_obj.organization_id), (
             "failed on organization_id"
         )
-        assert org_customer_dict_from_json['insert_utc_date_time'] == (
-            org_customer.insert_utc_date_time.isoformat()), (
+        assert dict_from_json['insert_utc_date_time'] == (
+            new_obj.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
         )
-        assert org_customer_dict_from_json['last_update_utc_date_time'] == (
-            org_customer.last_update_utc_date_time.isoformat()), (
+        assert dict_from_json['last_update_utc_date_time'] == (
+            new_obj.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-        assert org_customer_dict_from_json[(  # CustomerID
+        assert dict_from_json[(  # CustomerID
             'customer_code_peek')] == (
-            str(org_customer.customer_code_peek)), (
+            str(new_obj.customer_code_peek)), (
             "failed on customer_code_peek"
         )
-        assert org_customer_dict_from_json[(  # OrganizationID
+        assert dict_from_json[(  # OrganizationID
             'organization_code_peek')] == (
-            str(org_customer.organization_code_peek)), (
+            str(new_obj.organization_code_peek)), (
             "failed on organization_code_peek"
         )
-

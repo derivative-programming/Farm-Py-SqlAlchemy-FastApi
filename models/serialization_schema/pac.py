@@ -54,4 +54,3 @@ class PacSchema(SQLAlchemyAutoSchema):
     name = fields.Str()
     insert_utc_date_time = fields.DateTime()
     last_update_utc_date_time = fields.DateTime()
-

@@ -135,4 +135,3 @@ class DateGreaterThanFilterFluentBusObj(DateGreaterThanFilterBaseBusObj):
 
         self.pac_id = value
         return self
-

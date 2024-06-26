@@ -16,9 +16,11 @@ from sqlalchemy.future import select
 
 import models
 from helpers.session_context import SessionContext
-from managers.pac import PacManager
+from managers.pac import (
+    PacManager)
 from models import Pac
-from models.factory import PacFactory
+from models.factory import (
+    PacFactory)
 
 
 class TestPacGetByManager:
@@ -28,7 +30,7 @@ class TestPacGetByManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def pac_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `PacManager` for testing.
@@ -40,7 +42,7 @@ class TestPacGetByManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        pac_manager: PacManager
+        obj_manager: PacManager
     ):
         """
         Test case for the `build` method of
@@ -53,7 +55,7 @@ class TestPacGetByManager:
 
         # Call the build function of the manager
         pac = await \
-            pac_manager.build(
+            obj_manager.build(
                 **mock_data)
 
         # Assert that the returned object is an instance of
@@ -69,34 +71,34 @@ class TestPacGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
-        pac_manager: PacManager,
+        obj_manager: PacManager,
         session: AsyncSession
     ):
         """
         Test case for the `get_by_id` method of
         `PacManager`.
         """
-        test_pac = await \
+        new_obj = await \
             PacFactory.create_async(
                 session)
 
         pac = await \
-            pac_manager.get_by_id(
-                test_pac.pac_id)
+            obj_manager.get_by_id(
+                new_obj.pac_id)
 
         assert isinstance(
             pac,
             Pac)
 
-        assert test_pac.pac_id == \
+        assert new_obj.pac_id == \
             pac.pac_id
-        assert test_pac.code == \
+        assert new_obj.code == \
             pac.code
 
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
-        pac_manager: PacManager
+        obj_manager: PacManager
     ):
         """
         Test case for the `get_by_id` method of
@@ -107,7 +109,7 @@ class TestPacGetByManager:
         non_existent_id = 9999  # An ID that's not in the database
 
         retrieved_pac = await \
-            pac_manager.get_by_id(
+            obj_manager.get_by_id(
                 non_existent_id)
 
         assert retrieved_pac is None
@@ -115,7 +117,7 @@ class TestPacGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_code_returns_pac(
         self,
-        pac_manager: PacManager,
+        obj_manager: PacManager,
         session: AsyncSession
     ):
         """
@@ -125,27 +127,27 @@ class TestPacGetByManager:
         returned by its code.
         """
 
-        test_pac = await \
+        new_obj = await \
             PacFactory.create_async(
                 session)
 
         pac = await \
-            pac_manager.get_by_code(
-                test_pac.code)
+            obj_manager.get_by_code(
+                new_obj.code)
 
         assert isinstance(
             pac,
             Pac)
 
-        assert test_pac.pac_id == \
+        assert new_obj.pac_id == \
             pac.pac_id
-        assert test_pac.code == \
+        assert new_obj.code == \
             pac.code
 
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
-        pac_manager: PacManager
+        obj_manager: PacManager
     ):
         """
         Test case for the `get_by_code` method of
@@ -156,7 +158,7 @@ class TestPacGetByManager:
         random_code = uuid.uuid4()
 
         pac = await \
-            pac_manager.get_by_code(
+            obj_manager.get_by_code(
                 random_code)
 
         assert pac is None
@@ -166,4 +168,3 @@ class TestPacGetByManager:
     # isActive,
     # lookupEnumName,
     # name,
-

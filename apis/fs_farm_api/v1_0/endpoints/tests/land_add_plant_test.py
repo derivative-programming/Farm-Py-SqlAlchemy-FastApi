@@ -67,7 +67,9 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
     ) as mock_method:
 
         mock_method.side_effect = mock_process_request
-        land = await model_factorys.LandFactory.create_async(overridden_get_db)
+        land = await \
+            model_factorys.LandFactory.create_async(
+                overridden_get_db)
         land_code = land.code
         test_api_key = api_key_fixture
         async with AsyncClient(
@@ -75,7 +77,8 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
         ) as ac:
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.post(
-                f'/api/v1_0/land-add-plant/{land_code}',
+                "/api/v1_0/land-add-plant"
+                f"/{land_code}",
                 json={},
                 headers={'API_KEY': test_api_key}
             )
@@ -100,7 +103,9 @@ async def test_submit_request_validation_error(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await \
+        model_factorys.LandFactory.create_async(
+            overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
     async with AsyncClient(
@@ -108,7 +113,8 @@ async def test_submit_request_validation_error(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/land-add-plant/{land_code}',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}",
             json=json.dumps(
                 {
                     "xxxx": "yyyy"
@@ -133,7 +139,9 @@ async def test_submit_authorization_failure_bad_api_key(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await \
+        model_factorys.LandFactory.create_async(
+            overridden_get_db)
     land_code = land.code
 
     async with AsyncClient(
@@ -142,7 +150,8 @@ async def test_submit_authorization_failure_bad_api_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/land-add-plant/{land_code}',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}",
             json={},
             headers={'API_KEY': 'xxx'}
 
@@ -167,7 +176,9 @@ async def test_submit_authorization_failure_empty_header_key(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await \
+        model_factorys.LandFactory.create_async(
+            overridden_get_db)
     land_code = land.code
 
     async with AsyncClient(
@@ -176,7 +187,8 @@ async def test_submit_authorization_failure_empty_header_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/land-add-plant/{land_code}',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}",
             json={},
             headers={'API_KEY': ''}
 
@@ -201,7 +213,9 @@ async def test_submit_authorization_failure_no_header(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await \
+        model_factorys.LandFactory.create_async(
+            overridden_get_db)
     land_code = land.code
 
     async with AsyncClient(
@@ -210,7 +224,8 @@ async def test_submit_authorization_failure_no_header(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/land-add-plant/{land_code}',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}",
             json={}
 
         )
@@ -236,7 +251,9 @@ async def test_submit_endpoint_url_failure(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await \
+        model_factorys.LandFactory.create_async(
+            overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
     async with AsyncClient(
@@ -245,7 +262,8 @@ async def test_submit_endpoint_url_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/land-add-plant/{land_code}/xxxx',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}/xxxx",
             json={},
             headers={'API_KEY': test_api_key}
         )
@@ -276,7 +294,8 @@ async def test_submit_endpoint_invalid_code_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/land-add-plant/{land_code}',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}",
             json={},
             headers={'API_KEY': test_api_key}
         )
@@ -300,7 +319,9 @@ async def test_submit_endpoint_method_failure(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await \
+        model_factorys.LandFactory.create_async(
+            overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
     async with AsyncClient(
@@ -309,7 +330,8 @@ async def test_submit_endpoint_method_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/land-add-plant/{land_code}',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}",
             headers={'API_KEY': test_api_key}
         )
 
@@ -334,7 +356,9 @@ async def test_init_success(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await \
+        model_factorys.LandFactory.create_async(
+            overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
     async with AsyncClient(
@@ -343,7 +367,8 @@ async def test_init_success(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/land-add-plant/{land_code}/init',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}/init",
             headers={'API_KEY': test_api_key}
         )
 
@@ -365,7 +390,9 @@ async def test_init_authorization_failure_bad_api_key(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await \
+        model_factorys.LandFactory.create_async(
+            overridden_get_db)
     land_code = land.code
 
     async with AsyncClient(
@@ -374,7 +401,8 @@ async def test_init_authorization_failure_bad_api_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/land-add-plant/{land_code}/init',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}/init",
             headers={'API_KEY': 'xxx'}
 
         )
@@ -399,7 +427,9 @@ async def test_init_authorization_failure_empty_header_key(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await \
+        model_factorys.LandFactory.create_async(
+            overridden_get_db)
     land_code = land.code
 
     async with AsyncClient(
@@ -408,7 +438,8 @@ async def test_init_authorization_failure_empty_header_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/land-add-plant/{land_code}/init',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}/init",
             headers={'API_KEY': ''}
 
         )
@@ -430,7 +461,8 @@ async def test_init_authorization_failure_no_header(
     '/api/v1_0/land-add-plant/{land_code}/init' endpoint
     without providing the required authorization header.
     The expected behavior depends on the value
-    of the 'is_public' flag in the LandAddPlantRouterConfig.
+    of the 'is_public' flag in the
+    LandAddPlantRouterConfig.
     If the flag is True, the response status
     code should be 200. Otherwise, the response status code should be 401.
 
@@ -440,7 +472,9 @@ async def test_init_authorization_failure_no_header(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await \
+        model_factorys.LandFactory.create_async(
+            overridden_get_db)
     land_code = land.code
 
     async with AsyncClient(
@@ -449,7 +483,8 @@ async def test_init_authorization_failure_no_header(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/land-add-plant/{land_code}/init'
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}/init"
         )
 
         if LandAddPlantRouterConfig.is_public is True:
@@ -478,7 +513,9 @@ async def test_init_endpoint_url_failure(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await \
+        model_factorys.LandFactory.create_async(
+            overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
     async with AsyncClient(
@@ -487,7 +524,8 @@ async def test_init_endpoint_url_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/land-add-plant/{land_code}/init/xxx',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}/init/xxx",
             headers={'API_KEY': test_api_key}
         )
 
@@ -516,7 +554,8 @@ async def test_init_endpoint_invalid_code_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/land-add-plant/{land_code}/init',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}/init",
             headers={'API_KEY': test_api_key}
         )
 
@@ -545,7 +584,9 @@ async def test_init_endpoint_method_failure(
     Returns:
         None
     """
-    land = await model_factorys.LandFactory.create_async(overridden_get_db)
+    land = await \
+        model_factorys.LandFactory.create_async(
+            overridden_get_db)
     land_code = land.code
     test_api_key = api_key_fixture
     async with AsyncClient(
@@ -554,7 +595,8 @@ async def test_init_endpoint_method_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/land-add-plant/{land_code}/init',
+            "/api/v1_0/land-add-plant"
+            f"/{land_code}/init",
             headers={'API_KEY': test_api_key}
         )
 

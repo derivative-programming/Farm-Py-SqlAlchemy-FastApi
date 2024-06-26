@@ -56,4 +56,3 @@ class FlavorBusObj(FlavorFluentBusObj):
             result.append(flavor_bus_obj)
 
         return result
-

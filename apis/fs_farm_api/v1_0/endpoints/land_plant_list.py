@@ -24,17 +24,17 @@ the following endpoints:
 """
 
 import logging
-import tempfile
+import tempfile  # noqa: F401
 import traceback
 import uuid
 
-from fastapi import APIRouter, Depends, Path
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, Depends, Path  # noqa: F401
+from fastapi.responses import FileResponse  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import apis.models as api_models
-import apis.models.init as api_init_models
-import reports
+import apis.models.init as api_init_models  # noqa: F401
+import reports  # noqa: F401
 from database import get_db
 from helpers import SessionContext, api_key_header
 
@@ -79,7 +79,8 @@ class LandPlantListRouter(BaseRouter):
 
     @staticmethod
     @router.get(
-        "/api/v1_0/land-plant-list/{land_code}/init",
+        "/api/v1_0/land-plant-list"
+        "/{land_code}/init",
         response_model=(
             api_init_models.
             LandPlantListInitReportGetInitModelResponse
@@ -106,7 +107,8 @@ class LandPlantListRouter(BaseRouter):
         """
 
         logging.info(
-            'LandPlantListRouter.request_get_init start. landCode:%s',
+            "LandPlantListRouter"
+            ".request_get_init start. landCode:%s",
             land_code)
         auth_dict = BaseRouter.implementation_check(
             LandPlantListRouterConfig
@@ -120,6 +122,11 @@ class LandPlantListRouter(BaseRouter):
         auth_dict = BaseRouter.authorization_check(
             LandPlantListRouterConfig.is_public, api_key)
 
+        init_request = (
+            api_init_models.
+            LandPlantListInitReportGetInitModelRequest()
+        )
+
         # Start a transaction
         async with session:
             try:
@@ -129,10 +136,7 @@ class LandPlantListRouter(BaseRouter):
                     "LandCode",
                     land_code
                 )
-                init_request = (
-                    api_init_models.
-                    LandPlantListInitReportGetInitModelRequest()
-                )
+
                 response = await init_request.process_request(
                     session_context,
                     land_code,
@@ -159,8 +163,10 @@ class LandPlantListRouter(BaseRouter):
                 else:
                     await session.rollback()
         response_data = response.model_dump_json()
-        logging.info('LandPlantListRouter.init get result:%s',
-                     response_data)
+        logging.info(
+            "LandPlantListRouter"
+            ".init get result:%s",
+            response_data)
         return response
 ##GENLearn[isGetInitAvailable=true]End
 ##GENTrainingBlock[caseisGetInitAvailable]End
@@ -173,7 +179,8 @@ class LandPlantListRouter(BaseRouter):
 
     @staticmethod
     @router.get(
-        "/api/v1_0/land-plant-list/{land_code}",
+        "/api/v1_0/land-plant-list"
+        "/{land_code}",
         response_model=(
             api_models
             .LandPlantListGetModelResponse
@@ -182,7 +189,8 @@ class LandPlantListRouter(BaseRouter):
     async def request_get_with_id(
         land_code: uuid.UUID = Path(..., description=LAND_CODE),
         request_model:
-            api_models.LandPlantListGetModelRequest = Depends(),
+            api_models.LandPlantListGetModelRequest = (
+                Depends()),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -192,7 +200,8 @@ class LandPlantListRouter(BaseRouter):
 
         Args:
             land_code (uuid.UUID): The unique identifier for the land.
-            request_model (api_models.LandPlantListGetModelRequest):
+            request_model (api_models.
+            LandPlantListGetModelRequest):
                 The request model for the API.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
@@ -208,7 +217,8 @@ class LandPlantListRouter(BaseRouter):
         """
 
         logging.info(
-            'LandPlantListRouter.request_get_with_id start. landCode:%s',
+            "LandPlantListRouter"
+            ".request_get_with_id start. landCode:%s",
             land_code)
         auth_dict = BaseRouter.implementation_check(
             LandPlantListRouterConfig
@@ -237,7 +247,8 @@ class LandPlantListRouter(BaseRouter):
                     land_code,
                     request_model
                 )
-                logging.info('LandPlantListRouter success')
+                logging.info(
+                    'LandPlantListRouter success')
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info(
                     EXCEPTION_OCCURRED,
@@ -267,13 +278,15 @@ class LandPlantListRouter(BaseRouter):
 
     @staticmethod
     @router.get(
-        "/api/v1_0/land-plant-list/{land_code}/to-csv",
+        "/api/v1_0/land-plant-list"
+        "/{land_code}/to-csv",
         response_class=FileResponse,
         summary="Land Plant List Report to CSV")
     async def request_get_with_id_to_csv(
         land_code: uuid.UUID = Path(..., description=LAND_CODE),
         request_model:
-            api_models.LandPlantListGetModelRequest = Depends(),
+            api_models.LandPlantListGetModelRequest = (
+                Depends()),
         session: AsyncSession = Depends(get_db),
         api_key: str = Depends(api_key_header)
     ):
@@ -283,7 +296,8 @@ class LandPlantListRouter(BaseRouter):
 
         Args:
             land_code (uuid.UUID): The unique identifier for the land.
-            request_model (api_models.LandPlantListGetModelRequest):
+            request_model (api_models.
+            LandPlantListGetModelRequest):
                 The request model for the API.
             session (AsyncSession): The database session.
             api_key (str): The API key for authorization.
@@ -336,8 +350,9 @@ class LandPlantListRouter(BaseRouter):
                     land_code,
                     request_model
                 )
-                report_manager = reports.ReportManagerLandPlantList(
-                    session_context)
+                report_manager = \
+                    reports.ReportManagerLandPlantList(
+                        session_context)
 
                 report_items = [response_item.build_report_item() for
                                 response_item in response.items]
@@ -362,13 +377,16 @@ class LandPlantListRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            'LandPlantListRouter.submit get result:%s', response_data
+            "LandPlantListRouter"
+            ".submit get result:%s",
+            response_data
         )
 
         uuid_value = uuid.uuid4()
 
         output_file_name = (
-            f'land_plant_list_{str(land_code)}_{str(uuid_value)}.csv'
+            "land_plant_list_"
+            f"{str(land_code)}_{str(uuid_value)}.csv"
         )
         return FileResponse(
             tmp_file_path,

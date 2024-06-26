@@ -13,7 +13,7 @@ import logging
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import List
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from reports.providers.pac_user_date_greater_than_filter_list import (
     ReportProviderPacUserDateGreaterThanFilterList)
 from reports.row_models.pac_user_date_greater_than_filter_list import (
@@ -225,4 +225,3 @@ class ReportManagerPacUserDateGreaterThanFilterList():
                         #     setattr(obj, key, value)
                 objects.append(obj)
         return objects
-

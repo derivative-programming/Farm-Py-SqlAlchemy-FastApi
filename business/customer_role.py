@@ -56,4 +56,3 @@ class CustomerRoleBusObj(CustomerRoleFluentBusObj):
             result.append(customer_role_bus_obj)
 
         return result
-

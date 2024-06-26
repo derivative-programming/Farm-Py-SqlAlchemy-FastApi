@@ -52,14 +52,12 @@ class PacUserTacListGetModelRequestFactory(
             PacUserTacListGetModelRequest: The built
                 instance of PacUserTacListGetModelRequest.
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
 
 
         obj = model_class(*args, **kwargs)
-
 
         return obj
 
@@ -113,10 +111,10 @@ class PacUserTacListGetModelRequestFactory(
         """
 
 
-        obj = PacUserTacListGetModelRequestFactory.build(
-            session=None,
-            *args, **kwargs
-        )
+        obj = PacUserTacListGetModelRequestFactory \
+            .build(
+                session=None,
+                *args, **kwargs
+            )
 
         return obj
-

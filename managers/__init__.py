@@ -38,4 +38,3 @@ from .plant import (PlantManager)  # noqa: F401,E501
 from .role import (RoleManager, RoleEnum)  # noqa: F401,E501
 from .tac import (TacManager, TacEnum)  # noqa: F401,E501
 from .tri_state_filter import (TriStateFilterManager, TriStateFilterEnum)  # noqa: F401,E501
-

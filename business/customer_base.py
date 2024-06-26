@@ -1925,4 +1925,3 @@ class CustomerBaseBusObj(BaseBusObj):
         return tac
     # uTCOffsetInMinutes,
     # zip,
-

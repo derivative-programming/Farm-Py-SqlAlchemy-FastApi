@@ -10,7 +10,7 @@ import uuid  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from datetime import datetime, date  # noqa: F401
 
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 
 
 class ReportItemPacUserTriStateFilterList():
@@ -52,4 +52,3 @@ class ReportItemPacUserTriStateFilterList():
             str(data["tri_state_filter_name"]))
         self.tri_state_filter_state_int_value = (
             int(data["tri_state_filter_state_int_value"]))
-

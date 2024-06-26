@@ -65,7 +65,8 @@ class ErrorLogFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                ErrorLog: An instance of the
+                ErrorLog:
+                    An instance of the
                     ErrorLog model.
 
         """
@@ -154,7 +155,8 @@ class ErrorLogFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = ErrorLogFactory.build(session=None, *args, **kwargs)
+        obj = ErrorLogFactory \
+            .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
@@ -186,7 +188,8 @@ class ErrorLogFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = ErrorLogFactory.build(session=None, *args, **kwargs)
+        obj = ErrorLogFactory \
+            .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
@@ -194,4 +197,3 @@ class ErrorLogFactory(factory.Factory):
         # session.add(obj)
         # await session.flush()
         return obj
-

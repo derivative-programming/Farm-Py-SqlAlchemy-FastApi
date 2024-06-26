@@ -63,7 +63,8 @@ class TacFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                Tac: An instance of the
+                Tac:
+                    An instance of the
                     Tac model.
 
         """
@@ -152,7 +153,8 @@ class TacFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = TacFactory.build(session=None, *args, **kwargs)
+        obj = TacFactory \
+            .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
@@ -184,7 +186,8 @@ class TacFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = TacFactory.build(session=None, *args, **kwargs)
+        obj = TacFactory \
+            .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
@@ -192,4 +195,3 @@ class TacFactory(factory.Factory):
         # session.add(obj)
         # await session.flush()
         return obj
-

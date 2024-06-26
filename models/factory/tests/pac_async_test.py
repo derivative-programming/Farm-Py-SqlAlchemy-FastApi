@@ -8,7 +8,7 @@ operations of the PacFactory class.
 """
 
 import asyncio
-import math
+import math  # noqa: F401
 import time
 import uuid  # noqa: F401
 from datetime import date, datetime, timedelta  # noqa: F401
@@ -405,22 +405,22 @@ class TestPacFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        pac = await \
+        obj = await \
             PacFactory.create_async(
                 session=session)
-        assert isinstance(pac.pac_id, int)
-        assert isinstance(pac.code, uuid.UUID)
-        assert isinstance(pac.last_change_code, int)
-        assert isinstance(pac.insert_user_id, uuid.UUID)
-        assert isinstance(pac.last_update_user_id, uuid.UUID)
-        assert pac.description == "" or isinstance(
-            pac.description, str)
-        assert isinstance(pac.display_order, int)
-        assert isinstance(pac.is_active, bool)
-        assert pac.lookup_enum_name == "" or isinstance(
-            pac.lookup_enum_name, str)
-        assert pac.name == "" or isinstance(
-            pac.name, str)
+        assert isinstance(obj.pac_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert obj.description == "" or isinstance(
+            obj.description, str)
+        assert isinstance(obj.display_order, int)
+        assert isinstance(obj.is_active, bool)
+        assert obj.lookup_enum_name == "" or isinstance(
+            obj.lookup_enum_name, str)
+        assert obj.name == "" or isinstance(
+            obj.name, str)
         # Check for the peek values
         # description,
         # displayOrder,
@@ -428,8 +428,8 @@ class TestPacFactoryAsync:
         # lookupEnumName,
         # name,
 
-        assert isinstance(pac.insert_utc_date_time, datetime)
-        assert isinstance(pac.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
@@ -454,12 +454,13 @@ class TestPacFactoryAsync:
         each pac.
         """
 
-        pac_1 = await PacFactory.create_async(
+        obj_1 = await PacFactory.create_async(
             session=session)
-        pac_2 = await PacFactory.create_async(
+        obj_2 = await PacFactory.create_async(
             session=session)
-        pac_2.code = pac_1.code
-        session.add_all([pac_1, pac_2])
+        obj_2.code = obj_1.code
+        session.add_all([obj_1,
+                         obj_2])
         with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
@@ -477,24 +478,24 @@ class TestPacFactoryAsync:
         or empty, and that the data types of certain fields are correct.
         """
 
-        pac = Pac()
-        assert pac.code is not None
-        assert pac.last_change_code is not None
-        assert pac.insert_user_id is not None
-        assert pac.last_update_user_id is not None
-        assert pac.insert_utc_date_time is not None
-        assert pac.last_update_utc_date_time is not None
+        new_obj = Pac()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id is not None
+        assert new_obj.last_update_user_id is not None
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
 
         # description,
         # displayOrder,
         # isActive,
         # lookupEnumName,
         # name,
-        assert pac.description == ""
-        assert pac.display_order == 0
-        assert pac.is_active is False
-        assert pac.lookup_enum_name == ""
-        assert pac.name == ""
+        assert new_obj.description == ""
+        assert new_obj.display_order == 0
+        assert new_obj.is_active is False
+        assert new_obj.lookup_enum_name == ""
+        assert new_obj.name == ""
 
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
@@ -542,27 +543,26 @@ class TestPacFactoryAsync:
             Pac._pac_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 pac.pac_id))
         result = await session.execute(stmt)
-        pac_1 = result.scalars().first()
+        obj_1 = result.scalars().first()
 
-        # pac_1 = await session.query(Pac).filter_by(
+        # obj_1 = await session.query(Pac).filter_by(
         # pac_id=pac.pac_id).first()
-        pac_1.code = uuid.uuid4()
+        obj_1.code = uuid.uuid4()
         await session.commit()
 
         stmt = select(Pac).where(
             Pac._pac_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 pac.pac_id))
         result = await session.execute(stmt)
-        pac_2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
-        # pac_2 = await session.query(Pac).filter_by(
+        # obj_2 = await session.query(Pac).filter_by(
         # pac_id=pac.pac_id).first()
-        pac_2.code = uuid.uuid4()
+        obj_2.code = uuid.uuid4()
         await session.commit()
-        assert pac_2.last_change_code != original_last_change_code
+        assert obj_2.last_change_code != original_last_change_code
     # description,
     # displayOrder,
     # isActive,
     # lookupEnumName,
     # name,
-

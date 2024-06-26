@@ -14,4 +14,3 @@ display_order_isEncrypted: bool = False
 is_active_isEncrypted: bool = False
 lookup_enum_name_isEncrypted: bool = False
 name_isEncrypted: bool = False
-

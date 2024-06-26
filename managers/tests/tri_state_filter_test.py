@@ -1,4 +1,4 @@
-# models/managers/tests/tri_state_filter_test.py
+# managers/tests/tri_state_filter_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
@@ -16,10 +16,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.tri_state_filter import TriStateFilterManager
+from managers.tri_state_filter import (
+    TriStateFilterManager)
 from models import TriStateFilter
-from models.factory import TriStateFilterFactory
-from models.serialization_schema.tri_state_filter import TriStateFilterSchema
+from models.factory import (
+    TriStateFilterFactory)
+from models.serialization_schema.tri_state_filter import (
+    TriStateFilterSchema)
 
 
 class TestTriStateFilterManager:
@@ -29,7 +32,7 @@ class TestTriStateFilterManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def tri_state_filter_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `TriStateFilterManager` for testing.
@@ -41,7 +44,7 @@ class TestTriStateFilterManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        tri_state_filter_manager: TriStateFilterManager
+        obj_manager: TriStateFilterManager
     ):
         """
         Test case for the `build` method of
@@ -54,10 +57,11 @@ class TestTriStateFilterManager:
 
         # Call the build function of the manager
         tri_state_filter = await \
-            tri_state_filter_manager.build(
+            obj_manager.build(
                 **mock_data)
 
-        # Assert that the returned object is an instance of TriStateFilter
+        # Assert that the returned object is an
+        # instance of TriStateFilter
         assert isinstance(
             tri_state_filter,
             TriStateFilter)
@@ -69,7 +73,7 @@ class TestTriStateFilterManager:
     @pytest.mark.asyncio
     async def test_build_with_missing_data(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -84,14 +88,14 @@ class TestTriStateFilterManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await tri_state_filter_manager.build(**mock_data)
+            await obj_manager.build(**mock_data)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_add_correctly_adds_tri_state_filter_to_database(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -99,49 +103,51 @@ class TestTriStateFilterManager:
         `TriStateFilterManager` that checks if a
         tri_state_filter is correctly added to the database.
         """
-        test_tri_state_filter = await \
+        new_obj = await \
             TriStateFilterFactory.build_async(
                 session)
 
-        assert test_tri_state_filter.tri_state_filter_id == 0
+        assert new_obj.tri_state_filter_id == 0
 
         # Add the tri_state_filter using the
         # manager's add method
-        added_tri_state_filter = await \
-            tri_state_filter_manager.add(
-                tri_state_filter=test_tri_state_filter)
+        added_obj = await \
+            obj_manager.add(
+                tri_state_filter=new_obj)
 
-        assert isinstance(added_tri_state_filter,
+        assert isinstance(added_obj,
                           TriStateFilter)
 
-        assert str(added_tri_state_filter.insert_user_id) == (
-            str(tri_state_filter_manager._session_context.customer_code))
-        assert str(added_tri_state_filter.last_update_user_id) == (
-            str(tri_state_filter_manager._session_context.customer_code))
+        assert str(added_obj.insert_user_id) == (
+            str(obj_manager._session_context.customer_code))
+        assert str(added_obj.last_update_user_id) == (
+            str(obj_manager._session_context.customer_code))
 
-        assert added_tri_state_filter.tri_state_filter_id > 0
+        assert added_obj.tri_state_filter_id > 0
 
         # Fetch the tri_state_filter from
         # the database directly
         result = await session.execute(
             select(TriStateFilter).filter(
-                TriStateFilter._tri_state_filter_id == added_tri_state_filter.tri_state_filter_id  # type: ignore
+                TriStateFilter._tri_state_filter_id == (
+                    added_obj.tri_state_filter_id)  # type: ignore
             )
         )
-        fetched_tri_state_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
         # Assert that the fetched tri_state_filter
         # is not None and matches the
         # added tri_state_filter
-        assert fetched_tri_state_filter is not None
-        assert isinstance(fetched_tri_state_filter,
+        assert fetched_obj is not None
+        assert isinstance(fetched_obj,
                           TriStateFilter)
-        assert fetched_tri_state_filter.tri_state_filter_id == added_tri_state_filter.tri_state_filter_id
+        assert fetched_obj.tri_state_filter_id == \
+            added_obj.tri_state_filter_id
 
     @pytest.mark.asyncio
     async def test_add_returns_correct_tri_state_filter_object(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -152,42 +158,42 @@ class TestTriStateFilterManager:
         # Create a test tri_state_filter
         # using the TriStateFilterFactory
         # without persisting it to the database
-        test_tri_state_filter = await \
+        new_obj = await \
             TriStateFilterFactory.build_async(
                 session)
 
-        assert test_tri_state_filter.tri_state_filter_id == 0
+        assert new_obj.tri_state_filter_id == 0
 
-        test_tri_state_filter.code = uuid.uuid4()
+        new_obj.code = uuid.uuid4()
 
         # Add the tri_state_filter using
         # the manager's add method
-        added_tri_state_filter = await \
-            tri_state_filter_manager.add(
-                tri_state_filter=test_tri_state_filter)
+        added_obj = await \
+            obj_manager.add(
+                tri_state_filter=new_obj)
 
-        assert isinstance(added_tri_state_filter,
+        assert isinstance(added_obj,
                           TriStateFilter)
 
-        assert str(added_tri_state_filter.insert_user_id) == (
-            str(tri_state_filter_manager._session_context.customer_code))
-        assert str(added_tri_state_filter.last_update_user_id) == (
-            str(tri_state_filter_manager._session_context.customer_code))
+        assert str(added_obj.insert_user_id) == (
+            str(obj_manager._session_context.customer_code))
+        assert str(added_obj.last_update_user_id) == (
+            str(obj_manager._session_context.customer_code))
 
-        assert added_tri_state_filter.tri_state_filter_id > 0
+        assert added_obj.tri_state_filter_id > 0
 
         # Assert that the returned
         # tri_state_filter matches the
         # test tri_state_filter
-        assert added_tri_state_filter.tri_state_filter_id == \
-            test_tri_state_filter.tri_state_filter_id
-        assert added_tri_state_filter.code == \
-            test_tri_state_filter.code
+        assert added_obj.tri_state_filter_id == \
+            new_obj.tri_state_filter_id
+        assert added_obj.code == \
+            new_obj.code
 
     @pytest.mark.asyncio
     async def test_update(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -196,48 +202,49 @@ class TestTriStateFilterManager:
         that checks if a tri_state_filter
         is correctly updated.
         """
-        test_tri_state_filter = await \
+        new_obj = await \
             TriStateFilterFactory.create_async(
                 session)
 
-        test_tri_state_filter.code = uuid.uuid4()
+        new_obj.code = uuid.uuid4()
 
-        updated_tri_state_filter = await \
-            tri_state_filter_manager.update(
-                tri_state_filter=test_tri_state_filter)
+        updated_obj = await \
+            obj_manager.update(
+                tri_state_filter=new_obj)
 
-        assert isinstance(updated_tri_state_filter,
+        assert isinstance(updated_obj,
                           TriStateFilter)
 
-        assert str(updated_tri_state_filter.last_update_user_id) == str(
-            tri_state_filter_manager._session_context.customer_code)
+        assert str(updated_obj.last_update_user_id) == str(
+            obj_manager._session_context.customer_code)
 
-        assert updated_tri_state_filter.tri_state_filter_id == \
-            test_tri_state_filter.tri_state_filter_id
-        assert updated_tri_state_filter.code == \
-            test_tri_state_filter.code
+        assert updated_obj.tri_state_filter_id == \
+            new_obj.tri_state_filter_id
+        assert updated_obj.code == \
+            new_obj.code
 
         result = await session.execute(
             select(TriStateFilter).filter(
-                TriStateFilter._tri_state_filter_id == test_tri_state_filter.tri_state_filter_id)  # type: ignore
+                TriStateFilter._tri_state_filter_id == (
+                    new_obj.tri_state_filter_id))  # type: ignore
         )
 
-        fetched_tri_state_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert updated_tri_state_filter.tri_state_filter_id == \
-            fetched_tri_state_filter.tri_state_filter_id
-        assert updated_tri_state_filter.code == \
-            fetched_tri_state_filter.code
+        assert updated_obj.tri_state_filter_id == \
+            fetched_obj.tri_state_filter_id
+        assert updated_obj.code == \
+            fetched_obj.code
 
-        assert test_tri_state_filter.tri_state_filter_id == \
-            fetched_tri_state_filter.tri_state_filter_id
-        assert test_tri_state_filter.code == \
-            fetched_tri_state_filter.code
+        assert new_obj.tri_state_filter_id == \
+            fetched_obj.tri_state_filter_id
+        assert new_obj.code == \
+            fetched_obj.code
 
     @pytest.mark.asyncio
     async def test_update_via_dict(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -246,50 +253,51 @@ class TestTriStateFilterManager:
         that checks if a tri_state_filter is
         correctly updated using a dictionary.
         """
-        test_tri_state_filter = await \
+        new_obj = await \
             TriStateFilterFactory.create_async(
                 session)
 
         new_code = uuid.uuid4()
 
-        updated_tri_state_filter = await \
-            tri_state_filter_manager.update(
-                tri_state_filter=test_tri_state_filter,
+        updated_obj = await \
+            obj_manager.update(
+                tri_state_filter=new_obj,
                 code=new_code
             )
 
-        assert isinstance(updated_tri_state_filter,
+        assert isinstance(updated_obj,
                           TriStateFilter)
 
-        assert str(updated_tri_state_filter.last_update_user_id) == str(
-            tri_state_filter_manager._session_context.customer_code
+        assert str(updated_obj.last_update_user_id) == str(
+            obj_manager._session_context.customer_code
         )
 
-        assert updated_tri_state_filter.tri_state_filter_id == \
-            test_tri_state_filter.tri_state_filter_id
-        assert updated_tri_state_filter.code == new_code
+        assert updated_obj.tri_state_filter_id == \
+            new_obj.tri_state_filter_id
+        assert updated_obj.code == new_code
 
         result = await session.execute(
             select(TriStateFilter).filter(
-                TriStateFilter._tri_state_filter_id == test_tri_state_filter.tri_state_filter_id)  # type: ignore
+                TriStateFilter._tri_state_filter_id == (
+                    new_obj.tri_state_filter_id))  # type: ignore
         )
 
-        fetched_tri_state_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert updated_tri_state_filter.tri_state_filter_id == \
-            fetched_tri_state_filter.tri_state_filter_id
-        assert updated_tri_state_filter.code == \
-            fetched_tri_state_filter.code
+        assert updated_obj.tri_state_filter_id == \
+            fetched_obj.tri_state_filter_id
+        assert updated_obj.code == \
+            fetched_obj.code
 
-        assert test_tri_state_filter.tri_state_filter_id == \
-            fetched_tri_state_filter.tri_state_filter_id
+        assert new_obj.tri_state_filter_id == \
+            fetched_obj.tri_state_filter_id
         assert new_code == \
-            fetched_tri_state_filter.code
+            fetched_obj.code
 
     @pytest.mark.asyncio
     async def test_update_invalid_tri_state_filter(
         self,
-        tri_state_filter_manager: TriStateFilterManager
+        obj_manager: TriStateFilterManager
     ):
         """
         Test case for the `update` method of
@@ -302,17 +310,17 @@ class TestTriStateFilterManager:
 
         new_code = uuid.uuid4()
 
-        updated_tri_state_filter = await (
-            tri_state_filter_manager.update(
+        updated_obj = await (
+            obj_manager.update(
                 tri_state_filter, code=new_code))  # type: ignore
 
         # Assertions
-        assert updated_tri_state_filter is None
+        assert updated_obj is None
 
     @pytest.mark.asyncio
     async def test_update_with_nonexistent_attribute(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -320,15 +328,15 @@ class TestTriStateFilterManager:
         `TriStateFilterManager`
         with a nonexistent attribute.
         """
-        test_tri_state_filter = await \
+        new_obj = await \
             TriStateFilterFactory.create_async(
                 session)
 
         new_code = uuid.uuid4()
 
         with pytest.raises(ValueError):
-            await tri_state_filter_manager.update(
-                tri_state_filter=test_tri_state_filter,
+            await obj_manager.update(
+                tri_state_filter=new_obj,
                 xxx=new_code
             )
 
@@ -337,66 +345,70 @@ class TestTriStateFilterManager:
     @pytest.mark.asyncio
     async def test_delete(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
         Test case for the `delete` method of
         `TriStateFilterManager`.
         """
-        tri_state_filter_data = await TriStateFilterFactory.create_async(
+        new_obj = await TriStateFilterFactory.create_async(
             session)
 
         result = await session.execute(
             select(TriStateFilter).filter(
-                TriStateFilter._tri_state_filter_id == tri_state_filter_data.tri_state_filter_id)  # type: ignore
+                TriStateFilter._tri_state_filter_id == (
+                    new_obj.tri_state_filter_id))  # type: ignore
         )
-        fetched_tri_state_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_tri_state_filter,
+        assert isinstance(fetched_obj,
                           TriStateFilter)
 
-        assert fetched_tri_state_filter.tri_state_filter_id == \
-            tri_state_filter_data.tri_state_filter_id
+        assert fetched_obj.tri_state_filter_id == \
+            new_obj.tri_state_filter_id
 
-        await tri_state_filter_manager.delete(
-            tri_state_filter_id=tri_state_filter_data.tri_state_filter_id)
+        await obj_manager.delete(
+            tri_state_filter_id=new_obj.tri_state_filter_id)
 
         result = await session.execute(
             select(TriStateFilter).filter(
-                TriStateFilter._tri_state_filter_id == tri_state_filter_data.tri_state_filter_id)  # type: ignore
+                TriStateFilter._tri_state_filter_id == (
+                    new_obj.tri_state_filter_id))  # type: ignore
         )
-        fetched_tri_state_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert fetched_tri_state_filter is None
+        assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_nonexistent(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
-        Test case to verify the behavior of deleting a nonexistent tri_state_filter.
+        Test case to verify the behavior of deleting a nonexistent
+        tri_state_filter.
 
         This test case ensures that when the delete method
-        is called with the ID of a nonexistent tri_state_filter,
+        is called with the ID of a nonexistent
+        tri_state_filter,
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param tri_state_filter_manager: The instance of the
+        :param obj_manager: The instance of the
             TriStateFilterManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
-            await tri_state_filter_manager.delete(999)
+            await obj_manager.delete(999)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_invalid_type(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -404,13 +416,13 @@ class TestTriStateFilterManager:
         with an invalid type.
 
         This test case ensures that when the `delete` method
-        of the `tri_state_filter_manager` is called with an invalid type,
+        of the `obj_manager` is called with an invalid type,
         an exception is raised. The test case expects the
         `delete` method to raise an exception, and if it doesn't,
         the test case will fail.
 
         Args:
-            tri_state_filter_manager
+            obj_manager
             (TriStateFilterManager): An
                 instance of the
                 `TriStateFilterManager` class.
@@ -424,14 +436,14 @@ class TestTriStateFilterManager:
 
         """
         with pytest.raises(Exception):
-            await tri_state_filter_manager.delete("999")  # type: ignore
+            await obj_manager.delete("999")  # type: ignore
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_get_list(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -443,44 +455,50 @@ class TestTriStateFilterManager:
 
         Steps:
         1. Call the `get_list` method of the
-            `tri_state_filter_manager` instance.
+            `obj_manager` instance.
         2. Assert that the returned list is empty.
         3. Create 5 tri_state_filter objects using the
             `TriStateFilterFactory.create_async` method.
-        4. Assert that the `tri_state_filters_data` variable is of type `List`.
+        4. Assert that the
+            `tri_state_filters_data` variable
+            is of type `List`.
         5. Call the `get_list` method of the
-            `tri_state_filter_manager` instance again.
+            `obj_manager` instance again.
         6. Assert that the returned list contains 5 tri_state_filters.
         7. Assert that all elements in the returned list are
-            instances of the `TriStateFilter` class.
+            instances of the
+            `TriStateFilter` class.
         """
 
-        tri_state_filters = await tri_state_filter_manager.get_list()
+        tri_state_filters = await obj_manager.get_list()
 
         assert len(tri_state_filters) == 0
 
         tri_state_filters_data = (
-            [await TriStateFilterFactory.create_async(session) for _ in range(5)])
+            [await TriStateFilterFactory.create_async(session)
+             for _ in range(5)])
 
         assert isinstance(tri_state_filters_data, List)
 
-        tri_state_filters = await tri_state_filter_manager.get_list()
+        tri_state_filters = await obj_manager.get_list()
 
         assert len(tri_state_filters) == 5
         assert all(isinstance(
-            tri_state_filter, TriStateFilter) for tri_state_filter in tri_state_filters)
+            tri_state_filter,
+            TriStateFilter
+        ) for tri_state_filter in tri_state_filters)
 
     @pytest.mark.asyncio
     async def test_to_json(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
         Test the 'to_json' method of the TriStateFilterManager class.
 
         Args:
-            tri_state_filter_manager
+            obj_manager
             (TriStateFilterManager): An
                 instance of the
                 TriStateFilterManager class.
@@ -496,7 +514,7 @@ class TestTriStateFilterManager:
             TriStateFilterFactory.build_async(
                 session)
 
-        json_data = tri_state_filter_manager.to_json(
+        json_data = obj_manager.to_json(
             tri_state_filter)
 
         assert json_data is not None
@@ -504,14 +522,14 @@ class TestTriStateFilterManager:
     @pytest.mark.asyncio
     async def test_to_dict(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
         Test the to_dict method of the TriStateFilterManager class.
 
         Args:
-            tri_state_filter_manager
+            obj_manager
             (TriStateFilterManager): An
                 instance of the
                 TriStateFilterManager class.
@@ -525,7 +543,7 @@ class TestTriStateFilterManager:
                 session)
 
         dict_data = \
-            tri_state_filter_manager.to_dict(
+            obj_manager.to_dict(
                 tri_state_filter)
 
         assert dict_data is not None
@@ -533,14 +551,16 @@ class TestTriStateFilterManager:
     @pytest.mark.asyncio
     async def test_from_json(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
-        Test the `from_json` method of the `TriStateFilterManager` class.
+        Test the `from_json` method of the
+        `TriStateFilterManager` class.
 
         This method tests the functionality of the
-        `from_json` method of the `TriStateFilterManager` class.
+        `from_json` method of the
+        `TriStateFilterManager` class.
         It creates a tri_state_filter using
         the `TriStateFilterFactory`
         and converts it to JSON using the `to_json` method.
@@ -551,7 +571,7 @@ class TestTriStateFilterManager:
         the same code as the original tri_state_filter.
 
         Args:
-            tri_state_filter_manager
+            obj_manager
             (TriStateFilterManager): An
                 instance of the
                 `TriStateFilterManager` class.
@@ -564,11 +584,11 @@ class TestTriStateFilterManager:
             TriStateFilterFactory.create_async(
                 session)
 
-        json_data = tri_state_filter_manager.to_json(
+        json_data = obj_manager.to_json(
             tri_state_filter)
 
         deserialized_tri_state_filter = await \
-                tri_state_filter_manager.from_json(json_data)
+            obj_manager.from_json(json_data)
 
         assert isinstance(deserialized_tri_state_filter,
                           TriStateFilter)
@@ -578,7 +598,7 @@ class TestTriStateFilterManager:
     @pytest.mark.asyncio
     async def test_from_dict(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -591,10 +611,11 @@ class TestTriStateFilterManager:
         tri_state_filter object.
 
         Args:
-            tri_state_filter_manager
+            obj_manager
             (TriStateFilterManager): An instance
                 of the `TriStateFilterManager` class.
-            session (AsyncSession): An instance of the `AsyncSession` class.
+            session (AsyncSession): An instance of the
+            `AsyncSession` class.
 
         Returns:
             None
@@ -608,13 +629,13 @@ class TestTriStateFilterManager:
 
         schema = TriStateFilterSchema()
 
-        tri_state_filter_data = schema.dump(tri_state_filter)
+        new_obj = schema.dump(tri_state_filter)
 
-        assert isinstance(tri_state_filter_data, dict)
+        assert isinstance(new_obj, dict)
 
         deserialized_tri_state_filter = await \
-            tri_state_filter_manager.from_dict(
-                tri_state_filter_data)
+            obj_manager.from_dict(
+                new_obj)
 
         assert isinstance(deserialized_tri_state_filter,
                           TriStateFilter)
@@ -625,7 +646,7 @@ class TestTriStateFilterManager:
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -641,32 +662,34 @@ class TestTriStateFilterManager:
         Steps:
         1. Create 5 tri_state_filter objects using
             the TriStateFilterFactory.
-        2. Call the count method of the tri_state_filter_manager.
+        2. Call the count method of the obj_manager.
         3. Assert that the count is equal to 5.
 
         """
         tri_state_filters_data = (
-            [await TriStateFilterFactory.create_async(session) for _ in range(5)])
+            [await TriStateFilterFactory.create_async(session)
+             for _ in range(5)])
 
         assert isinstance(tri_state_filters_data, List)
 
-        count = await tri_state_filter_manager.count()
+        count = await obj_manager.count()
 
         assert count == 5
 
     @pytest.mark.asyncio
     async def test_count_empty_database(
         self,
-        tri_state_filter_manager: TriStateFilterManager
+        obj_manager: TriStateFilterManager
     ):
         """
         Test the count method when the database is empty.
 
         This test case checks if the count method of the
-        TriStateFilterManager class returns 0 when the database is empty.
+        TriStateFilterManager class
+        returns 0 when the database is empty.
 
         Args:
-            tri_state_filter_manager
+            obj_manager
             (TriStateFilterManager): An
                 instance of the
                 TriStateFilterManager class.
@@ -675,14 +698,14 @@ class TestTriStateFilterManager:
             None
         """
 
-        count = await tri_state_filter_manager.count()
+        count = await obj_manager.count()
 
         assert count == 0
 
     @pytest.mark.asyncio
     async def test_refresh_basic(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -701,61 +724,63 @@ class TestTriStateFilterManager:
             it reflects the updated code.
 
         Args:
-            tri_state_filter_manager
+            obj_manager
             (TriStateFilterManager): The
                 manager responsible
                 for tri_state_filter operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a tri_state_filter
-        tri_state_filter1 = await TriStateFilterFactory.create_async(
+        obj_1 = await TriStateFilterFactory.create_async(
             session=session)
 
         # Retrieve the tri_state_filter from the database
         result = await session.execute(
             select(TriStateFilter).filter(
-                TriStateFilter._tri_state_filter_id == tri_state_filter1.tri_state_filter_id)  # type: ignore
+                TriStateFilter._tri_state_filter_id == (
+                    obj_1.tri_state_filter_id))  # type: ignore
         )  # type: ignore
-        tri_state_filter2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
         # Verify that the retrieved tri_state_filter
         # matches the added tri_state_filter
-        assert tri_state_filter1.code == \
-            tri_state_filter2.code
+        assert obj_1.code == \
+            obj_2.code
 
         # Update the tri_state_filter's code
         updated_code1 = uuid.uuid4()
-        tri_state_filter1.code = updated_code1
-        updated_tri_state_filter1 = await tri_state_filter_manager.update(
-            tri_state_filter1)
+        obj_1.code = updated_code1
+        updated_obj_1 = await obj_manager.update(
+            obj_1)
 
         # Verify that the updated tri_state_filter
         # is of type TriStateFilter
         # and has the updated code
-        assert isinstance(updated_tri_state_filter1,
+        assert isinstance(updated_obj_1,
                           TriStateFilter)
 
-        assert updated_tri_state_filter1.code == updated_code1
+        assert updated_obj_1.code == updated_code1
 
         # Refresh the original tri_state_filter instance
-        refreshed_tri_state_filter2 = await tri_state_filter_manager.refresh(
-            tri_state_filter2)
+        refreshed_obj_2 = await obj_manager.refresh(
+            obj_2)
 
         # Verify that the refreshed tri_state_filter
         # reflects the updated code
-        assert refreshed_tri_state_filter2.code == updated_code1
+        assert refreshed_obj_2.code == updated_code1
 
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_tri_state_filter(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
-        Test case to verify the behavior of refreshing a nonexistent tri_state_filter.
+        Test case to verify the behavior of refreshing a
+        nonexistent tri_state_filter.
 
         Args:
-            tri_state_filter_manager
+            obj_manager
             (TriStateFilterManager): The
                 instance of the
                 TriStateFilterManager class.
@@ -772,7 +797,7 @@ class TestTriStateFilterManager:
             tri_state_filter_id=999)
 
         with pytest.raises(Exception):
-            await tri_state_filter_manager.refresh(
+            await obj_manager.refresh(
                 tri_state_filter)
 
         await session.rollback()
@@ -780,7 +805,7 @@ class TestTriStateFilterManager:
     @pytest.mark.asyncio
     async def test_exists_with_existing_tri_state_filter(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -788,7 +813,7 @@ class TestTriStateFilterManager:
         exists using the manager function.
 
         Args:
-            tri_state_filter_manager
+            obj_manager
             (TriStateFilterManager): The
                 tri_state_filter manager instance.
             session (AsyncSession): The async session object.
@@ -797,26 +822,28 @@ class TestTriStateFilterManager:
             None
         """
         # Add a tri_state_filter
-        tri_state_filter1 = await TriStateFilterFactory.create_async(
+        obj_1 = await TriStateFilterFactory.create_async(
             session=session)
 
         # Check if the tri_state_filter exists
         # using the manager function
-        assert await tri_state_filter_manager.exists(
-            tri_state_filter1.tri_state_filter_id) is True
+        assert await obj_manager.exists(
+            obj_1.tri_state_filter_id) is True
 
     @pytest.mark.asyncio
     async def test_is_equal_with_existing_tri_state_filter(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
         Test if the is_equal method of the
-        TriStateFilterManager class correctly compares two tri_state_filters.
+        TriStateFilterManager
+        class correctly compares two
+        tri_state_filters.
 
         Args:
-            tri_state_filter_manager
+            obj_manager
             (TriStateFilterManager): An
                 instance of the
                 TriStateFilterManager class.
@@ -826,39 +853,39 @@ class TestTriStateFilterManager:
             None
         """
         # Add a tri_state_filter
-        tri_state_filter1 = await \
+        obj_1 = await \
             TriStateFilterFactory.create_async(
                 session=session)
 
-        tri_state_filter2 = await \
-            tri_state_filter_manager.get_by_id(
-                tri_state_filter_id=tri_state_filter1.tri_state_filter_id)
+        obj_2 = await \
+            obj_manager.get_by_id(
+                tri_state_filter_id=obj_1.tri_state_filter_id)
 
-        assert tri_state_filter_manager.is_equal(
-            tri_state_filter1, tri_state_filter2) is True
+        assert obj_manager.is_equal(
+            obj_1, obj_2) is True
 
-        tri_state_filter1_dict = \
-            tri_state_filter_manager.to_dict(
-                tri_state_filter1)
+        obj_1_dict = \
+            obj_manager.to_dict(
+                obj_1)
 
         tri_state_filter3 = await \
-            tri_state_filter_manager.from_dict(
-                tri_state_filter1_dict)
+            obj_manager.from_dict(
+                obj_1_dict)
 
-        assert tri_state_filter_manager.is_equal(
-            tri_state_filter1, tri_state_filter3) is True
+        assert obj_manager.is_equal(
+            obj_1, tri_state_filter3) is True
 
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_tri_state_filter(
         self,
-        tri_state_filter_manager: TriStateFilterManager
+        obj_manager: TriStateFilterManager
     ):
         """
         Test case to check if a tri_state_filter with a
         non-existent ID exists in the database.
 
         Args:
-            tri_state_filter_manager
+            obj_manager
             (TriStateFilterManager): The
                 instance of the TriStateFilterManager class.
 
@@ -868,12 +895,12 @@ class TestTriStateFilterManager:
         """
         non_existent_id = 999
 
-        assert await tri_state_filter_manager.exists(non_existent_id) is False
+        assert await obj_manager.exists(non_existent_id) is False
 
     @pytest.mark.asyncio
     async def test_exists_with_invalid_id_type(
         self,
-        tri_state_filter_manager: TriStateFilterManager,
+        obj_manager: TriStateFilterManager,
         session: AsyncSession
     ):
         """
@@ -881,7 +908,7 @@ class TestTriStateFilterManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            tri_state_filter_manager
+            obj_manager
             (TriStateFilterManager): The instance
                 of the TriStateFilterManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -895,7 +922,6 @@ class TestTriStateFilterManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await tri_state_filter_manager.exists(invalid_id)  # type: ignore  # noqa: E501
+            await obj_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-

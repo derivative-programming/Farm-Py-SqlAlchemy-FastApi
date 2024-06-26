@@ -34,14 +34,15 @@ class TestTacLoginPostModelRequestFactoryAsync:
         class.
         """
 
-        model_instance = (
-            await TacLoginPostModelRequestFactory.create_async(
+        model_instance = await \
+            TacLoginPostModelRequestFactory \
+            .create_async(
                 session=session)
-        )
-        assert isinstance(model_instance,
-                          TacLoginPostModelRequest)
+
+        assert isinstance(
+            model_instance,
+            TacLoginPostModelRequest)
         assert isinstance(model_instance.email,
                           str)
         assert isinstance(model_instance.password,
                           str)
-

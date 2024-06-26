@@ -34,12 +34,14 @@ class TestLandAddPlantPostModelRequestFactoryAsync:
         class.
         """
 
-        model_instance = (
-            await LandAddPlantPostModelRequestFactory.create_async(
+        model_instance = await \
+            LandAddPlantPostModelRequestFactory \
+            .create_async(
                 session=session)
-        )
-        assert isinstance(model_instance,
-                          LandAddPlantPostModelRequest)
+
+        assert isinstance(
+            model_instance,
+            LandAddPlantPostModelRequest)
         assert isinstance(model_instance.request_flavor_code,
                           uuid.UUID)
         assert isinstance(model_instance.request_other_flavor,

@@ -9,7 +9,7 @@ class.
 """
 
 import uuid  # noqa: F401
-import math
+import math  # noqa: F401
 
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
@@ -17,7 +17,7 @@ from unittest.mock import AsyncMock, patch, Mock
 
 import pytest
 
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from helpers.session_context import SessionContext
 
 from ..factory.plant_user_details import (
@@ -128,8 +128,9 @@ class PlantUserDetailsGetModelRequestFactoryAsync:
             PlantUserDetailsGetModelRequestFactory
             .create_async(session=session)
         )
-        assert isinstance(model_instance,
-                          PlantUserDetailsGetModelRequest)
+        assert isinstance(
+            model_instance,
+            PlantUserDetailsGetModelRequest)
 
         assert isinstance(model_instance.page_number, int)
         assert isinstance(model_instance.item_count_per_page, int)
@@ -174,6 +175,8 @@ class MockReportItemPlantUserDetails:
         self.update_button_text_link_plant_code = uuid.uuid4()
         self.random_property_updates_link_plant_code = uuid.uuid4()
         self.back_to_dashboard_link_tac_code = uuid.uuid4()
+
+
 @pytest.fixture
 def session_context():
     """
@@ -205,7 +208,8 @@ async def test_process_request(session_context, report_request, report_items):
     PlantUserDetailsGetModelResponse class.
     """
     with patch(
-        'apis.models.plant_user_details.ReportManagerPlantUserDetails',
+        "apis.models.plant_user_details"
+        ".ReportManagerPlantUserDetails",
         autospec=True
     ) as mock_report_manager:
         mock_report_manager_instance = \
@@ -224,8 +228,10 @@ async def test_process_request(session_context, report_request, report_items):
         assert len(response.items) == len(report_items)
 
         for response_item, report_item in zip(response.items, report_items):
-            assert isinstance(response_item,
-                              PlantUserDetailsGetModelResponseItem)
+            assert isinstance(
+                response_item,
+                PlantUserDetailsGetModelResponseItem
+            )
             assert response_item.flavor_name == \
                 report_item.flavor_name
             assert response_item.is_delete_allowed == \
@@ -272,4 +278,3 @@ async def test_process_request(session_context, report_request, report_items):
                 report_item.random_property_updates_link_plant_code
             assert response_item.back_to_dashboard_link_tac_code == \
                 report_item.back_to_dashboard_link_tac_code
-

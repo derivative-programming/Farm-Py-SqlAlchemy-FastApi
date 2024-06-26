@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.flavor import FlavorManager
+from managers.flavor import (
+    FlavorManager)
 from models import Flavor
-from models.factory import FlavorFactory
+from models.factory import (
+    FlavorFactory)
 
 
 class TestFlavorBulkManager:
@@ -28,7 +30,7 @@ class TestFlavorBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def flavor_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `FlavorManager` for testing.
@@ -40,7 +42,7 @@ class TestFlavorBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        flavor_manager: FlavorManager,
+        obj_manager: FlavorManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestFlavorBulkManager:
         1. Generate a list of flavor data using the
             `FlavorFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `flavor_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated flavor data.
         3. Verify that the number of flavors
@@ -79,35 +81,36 @@ class TestFlavorBulkManager:
         flavors_data = [
             await FlavorFactory.build_async(session) for _ in range(5)]
 
-        flavors = await flavor_manager.add_bulk(
+        flavors = await obj_manager.add_bulk(
             flavors_data)
 
         assert len(flavors) == 5
 
-        for updated_flavor in flavors:
+        for updated_obj in flavors:
             result = await session.execute(
                 select(Flavor).filter(
-                    Flavor._flavor_id == updated_flavor.flavor_id  # type: ignore
+                    Flavor._flavor_id == (
+                        updated_obj.flavor_id)  # type: ignore
                 )
             )
-            fetched_flavor = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_flavor,
+                fetched_obj,
                 Flavor)
 
-            assert str(fetched_flavor.insert_user_id) == (
-                str(flavor_manager._session_context.customer_code))
-            assert str(fetched_flavor.last_update_user_id) == (
-                str(flavor_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_flavor.flavor_id == \
-                updated_flavor.flavor_id
+            assert fetched_obj.flavor_id == \
+                updated_obj.flavor_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        flavor_manager: FlavorManager,
+        obj_manager: FlavorManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestFlavorBulkManager:
             the updated codes in the database.
 
         Args:
-            flavor_manager (FlavorManager):
+            obj_manager (FlavorManager):
                 An instance of the
                 `FlavorManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestFlavorBulkManager:
             None
         """
         # Mocking flavor instances
-        flavor1 = await FlavorFactory. \
+        obj_1 = await FlavorFactory. \
             create_async(
                 session=session)
-        flavor2 = await FlavorFactory. \
+        obj_2 = await FlavorFactory. \
             create_async(
                 session=session)
-        logging.info(flavor1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestFlavorBulkManager:
         updates = [
             {
                 "flavor_id":
-                    flavor1.flavor_id,
+                    obj_1.flavor_id,
                 "code": code_updated1
             },
             {
                 "flavor_id":
-                    flavor2.flavor_id,
+                    obj_2.flavor_id,
                 "code": code_updated2
             }
         ]
-        updated_flavors = await flavor_manager.update_bulk(
+        updated_flavors = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestFlavorBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        flavors = await flavor_manager.get_list()
+        flavors = await obj_manager.get_list()
         logging.info(flavors[0]
                      .__dict__)
         logging.info(flavors[1]
@@ -192,40 +195,40 @@ class TestFlavorBulkManager:
 
         assert str(updated_flavors[0]
                    .last_update_user_id) == (
-            str(flavor_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_flavors[1]
                    .last_update_user_id) == (
-            str(flavor_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(Flavor).filter(
                 Flavor._flavor_id == 1)  # type: ignore
         )
-        fetched_flavor = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_flavor,
+        assert isinstance(fetched_obj,
                           Flavor)
 
-        assert fetched_flavor.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(Flavor).filter(
                 Flavor._flavor_id == 2)  # type: ignore
         )
-        fetched_flavor = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_flavor,
+        assert isinstance(fetched_obj,
                           Flavor)
 
-        assert fetched_flavor.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_flavor_id(
         self,
-        flavor_manager: FlavorManager,
+        obj_manager: FlavorManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestFlavorBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No flavors to update since flavor_id is missing
+        # No flavors to update since
+        # flavor_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await flavor_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_flavor_not_found(
         self,
-        flavor_manager: FlavorManager,
+        obj_manager: FlavorManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestFlavorBulkManager:
             where each update
             contains a flavor_id and a code.
         2. Calls the update_bulk method of the
-            flavor_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the flavor was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestFlavorBulkManager:
         updates = [{"flavor_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await flavor_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        flavor_manager: FlavorManager,
+        obj_manager: FlavorManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestFlavorBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param flavor_manager: An instance of the
+        :param obj_manager: An instance of the
             FlavorManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestFlavorBulkManager:
         updates = [{"flavor_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await flavor_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        flavor_manager: FlavorManager,
+        obj_manager: FlavorManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestFlavorBulkManager:
             using the FlavorFactory.
         2. Delete the flavors using the
             delete_bulk method
-            of the flavor_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the flavors no longer exist in the database.
+            checking if the flavors
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The flavors should no longer exist in the database.
+        - The flavors should
+            no longer exist in the database.
 
         """
 
-        flavor1 = await FlavorFactory.create_async(
+        obj_1 = await FlavorFactory.create_async(
             session=session)
 
-        flavor2 = await FlavorFactory.create_async(
+        obj_2 = await FlavorFactory.create_async(
             session=session)
 
         # Delete flavors
-        flavor_ids = [flavor1.flavor_id,
-                     flavor2.flavor_id]
-        result = await flavor_manager.delete_bulk(
+        flavor_ids = [
+            obj_1.flavor_id,
+            obj_2.flavor_id
+        ]
+        result = await obj_manager.delete_bulk(
             flavor_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestFlavorBulkManager:
         for flavor_id in flavor_ids:
             execute_result = await session.execute(
                 select(Flavor).filter(
-                    Flavor._flavor_id == flavor_id)  # type: ignore
+                    Flavor._flavor_id == (
+                        flavor_id))  # type: ignore
             )
-            fetched_flavor = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_flavor is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_flavors_not_found(
         self,
-        flavor_manager: FlavorManager,
+        obj_manager: FlavorManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        flavors when some flavors are not found.
+        flavors when some
+        flavors are not found.
 
         Steps:
         1. Create a flavor using the
@@ -392,17 +402,17 @@ class TestFlavorBulkManager:
         when some flavors with the specified IDs are
         not found in the database.
         """
-        flavor1 = await FlavorFactory.create_async(
+        obj_1 = await FlavorFactory.create_async(
             session=session)
 
-        assert isinstance(flavor1,
+        assert isinstance(obj_1,
                           Flavor)
 
         # Delete flavors
         flavor_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await flavor_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 flavor_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestFlavorBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        flavor_manager: FlavorManager
+        obj_manager: FlavorManager
     ):
         """
         Test case to verify the behavior of deleting
         flavors with an empty list.
 
         Args:
-            flavor_manager (FlavorManager): The
+            obj_manager (FlavorManager): The
                 instance of the
                 FlavorManager class.
 
@@ -430,7 +440,7 @@ class TestFlavorBulkManager:
 
         # Delete flavors with an empty list
         flavor_ids = []
-        result = await flavor_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             flavor_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestFlavorBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        flavor_manager: FlavorManager,
+        obj_manager: FlavorManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestFlavorBulkManager:
         method when invalid flavor IDs are provided.
 
         Args:
-            flavor_manager (FlavorManager): The
+            obj_manager (FlavorManager): The
                 instance of the
                 FlavorManager class.
             session (AsyncSession): The async session object.
@@ -463,8 +473,7 @@ class TestFlavorBulkManager:
         flavor_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await flavor_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 flavor_ids)
 
         await session.rollback()
-

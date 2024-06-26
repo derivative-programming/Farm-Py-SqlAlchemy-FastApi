@@ -18,7 +18,7 @@ from unittest.mock import patch, AsyncMock
 import pytest
 # from typing import List
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.plant import PlantFactory
 from reports.plant_user_details import (
     ReportManagerPlantUserDetails)
@@ -328,4 +328,3 @@ class TestReportManagerPlantUserDetails:
         # Case insensitivity
         assert test_obj._parse_bool('True')
         assert test_obj._parse_bool('YeS')
-

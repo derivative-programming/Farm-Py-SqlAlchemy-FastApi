@@ -162,4 +162,3 @@ class TacBusObj(TacFluentBusObj):
             bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)
         return results
-

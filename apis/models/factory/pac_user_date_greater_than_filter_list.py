@@ -52,14 +52,12 @@ class PacUserDateGreaterThanFilterListGetModelRequestFactory(
             PacUserDateGreaterThanFilterListGetModelRequest: The built
                 instance of PacUserDateGreaterThanFilterListGetModelRequest.
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
 
 
         obj = model_class(*args, **kwargs)
-
 
         return obj
 
@@ -113,10 +111,10 @@ class PacUserDateGreaterThanFilterListGetModelRequestFactory(
         """
 
 
-        obj = PacUserDateGreaterThanFilterListGetModelRequestFactory.build(
-            session=None,
-            *args, **kwargs
-        )
+        obj = PacUserDateGreaterThanFilterListGetModelRequestFactory \
+            .build(
+                session=None,
+                *args, **kwargs
+            )
 
         return obj
-

@@ -63,7 +63,8 @@ class LandFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                Land: An instance of the
+                Land:
+                    An instance of the
                     Land model.
 
         """
@@ -152,7 +153,8 @@ class LandFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = LandFactory.build(session=None, *args, **kwargs)
+        obj = LandFactory \
+            .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
@@ -184,7 +186,8 @@ class LandFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = LandFactory.build(session=None, *args, **kwargs)
+        obj = LandFactory \
+            .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
@@ -192,4 +195,3 @@ class LandFactory(factory.Factory):
         # session.add(obj)
         # await session.flush()
         return obj
-

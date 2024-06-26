@@ -99,11 +99,19 @@ class ReportProviderPacUserDateGreaterThanFilterList():
         query_dict["user_id"] = (
             str(self._session_context.customer_code))
 
-        if ReportProviderPacUserDateGreaterThanFilterList._cached_sql_query == "":
-            # Prioritize 'pac_user_date_greater_than_filter_list.inc.sql' if it exists
-            inc_file_path = "reports/providers/sql/pac_user_date_greater_than_filter_list.inc.sql"
-            gen_file_path = "reports/providers/sql/pac_user_date_greater_than_filter_list.gen.sql"
-
+        if ReportProviderPacUserDateGreaterThanFilterList \
+                ._cached_sql_query == "":
+            # Prioritize
+            # 'pac_user_date_greater_than_filter_list.inc.sql'
+            # if it exists
+            inc_file_path = (
+                "reports/providers/sql/"
+                "pac_user_date_greater_than_filter_list.inc.sql"
+            )
+            gen_file_path = (
+                "reports/providers/sql/"
+                "pac_user_date_greater_than_filter_list.gen.sql"
+            )
             if os.path.exists(inc_file_path):
                 file_to_read = inc_file_path
             elif os.path.exists(gen_file_path):
@@ -112,11 +120,13 @@ class ReportProviderPacUserDateGreaterThanFilterList():
                 raise FileNotFoundError("SQL file not found")
 
             with open(file_to_read, 'r', encoding='utf-8') as file:
-                ReportProviderPacUserDateGreaterThanFilterList._cached_sql_query = file.read()
+                (ReportProviderPacUserDateGreaterThanFilterList
+                 ._cached_sql_query) = file.read()
 
         # Execute the SQL query with the provided parameters
         cursor = await self._session_context.session.execute(
-            text(ReportProviderPacUserDateGreaterThanFilterList._cached_sql_query),
+            text(ReportProviderPacUserDateGreaterThanFilterList
+                 ._cached_sql_query),
             query_dict
         )
 
@@ -142,4 +152,3 @@ class ReportProviderPacUserDateGreaterThanFilterList():
             dict(zip(columns, row))
             for row in cursor.fetchall()
         ]
-

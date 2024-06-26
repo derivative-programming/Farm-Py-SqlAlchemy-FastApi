@@ -1,4 +1,4 @@
-# plant_test.py
+# models/serialization_schema/tests/plant_test.py
 # pylint: disable=redefined-outer-name
 # pylint: disable=unused-import
 
@@ -15,13 +15,15 @@ transmitted over a network.
 
 The tests in this module cover the serialization
 and deserialization of Plant
-instances using the PlantSchema class. They verify
+instances using the PlantSchema
+class. They verify
 that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a Plant instance.
 
-The PlantSchema class is used to define
+The PlantSchema class
+is used to define
 the serialization and deserialization
 rules for Plant instances. It
 specifies how each attribute of a
@@ -56,7 +58,7 @@ logger = get_logger(__name__)
 
 
 @pytest.fixture(scope="function")
-def plant(
+def new_obj(
     session
 ) -> Plant:
     """
@@ -131,7 +133,7 @@ class TestPlantSchema:
 
     def test_plant_serialization(
         self,
-        plant: Plant
+        new_obj: Plant
     ):
         """
         Test the serialization of a
@@ -144,74 +146,74 @@ class TestPlantSchema:
         """
 
         schema = PlantSchema()
-        plant_data = schema.dump(plant)
+        plant_data = schema.dump(new_obj)
 
         assert isinstance(plant_data, dict)
 
         result = plant_data
 
-        assert result['code'] == str(plant.code)
+        assert result['code'] == str(new_obj.code)
         assert result['last_change_code'] == (
-            plant.last_change_code)
+            new_obj.last_change_code)
         assert result['insert_user_id'] == (
-            str(plant.insert_user_id))
+            str(new_obj.insert_user_id))
         assert result['last_update_user_id'] == (
-            str(plant.last_update_user_id))
+            str(new_obj.last_update_user_id))
 
 # endset
         assert result['flvr_foreign_key_id'] == (
-            plant.flvr_foreign_key_id)
+            new_obj.flvr_foreign_key_id)
         assert result['is_delete_allowed'] == (
-            plant.is_delete_allowed)
+            new_obj.is_delete_allowed)
         assert result['is_edit_allowed'] == (
-            plant.is_edit_allowed)
+            new_obj.is_edit_allowed)
         assert result['land_id'] == (
-            plant.land_id)
+            new_obj.land_id)
         assert result['other_flavor'] == (
-            plant.other_flavor)
+            new_obj.other_flavor)
         assert result['some_big_int_val'] == (
-            plant.some_big_int_val)
+            new_obj.some_big_int_val)
         assert result['some_bit_val'] == (
-            plant.some_bit_val)
+            new_obj.some_bit_val)
         assert result['some_date_val'] == (
-            plant.some_date_val.strftime('%Y-%m-%d'))
+            new_obj.some_date_val.strftime('%Y-%m-%d'))
         assert result['some_decimal_val'] == (
-            str(plant.some_decimal_val))
+            str(new_obj.some_decimal_val))
         assert result['some_email_address'] == (
-            plant.some_email_address)
+            new_obj.some_email_address)
         assert result['some_float_val'] == (
-            plant.some_float_val)
+            new_obj.some_float_val)
         assert result['some_int_val'] == (
-            plant.some_int_val)
+            new_obj.some_int_val)
         assert result['some_money_val'] == (
-            str(plant.some_money_val))
+            str(new_obj.some_money_val))
         assert result['some_n_var_char_val'] == (
-            plant.some_n_var_char_val)
+            new_obj.some_n_var_char_val)
         assert result['some_phone_number'] == (
-            plant.some_phone_number)
+            new_obj.some_phone_number)
         assert result['some_text_val'] == (
-            plant.some_text_val)
+            new_obj.some_text_val)
         assert result['some_uniqueidentifier_val'] == (
-            str(plant.some_uniqueidentifier_val))
+            str(new_obj.some_uniqueidentifier_val))
         assert result['some_utc_date_time_val'] == (
-            plant.some_utc_date_time_val.isoformat())
+            new_obj.some_utc_date_time_val.isoformat())
         assert result['some_var_char_val'] == (
-            plant.some_var_char_val)
+            new_obj.some_var_char_val)
 # endset
         assert result['insert_utc_date_time'] == (
-            plant.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
-            plant.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
 # endset
         assert result['flvr_foreign_key_code_peek'] == (  # FlvrForeignKeyID
-            str(plant.flvr_foreign_key_code_peek))
+            str(new_obj.flvr_foreign_key_code_peek))
         assert result['land_code_peek'] == (  # LandID
-            str(plant.land_code_peek))
+            str(new_obj.land_code_peek))
 # endset
 
     def test_plant_deserialization(
         self,
-        plant
+        new_obj: Plant
     ):
         """
         Test the deserialization of a
@@ -230,72 +232,72 @@ class TestPlantSchema:
         """
 
         schema = PlantSchema()
-        serialized_data = schema.dump(plant)
+        serialized_data = schema.dump(new_obj)
         deserialized_data = schema.load(serialized_data)
 
         assert deserialized_data['code'] == \
-            plant.code
+            new_obj.code
         assert deserialized_data['last_change_code'] == (
-            plant.last_change_code)
+            new_obj.last_change_code)
         assert deserialized_data['insert_user_id'] == (
-            plant.insert_user_id)
+            new_obj.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
-            plant.last_update_user_id)
+            new_obj.last_update_user_id)
 # endset
 
         assert deserialized_data['is_delete_allowed'] == (
-            plant.is_delete_allowed)
+            new_obj.is_delete_allowed)
         assert deserialized_data['is_edit_allowed'] == (
-            plant.is_edit_allowed)
+            new_obj.is_edit_allowed)
         assert deserialized_data['land_id'] == (
-            plant.land_id)
+            new_obj.land_id)
         assert deserialized_data['other_flavor'] == (
-            plant.other_flavor)
+            new_obj.other_flavor)
         assert deserialized_data['some_big_int_val'] == (
-            plant.some_big_int_val)
+            new_obj.some_big_int_val)
         assert deserialized_data['some_bit_val'] == (
-            plant.some_bit_val)
+            new_obj.some_bit_val)
         assert deserialized_data['some_date_val'].strftime('%Y-%m-%d') == (
-            plant.some_date_val.strftime('%Y-%m-%d'))
+            new_obj.some_date_val.strftime('%Y-%m-%d'))
         assert deserialized_data['some_decimal_val'] == (
-            plant.some_decimal_val)
+            new_obj.some_decimal_val)
         assert deserialized_data['some_email_address'] == (
-            plant.some_email_address)
+            new_obj.some_email_address)
         assert deserialized_data['some_float_val'] == (
-            plant.some_float_val)
+            new_obj.some_float_val)
         assert deserialized_data['some_int_val'] == (
-            plant.some_int_val)
+            new_obj.some_int_val)
         assert deserialized_data['some_money_val'] == (
-            plant.some_money_val)
+            new_obj.some_money_val)
         assert deserialized_data['some_n_var_char_val'] == (
-            plant.some_n_var_char_val)
+            new_obj.some_n_var_char_val)
         assert deserialized_data['some_phone_number'] == (
-            plant.some_phone_number)
+            new_obj.some_phone_number)
         assert deserialized_data['some_text_val'] == (
-            plant.some_text_val)
+            new_obj.some_text_val)
         assert deserialized_data['some_uniqueidentifier_val'] == (
-            plant.some_uniqueidentifier_val)
+            new_obj.some_uniqueidentifier_val)
         assert deserialized_data['some_utc_date_time_val'].isoformat() == (
-            plant.some_utc_date_time_val.isoformat())
+            new_obj.some_utc_date_time_val.isoformat())
         assert deserialized_data['some_var_char_val'] == (
-            plant.some_var_char_val)
+            new_obj.some_var_char_val)
         assert deserialized_data['flvr_foreign_key_id'] == (
-            plant.flvr_foreign_key_id)
+            new_obj.flvr_foreign_key_id)
 # endset
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
-            plant.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
-            plant.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
 # endset
         assert deserialized_data[(  # FlvrForeignKeyID
             'flvr_foreign_key_code_peek')] == (
-            plant.flvr_foreign_key_code_peek)
+            new_obj.flvr_foreign_key_code_peek)
         assert deserialized_data[(  # LandID
             'land_code_peek')] == (
-            plant.land_code_peek)
+            new_obj.land_code_peek)
 # endset
 
-        new_obj = Plant(
+        obj_from_dict = Plant(
             **deserialized_data)
 
         assert isinstance(new_obj,
@@ -303,66 +305,66 @@ class TestPlantSchema:
 
         # Now compare the new_obj attributes with
         # the plant attributes
-        assert new_obj.code == \
-            plant.code
-        assert new_obj.last_change_code == \
-            plant.last_change_code
-        assert new_obj.insert_user_id == \
-            plant.insert_user_id
-        assert new_obj.last_update_user_id == \
-            plant.last_update_user_id
+        assert obj_from_dict.code == \
+            new_obj.code
+        assert obj_from_dict.last_change_code == \
+            new_obj.last_change_code
+        assert obj_from_dict.insert_user_id == \
+            new_obj.insert_user_id
+        assert obj_from_dict.last_update_user_id == \
+            new_obj.last_update_user_id
 # endset
 
-        assert new_obj.is_delete_allowed == (
-            plant.is_delete_allowed)
-        assert new_obj.is_edit_allowed == (
-            plant.is_edit_allowed)
-        assert new_obj.land_id == (
-            plant.land_id)
-        assert new_obj.other_flavor == (
-            plant.other_flavor)
-        assert new_obj.some_big_int_val == (
-            plant.some_big_int_val)
-        assert new_obj.some_bit_val == (
-            plant.some_bit_val)
-        assert new_obj.some_date_val.strftime('%Y-%m-%d') == (
-            plant.some_date_val.strftime('%Y-%m-%d'))
-        assert new_obj.some_decimal_val == (
-            plant.some_decimal_val)
-        assert new_obj.some_email_address == (
-            plant.some_email_address)
-        assert new_obj.some_float_val == (
-            plant.some_float_val)
-        assert new_obj.some_int_val == (
-            plant.some_int_val)
-        assert new_obj.some_money_val == (
-            plant.some_money_val)
-        assert new_obj.some_n_var_char_val == (
-            plant.some_n_var_char_val)
-        assert new_obj.some_phone_number == (
-            plant.some_phone_number)
-        assert new_obj.some_text_val == (
-            plant.some_text_val)
-        assert new_obj.some_uniqueidentifier_val == (
-            plant.some_uniqueidentifier_val)
-        assert new_obj.some_utc_date_time_val.isoformat() == (
-            plant.some_utc_date_time_val.isoformat())
-        assert new_obj.some_var_char_val == (
-            plant.some_var_char_val)
-        assert new_obj.flvr_foreign_key_id == (
-            plant.flvr_foreign_key_id)
+        assert obj_from_dict.is_delete_allowed == (
+            new_obj.is_delete_allowed)
+        assert obj_from_dict.is_edit_allowed == (
+            new_obj.is_edit_allowed)
+        assert obj_from_dict.land_id == (
+            new_obj.land_id)
+        assert obj_from_dict.other_flavor == (
+            new_obj.other_flavor)
+        assert obj_from_dict.some_big_int_val == (
+            new_obj.some_big_int_val)
+        assert obj_from_dict.some_bit_val == (
+            new_obj.some_bit_val)
+        assert obj_from_dict.some_date_val.strftime('%Y-%m-%d') == (
+            new_obj.some_date_val.strftime('%Y-%m-%d'))
+        assert obj_from_dict.some_decimal_val == (
+            new_obj.some_decimal_val)
+        assert obj_from_dict.some_email_address == (
+            new_obj.some_email_address)
+        assert obj_from_dict.some_float_val == (
+            new_obj.some_float_val)
+        assert obj_from_dict.some_int_val == (
+            new_obj.some_int_val)
+        assert obj_from_dict.some_money_val == (
+            new_obj.some_money_val)
+        assert obj_from_dict.some_n_var_char_val == (
+            new_obj.some_n_var_char_val)
+        assert obj_from_dict.some_phone_number == (
+            new_obj.some_phone_number)
+        assert obj_from_dict.some_text_val == (
+            new_obj.some_text_val)
+        assert obj_from_dict.some_uniqueidentifier_val == (
+            new_obj.some_uniqueidentifier_val)
+        assert obj_from_dict.some_utc_date_time_val.isoformat() == (
+            new_obj.some_utc_date_time_val.isoformat())
+        assert obj_from_dict.some_var_char_val == (
+            new_obj.some_var_char_val)
+        assert obj_from_dict.flvr_foreign_key_id == (
+            new_obj.flvr_foreign_key_id)
 # endset
 
-        assert new_obj.insert_utc_date_time.isoformat() == (
-            plant.insert_utc_date_time.isoformat())
-        assert new_obj.last_update_utc_date_time.isoformat() == (
-            plant.last_update_utc_date_time.isoformat())
+        assert obj_from_dict.insert_utc_date_time.isoformat() == (
+            new_obj.insert_utc_date_time.isoformat())
+        assert obj_from_dict.last_update_utc_date_time.isoformat() == (
+            new_obj.last_update_utc_date_time.isoformat())
 # endset
 
-        assert new_obj.flvr_foreign_key_code_peek == (  # FlvrForeignKeyID
-            plant.flvr_foreign_key_code_peek)
-        assert new_obj.land_code_peek == (  # LandID
-            plant.land_code_peek)
+        assert obj_from_dict.flvr_foreign_key_code_peek == (  # FlvrForeignKeyID
+            new_obj.flvr_foreign_key_code_peek)
+        assert obj_from_dict.land_code_peek == (  # LandID
+            new_obj.land_code_peek)
 # endset
 
     def test_from_json(self):
@@ -465,7 +467,7 @@ class TestPlantSchema:
 
     def test_to_json(
         self,
-        plant: Plant
+        new_obj: Plant
     ):
         """
         Test the conversion of a
@@ -484,7 +486,7 @@ class TestPlantSchema:
         # to JSON using the schema
         plant_schema = PlantSchema()
         plant_dict = plant_schema.dump(
-            plant)
+            new_obj)
 
         # Convert the plant_dict to JSON string
         plant_json = json.dumps(
@@ -509,117 +511,117 @@ class TestPlantSchema:
         )
 
         assert dict_from_json['code'] == \
-            str(plant.code), (
+            str(new_obj.code), (
             "failed on code"
         )
         assert dict_from_json['last_change_code'] == (
-            plant.last_change_code), (
+            new_obj.last_change_code), (
             "failed on last_change_code"
         )
         assert dict_from_json['insert_user_id'] == (
-            str(plant.insert_user_id)), (
+            str(new_obj.insert_user_id)), (
             "failed on insert_user_id"
         )
         assert dict_from_json['last_update_user_id'] == (
-            str(plant.last_update_user_id)), (
+            str(new_obj.last_update_user_id)), (
             "failed on last_update_user_id"
         )
 # endset
 
         assert dict_from_json['is_delete_allowed'] == (
-            plant.is_delete_allowed), (
+            new_obj.is_delete_allowed), (
             "failed on is_delete_allowed"
         )
         assert dict_from_json['is_edit_allowed'] == (
-            plant.is_edit_allowed), (
+            new_obj.is_edit_allowed), (
             "failed on is_edit_allowed"
         )
         assert dict_from_json['land_id'] == (
-            plant.land_id), (
+            new_obj.land_id), (
             "failed on land_id"
         )
         assert dict_from_json['other_flavor'] == (
-            plant.other_flavor), (
+            new_obj.other_flavor), (
             "failed on other_flavor"
         )
         assert dict_from_json['some_big_int_val'] == (
-            plant.some_big_int_val), (
+            new_obj.some_big_int_val), (
             "failed on some_big_int_val"
         )
         assert dict_from_json['some_bit_val'] == (
-            plant.some_bit_val), (
+            new_obj.some_bit_val), (
             "failed on some_bit_val"
         )
         assert dict_from_json['some_date_val'] == (
-            plant.some_date_val.strftime('%Y-%m-%d')), (
+            new_obj.some_date_val.strftime('%Y-%m-%d')), (
             "failed on some_date_val"
         )
         assert dict_from_json['some_decimal_val'] == str(
-            plant.some_decimal_val), (
+            new_obj.some_decimal_val), (
             "failed on some_decimal_val"
         )
         assert dict_from_json['some_email_address'] == (
-            plant.some_email_address), (
+            new_obj.some_email_address), (
             "failed on some_email_address"
         )
         assert dict_from_json['some_float_val'] == (
-            plant.some_float_val), (
+            new_obj.some_float_val), (
             "failed on some_float_val"
         )
         assert dict_from_json['some_int_val'] == (
-            plant.some_int_val), (
+            new_obj.some_int_val), (
             "failed on some_int_val"
         )
         assert dict_from_json['some_money_val'] == str(
-            plant.some_money_val), (
+            new_obj.some_money_val), (
             "failed on some_money_val"
         )
         assert dict_from_json['some_n_var_char_val'] == (
-            plant.some_n_var_char_val), (
+            new_obj.some_n_var_char_val), (
             "failed on some_n_var_char_val"
         )
         assert dict_from_json['some_phone_number'] == (
-            plant.some_phone_number), (
+            new_obj.some_phone_number), (
             "failed on some_phone_number"
         )
         assert dict_from_json['some_text_val'] == (
-            plant.some_text_val), (
+            new_obj.some_text_val), (
             "failed on some_text_val"
         )
         assert dict_from_json['some_uniqueidentifier_val'] == (
-            str(plant.some_uniqueidentifier_val)), (
+            str(new_obj.some_uniqueidentifier_val)), (
             "failed on some_uniqueidentifier_val"
         )
         assert dict_from_json['some_utc_date_time_val'] == (
-            plant.some_utc_date_time_val.isoformat()), (
+            new_obj.some_utc_date_time_val.isoformat()), (
             "failed on some_utc_date_time_val"
         )
         assert dict_from_json['some_var_char_val'] == (
-            plant.some_var_char_val), (
+            new_obj.some_var_char_val), (
             "failed on some_var_char_val"
         )
         assert dict_from_json['flvr_foreign_key_id'] == (
-            plant.flvr_foreign_key_id), (
+            new_obj.flvr_foreign_key_id), (
             "failed on flvr_foreign_key_id"
         )
 # endset
         assert dict_from_json['insert_utc_date_time'] == (
-            plant.insert_utc_date_time.isoformat()), (
+            new_obj.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
         )
         assert dict_from_json['last_update_utc_date_time'] == (
-            plant.last_update_utc_date_time.isoformat()), (
+            new_obj.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
 # endset
         assert dict_from_json[(  # FlvrForeignKeyID
             'flvr_foreign_key_code_peek')] == (
-            str(plant.flvr_foreign_key_code_peek)), (
+            str(new_obj.flvr_foreign_key_code_peek)), (
             "failed on flvr_foreign_key_code_peek"
         )
         assert dict_from_json[(  # LandID
             'land_code_peek')] == (
-            str(plant.land_code_peek)), (
+            str(new_obj.land_code_peek)), (
             "failed on land_code_peek"
         )
 # endset

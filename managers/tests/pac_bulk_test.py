@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.pac import PacManager
+from managers.pac import (
+    PacManager)
 from models import Pac
-from models.factory import PacFactory
+from models.factory import (
+    PacFactory)
 
 
 class TestPacBulkManager:
@@ -28,7 +30,7 @@ class TestPacBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def pac_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `PacManager` for testing.
@@ -40,7 +42,7 @@ class TestPacBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        pac_manager: PacManager,
+        obj_manager: PacManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestPacBulkManager:
         1. Generate a list of pac data using the
             `PacFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `pac_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated pac data.
         3. Verify that the number of pacs
@@ -79,35 +81,36 @@ class TestPacBulkManager:
         pacs_data = [
             await PacFactory.build_async(session) for _ in range(5)]
 
-        pacs = await pac_manager.add_bulk(
+        pacs = await obj_manager.add_bulk(
             pacs_data)
 
         assert len(pacs) == 5
 
-        for updated_pac in pacs:
+        for updated_obj in pacs:
             result = await session.execute(
                 select(Pac).filter(
-                    Pac._pac_id == updated_pac.pac_id  # type: ignore
+                    Pac._pac_id == (
+                        updated_obj.pac_id)  # type: ignore
                 )
             )
-            fetched_pac = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_pac,
+                fetched_obj,
                 Pac)
 
-            assert str(fetched_pac.insert_user_id) == (
-                str(pac_manager._session_context.customer_code))
-            assert str(fetched_pac.last_update_user_id) == (
-                str(pac_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_pac.pac_id == \
-                updated_pac.pac_id
+            assert fetched_obj.pac_id == \
+                updated_obj.pac_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        pac_manager: PacManager,
+        obj_manager: PacManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestPacBulkManager:
             the updated codes in the database.
 
         Args:
-            pac_manager (PacManager):
+            obj_manager (PacManager):
                 An instance of the
                 `PacManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestPacBulkManager:
             None
         """
         # Mocking pac instances
-        pac1 = await PacFactory. \
+        obj_1 = await PacFactory. \
             create_async(
                 session=session)
-        pac2 = await PacFactory. \
+        obj_2 = await PacFactory. \
             create_async(
                 session=session)
-        logging.info(pac1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestPacBulkManager:
         updates = [
             {
                 "pac_id":
-                    pac1.pac_id,
+                    obj_1.pac_id,
                 "code": code_updated1
             },
             {
                 "pac_id":
-                    pac2.pac_id,
+                    obj_2.pac_id,
                 "code": code_updated2
             }
         ]
-        updated_pacs = await pac_manager.update_bulk(
+        updated_pacs = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestPacBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        pacs = await pac_manager.get_list()
+        pacs = await obj_manager.get_list()
         logging.info(pacs[0]
                      .__dict__)
         logging.info(pacs[1]
@@ -192,40 +195,40 @@ class TestPacBulkManager:
 
         assert str(updated_pacs[0]
                    .last_update_user_id) == (
-            str(pac_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_pacs[1]
                    .last_update_user_id) == (
-            str(pac_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(Pac).filter(
                 Pac._pac_id == 1)  # type: ignore
         )
-        fetched_pac = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_pac,
+        assert isinstance(fetched_obj,
                           Pac)
 
-        assert fetched_pac.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(Pac).filter(
                 Pac._pac_id == 2)  # type: ignore
         )
-        fetched_pac = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_pac,
+        assert isinstance(fetched_obj,
                           Pac)
 
-        assert fetched_pac.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_pac_id(
         self,
-        pac_manager: PacManager,
+        obj_manager: PacManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestPacBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No pacs to update since pac_id is missing
+        # No pacs to update since
+        # pac_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await pac_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_pac_not_found(
         self,
-        pac_manager: PacManager,
+        obj_manager: PacManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestPacBulkManager:
             where each update
             contains a pac_id and a code.
         2. Calls the update_bulk method of the
-            pac_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the pac was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestPacBulkManager:
         updates = [{"pac_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await pac_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        pac_manager: PacManager,
+        obj_manager: PacManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestPacBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param pac_manager: An instance of the
+        :param obj_manager: An instance of the
             PacManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestPacBulkManager:
         updates = [{"pac_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await pac_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        pac_manager: PacManager,
+        obj_manager: PacManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestPacBulkManager:
             using the PacFactory.
         2. Delete the pacs using the
             delete_bulk method
-            of the pac_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the pacs no longer exist in the database.
+            checking if the pacs
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The pacs should no longer exist in the database.
+        - The pacs should
+            no longer exist in the database.
 
         """
 
-        pac1 = await PacFactory.create_async(
+        obj_1 = await PacFactory.create_async(
             session=session)
 
-        pac2 = await PacFactory.create_async(
+        obj_2 = await PacFactory.create_async(
             session=session)
 
         # Delete pacs
-        pac_ids = [pac1.pac_id,
-                     pac2.pac_id]
-        result = await pac_manager.delete_bulk(
+        pac_ids = [
+            obj_1.pac_id,
+            obj_2.pac_id
+        ]
+        result = await obj_manager.delete_bulk(
             pac_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestPacBulkManager:
         for pac_id in pac_ids:
             execute_result = await session.execute(
                 select(Pac).filter(
-                    Pac._pac_id == pac_id)  # type: ignore
+                    Pac._pac_id == (
+                        pac_id))  # type: ignore
             )
-            fetched_pac = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_pac is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_pacs_not_found(
         self,
-        pac_manager: PacManager,
+        obj_manager: PacManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        pacs when some pacs are not found.
+        pacs when some
+        pacs are not found.
 
         Steps:
         1. Create a pac using the
@@ -392,17 +402,17 @@ class TestPacBulkManager:
         when some pacs with the specified IDs are
         not found in the database.
         """
-        pac1 = await PacFactory.create_async(
+        obj_1 = await PacFactory.create_async(
             session=session)
 
-        assert isinstance(pac1,
+        assert isinstance(obj_1,
                           Pac)
 
         # Delete pacs
         pac_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await pac_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 pac_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestPacBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        pac_manager: PacManager
+        obj_manager: PacManager
     ):
         """
         Test case to verify the behavior of deleting
         pacs with an empty list.
 
         Args:
-            pac_manager (PacManager): The
+            obj_manager (PacManager): The
                 instance of the
                 PacManager class.
 
@@ -430,7 +440,7 @@ class TestPacBulkManager:
 
         # Delete pacs with an empty list
         pac_ids = []
-        result = await pac_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             pac_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestPacBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        pac_manager: PacManager,
+        obj_manager: PacManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestPacBulkManager:
         method when invalid pac IDs are provided.
 
         Args:
-            pac_manager (PacManager): The
+            obj_manager (PacManager): The
                 instance of the
                 PacManager class.
             session (AsyncSession): The async session object.
@@ -463,8 +473,7 @@ class TestPacBulkManager:
         pac_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await pac_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 pac_ids)
 
         await session.rollback()
-

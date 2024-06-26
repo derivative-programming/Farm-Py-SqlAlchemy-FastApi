@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.organization import OrganizationManager
+from managers.organization import (
+    OrganizationManager)
 from models import Organization
-from models.factory import OrganizationFactory
+from models.factory import (
+    OrganizationFactory)
 
 
 class TestOrganizationBulkManager:
@@ -28,7 +30,7 @@ class TestOrganizationBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def organization_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `OrganizationManager` for testing.
@@ -40,7 +42,7 @@ class TestOrganizationBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestOrganizationBulkManager:
         1. Generate a list of organization data using the
             `OrganizationFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `organization_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated organization data.
         3. Verify that the number of organizations
@@ -79,35 +81,36 @@ class TestOrganizationBulkManager:
         organizations_data = [
             await OrganizationFactory.build_async(session) for _ in range(5)]
 
-        organizations = await organization_manager.add_bulk(
+        organizations = await obj_manager.add_bulk(
             organizations_data)
 
         assert len(organizations) == 5
 
-        for updated_organization in organizations:
+        for updated_obj in organizations:
             result = await session.execute(
                 select(Organization).filter(
-                    Organization._organization_id == updated_organization.organization_id  # type: ignore
+                    Organization._organization_id == (
+                        updated_obj.organization_id)  # type: ignore
                 )
             )
-            fetched_organization = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_organization,
+                fetched_obj,
                 Organization)
 
-            assert str(fetched_organization.insert_user_id) == (
-                str(organization_manager._session_context.customer_code))
-            assert str(fetched_organization.last_update_user_id) == (
-                str(organization_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_organization.organization_id == \
-                updated_organization.organization_id
+            assert fetched_obj.organization_id == \
+                updated_obj.organization_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestOrganizationBulkManager:
             the updated codes in the database.
 
         Args:
-            organization_manager (OrganizationManager):
+            obj_manager (OrganizationManager):
                 An instance of the
                 `OrganizationManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestOrganizationBulkManager:
             None
         """
         # Mocking organization instances
-        organization1 = await OrganizationFactory. \
+        obj_1 = await OrganizationFactory. \
             create_async(
                 session=session)
-        organization2 = await OrganizationFactory. \
+        obj_2 = await OrganizationFactory. \
             create_async(
                 session=session)
-        logging.info(organization1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestOrganizationBulkManager:
         updates = [
             {
                 "organization_id":
-                    organization1.organization_id,
+                    obj_1.organization_id,
                 "code": code_updated1
             },
             {
                 "organization_id":
-                    organization2.organization_id,
+                    obj_2.organization_id,
                 "code": code_updated2
             }
         ]
-        updated_organizations = await organization_manager.update_bulk(
+        updated_organizations = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestOrganizationBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        organizations = await organization_manager.get_list()
+        organizations = await obj_manager.get_list()
         logging.info(organizations[0]
                      .__dict__)
         logging.info(organizations[1]
@@ -192,40 +195,40 @@ class TestOrganizationBulkManager:
 
         assert str(updated_organizations[0]
                    .last_update_user_id) == (
-            str(organization_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_organizations[1]
                    .last_update_user_id) == (
-            str(organization_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(Organization).filter(
                 Organization._organization_id == 1)  # type: ignore
         )
-        fetched_organization = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_organization,
+        assert isinstance(fetched_obj,
                           Organization)
 
-        assert fetched_organization.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(Organization).filter(
                 Organization._organization_id == 2)  # type: ignore
         )
-        fetched_organization = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_organization,
+        assert isinstance(fetched_obj,
                           Organization)
 
-        assert fetched_organization.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_organization_id(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestOrganizationBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No organizations to update since organization_id is missing
+        # No organizations to update since
+        # organization_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await organization_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_organization_not_found(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestOrganizationBulkManager:
             where each update
             contains a organization_id and a code.
         2. Calls the update_bulk method of the
-            organization_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the organization was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestOrganizationBulkManager:
         updates = [{"organization_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await organization_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestOrganizationBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param organization_manager: An instance of the
+        :param obj_manager: An instance of the
             OrganizationManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestOrganizationBulkManager:
         updates = [{"organization_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await organization_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestOrganizationBulkManager:
             using the OrganizationFactory.
         2. Delete the organizations using the
             delete_bulk method
-            of the organization_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the organizations no longer exist in the database.
+            checking if the organizations
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The organizations should no longer exist in the database.
+        - The organizations should
+            no longer exist in the database.
 
         """
 
-        organization1 = await OrganizationFactory.create_async(
+        obj_1 = await OrganizationFactory.create_async(
             session=session)
 
-        organization2 = await OrganizationFactory.create_async(
+        obj_2 = await OrganizationFactory.create_async(
             session=session)
 
         # Delete organizations
-        organization_ids = [organization1.organization_id,
-                     organization2.organization_id]
-        result = await organization_manager.delete_bulk(
+        organization_ids = [
+            obj_1.organization_id,
+            obj_2.organization_id
+        ]
+        result = await obj_manager.delete_bulk(
             organization_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestOrganizationBulkManager:
         for organization_id in organization_ids:
             execute_result = await session.execute(
                 select(Organization).filter(
-                    Organization._organization_id == organization_id)  # type: ignore
+                    Organization._organization_id == (
+                        organization_id))  # type: ignore
             )
-            fetched_organization = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_organization is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_organizations_not_found(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        organizations when some organizations are not found.
+        organizations when some
+        organizations are not found.
 
         Steps:
         1. Create a organization using the
@@ -392,17 +402,17 @@ class TestOrganizationBulkManager:
         when some organizations with the specified IDs are
         not found in the database.
         """
-        organization1 = await OrganizationFactory.create_async(
+        obj_1 = await OrganizationFactory.create_async(
             session=session)
 
-        assert isinstance(organization1,
+        assert isinstance(obj_1,
                           Organization)
 
         # Delete organizations
         organization_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await organization_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 organization_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestOrganizationBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        organization_manager: OrganizationManager
+        obj_manager: OrganizationManager
     ):
         """
         Test case to verify the behavior of deleting
         organizations with an empty list.
 
         Args:
-            organization_manager (OrganizationManager): The
+            obj_manager (OrganizationManager): The
                 instance of the
                 OrganizationManager class.
 
@@ -430,7 +440,7 @@ class TestOrganizationBulkManager:
 
         # Delete organizations with an empty list
         organization_ids = []
-        result = await organization_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             organization_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestOrganizationBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        organization_manager: OrganizationManager,
+        obj_manager: OrganizationManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestOrganizationBulkManager:
         method when invalid organization IDs are provided.
 
         Args:
-            organization_manager (OrganizationManager): The
+            obj_manager (OrganizationManager): The
                 instance of the
                 OrganizationManager class.
             session (AsyncSession): The async session object.
@@ -463,8 +473,7 @@ class TestOrganizationBulkManager:
         organization_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await organization_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 organization_ids)
 
         await session.rollback()
-

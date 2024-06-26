@@ -7,7 +7,7 @@ class in the models.factory package.
 
 from decimal import Decimal  # noqa: F401
 import time
-import math
+import math  # noqa: F401
 import uuid  # noqa: F401
 import logging
 from datetime import datetime, date, timedelta  # noqa: F401
@@ -56,48 +56,48 @@ class TestPlantFactory:
         """
         Test case for creating a plant.
         """
-        plant = PlantFactory.create(
+        new_obj = PlantFactory.create(
             session=session)
-        assert plant.plant_id is not None
+        assert new_obj.plant_id is not None
 
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
-        plant = PlantFactory.create(
+        new_obj = PlantFactory.create(
             session=session)
-        assert isinstance(plant.code, uuid.UUID)
+        assert isinstance(new_obj.code, uuid.UUID)
 
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
         the last_change_code attribute on build.
         """
-        plant: Plant = PlantFactory.build(
+        new_obj: Plant = PlantFactory.build(
             session=session)
-        assert plant.last_change_code == 0
+        assert new_obj.last_change_code == 0
 
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on creation.
         """
-        plant: Plant = PlantFactory.create(
+        new_obj: Plant = PlantFactory.create(
             session=session)
-        assert plant.last_change_code == 1
+        assert new_obj.last_change_code == 1
 
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on update.
         """
-        plant = PlantFactory.create(
+        new_obj = PlantFactory.create(
             session=session)
-        initial_code = plant.last_change_code
-        plant.code = uuid.uuid4()
+        initial_code = new_obj.last_change_code
+        new_obj.code = uuid.uuid4()
         session.commit()
-        assert plant.last_change_code != \
+        assert new_obj.last_change_code != \
             initial_code
 
     def test_date_inserted_on_build(self, session):
@@ -105,27 +105,27 @@ class TestPlantFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on build.
         """
-        plant = PlantFactory.build(
+        new_obj = PlantFactory.build(
             session=session)
-        assert plant.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            plant.insert_utc_date_time, datetime)
+            new_obj.insert_utc_date_time, datetime)
 
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
         insert_utc_date_time attribute on initial save.
         """
-        plant = PlantFactory.build(
+        new_obj = PlantFactory.build(
             session=session)
-        assert plant.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            plant.insert_utc_date_time, datetime)
+            new_obj.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        plant.code = uuid.uuid4()
-        session.add(plant)
+        new_obj.code = uuid.uuid4()
+        session.add(new_obj)
         session.commit()
-        assert plant.insert_utc_date_time > \
+        assert new_obj.insert_utc_date_time > \
             initial_time
 
     def test_date_inserted_on_second_save(self, session):
@@ -133,43 +133,43 @@ class TestPlantFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on second save.
         """
-        plant = PlantFactory(
+        new_obj = PlantFactory(
             session=session)
-        assert plant.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            plant.insert_utc_date_time, datetime)
-        initial_time = plant.insert_utc_date_time
-        plant.code = uuid.uuid4()
+            new_obj.insert_utc_date_time, datetime)
+        initial_time = new_obj.insert_utc_date_time
+        new_obj.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert plant.insert_utc_date_time == initial_time
+        assert new_obj.insert_utc_date_time == initial_time
 
     def test_date_updated_on_build(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on build.
         """
-        plant = PlantFactory.build(
+        new_obj = PlantFactory.build(
             session=session)
-        assert plant.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            plant.last_update_utc_date_time, datetime)
+            new_obj.last_update_utc_date_time, datetime)
 
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on initial save.
         """
-        plant = PlantFactory.build(
+        new_obj = PlantFactory.build(
             session=session)
-        assert plant.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            plant.last_update_utc_date_time, datetime)
+            new_obj.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        plant.code = uuid.uuid4()
-        session.add(plant)
+        new_obj.code = uuid.uuid4()
+        session.add(new_obj)
         session.commit()
-        assert plant.last_update_utc_date_time > \
+        assert new_obj.last_update_utc_date_time > \
             initial_time
 
     def test_date_updated_on_second_save(self, session):
@@ -177,16 +177,16 @@ class TestPlantFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on second save.
         """
-        plant = PlantFactory(
+        new_obj = PlantFactory(
             session=session)
-        assert plant.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            plant.last_update_utc_date_time, datetime)
-        initial_time = plant.last_update_utc_date_time
-        plant.code = uuid.uuid4()
+            new_obj.last_update_utc_date_time, datetime)
+        initial_time = new_obj.last_update_utc_date_time
+        new_obj.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert plant.last_update_utc_date_time > \
+        assert new_obj.last_update_utc_date_time > \
             initial_time
 
     def test_model_deletion(self, session):
@@ -194,13 +194,14 @@ class TestPlantFactory:
         Test case for deleting a
         plant model.
         """
-        plant = PlantFactory.create(
+        new_obj = PlantFactory.create(
             session=session)
-        session.delete(plant)
+        session.delete(new_obj)
         session.commit()
-        deleted_plant = session.query(Plant).filter_by(
+        deleted_plant = session.query(
+            Plant).filter_by(
             _plant_id=(
-                plant.plant_id)
+                new_obj.plant_id)
         ).first()
         assert deleted_plant is None
 
@@ -209,41 +210,41 @@ class TestPlantFactory:
         Test case for checking the data types of
         the plant attributes.
         """
-        plant = PlantFactory.create(
+        obj = PlantFactory.create(
             session=session)
-        assert isinstance(plant.plant_id, int)
-        assert isinstance(plant.code, uuid.UUID)
-        assert isinstance(plant.last_change_code, int)
-        assert isinstance(plant.insert_user_id, uuid.UUID)
-        assert isinstance(plant.last_update_user_id, uuid.UUID)
-        assert isinstance(plant.flvr_foreign_key_id, int)
-        assert isinstance(plant.is_delete_allowed, bool)
-        assert isinstance(plant.is_edit_allowed, bool)
-        assert isinstance(plant.land_id, int)
-        assert plant.other_flavor == "" or isinstance(
-            plant.other_flavor, str)
-        assert isinstance(plant.some_big_int_val, int)
-        assert isinstance(plant.some_bit_val, bool)
-        assert isinstance(plant.some_date_val, date)
-        assert isinstance(plant.some_decimal_val, Decimal)
-        assert plant.some_email_address == "" or isinstance(
-            plant.some_email_address, str)
-        assert isinstance(plant.some_float_val, float)
-        assert isinstance(plant.some_int_val, int)
-        assert isinstance(plant.some_money_val, Decimal)
-        assert plant.some_n_var_char_val == "" or isinstance(
-            plant.some_n_var_char_val, str)
-        assert plant.some_phone_number == "" or isinstance(
-            plant.some_phone_number, str)
-        assert plant.some_text_val == "" or isinstance(
-            plant.some_text_val, str)
+        assert isinstance(obj.plant_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert isinstance(obj.flvr_foreign_key_id, int)
+        assert isinstance(obj.is_delete_allowed, bool)
+        assert isinstance(obj.is_edit_allowed, bool)
+        assert isinstance(obj.land_id, int)
+        assert obj.other_flavor == "" or isinstance(
+            obj.other_flavor, str)
+        assert isinstance(obj.some_big_int_val, int)
+        assert isinstance(obj.some_bit_val, bool)
+        assert isinstance(obj.some_date_val, date)
+        assert isinstance(obj.some_decimal_val, Decimal)
+        assert obj.some_email_address == "" or isinstance(
+            obj.some_email_address, str)
+        assert isinstance(obj.some_float_val, float)
+        assert isinstance(obj.some_int_val, int)
+        assert isinstance(obj.some_money_val, Decimal)
+        assert obj.some_n_var_char_val == "" or isinstance(
+            obj.some_n_var_char_val, str)
+        assert obj.some_phone_number == "" or isinstance(
+            obj.some_phone_number, str)
+        assert obj.some_text_val == "" or isinstance(
+            obj.some_text_val, str)
         # someUniqueidentifierVal
         assert isinstance(
-            plant.some_uniqueidentifier_val, uuid.UUID)
-        assert isinstance(plant.some_utc_date_time_val,
+            obj.some_uniqueidentifier_val, uuid.UUID)
+        assert isinstance(obj.some_utc_date_time_val,
                           datetime)
-        assert plant.some_var_char_val == "" or isinstance(
-            plant.some_var_char_val, str)
+        assert obj.some_var_char_val == "" or isinstance(
+            obj.some_var_char_val, str)
         # Check for the peek values,
         # assuming they are UUIDs based on your model
 # endset
@@ -263,18 +264,18 @@ class TestPlantFactory:
         # flvrForeignKeyID
 
         assert isinstance(
-            plant.flvr_foreign_key_code_peek, uuid.UUID)
+            obj.flvr_foreign_key_code_peek, uuid.UUID)
         # landID
 
         assert isinstance(
-            plant.land_code_peek, uuid.UUID)
+            obj.land_code_peek, uuid.UUID)
         # someNVarCharVal,
         # somePhoneNumber,
         # someTextVal,
         # someUniqueidentifierVal,
 # endset
-        assert isinstance(plant.insert_utc_date_time, datetime)
-        assert isinstance(plant.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     def test_unique_code_constraint(self, session):
         """
@@ -296,13 +297,13 @@ class TestPlantFactory:
         Test case for checking the default values of
         the plant fields.
         """
-        plant = Plant()
-        assert plant.code is not None
-        assert plant.last_change_code is not None
-        assert plant.insert_user_id == uuid.UUID(int=0)
-        assert plant.last_update_user_id == uuid.UUID(int=0)
-        assert plant.insert_utc_date_time is not None
-        assert plant.last_update_utc_date_time is not None
+        new_obj = Plant()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id == uuid.UUID(int=0)
+        assert new_obj.last_update_user_id == uuid.UUID(int=0)
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
 # endset
         # isDeleteAllowed,
         # isEditAllowed,
@@ -320,42 +321,42 @@ class TestPlantFactory:
         # LandID
 
         assert isinstance(
-            plant.land_code_peek, uuid.UUID)
+            new_obj.land_code_peek, uuid.UUID)
         # FlvrForeignKeyID
 
         assert isinstance(
-            plant.flvr_foreign_key_code_peek,
+            new_obj.flvr_foreign_key_code_peek,
             uuid.UUID)
         # somePhoneNumber,
         # someTextVal,
         # someUniqueidentifierVal,
         # someVarCharVal,
 # endset
-        assert plant is not None
-        assert plant.flvr_foreign_key_id == 0
-        assert plant.is_delete_allowed is False
-        assert plant.is_edit_allowed is False
-        assert plant.land_id == 0
-        assert plant.other_flavor == ""
-        assert plant.some_big_int_val == 0
-        assert plant.some_bit_val is False
-        assert plant.some_date_val == date(1753, 1, 1)
-        assert plant.some_decimal_val == 0
-        assert plant.some_email_address == ""
-        assert math.isclose(plant.some_float_val, 0.0, rel_tol=1e-9), (
+        assert new_obj is not None
+        assert new_obj.flvr_foreign_key_id == 0
+        assert new_obj.is_delete_allowed is False
+        assert new_obj.is_edit_allowed is False
+        assert new_obj.land_id == 0
+        assert new_obj.other_flavor == ""
+        assert new_obj.some_big_int_val == 0
+        assert new_obj.some_bit_val is False
+        assert new_obj.some_date_val == date(1753, 1, 1)
+        assert new_obj.some_decimal_val == 0
+        assert new_obj.some_email_address == ""
+        assert math.isclose(new_obj.some_float_val, 0.0, rel_tol=1e-9), (
             "Values must be approximately equal")
-        assert plant.some_int_val == 0
-        assert plant.some_money_val == 0
-        assert plant.some_n_var_char_val == ""
-        assert plant.some_phone_number == ""
-        assert plant.some_text_val == ""
+        assert new_obj.some_int_val == 0
+        assert new_obj.some_money_val == 0
+        assert new_obj.some_n_var_char_val == ""
+        assert new_obj.some_phone_number == ""
+        assert new_obj.some_text_val == ""
         # some_uniqueidentifier_val
         assert isinstance(
-            plant.some_uniqueidentifier_val,
+            new_obj.some_uniqueidentifier_val,
             uuid.UUID
         )
-        assert plant.some_utc_date_time_val == datetime(1753, 1, 1)
-        assert plant.some_var_char_val == ""
+        assert new_obj.some_utc_date_time_val == datetime(1753, 1, 1)
+        assert new_obj.some_var_char_val == ""
 # endset
 
     def test_last_change_code_concurrency(self, session):
@@ -382,20 +383,21 @@ class TestPlantFactory:
             None
         """
 
-        plant = PlantFactory.create(
+        new_obj = PlantFactory.create(
             session=session)
-        original_last_change_code = plant.last_change_code
+        original_last_change_code = \
+            new_obj.last_change_code
         plant_1 = session.query(
             Plant).filter_by(
             _plant_id=(
-                plant.plant_id)
+                new_obj.plant_id)
         ).first()
         plant_1.code = uuid.uuid4()
         session.commit()
         plant_2 = session.query(
             Plant).filter_by(
             _plant_id=(
-                plant.plant_id)
+                new_obj.plant_id)
         ).first()
         plant_2.code = uuid.uuid4()
         session.commit()
@@ -436,9 +438,9 @@ class TestPlantFactory:
                 session violate any integrity constraints.
 
         """
-        plant = PlantFactory.create(
+        new_obj = PlantFactory.create(
             session=session)
-        plant.land_id = 99999
+        new_obj.land_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
@@ -469,9 +471,9 @@ class TestPlantFactory:
         Returns:
             None
         """
-        plant = PlantFactory.create(
+        new_obj = PlantFactory.create(
             session=session)
-        plant.flvr_foreign_key_id = 99999
+        new_obj.flvr_foreign_key_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()

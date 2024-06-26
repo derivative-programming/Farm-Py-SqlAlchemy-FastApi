@@ -8,7 +8,7 @@ operations of the PlantFactory class.
 """
 
 import asyncio
-import math
+import math  # noqa: F401
 import time
 import uuid  # noqa: F401
 from datetime import date, datetime, timedelta  # noqa: F401
@@ -405,39 +405,39 @@ class TestPlantFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        plant = await \
+        obj = await \
             PlantFactory.create_async(
                 session=session)
-        assert isinstance(plant.plant_id, int)
-        assert isinstance(plant.code, uuid.UUID)
-        assert isinstance(plant.last_change_code, int)
-        assert isinstance(plant.insert_user_id, uuid.UUID)
-        assert isinstance(plant.last_update_user_id, uuid.UUID)
-        assert isinstance(plant.flvr_foreign_key_id, int)
-        assert isinstance(plant.is_delete_allowed, bool)
-        assert isinstance(plant.is_edit_allowed, bool)
-        assert isinstance(plant.land_id, int)
-        assert plant.other_flavor == "" or isinstance(
-            plant.other_flavor, str)
-        assert isinstance(plant.some_big_int_val, int)
-        assert isinstance(plant.some_bit_val, bool)
-        assert isinstance(plant.some_date_val, date)
-        assert isinstance(plant.some_decimal_val, Decimal)
-        assert plant.some_email_address == "" or isinstance(
-            plant.some_email_address, str)
-        assert isinstance(plant.some_float_val, float)
-        assert isinstance(plant.some_int_val, int)
-        assert isinstance(plant.some_money_val, Decimal)
-        assert plant.some_n_var_char_val == "" or isinstance(
-            plant.some_n_var_char_val, str)
-        assert plant.some_phone_number == "" or isinstance(
-            plant.some_phone_number, str)
-        assert plant.some_text_val == "" or isinstance(
-            plant.some_text_val, str)
-        assert isinstance(plant.some_uniqueidentifier_val, uuid.UUID)
-        assert isinstance(plant.some_utc_date_time_val, datetime)
-        assert plant.some_var_char_val == "" or isinstance(
-            plant.some_var_char_val, str)
+        assert isinstance(obj.plant_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert isinstance(obj.flvr_foreign_key_id, int)
+        assert isinstance(obj.is_delete_allowed, bool)
+        assert isinstance(obj.is_edit_allowed, bool)
+        assert isinstance(obj.land_id, int)
+        assert obj.other_flavor == "" or isinstance(
+            obj.other_flavor, str)
+        assert isinstance(obj.some_big_int_val, int)
+        assert isinstance(obj.some_bit_val, bool)
+        assert isinstance(obj.some_date_val, date)
+        assert isinstance(obj.some_decimal_val, Decimal)
+        assert obj.some_email_address == "" or isinstance(
+            obj.some_email_address, str)
+        assert isinstance(obj.some_float_val, float)
+        assert isinstance(obj.some_int_val, int)
+        assert isinstance(obj.some_money_val, Decimal)
+        assert obj.some_n_var_char_val == "" or isinstance(
+            obj.some_n_var_char_val, str)
+        assert obj.some_phone_number == "" or isinstance(
+            obj.some_phone_number, str)
+        assert obj.some_text_val == "" or isinstance(
+            obj.some_text_val, str)
+        assert isinstance(obj.some_uniqueidentifier_val, uuid.UUID)
+        assert isinstance(obj.some_utc_date_time_val, datetime)
+        assert obj.some_var_char_val == "" or isinstance(
+            obj.some_var_char_val, str)
         # Check for the peek values
 # endset
         # isDeleteAllowed,
@@ -455,18 +455,18 @@ class TestPlantFactoryAsync:
         # someUTCDateTimeVal
         # flvrForeignKeyID
 
-        assert isinstance(plant.flvr_foreign_key_code_peek, uuid.UUID)
+        assert isinstance(obj.flvr_foreign_key_code_peek, uuid.UUID)
         # landID
 
-        assert isinstance(plant.land_code_peek, uuid.UUID)
+        assert isinstance(obj.land_code_peek, uuid.UUID)
         # someNVarCharVal,
         # somePhoneNumber,
         # someTextVal,
         # someUniqueidentifierVal,
 # endset
 
-        assert isinstance(plant.insert_utc_date_time, datetime)
-        assert isinstance(plant.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
@@ -491,12 +491,13 @@ class TestPlantFactoryAsync:
         each plant.
         """
 
-        plant_1 = await PlantFactory.create_async(
+        obj_1 = await PlantFactory.create_async(
             session=session)
-        plant_2 = await PlantFactory.create_async(
+        obj_2 = await PlantFactory.create_async(
             session=session)
-        plant_2.code = plant_1.code
-        session.add_all([plant_1, plant_2])
+        obj_2.code = obj_1.code
+        session.add_all([obj_1,
+                         obj_2])
         with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
@@ -514,13 +515,13 @@ class TestPlantFactoryAsync:
         or empty, and that the data types of certain fields are correct.
         """
 
-        plant = Plant()
-        assert plant.code is not None
-        assert plant.last_change_code is not None
-        assert plant.insert_user_id is not None
-        assert plant.last_update_user_id is not None
-        assert plant.insert_utc_date_time is not None
-        assert plant.last_update_utc_date_time is not None
+        new_obj = Plant()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id is not None
+        assert new_obj.last_update_user_id is not None
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
 
 # endset
         # isDeleteAllowed,
@@ -538,36 +539,36 @@ class TestPlantFactoryAsync:
         # someUTCDateTimeVal
         # LandID
 
-        assert isinstance(plant.land_code_peek, uuid.UUID)
+        assert isinstance(new_obj.land_code_peek, uuid.UUID)
         # FlvrForeignKeyID
 
-        assert isinstance(plant.flvr_foreign_key_code_peek, uuid.UUID)
+        assert isinstance(new_obj.flvr_foreign_key_code_peek, uuid.UUID)
         # somePhoneNumber,
         # someTextVal,
         # someUniqueidentifierVal,
         # someVarCharVal,
 # endset
 
-        assert plant.flvr_foreign_key_id == 0
-        assert plant.is_delete_allowed is False
-        assert plant.is_edit_allowed is False
-        assert plant.land_id == 0
-        assert plant.other_flavor == ""
-        assert plant.some_big_int_val == 0
-        assert plant.some_bit_val is False
-        assert plant.some_date_val == date(1753, 1, 1)
-        assert plant.some_decimal_val == 0
-        assert plant.some_email_address == ""
-        assert math.isclose(plant.some_float_val, 0.0, rel_tol=1e-9), (
+        assert new_obj.flvr_foreign_key_id == 0
+        assert new_obj.is_delete_allowed is False
+        assert new_obj.is_edit_allowed is False
+        assert new_obj.land_id == 0
+        assert new_obj.other_flavor == ""
+        assert new_obj.some_big_int_val == 0
+        assert new_obj.some_bit_val is False
+        assert new_obj.some_date_val == date(1753, 1, 1)
+        assert new_obj.some_decimal_val == 0
+        assert new_obj.some_email_address == ""
+        assert math.isclose(new_obj.some_float_val, 0.0, rel_tol=1e-9), (
             "Values must be approximately equal")
-        assert plant.some_int_val == 0
-        assert plant.some_money_val == 0
-        assert plant.some_n_var_char_val == ""
-        assert plant.some_phone_number == ""
-        assert plant.some_text_val == ""
-        assert isinstance(plant.some_uniqueidentifier_val, uuid.UUID)
-        assert plant.some_utc_date_time_val == datetime(1753, 1, 1)
-        assert plant.some_var_char_val == ""
+        assert new_obj.some_int_val == 0
+        assert new_obj.some_money_val == 0
+        assert new_obj.some_n_var_char_val == ""
+        assert new_obj.some_phone_number == ""
+        assert new_obj.some_text_val == ""
+        assert isinstance(new_obj.some_uniqueidentifier_val, uuid.UUID)
+        assert new_obj.some_utc_date_time_val == datetime(1753, 1, 1)
+        assert new_obj.some_var_char_val == ""
 # endset
 
     @pytest.mark.asyncio
@@ -616,24 +617,24 @@ class TestPlantFactoryAsync:
             Plant._plant_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 plant.plant_id))
         result = await session.execute(stmt)
-        plant_1 = result.scalars().first()
+        obj_1 = result.scalars().first()
 
-        # plant_1 = await session.query(Plant).filter_by(
+        # obj_1 = await session.query(Plant).filter_by(
         # plant_id=plant.plant_id).first()
-        plant_1.code = uuid.uuid4()
+        obj_1.code = uuid.uuid4()
         await session.commit()
 
         stmt = select(Plant).where(
             Plant._plant_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 plant.plant_id))
         result = await session.execute(stmt)
-        plant_2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
-        # plant_2 = await session.query(Plant).filter_by(
+        # obj_2 = await session.query(Plant).filter_by(
         # plant_id=plant.plant_id).first()
-        plant_2.code = uuid.uuid4()
+        obj_2.code = uuid.uuid4()
         await session.commit()
-        assert plant_2.last_change_code != original_last_change_code
+        assert obj_2.last_change_code != original_last_change_code
 # endset
 
     # isDeleteAllowed,

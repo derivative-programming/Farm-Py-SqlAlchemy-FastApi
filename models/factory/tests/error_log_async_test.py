@@ -8,7 +8,7 @@ operations of the ErrorLogFactory class.
 """
 
 import asyncio
-import math
+import math  # noqa: F401
 import time
 import uuid  # noqa: F401
 from datetime import date, datetime, timedelta  # noqa: F401
@@ -405,24 +405,24 @@ class TestErrorLogFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        error_log = await \
+        obj = await \
             ErrorLogFactory.create_async(
                 session=session)
-        assert isinstance(error_log.error_log_id, int)
-        assert isinstance(error_log.code, uuid.UUID)
-        assert isinstance(error_log.last_change_code, int)
-        assert isinstance(error_log.insert_user_id, uuid.UUID)
-        assert isinstance(error_log.last_update_user_id, uuid.UUID)
-        assert isinstance(error_log.browser_code, uuid.UUID)
-        assert isinstance(error_log.context_code, uuid.UUID)
-        assert isinstance(error_log.created_utc_date_time, datetime)
-        assert error_log.description == "" or isinstance(
-            error_log.description, str)
-        assert isinstance(error_log.is_client_side_error, bool)
-        assert isinstance(error_log.is_resolved, bool)
-        assert isinstance(error_log.pac_id, int)
-        assert error_log.url == "" or isinstance(
-            error_log.url, str)
+        assert isinstance(obj.error_log_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert isinstance(obj.browser_code, uuid.UUID)
+        assert isinstance(obj.context_code, uuid.UUID)
+        assert isinstance(obj.created_utc_date_time, datetime)
+        assert obj.description == "" or isinstance(
+            obj.description, str)
+        assert isinstance(obj.is_client_side_error, bool)
+        assert isinstance(obj.is_resolved, bool)
+        assert isinstance(obj.pac_id, int)
+        assert obj.url == "" or isinstance(
+            obj.url, str)
         # Check for the peek values
         # browserCode,
         # contextCode,
@@ -432,11 +432,11 @@ class TestErrorLogFactoryAsync:
         # isResolved,
         # pacID
 
-        assert isinstance(error_log.pac_code_peek, uuid.UUID)
+        assert isinstance(obj.pac_code_peek, uuid.UUID)
         # url,
 
-        assert isinstance(error_log.insert_utc_date_time, datetime)
-        assert isinstance(error_log.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
@@ -461,12 +461,13 @@ class TestErrorLogFactoryAsync:
         each error_log.
         """
 
-        error_log_1 = await ErrorLogFactory.create_async(
+        obj_1 = await ErrorLogFactory.create_async(
             session=session)
-        error_log_2 = await ErrorLogFactory.create_async(
+        obj_2 = await ErrorLogFactory.create_async(
             session=session)
-        error_log_2.code = error_log_1.code
-        session.add_all([error_log_1, error_log_2])
+        obj_2.code = obj_1.code
+        session.add_all([obj_1,
+                         obj_2])
         with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
@@ -484,13 +485,13 @@ class TestErrorLogFactoryAsync:
         or empty, and that the data types of certain fields are correct.
         """
 
-        error_log = ErrorLog()
-        assert error_log.code is not None
-        assert error_log.last_change_code is not None
-        assert error_log.insert_user_id is not None
-        assert error_log.last_update_user_id is not None
-        assert error_log.insert_utc_date_time is not None
-        assert error_log.last_update_utc_date_time is not None
+        new_obj = ErrorLog()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id is not None
+        assert new_obj.last_update_user_id is not None
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
 
         # browserCode,
         # contextCode,
@@ -500,16 +501,16 @@ class TestErrorLogFactoryAsync:
         # isResolved,
         # PacID
 
-        assert isinstance(error_log.pac_code_peek, uuid.UUID)
+        assert isinstance(new_obj.pac_code_peek, uuid.UUID)
         # url,
-        assert isinstance(error_log.browser_code, uuid.UUID)
-        assert isinstance(error_log.context_code, uuid.UUID)
-        assert error_log.created_utc_date_time == datetime(1753, 1, 1)
-        assert error_log.description == ""
-        assert error_log.is_client_side_error is False
-        assert error_log.is_resolved is False
-        assert error_log.pac_id == 0
-        assert error_log.url == ""
+        assert isinstance(new_obj.browser_code, uuid.UUID)
+        assert isinstance(new_obj.context_code, uuid.UUID)
+        assert new_obj.created_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.description == ""
+        assert new_obj.is_client_side_error is False
+        assert new_obj.is_resolved is False
+        assert new_obj.pac_id == 0
+        assert new_obj.url == ""
 
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
@@ -557,24 +558,24 @@ class TestErrorLogFactoryAsync:
             ErrorLog._error_log_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 error_log.error_log_id))
         result = await session.execute(stmt)
-        error_log_1 = result.scalars().first()
+        obj_1 = result.scalars().first()
 
-        # error_log_1 = await session.query(ErrorLog).filter_by(
+        # obj_1 = await session.query(ErrorLog).filter_by(
         # error_log_id=error_log.error_log_id).first()
-        error_log_1.code = uuid.uuid4()
+        obj_1.code = uuid.uuid4()
         await session.commit()
 
         stmt = select(ErrorLog).where(
             ErrorLog._error_log_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 error_log.error_log_id))
         result = await session.execute(stmt)
-        error_log_2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
-        # error_log_2 = await session.query(ErrorLog).filter_by(
+        # obj_2 = await session.query(ErrorLog).filter_by(
         # error_log_id=error_log.error_log_id).first()
-        error_log_2.code = uuid.uuid4()
+        obj_2.code = uuid.uuid4()
         await session.commit()
-        assert error_log_2.last_change_code != original_last_change_code
+        assert obj_2.last_change_code != original_last_change_code
     # browserCode,
     # contextCode,
     # createdUTCDateTime
@@ -608,4 +609,3 @@ class TestErrorLogFactoryAsync:
             await session.commit()
         await session.rollback()
     # url,
-

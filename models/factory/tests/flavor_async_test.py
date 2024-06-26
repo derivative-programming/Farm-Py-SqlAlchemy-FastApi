@@ -8,7 +8,7 @@ operations of the FlavorFactory class.
 """
 
 import asyncio
-import math
+import math  # noqa: F401
 import time
 import uuid  # noqa: F401
 from datetime import date, datetime, timedelta  # noqa: F401
@@ -405,23 +405,23 @@ class TestFlavorFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        flavor = await \
+        obj = await \
             FlavorFactory.create_async(
                 session=session)
-        assert isinstance(flavor.flavor_id, int)
-        assert isinstance(flavor.code, uuid.UUID)
-        assert isinstance(flavor.last_change_code, int)
-        assert isinstance(flavor.insert_user_id, uuid.UUID)
-        assert isinstance(flavor.last_update_user_id, uuid.UUID)
-        assert flavor.description == "" or isinstance(
-            flavor.description, str)
-        assert isinstance(flavor.display_order, int)
-        assert isinstance(flavor.is_active, bool)
-        assert flavor.lookup_enum_name == "" or isinstance(
-            flavor.lookup_enum_name, str)
-        assert flavor.name == "" or isinstance(
-            flavor.name, str)
-        assert isinstance(flavor.pac_id, int)
+        assert isinstance(obj.flavor_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert obj.description == "" or isinstance(
+            obj.description, str)
+        assert isinstance(obj.display_order, int)
+        assert isinstance(obj.is_active, bool)
+        assert obj.lookup_enum_name == "" or isinstance(
+            obj.lookup_enum_name, str)
+        assert obj.name == "" or isinstance(
+            obj.name, str)
+        assert isinstance(obj.pac_id, int)
         # Check for the peek values
         # description,
         # displayOrder,
@@ -430,10 +430,10 @@ class TestFlavorFactoryAsync:
         # name,
         # pacID
 
-        assert isinstance(flavor.pac_code_peek, uuid.UUID)
+        assert isinstance(obj.pac_code_peek, uuid.UUID)
 
-        assert isinstance(flavor.insert_utc_date_time, datetime)
-        assert isinstance(flavor.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
@@ -458,12 +458,13 @@ class TestFlavorFactoryAsync:
         each flavor.
         """
 
-        flavor_1 = await FlavorFactory.create_async(
+        obj_1 = await FlavorFactory.create_async(
             session=session)
-        flavor_2 = await FlavorFactory.create_async(
+        obj_2 = await FlavorFactory.create_async(
             session=session)
-        flavor_2.code = flavor_1.code
-        session.add_all([flavor_1, flavor_2])
+        obj_2.code = obj_1.code
+        session.add_all([obj_1,
+                         obj_2])
         with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
@@ -481,13 +482,13 @@ class TestFlavorFactoryAsync:
         or empty, and that the data types of certain fields are correct.
         """
 
-        flavor = Flavor()
-        assert flavor.code is not None
-        assert flavor.last_change_code is not None
-        assert flavor.insert_user_id is not None
-        assert flavor.last_update_user_id is not None
-        assert flavor.insert_utc_date_time is not None
-        assert flavor.last_update_utc_date_time is not None
+        new_obj = Flavor()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id is not None
+        assert new_obj.last_update_user_id is not None
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
 
         # description,
         # displayOrder,
@@ -496,13 +497,13 @@ class TestFlavorFactoryAsync:
         # name,
         # PacID
 
-        assert isinstance(flavor.pac_code_peek, uuid.UUID)
-        assert flavor.description == ""
-        assert flavor.display_order == 0
-        assert flavor.is_active is False
-        assert flavor.lookup_enum_name == ""
-        assert flavor.name == ""
-        assert flavor.pac_id == 0
+        assert isinstance(new_obj.pac_code_peek, uuid.UUID)
+        assert new_obj.description == ""
+        assert new_obj.display_order == 0
+        assert new_obj.is_active is False
+        assert new_obj.lookup_enum_name == ""
+        assert new_obj.name == ""
+        assert new_obj.pac_id == 0
 
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
@@ -550,24 +551,24 @@ class TestFlavorFactoryAsync:
             Flavor._flavor_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 flavor.flavor_id))
         result = await session.execute(stmt)
-        flavor_1 = result.scalars().first()
+        obj_1 = result.scalars().first()
 
-        # flavor_1 = await session.query(Flavor).filter_by(
+        # obj_1 = await session.query(Flavor).filter_by(
         # flavor_id=flavor.flavor_id).first()
-        flavor_1.code = uuid.uuid4()
+        obj_1.code = uuid.uuid4()
         await session.commit()
 
         stmt = select(Flavor).where(
             Flavor._flavor_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 flavor.flavor_id))
         result = await session.execute(stmt)
-        flavor_2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
-        # flavor_2 = await session.query(Flavor).filter_by(
+        # obj_2 = await session.query(Flavor).filter_by(
         # flavor_id=flavor.flavor_id).first()
-        flavor_2.code = uuid.uuid4()
+        obj_2.code = uuid.uuid4()
         await session.commit()
-        assert flavor_2.last_change_code != original_last_change_code
+        assert obj_2.last_change_code != original_last_change_code
     # description,
     # displayOrder,
     # isActive,
@@ -599,4 +600,3 @@ class TestFlavorFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-

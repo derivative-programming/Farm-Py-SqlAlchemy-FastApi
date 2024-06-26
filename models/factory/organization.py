@@ -59,7 +59,8 @@ class OrganizationFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                Organization: An instance of the
+                Organization:
+                    An instance of the
                     Organization model.
 
         """
@@ -148,7 +149,8 @@ class OrganizationFactory(factory.Factory):
             tac_id_tac_instance.tac_id)
         kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
 
-        obj = OrganizationFactory.build(session=None, *args, **kwargs)
+        obj = OrganizationFactory \
+            .build(session=None, *args, **kwargs)
         obj.tac_id = (  # TacID
             tac_id_tac_instance.tac_id)
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
@@ -180,7 +182,8 @@ class OrganizationFactory(factory.Factory):
             tac_id_tac_instance.tac_id)
         kwargs["tac_code_peek"] = tac_id_tac_instance.code  # TacID
 
-        obj = OrganizationFactory.build(session=None, *args, **kwargs)
+        obj = OrganizationFactory \
+            .build(session=None, *args, **kwargs)
         obj.tac_id = (  # TacID
             tac_id_tac_instance.tac_id)
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
@@ -188,4 +191,3 @@ class OrganizationFactory(factory.Factory):
         # session.add(obj)
         # await session.flush()
         return obj
-

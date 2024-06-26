@@ -7,7 +7,7 @@ class in the models.factory package.
 
 from decimal import Decimal  # noqa: F401
 import time
-import math
+import math  # noqa: F401
 import uuid  # noqa: F401
 import logging
 from datetime import datetime, date, timedelta  # noqa: F401
@@ -56,48 +56,48 @@ class TestErrorLogFactory:
         """
         Test case for creating a error_log.
         """
-        error_log = ErrorLogFactory.create(
+        new_obj = ErrorLogFactory.create(
             session=session)
-        assert error_log.error_log_id is not None
+        assert new_obj.error_log_id is not None
 
     def test_code_default(self, session):
         """
         Test case for checking the default value of the code attribute.
         """
         logging.info("vrtest")
-        error_log = ErrorLogFactory.create(
+        new_obj = ErrorLogFactory.create(
             session=session)
-        assert isinstance(error_log.code, uuid.UUID)
+        assert isinstance(new_obj.code, uuid.UUID)
 
     def test_last_change_code_default_on_build(self, session):
         """
         Test case for checking the default value of
         the last_change_code attribute on build.
         """
-        error_log: ErrorLog = ErrorLogFactory.build(
+        new_obj: ErrorLog = ErrorLogFactory.build(
             session=session)
-        assert error_log.last_change_code == 0
+        assert new_obj.last_change_code == 0
 
     def test_last_change_code_default_on_creation(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on creation.
         """
-        error_log: ErrorLog = ErrorLogFactory.create(
+        new_obj: ErrorLog = ErrorLogFactory.create(
             session=session)
-        assert error_log.last_change_code == 1
+        assert new_obj.last_change_code == 1
 
     def test_last_change_code_default_on_update(self, session):
         """
         Test case for checking the default value of the
         last_change_code attribute on update.
         """
-        error_log = ErrorLogFactory.create(
+        new_obj = ErrorLogFactory.create(
             session=session)
-        initial_code = error_log.last_change_code
-        error_log.code = uuid.uuid4()
+        initial_code = new_obj.last_change_code
+        new_obj.code = uuid.uuid4()
         session.commit()
-        assert error_log.last_change_code != \
+        assert new_obj.last_change_code != \
             initial_code
 
     def test_date_inserted_on_build(self, session):
@@ -105,27 +105,27 @@ class TestErrorLogFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on build.
         """
-        error_log = ErrorLogFactory.build(
+        new_obj = ErrorLogFactory.build(
             session=session)
-        assert error_log.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            error_log.insert_utc_date_time, datetime)
+            new_obj.insert_utc_date_time, datetime)
 
     def test_date_inserted_on_initial_save(self, session):
         """
         Test case for checking the value of the
         insert_utc_date_time attribute on initial save.
         """
-        error_log = ErrorLogFactory.build(
+        new_obj = ErrorLogFactory.build(
             session=session)
-        assert error_log.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            error_log.insert_utc_date_time, datetime)
+            new_obj.insert_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        error_log.code = uuid.uuid4()
-        session.add(error_log)
+        new_obj.code = uuid.uuid4()
+        session.add(new_obj)
         session.commit()
-        assert error_log.insert_utc_date_time > \
+        assert new_obj.insert_utc_date_time > \
             initial_time
 
     def test_date_inserted_on_second_save(self, session):
@@ -133,43 +133,43 @@ class TestErrorLogFactory:
         Test case for checking the value of the
         insert_utc_date_time attribute on second save.
         """
-        error_log = ErrorLogFactory(
+        new_obj = ErrorLogFactory(
             session=session)
-        assert error_log.insert_utc_date_time is not None
+        assert new_obj.insert_utc_date_time is not None
         assert isinstance(
-            error_log.insert_utc_date_time, datetime)
-        initial_time = error_log.insert_utc_date_time
-        error_log.code = uuid.uuid4()
+            new_obj.insert_utc_date_time, datetime)
+        initial_time = new_obj.insert_utc_date_time
+        new_obj.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert error_log.insert_utc_date_time == initial_time
+        assert new_obj.insert_utc_date_time == initial_time
 
     def test_date_updated_on_build(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on build.
         """
-        error_log = ErrorLogFactory.build(
+        new_obj = ErrorLogFactory.build(
             session=session)
-        assert error_log.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            error_log.last_update_utc_date_time, datetime)
+            new_obj.last_update_utc_date_time, datetime)
 
     def test_date_updated_on_initial_save(self, session):
         """
         Test case for checking the value of the
         last_update_utc_date_time attribute on initial save.
         """
-        error_log = ErrorLogFactory.build(
+        new_obj = ErrorLogFactory.build(
             session=session)
-        assert error_log.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            error_log.last_update_utc_date_time, datetime)
+            new_obj.last_update_utc_date_time, datetime)
         initial_time = datetime.utcnow() + timedelta(days=-1)
-        error_log.code = uuid.uuid4()
-        session.add(error_log)
+        new_obj.code = uuid.uuid4()
+        session.add(new_obj)
         session.commit()
-        assert error_log.last_update_utc_date_time > \
+        assert new_obj.last_update_utc_date_time > \
             initial_time
 
     def test_date_updated_on_second_save(self, session):
@@ -177,16 +177,16 @@ class TestErrorLogFactory:
         Test case for checking the value of the
         last_update_utc_date_time attribute on second save.
         """
-        error_log = ErrorLogFactory(
+        new_obj = ErrorLogFactory(
             session=session)
-        assert error_log.last_update_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
-            error_log.last_update_utc_date_time, datetime)
-        initial_time = error_log.last_update_utc_date_time
-        error_log.code = uuid.uuid4()
+            new_obj.last_update_utc_date_time, datetime)
+        initial_time = new_obj.last_update_utc_date_time
+        new_obj.code = uuid.uuid4()
         time.sleep(1)
         session.commit()
-        assert error_log.last_update_utc_date_time > \
+        assert new_obj.last_update_utc_date_time > \
             initial_time
 
     def test_model_deletion(self, session):
@@ -194,13 +194,14 @@ class TestErrorLogFactory:
         Test case for deleting a
         error_log model.
         """
-        error_log = ErrorLogFactory.create(
+        new_obj = ErrorLogFactory.create(
             session=session)
-        session.delete(error_log)
+        session.delete(new_obj)
         session.commit()
-        deleted_error_log = session.query(ErrorLog).filter_by(
+        deleted_error_log = session.query(
+            ErrorLog).filter_by(
             _error_log_id=(
-                error_log.error_log_id)
+                new_obj.error_log_id)
         ).first()
         assert deleted_error_log is None
 
@@ -209,28 +210,28 @@ class TestErrorLogFactory:
         Test case for checking the data types of
         the error_log attributes.
         """
-        error_log = ErrorLogFactory.create(
+        obj = ErrorLogFactory.create(
             session=session)
-        assert isinstance(error_log.error_log_id, int)
-        assert isinstance(error_log.code, uuid.UUID)
-        assert isinstance(error_log.last_change_code, int)
-        assert isinstance(error_log.insert_user_id, uuid.UUID)
-        assert isinstance(error_log.last_update_user_id, uuid.UUID)
+        assert isinstance(obj.error_log_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
         # browserCode
         assert isinstance(
-            error_log.browser_code, uuid.UUID)
+            obj.browser_code, uuid.UUID)
         # contextCode
         assert isinstance(
-            error_log.context_code, uuid.UUID)
-        assert isinstance(error_log.created_utc_date_time,
+            obj.context_code, uuid.UUID)
+        assert isinstance(obj.created_utc_date_time,
                           datetime)
-        assert error_log.description == "" or isinstance(
-            error_log.description, str)
-        assert isinstance(error_log.is_client_side_error, bool)
-        assert isinstance(error_log.is_resolved, bool)
-        assert isinstance(error_log.pac_id, int)
-        assert error_log.url == "" or isinstance(
-            error_log.url, str)
+        assert obj.description == "" or isinstance(
+            obj.description, str)
+        assert isinstance(obj.is_client_side_error, bool)
+        assert isinstance(obj.is_resolved, bool)
+        assert isinstance(obj.pac_id, int)
+        assert obj.url == "" or isinstance(
+            obj.url, str)
         # browserCode,
         # contextCode,
         # createdUTCDateTime
@@ -240,10 +241,10 @@ class TestErrorLogFactory:
         # pacID
 
         assert isinstance(
-            error_log.pac_code_peek, uuid.UUID)
+            obj.pac_code_peek, uuid.UUID)
         # url,
-        assert isinstance(error_log.insert_utc_date_time, datetime)
-        assert isinstance(error_log.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     def test_unique_code_constraint(self, session):
         """
@@ -265,13 +266,13 @@ class TestErrorLogFactory:
         Test case for checking the default values of
         the error_log fields.
         """
-        error_log = ErrorLog()
-        assert error_log.code is not None
-        assert error_log.last_change_code is not None
-        assert error_log.insert_user_id == uuid.UUID(int=0)
-        assert error_log.last_update_user_id == uuid.UUID(int=0)
-        assert error_log.insert_utc_date_time is not None
-        assert error_log.last_update_utc_date_time is not None
+        new_obj = ErrorLog()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id == uuid.UUID(int=0)
+        assert new_obj.last_update_user_id == uuid.UUID(int=0)
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
         # browserCode,
         # contextCode,
         # createdUTCDateTime
@@ -281,25 +282,25 @@ class TestErrorLogFactory:
         # PacID
 
         assert isinstance(
-            error_log.pac_code_peek, uuid.UUID)
+            new_obj.pac_code_peek, uuid.UUID)
         # url,
-        assert error_log is not None
+        assert new_obj is not None
         # browser_code
         assert isinstance(
-            error_log.browser_code,
+            new_obj.browser_code,
             uuid.UUID
         )
         # context_code
         assert isinstance(
-            error_log.context_code,
+            new_obj.context_code,
             uuid.UUID
         )
-        assert error_log.created_utc_date_time == datetime(1753, 1, 1)
-        assert error_log.description == ""
-        assert error_log.is_client_side_error is False
-        assert error_log.is_resolved is False
-        assert error_log.pac_id == 0
-        assert error_log.url == ""
+        assert new_obj.created_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.description == ""
+        assert new_obj.is_client_side_error is False
+        assert new_obj.is_resolved is False
+        assert new_obj.pac_id == 0
+        assert new_obj.url == ""
 
     def test_last_change_code_concurrency(self, session):
         """
@@ -325,18 +326,21 @@ class TestErrorLogFactory:
             None
         """
 
-        error_log = ErrorLogFactory.create(
+        new_obj = ErrorLogFactory.create(
             session=session)
-        original_last_change_code = error_log.last_change_code
-        error_log_1 = session.query(ErrorLog).filter_by(
+        original_last_change_code = \
+            new_obj.last_change_code
+        error_log_1 = session.query(
+            ErrorLog).filter_by(
             _error_log_id=(
-                error_log.error_log_id)
+                new_obj.error_log_id)
         ).first()
         error_log_1.code = uuid.uuid4()
         session.commit()
-        error_log_2 = session.query(ErrorLog).filter_by(
+        error_log_2 = session.query(
+            ErrorLog).filter_by(
             _error_log_id=(
-                error_log.error_log_id)
+                new_obj.error_log_id)
         ).first()
         error_log_2.code = uuid.uuid4()
         session.commit()
@@ -369,11 +373,10 @@ class TestErrorLogFactory:
                 session violate any integrity constraints.
 
         """
-        error_log = ErrorLogFactory.create(
+        new_obj = ErrorLogFactory.create(
             session=session)
-        error_log.pac_id = 99999
+        new_obj.pac_id = 99999
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
     # url,
-

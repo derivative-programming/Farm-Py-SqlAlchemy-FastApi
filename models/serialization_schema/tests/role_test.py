@@ -1,4 +1,4 @@
-# role_test.py
+# models/serialization_schema/tests/role_test.py
 # pylint: disable=redefined-outer-name
 # pylint: disable=unused-import
 
@@ -15,13 +15,15 @@ transmitted over a network.
 
 The tests in this module cover the serialization
 and deserialization of Role
-instances using the RoleSchema class. They verify
+instances using the RoleSchema
+class. They verify
 that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a Role instance.
 
-The RoleSchema class is used to define
+The RoleSchema class
+is used to define
 the serialization and deserialization
 rules for Role instances. It
 specifies how each attribute of a
@@ -56,7 +58,7 @@ logger = get_logger(__name__)
 
 
 @pytest.fixture(scope="function")
-def role(
+def new_obj(
     session
 ) -> Role:
     """
@@ -113,7 +115,7 @@ class TestRoleSchema:
 
     def test_role_serialization(
         self,
-        role: Role
+        new_obj: Role
     ):
         """
         Test the serialization of a
@@ -126,42 +128,42 @@ class TestRoleSchema:
         """
 
         schema = RoleSchema()
-        role_data = schema.dump(role)
+        role_data = schema.dump(new_obj)
 
         assert isinstance(role_data, dict)
 
         result = role_data
 
-        assert result['code'] == str(role.code)
+        assert result['code'] == str(new_obj.code)
         assert result['last_change_code'] == (
-            role.last_change_code)
+            new_obj.last_change_code)
         assert result['insert_user_id'] == (
-            str(role.insert_user_id))
+            str(new_obj.insert_user_id))
         assert result['last_update_user_id'] == (
-            str(role.last_update_user_id))
+            str(new_obj.last_update_user_id))
 
         assert result['description'] == (
-            role.description)
+            new_obj.description)
         assert result['display_order'] == (
-            role.display_order)
+            new_obj.display_order)
         assert result['is_active'] == (
-            role.is_active)
+            new_obj.is_active)
         assert result['lookup_enum_name'] == (
-            role.lookup_enum_name)
+            new_obj.lookup_enum_name)
         assert result['name'] == (
-            role.name)
+            new_obj.name)
         assert result['pac_id'] == (
-            role.pac_id)
+            new_obj.pac_id)
         assert result['insert_utc_date_time'] == (
-            role.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
-            role.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert result['pac_code_peek'] == (  # PacID
-            str(role.pac_code_peek))
+            str(new_obj.pac_code_peek))
 
     def test_role_deserialization(
         self,
-        role
+        new_obj: Role
     ):
         """
         Test the deserialization of a
@@ -180,72 +182,72 @@ class TestRoleSchema:
         """
 
         schema = RoleSchema()
-        serialized_data = schema.dump(role)
+        serialized_data = schema.dump(new_obj)
         deserialized_data = schema.load(serialized_data)
 
         assert deserialized_data['code'] == \
-            role.code
+            new_obj.code
         assert deserialized_data['last_change_code'] == (
-            role.last_change_code)
+            new_obj.last_change_code)
         assert deserialized_data['insert_user_id'] == (
-            role.insert_user_id)
+            new_obj.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
-            role.last_update_user_id)
+            new_obj.last_update_user_id)
         assert deserialized_data['description'] == (
-            role.description)
+            new_obj.description)
         assert deserialized_data['display_order'] == (
-            role.display_order)
+            new_obj.display_order)
         assert deserialized_data['is_active'] == (
-            role.is_active)
+            new_obj.is_active)
         assert deserialized_data['lookup_enum_name'] == (
-            role.lookup_enum_name)
+            new_obj.lookup_enum_name)
         assert deserialized_data['name'] == (
-            role.name)
+            new_obj.name)
         assert deserialized_data['pac_id'] == (
-            role.pac_id)
+            new_obj.pac_id)
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
-            role.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
-            role.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert deserialized_data[(  # PacID
             'pac_code_peek')] == (
-            role.pac_code_peek)
+            new_obj.pac_code_peek)
 
-        new_role = Role(
+        obj_from_dict = Role(
             **deserialized_data)
 
-        assert isinstance(new_role,
+        assert isinstance(new_obj,
                           Role)
 
-        # Now compare the new_role attributes with
+        # Now compare the new_obj attributes with
         # the role attributes
-        assert new_role.code == \
-            role.code
-        assert new_role.last_change_code == \
-            role.last_change_code
-        assert new_role.insert_user_id == \
-            role.insert_user_id
-        assert new_role.last_update_user_id == \
-            role.last_update_user_id
-        assert new_role.description == (
-            role.description)
-        assert new_role.display_order == (
-            role.display_order)
-        assert new_role.is_active == (
-            role.is_active)
-        assert new_role.lookup_enum_name == (
-            role.lookup_enum_name)
-        assert new_role.name == (
-            role.name)
-        assert new_role.pac_id == (
-            role.pac_id)
+        assert obj_from_dict.code == \
+            new_obj.code
+        assert obj_from_dict.last_change_code == \
+            new_obj.last_change_code
+        assert obj_from_dict.insert_user_id == \
+            new_obj.insert_user_id
+        assert obj_from_dict.last_update_user_id == \
+            new_obj.last_update_user_id
+        assert obj_from_dict.description == (
+            new_obj.description)
+        assert obj_from_dict.display_order == (
+            new_obj.display_order)
+        assert obj_from_dict.is_active == (
+            new_obj.is_active)
+        assert obj_from_dict.lookup_enum_name == (
+            new_obj.lookup_enum_name)
+        assert obj_from_dict.name == (
+            new_obj.name)
+        assert obj_from_dict.pac_id == (
+            new_obj.pac_id)
 
-        assert new_role.insert_utc_date_time.isoformat() == (
-            role.insert_utc_date_time.isoformat())
-        assert new_role.last_update_utc_date_time.isoformat() == (
-            role.last_update_utc_date_time.isoformat())
-        assert new_role.pac_code_peek == (  # PacID
-            role.pac_code_peek)
+        assert obj_from_dict.insert_utc_date_time.isoformat() == (
+            new_obj.insert_utc_date_time.isoformat())
+        assert obj_from_dict.last_update_utc_date_time.isoformat() == (
+            new_obj.last_update_utc_date_time.isoformat())
+        assert obj_from_dict.pac_code_peek == (  # PacID
+            new_obj.pac_code_peek)
 
     def test_from_json(self):
         """
@@ -315,7 +317,7 @@ class TestRoleSchema:
 
     def test_to_json(
         self,
-        role: Role
+        new_obj: Role
     ):
         """
         Test the conversion of a
@@ -334,81 +336,80 @@ class TestRoleSchema:
         # to JSON using the schema
         role_schema = RoleSchema()
         role_dict = role_schema.dump(
-            role)
+            new_obj)
 
         # Convert the role_dict to JSON string
         role_json = json.dumps(
             role_dict)
 
         # Convert the JSON strings back to dictionaries
-        role_dict_from_json = json.loads(
+        dict_from_json = json.loads(
             role_json)
         # sample_dict_from_json = json.loads(self.sample_data)
 
         logging.info(
-            "role_dict_from_json.keys() %s",
-            role_dict_from_json.keys())
+            "dict_from_json.keys() %s",
+            dict_from_json.keys())
 
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
 
         # Verify the keys in both dictionaries match
-        assert set(role_dict_from_json.keys()) == (
+        assert set(dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
-            f"Got: {set(role_dict_from_json.keys())}"
+            f"Got: {set(dict_from_json.keys())}"
         )
 
-        assert role_dict_from_json['code'] == \
-            str(role.code), (
+        assert dict_from_json['code'] == \
+            str(new_obj.code), (
             "failed on code"
         )
-        assert role_dict_from_json['last_change_code'] == (
-            role.last_change_code), (
+        assert dict_from_json['last_change_code'] == (
+            new_obj.last_change_code), (
             "failed on last_change_code"
         )
-        assert role_dict_from_json['insert_user_id'] == (
-            str(role.insert_user_id)), (
+        assert dict_from_json['insert_user_id'] == (
+            str(new_obj.insert_user_id)), (
             "failed on insert_user_id"
         )
-        assert role_dict_from_json['last_update_user_id'] == (
-            str(role.last_update_user_id)), (
+        assert dict_from_json['last_update_user_id'] == (
+            str(new_obj.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-        assert role_dict_from_json['description'] == (
-            role.description), (
+        assert dict_from_json['description'] == (
+            new_obj.description), (
             "failed on description"
         )
-        assert role_dict_from_json['display_order'] == (
-            role.display_order), (
+        assert dict_from_json['display_order'] == (
+            new_obj.display_order), (
             "failed on display_order"
         )
-        assert role_dict_from_json['is_active'] == (
-            role.is_active), (
+        assert dict_from_json['is_active'] == (
+            new_obj.is_active), (
             "failed on is_active"
         )
-        assert role_dict_from_json['lookup_enum_name'] == (
-            role.lookup_enum_name), (
+        assert dict_from_json['lookup_enum_name'] == (
+            new_obj.lookup_enum_name), (
             "failed on lookup_enum_name"
         )
-        assert role_dict_from_json['name'] == (
-            role.name), (
+        assert dict_from_json['name'] == (
+            new_obj.name), (
             "failed on name"
         )
-        assert role_dict_from_json['pac_id'] == (
-            role.pac_id), (
+        assert dict_from_json['pac_id'] == (
+            new_obj.pac_id), (
             "failed on pac_id"
         )
-        assert role_dict_from_json['insert_utc_date_time'] == (
-            role.insert_utc_date_time.isoformat()), (
+        assert dict_from_json['insert_utc_date_time'] == (
+            new_obj.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
         )
-        assert role_dict_from_json['last_update_utc_date_time'] == (
-            role.last_update_utc_date_time.isoformat()), (
+        assert dict_from_json['last_update_utc_date_time'] == (
+            new_obj.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-        assert role_dict_from_json[(  # PacID
+        assert dict_from_json[(  # PacID
             'pac_code_peek')] == (
-            str(role.pac_code_peek)), (
+            str(new_obj.pac_code_peek)), (
             "failed on pac_code_peek"
         )
-

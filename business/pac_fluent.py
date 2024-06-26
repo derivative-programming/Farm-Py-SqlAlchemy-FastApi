@@ -99,4 +99,3 @@ class PacFluentBusObj(PacBaseBusObj):
     # isActive,
     # lookupEnumName,
     # name,
-

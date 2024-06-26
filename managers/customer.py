@@ -484,18 +484,19 @@ class CustomerManager:
         """
         logging.info(
             "CustomerManager.add_bulk")
-        for customer in customers:
+        for list_item in customers:
             customer_id = \
-                customer.customer_id
-            code = customer.code
-            if customer.customer_id is not None and customer.customer_id > 0:
+                list_item.customer_id
+            code = list_item.code
+            if list_item.customer_id is not None and \
+                    list_item.customer_id > 0:
                 raise ValueError(
                     "Customer is already added"
                     f": {str(code)} {str(customer_id)}"
                 )
-            customer.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            customer.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(customers)
         await self._session_context.session.flush()
@@ -737,4 +738,3 @@ class CustomerManager:
             Customer._fs_user_code_value == fs_user_code_value)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return query_results
-

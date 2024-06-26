@@ -484,18 +484,19 @@ class ErrorLogManager:
         """
         logging.info(
             "ErrorLogManager.add_bulk")
-        for error_log in error_logs:
+        for list_item in error_logs:
             error_log_id = \
-                error_log.error_log_id
-            code = error_log.code
-            if error_log.error_log_id is not None and error_log.error_log_id > 0:
+                list_item.error_log_id
+            code = list_item.code
+            if list_item.error_log_id is not None and \
+                    list_item.error_log_id > 0:
                 raise ValueError(
                     "ErrorLog is already added"
                     f": {str(code)} {str(error_log_id)}"
                 )
-            error_log.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            error_log.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(error_logs)
         await self._session_context.session.flush()
@@ -715,4 +716,3 @@ class ErrorLogManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-

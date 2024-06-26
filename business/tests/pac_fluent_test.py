@@ -4,7 +4,7 @@
 Unit tests for the
 PacFluentBusObj class.
 """
-import math
+import math  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
@@ -33,46 +33,66 @@ class TestPacFluentBusObj:
     PacFluentBusObj class.
     """
     @pytest.fixture
-    def pac(self, session):
+    def new_fluent_bus_obj(self, session):
         """
         Return a PacFluentBusObj
         object.
         """
         session_context = SessionContext(dict(), session=session)
         return PacFluentBusObj(session_context)
-    def test_set_prop_description(self, pac):
+    # description
+
+    def test_set_prop_description(self, new_fluent_bus_obj):
         """
         Test setting the description property.
         """
-        result = pac.set_prop_description("Vanilla")
-        assert pac.description == "Vanilla"
-        assert result is pac
-    def test_set_prop_display_order(self, pac):
+        result = new_fluent_bus_obj.set_prop_description(
+            "Vanilla")
+        assert new_fluent_bus_obj.description == \
+            "Vanilla"
+        assert result is new_fluent_bus_obj
+    # displayOrder
+
+    def test_set_prop_display_order(self, new_fluent_bus_obj):
         """
         Test setting the display_order property.
         """
-        result = pac.set_prop_display_order(42)
-        assert pac.display_order == 42
-        assert result is pac
-    def test_set_prop_is_active(self, pac):
+        result = new_fluent_bus_obj.set_prop_display_order(42)
+        assert new_fluent_bus_obj.display_order == 42
+        assert result is new_fluent_bus_obj
+    # isActive
+
+    def test_set_prop_is_active(self, new_fluent_bus_obj):
         """
         Test setting the is_active property.
         """
-        result = pac.set_prop_is_active(True)
-        assert pac.is_active is True
-        assert result is pac
-    def test_set_prop_lookup_enum_name(self, pac):
+        result = new_fluent_bus_obj.set_prop_is_active(True)
+        assert new_fluent_bus_obj.is_active is True
+        assert result is new_fluent_bus_obj
+    # lookupEnumName
+
+    def test_set_prop_lookup_enum_name(self, new_fluent_bus_obj):
         """
         Test setting the lookup_enum_name property.
         """
-        result = pac.set_prop_lookup_enum_name("Vanilla")
-        assert pac.lookup_enum_name == "Vanilla"
-        assert result is pac
-    def test_set_prop_name(self, pac):
+        result = new_fluent_bus_obj.set_prop_lookup_enum_name(
+            "Vanilla")
+        assert new_fluent_bus_obj.lookup_enum_name == \
+            "Vanilla"
+        assert result is new_fluent_bus_obj
+    # name
+
+    def test_set_prop_name(self, new_fluent_bus_obj):
         """
         Test setting the name property.
         """
-        result = pac.set_prop_name("Vanilla")
-        assert pac.name == "Vanilla"
-        assert result is pac
-
+        result = new_fluent_bus_obj.set_prop_name(
+            "Vanilla")
+        assert new_fluent_bus_obj.name == \
+            "Vanilla"
+        assert result is new_fluent_bus_obj
+    # description,
+    # displayOrder,
+    # isActive,
+    # lookupEnumName,
+    # name,

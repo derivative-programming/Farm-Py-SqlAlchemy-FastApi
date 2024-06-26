@@ -387,4 +387,3 @@ class CustomerFluentBusObj(CustomerBaseBusObj):
         return self
     # uTCOffsetInMinutes,
     # zip,
-

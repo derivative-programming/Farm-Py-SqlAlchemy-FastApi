@@ -94,26 +94,19 @@ class LandAddPlantPostModelRequestFactory(
             An instance of
             LandAddPlantPostModelRequest.
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
-
         request_flavor_code_instance = (  # requestFlavorCode
             FlavorFactory.create(session=session))
-
 # endset
-
         kwargs["request_flavor_code"] = (  # requestFlavorCode
             request_flavor_code_instance.code)
 # endset
-
         obj = model_class(*args, **kwargs)
-
         obj.request_flavor_code = (  # requestFlavorCode
             request_flavor_code_instance.code)
 # endset
-
         return obj
 
     @classmethod
@@ -135,21 +128,16 @@ class LandAddPlantPostModelRequestFactory(
             An instance of
             LandAddPlantPostModelRequest.
         """
-
         request_flavor_code_instance = (  # requestFlavorCode
             FlavorFactory.create(session=session))
 # endset
-
         kwargs["request_flavor_code"] = (  # requestFlavorCode
             request_flavor_code_instance.code)
 # endset
-
         obj = model_class(*args, **kwargs)
-
         obj.request_flavor_code = (  # requestFlavorCode
             request_flavor_code_instance.code)
 # endset
-
         return obj
 
     @classmethod
@@ -172,20 +160,17 @@ class LandAddPlantPostModelRequestFactory(
         """
 
         request_flavor_code_instance = (  # requestFlavorCode
-            await FlavorFactory.create_async(session=session))
-
+            await FlavorFactory.create_async(
+                session=session))
 # endset
-
         kwargs["request_flavor_code"] = (  # requestFlavorCode
             request_flavor_code_instance.code)
 # endset
-
-        obj = LandAddPlantPostModelRequestFactory.build(
-            session=None, *args, **kwargs
-        )
-
+        obj = LandAddPlantPostModelRequestFactory \
+            .build(
+                session=None, *args, **kwargs
+            )
         obj.request_flavor_code = (  # requestFlavorCode
             request_flavor_code_instance.code)
 # endset
-
         return obj

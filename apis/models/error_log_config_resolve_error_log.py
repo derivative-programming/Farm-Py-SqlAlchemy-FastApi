@@ -1,4 +1,5 @@
 # apis/models/error_log_config_resolve_error_log.py
+# pylint: disable=unused-import
 
 """
 This module contains the models for the
@@ -11,7 +12,7 @@ import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 
-from pydantic import UUID4, Field
+from pydantic import UUID4, Field  # noqa: F401
 
 from apis.models.validation_error import ValidationErrorItem
 from business.error_log import ErrorLogBusObj
@@ -19,7 +20,7 @@ from flows.base.flow_validation_error import FlowValidationError
 from flows.error_log_config_resolve_error_log import (
     FlowErrorLogConfigResolveErrorLog,
     FlowErrorLogConfigResolveErrorLogResult)
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
 
@@ -107,16 +108,19 @@ class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
         """
 
         try:
-            logging.info("loading model..."
-                         "ErrorLogConfigResolveErrorLogPostModelResponse")
+            logging.info(
+                "loading model..."
+                "ErrorLogConfigResolveErrorLogPostModelResponse")
             error_log_bus_obj = ErrorLogBusObj(session_context)
             await error_log_bus_obj.load_from_code(code=error_log_code)
             if error_log_bus_obj.get_error_log_obj() is None:
                 logging.info("Invalid error_log_code")
                 raise ValueError("Invalid error_log_code")
-            flow = FlowErrorLogConfigResolveErrorLog(session_context)
-            logging.info("process flow..."
-                         "ErrorLogConfigResolveErrorLogPostModelResponse")
+            flow = FlowErrorLogConfigResolveErrorLog(
+                session_context)
+            logging.info(
+                "process flow..."
+                "ErrorLogConfigResolveErrorLogPostModelResponse")
             flow_response = await flow.process(
                 error_log_bus_obj,
 
@@ -126,7 +130,9 @@ class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
             self.success = True
             self.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error...ErrorLogConfigResolveErrorLogPostModelResponse")
+            logging.info(
+                "error..."
+                "ErrorLogConfigResolveErrorLogPostModelResponse")
             self.success = False
             self.validation_errors = list()
             for key in ve.error_dict:
@@ -143,4 +149,3 @@ class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
             str: The JSON representation of the object.
         """
         return self.model_dump_json()
-

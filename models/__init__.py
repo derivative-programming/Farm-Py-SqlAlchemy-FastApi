@@ -19,4 +19,3 @@ from .plant import Plant  # noqa: F401
 from .role import Role  # noqa: F401
 from .tac import Tac  # noqa: F401
 from .tri_state_filter import TriStateFilter  # noqa: F401
-

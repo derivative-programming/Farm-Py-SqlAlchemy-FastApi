@@ -4,7 +4,7 @@
 Unit tests for the
 OrganizationFluentBusObj class.
 """
-import math
+import math  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
@@ -30,25 +30,32 @@ class TestOrganizationFluentBusObj:
     OrganizationFluentBusObj class.
     """
     @pytest.fixture
-    def organization(self, session):
+    def new_fluent_bus_obj(self, session):
         """
         Return a OrganizationFluentBusObj
         object.
         """
         session_context = SessionContext(dict(), session=session)
         return OrganizationFluentBusObj(session_context)
-    def test_set_prop_name(self, organization):
+    # name
+
+    def test_set_prop_name(self, new_fluent_bus_obj):
         """
         Test setting the name property.
         """
-        result = organization.set_prop_name("Vanilla")
-        assert organization.name == "Vanilla"
-        assert result is organization
-    def test_set_prop_tac_id(self, organization):
+        result = new_fluent_bus_obj.set_prop_name(
+            "Vanilla")
+        assert new_fluent_bus_obj.name == \
+            "Vanilla"
+        assert result is new_fluent_bus_obj
+    # TacID
+    # name,
+    # TacID
+
+    def test_set_prop_tac_id(self, new_fluent_bus_obj):
         """
         Test setting the tac_id property.
         """
-        result = organization.set_prop_tac_id(1)
-        assert organization.tac_id == 1
-        assert result is organization
-
+        result = new_fluent_bus_obj.set_prop_tac_id(1)
+        assert new_fluent_bus_obj.tac_id == 1
+        assert result is new_fluent_bus_obj

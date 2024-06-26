@@ -6,7 +6,7 @@ This module contains unit tests for the
 `tac_register` endpoint.
 """
 
-import logging
+import logging  # noqa: F401
 import uuid
 import json  # noqa: F401
 from unittest.mock import AsyncMock, patch
@@ -16,13 +16,13 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import apis.fs_farm_api.v1_0.endpoints.tests.test_constants as test_constants
-import models.factory as model_factorys
+import models.factory as model_factorys  # noqa: F401
 from helpers.api_token import ApiToken  # noqa: F401
 from apis import models as apis_models
 from database import get_db
 from main import app
 
-from .....models import (  # pylint: disable=reimported
+from .....models import (  # pylint: disable=reimported  # noqa: F401
     factory as request_factory)
 from ..tac_register import (
     TacRegisterRouterConfig)
@@ -37,7 +37,9 @@ async def test_init_success(
     Test the successful initialization endpoint.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
     async with AsyncClient(
@@ -46,7 +48,8 @@ async def test_init_success(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-register/{tac_code}/init',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}/init",
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 200
@@ -61,7 +64,9 @@ async def test_init_authorization_failure_bad_api_key(
     Test the authorization failure with a bad API key during initialization.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
 
     async with AsyncClient(
@@ -70,7 +75,8 @@ async def test_init_authorization_failure_bad_api_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-register/{tac_code}/init',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}/init",
             headers={'API_KEY': 'xxx'}
 
         )
@@ -89,7 +95,9 @@ async def test_init_authorization_failure_empty_header_key(
     empty header key during initialization.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
 
     async with AsyncClient(
@@ -98,7 +106,8 @@ async def test_init_authorization_failure_empty_header_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-register/{tac_code}/init',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}/init",
             headers={'API_KEY': ''}
 
         )
@@ -116,7 +125,9 @@ async def test_init_authorization_failure_no_header(
     Test the authorization failure with no header during initialization.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
 
     async with AsyncClient(
@@ -125,7 +136,8 @@ async def test_init_authorization_failure_no_header(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-register/{tac_code}/init'
+            "/api/v1_0/tac-register"
+            f"/{tac_code}/init"
 
         )
         if TacRegisterRouterConfig.is_public is True:
@@ -143,7 +155,9 @@ async def test_init_endpoint_url_failure(
     Test the failure of the endpoint URL during initialization.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
 
@@ -153,7 +167,8 @@ async def test_init_endpoint_url_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-register/{tac_code}/init/xxx',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}/init/xxx",
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 501
@@ -178,7 +193,8 @@ async def test_init_endpoint_invalid_code_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-register/{tac_code}/init',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}/init",
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 200
@@ -195,7 +211,9 @@ async def test_init_endpoint_method_failure(
     invalid HTTP method during initialization.
     """
 
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
 
@@ -205,7 +223,8 @@ async def test_init_endpoint_method_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/tac-register/{tac_code}/init',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}/init",
             headers={'API_KEY': test_api_key}
         )
         assert response.status_code == 405
@@ -251,7 +270,9 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
     ) as mock_method:
 
         mock_method.side_effect = mock_process_request
-        tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+        tac = await \
+            model_factorys.TacFactory.create_async(
+                overridden_get_db)
         tac_code = tac.code
         test_api_key = api_key_fixture
         async with AsyncClient(
@@ -259,7 +280,8 @@ async def test_submit_success(overridden_get_db, api_key_fixture: str):
         ) as ac:
             app.dependency_overrides[get_db] = lambda: overridden_get_db
             response = await ac.post(
-                f'/api/v1_0/tac-register/{tac_code}',
+                "/api/v1_0/tac-register"
+                f"/{tac_code}",
                 json={},
                 headers={'API_KEY': test_api_key}
             )
@@ -284,7 +306,9 @@ async def test_submit_request_validation_error(
     Returns:
         None
     """
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
     async with AsyncClient(
@@ -292,7 +316,8 @@ async def test_submit_request_validation_error(
     ) as ac:
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/tac-register/{tac_code}',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}",
             json=json.dumps(
                 {
                     "xxxx": "yyyy"
@@ -317,7 +342,9 @@ async def test_submit_authorization_failure_bad_api_key(
     Returns:
         None
     """
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
 
     async with AsyncClient(
@@ -326,7 +353,8 @@ async def test_submit_authorization_failure_bad_api_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/tac-register/{tac_code}',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}",
             json={},
             headers={'API_KEY': 'xxx'}
 
@@ -351,7 +379,9 @@ async def test_submit_authorization_failure_empty_header_key(
     Returns:
         None
     """
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
 
     async with AsyncClient(
@@ -360,7 +390,8 @@ async def test_submit_authorization_failure_empty_header_key(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/tac-register/{tac_code}',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}",
             json={},
             headers={'API_KEY': ''}
 
@@ -385,7 +416,9 @@ async def test_submit_authorization_failure_no_header(
     Returns:
         None
     """
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
 
     async with AsyncClient(
@@ -394,7 +427,8 @@ async def test_submit_authorization_failure_no_header(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/tac-register/{tac_code}',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}",
             json={}
 
         )
@@ -420,7 +454,9 @@ async def test_submit_endpoint_url_failure(
     Returns:
         None
     """
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
     async with AsyncClient(
@@ -429,7 +465,8 @@ async def test_submit_endpoint_url_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/tac-register/{tac_code}/xxxx',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}/xxxx",
             json={},
             headers={'API_KEY': test_api_key}
         )
@@ -460,7 +497,8 @@ async def test_submit_endpoint_invalid_code_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.post(
-            f'/api/v1_0/tac-register/{tac_code}',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}",
             json={},
             headers={'API_KEY': test_api_key}
         )
@@ -484,7 +522,9 @@ async def test_submit_endpoint_method_failure(
     Returns:
         None
     """
-    tac = await model_factorys.TacFactory.create_async(overridden_get_db)
+    tac = await \
+        model_factorys.TacFactory.create_async(
+            overridden_get_db)
     tac_code = tac.code
     test_api_key = api_key_fixture
     async with AsyncClient(
@@ -493,7 +533,8 @@ async def test_submit_endpoint_method_failure(
 
         app.dependency_overrides[get_db] = lambda: overridden_get_db
         response = await ac.get(
-            f'/api/v1_0/tac-register/{tac_code}',
+            "/api/v1_0/tac-register"
+            f"/{tac_code}",
             headers={'API_KEY': test_api_key}
         )
 
@@ -515,4 +556,3 @@ def teardown_module(module):  # pylint: disable=unused-argument
         None
     """
     app.dependency_overrides.clear()
-

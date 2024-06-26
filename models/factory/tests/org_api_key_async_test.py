@@ -8,7 +8,7 @@ operations of the OrgApiKeyFactory class.
 """
 
 import asyncio
-import math
+import math  # noqa: F401
 import time
 import uuid  # noqa: F401
 from datetime import date, datetime, timedelta  # noqa: F401
@@ -405,26 +405,26 @@ class TestOrgApiKeyFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        org_api_key = await \
+        obj = await \
             OrgApiKeyFactory.create_async(
                 session=session)
-        assert isinstance(org_api_key.org_api_key_id, int)
-        assert isinstance(org_api_key.code, uuid.UUID)
-        assert isinstance(org_api_key.last_change_code, int)
-        assert isinstance(org_api_key.insert_user_id, uuid.UUID)
-        assert isinstance(org_api_key.last_update_user_id, uuid.UUID)
-        assert org_api_key.api_key_value == "" or isinstance(
-            org_api_key.api_key_value, str)
-        assert org_api_key.created_by == "" or isinstance(
-            org_api_key.created_by, str)
-        assert isinstance(org_api_key.created_utc_date_time, datetime)
-        assert isinstance(org_api_key.expiration_utc_date_time, datetime)
-        assert isinstance(org_api_key.is_active, bool)
-        assert isinstance(org_api_key.is_temp_user_key, bool)
-        assert org_api_key.name == "" or isinstance(
-            org_api_key.name, str)
-        assert isinstance(org_api_key.organization_id, int)
-        assert isinstance(org_api_key.org_customer_id, int)
+        assert isinstance(obj.org_api_key_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert obj.api_key_value == "" or isinstance(
+            obj.api_key_value, str)
+        assert obj.created_by == "" or isinstance(
+            obj.created_by, str)
+        assert isinstance(obj.created_utc_date_time, datetime)
+        assert isinstance(obj.expiration_utc_date_time, datetime)
+        assert isinstance(obj.is_active, bool)
+        assert isinstance(obj.is_temp_user_key, bool)
+        assert obj.name == "" or isinstance(
+            obj.name, str)
+        assert isinstance(obj.organization_id, int)
+        assert isinstance(obj.org_customer_id, int)
         # Check for the peek values
         # apiKeyValue,
         # createdBy,
@@ -435,13 +435,13 @@ class TestOrgApiKeyFactoryAsync:
         # name,
         # organizationID
 
-        assert isinstance(org_api_key.organization_code_peek, uuid.UUID)
+        assert isinstance(obj.organization_code_peek, uuid.UUID)
         # orgCustomerID
 
-        assert isinstance(org_api_key.org_customer_code_peek, uuid.UUID)
+        assert isinstance(obj.org_customer_code_peek, uuid.UUID)
 
-        assert isinstance(org_api_key.insert_utc_date_time, datetime)
-        assert isinstance(org_api_key.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
@@ -466,12 +466,13 @@ class TestOrgApiKeyFactoryAsync:
         each org_api_key.
         """
 
-        org_api_key_1 = await OrgApiKeyFactory.create_async(
+        obj_1 = await OrgApiKeyFactory.create_async(
             session=session)
-        org_api_key_2 = await OrgApiKeyFactory.create_async(
+        obj_2 = await OrgApiKeyFactory.create_async(
             session=session)
-        org_api_key_2.code = org_api_key_1.code
-        session.add_all([org_api_key_1, org_api_key_2])
+        obj_2.code = obj_1.code
+        session.add_all([obj_1,
+                         obj_2])
         with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
@@ -489,13 +490,13 @@ class TestOrgApiKeyFactoryAsync:
         or empty, and that the data types of certain fields are correct.
         """
 
-        org_api_key = OrgApiKey()
-        assert org_api_key.code is not None
-        assert org_api_key.last_change_code is not None
-        assert org_api_key.insert_user_id is not None
-        assert org_api_key.last_update_user_id is not None
-        assert org_api_key.insert_utc_date_time is not None
-        assert org_api_key.last_update_utc_date_time is not None
+        new_obj = OrgApiKey()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id is not None
+        assert new_obj.last_update_user_id is not None
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
 
         # apiKeyValue,
         # createdBy,
@@ -506,19 +507,19 @@ class TestOrgApiKeyFactoryAsync:
         # name,
         # OrganizationID
 
-        assert isinstance(org_api_key.organization_code_peek, uuid.UUID)
+        assert isinstance(new_obj.organization_code_peek, uuid.UUID)
         # OrgCustomerID
 
-        assert isinstance(org_api_key.org_customer_code_peek, uuid.UUID)
-        assert org_api_key.api_key_value == ""
-        assert org_api_key.created_by == ""
-        assert org_api_key.created_utc_date_time == datetime(1753, 1, 1)
-        assert org_api_key.expiration_utc_date_time == datetime(1753, 1, 1)
-        assert org_api_key.is_active is False
-        assert org_api_key.is_temp_user_key is False
-        assert org_api_key.name == ""
-        assert org_api_key.organization_id == 0
-        assert org_api_key.org_customer_id == 0
+        assert isinstance(new_obj.org_customer_code_peek, uuid.UUID)
+        assert new_obj.api_key_value == ""
+        assert new_obj.created_by == ""
+        assert new_obj.created_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.expiration_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.is_active is False
+        assert new_obj.is_temp_user_key is False
+        assert new_obj.name == ""
+        assert new_obj.organization_id == 0
+        assert new_obj.org_customer_id == 0
 
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
@@ -566,24 +567,24 @@ class TestOrgApiKeyFactoryAsync:
             OrgApiKey._org_api_key_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 org_api_key.org_api_key_id))
         result = await session.execute(stmt)
-        org_api_key_1 = result.scalars().first()
+        obj_1 = result.scalars().first()
 
-        # org_api_key_1 = await session.query(OrgApiKey).filter_by(
+        # obj_1 = await session.query(OrgApiKey).filter_by(
         # org_api_key_id=org_api_key.org_api_key_id).first()
-        org_api_key_1.code = uuid.uuid4()
+        obj_1.code = uuid.uuid4()
         await session.commit()
 
         stmt = select(OrgApiKey).where(
             OrgApiKey._org_api_key_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 org_api_key.org_api_key_id))
         result = await session.execute(stmt)
-        org_api_key_2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
-        # org_api_key_2 = await session.query(OrgApiKey).filter_by(
+        # obj_2 = await session.query(OrgApiKey).filter_by(
         # org_api_key_id=org_api_key.org_api_key_id).first()
-        org_api_key_2.code = uuid.uuid4()
+        obj_2.code = uuid.uuid4()
         await session.commit()
-        assert org_api_key_2.last_change_code != original_last_change_code
+        assert obj_2.last_change_code != original_last_change_code
     # apiKeyValue,
     # createdBy,
     # createdUTCDateTime
@@ -643,4 +644,3 @@ class TestOrgApiKeyFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-

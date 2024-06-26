@@ -64,7 +64,8 @@ class OrgCustomerFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                OrgCustomer: An instance of the
+                OrgCustomer:
+                    An instance of the
                     OrgCustomer model.
 
         """
@@ -179,7 +180,8 @@ class OrgCustomerFactory(factory.Factory):
             customer_id_customer_instance.code)
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
 
-        obj = OrgCustomerFactory.build(session=None, *args, **kwargs)
+        obj = OrgCustomerFactory \
+            .build(session=None, *args, **kwargs)
         obj.customer_id = (  # CustomerID
             customer_id_customer_instance.customer_id)
         obj.organization_id = (  # OrganizationID
@@ -221,7 +223,8 @@ class OrgCustomerFactory(factory.Factory):
             customer_id_customer_instance.code)
         kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
 
-        obj = OrgCustomerFactory.build(session=None, *args, **kwargs)
+        obj = OrgCustomerFactory \
+            .build(session=None, *args, **kwargs)
         obj.customer_id = (  # CustomerID
             customer_id_customer_instance.customer_id)
         obj.organization_id = (  # OrganizationID
@@ -233,4 +236,3 @@ class OrgCustomerFactory(factory.Factory):
         # session.add(obj)
         # await session.flush()
         return obj
-

@@ -24,17 +24,17 @@ the following endpoints:
 """
 
 import logging
-import tempfile
+import tempfile  # noqa: F401
 import traceback
 import uuid
 
-from fastapi import APIRouter, Depends, Path
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, Depends, Path  # noqa: F401
+from fastapi.responses import FileResponse  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import apis.models as api_models
-import apis.models.init as api_init_models
-import reports
+import apis.models.init as api_init_models  # noqa: F401
+import reports  # noqa: F401
 from database import get_db
 from helpers import SessionContext, api_key_header
 
@@ -78,7 +78,8 @@ class CustomerUserLogOutRouter(BaseRouter):
 
     @staticmethod
     @router.get(
-        "/api/v1_0/customer-user-log-out/{customer_code}/init",
+        "/api/v1_0/customer-user-log-out"
+        "/{customer_code}/init",
         response_model=(
             api_init_models.
             CustomerUserLogOutInitObjWFGetInitModelResponse
@@ -105,7 +106,8 @@ class CustomerUserLogOutRouter(BaseRouter):
         """
 
         logging.info(
-            'CustomerUserLogOutRouter.request_get_init start. customerCode:%s',
+            "CustomerUserLogOutRouter"
+            ".request_get_init start. customerCode:%s",
             customer_code)
         auth_dict = BaseRouter.implementation_check(
             CustomerUserLogOutRouterConfig
@@ -119,6 +121,11 @@ class CustomerUserLogOutRouter(BaseRouter):
         auth_dict = BaseRouter.authorization_check(
             CustomerUserLogOutRouterConfig.is_public, api_key)
 
+        init_request = (
+            api_init_models.
+            CustomerUserLogOutInitObjWFGetInitModelRequest()
+        )
+
         # Start a transaction
         async with session:
             try:
@@ -128,10 +135,7 @@ class CustomerUserLogOutRouter(BaseRouter):
                     "CustomerCode",
                     customer_code
                 )
-                init_request = (
-                    api_init_models.
-                    CustomerUserLogOutInitObjWFGetInitModelRequest()
-                )
+
                 response = await init_request.process_request(
                     session_context,
                     customer_code,
@@ -158,14 +162,17 @@ class CustomerUserLogOutRouter(BaseRouter):
                 else:
                     await session.rollback()
         response_data = response.model_dump_json()
-        logging.info('CustomerUserLogOutRouter.init get result:%s',
-                     response_data)
+        logging.info(
+            "CustomerUserLogOutRouter"
+            ".init get result:%s",
+            response_data)
         return response
 
 
     @staticmethod
     @router.post(
-        "/api/v1_0/customer-user-log-out/{customer_code}",
+        "/api/v1_0/customer-user-log-out"
+        "/{customer_code}",
         response_model=(
             api_models
             .CustomerUserLogOutPostModelResponse
@@ -246,7 +253,7 @@ class CustomerUserLogOutRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            'CustomerUserLogOutRouter.submit get result:%s',
+            "CustomerUserLogOutRouter"
+            ".submit get result:%s",
             response_data)
         return response
-

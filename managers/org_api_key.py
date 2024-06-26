@@ -495,18 +495,19 @@ class OrgApiKeyManager:
         """
         logging.info(
             "OrgApiKeyManager.add_bulk")
-        for org_api_key in org_api_keys:
+        for list_item in org_api_keys:
             org_api_key_id = \
-                org_api_key.org_api_key_id
-            code = org_api_key.code
-            if org_api_key.org_api_key_id is not None and org_api_key.org_api_key_id > 0:
+                list_item.org_api_key_id
+            code = list_item.code
+            if list_item.org_api_key_id is not None and \
+                    list_item.org_api_key_id > 0:
                 raise ValueError(
                     "OrgApiKey is already added"
                     f": {str(code)} {str(org_api_key_id)}"
                 )
-            org_api_key.insert_user_id = (
+            list_item.insert_user_id = (
                 self._session_context.customer_code)
-            org_api_key.last_update_user_id = (
+            list_item.last_update_user_id = (
                 self._session_context.customer_code)
         self._session_context.session.add_all(org_api_keys)
         await self._session_context.session.flush()
@@ -762,4 +763,3 @@ class OrgApiKeyManager:
         query_results = await self._run_query(query_filter)
 
         return query_results
-

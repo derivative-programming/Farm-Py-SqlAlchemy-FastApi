@@ -16,9 +16,11 @@ from sqlalchemy.future import select
 
 import models
 from helpers.session_context import SessionContext
-from managers.plant import PlantManager
+from managers.plant import (
+    PlantManager)
 from models import Plant
-from models.factory import PlantFactory
+from models.factory import (
+    PlantFactory)
 
 
 class TestPlantGetByManager:
@@ -28,7 +30,7 @@ class TestPlantGetByManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def plant_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `PlantManager` for testing.
@@ -40,7 +42,7 @@ class TestPlantGetByManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        plant_manager: PlantManager
+        obj_manager: PlantManager
     ):
         """
         Test case for the `build` method of
@@ -53,7 +55,7 @@ class TestPlantGetByManager:
 
         # Call the build function of the manager
         plant = await \
-            plant_manager.build(
+            obj_manager.build(
                 **mock_data)
 
         # Assert that the returned object is an instance of
@@ -69,34 +71,34 @@ class TestPlantGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
         Test case for the `get_by_id` method of
         `PlantManager`.
         """
-        test_plant = await \
+        new_obj = await \
             PlantFactory.create_async(
                 session)
 
         plant = await \
-            plant_manager.get_by_id(
-                test_plant.plant_id)
+            obj_manager.get_by_id(
+                new_obj.plant_id)
 
         assert isinstance(
             plant,
             Plant)
 
-        assert test_plant.plant_id == \
+        assert new_obj.plant_id == \
             plant.plant_id
-        assert test_plant.code == \
+        assert new_obj.code == \
             plant.code
 
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
-        plant_manager: PlantManager
+        obj_manager: PlantManager
     ):
         """
         Test case for the `get_by_id` method of
@@ -107,7 +109,7 @@ class TestPlantGetByManager:
         non_existent_id = 9999  # An ID that's not in the database
 
         retrieved_plant = await \
-            plant_manager.get_by_id(
+            obj_manager.get_by_id(
                 non_existent_id)
 
         assert retrieved_plant is None
@@ -115,7 +117,7 @@ class TestPlantGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_code_returns_plant(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
@@ -125,27 +127,27 @@ class TestPlantGetByManager:
         returned by its code.
         """
 
-        test_plant = await \
+        new_obj = await \
             PlantFactory.create_async(
                 session)
 
         plant = await \
-            plant_manager.get_by_code(
-                test_plant.code)
+            obj_manager.get_by_code(
+                new_obj.code)
 
         assert isinstance(
             plant,
             Plant)
 
-        assert test_plant.plant_id == \
+        assert new_obj.plant_id == \
             plant.plant_id
-        assert test_plant.code == \
+        assert new_obj.code == \
             plant.code
 
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
-        plant_manager: PlantManager
+        obj_manager: PlantManager
     ):
         """
         Test case for the `get_by_code` method of
@@ -156,7 +158,7 @@ class TestPlantGetByManager:
         random_code = uuid.uuid4()
 
         plant = await \
-            plant_manager.get_by_code(
+            obj_manager.get_by_code(
                 random_code)
 
         assert plant is None
@@ -181,7 +183,7 @@ class TestPlantGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_flvr_foreign_key_id_existing(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
@@ -195,7 +197,7 @@ class TestPlantGetByManager:
             PlantFactory.
         2. Fetch the plant using the
             `get_by_flvr_foreign_key_id`
-            method of the plant_manager.
+            method of the obj_manager.
         3. Assert that the fetched plants list has a length of 1.
         4. Assert that the first element in the fetched
             plants list is an instance of the
@@ -214,34 +216,34 @@ class TestPlantGetByManager:
         """
         # Add a plant with a specific
         # flvr_foreign_key_id
-        plant1 = await PlantFactory.create_async(
+        obj_1 = await PlantFactory.create_async(
             session=session)
 
         # Fetch the plant using the
         # manager function
 
-        fetched_plants = await \
-            plant_manager.get_by_flvr_foreign_key_id(
-                plant1.flvr_foreign_key_id)
-        assert len(fetched_plants) == 1
-        assert isinstance(fetched_plants[0],
+        fetched_objs = await \
+            obj_manager.get_by_flvr_foreign_key_id(
+                obj_1.flvr_foreign_key_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           Plant)
-        assert fetched_plants[0].code == \
-            plant1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.Flavor).where(
-            models.Flavor._flavor_id == plant1.flvr_foreign_key_id)  # type: ignore  # noqa: E501
+            models.Flavor._flavor_id == obj_1.flvr_foreign_key_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         flavor = result.scalars().first()
 
         assert isinstance(flavor, models.Flavor)
 
-        assert fetched_plants[0].flvr_foreign_key_code_peek == flavor.code
+        assert fetched_objs[0].flvr_foreign_key_code_peek == flavor.code
 
     @pytest.mark.asyncio
     async def test_get_by_flvr_foreign_key_id_nonexistent(
         self,
-        plant_manager: PlantManager
+        obj_manager: PlantManager
     ):
         """
         Test case to verify the behavior of the
@@ -263,15 +265,15 @@ class TestPlantGetByManager:
         """
         non_existent_id = 999
 
-        fetched_plants = (
-            await plant_manager.get_by_flvr_foreign_key_id(
+        fetched_objs = (
+            await obj_manager.get_by_flvr_foreign_key_id(
                 non_existent_id))
-        assert len(fetched_plants) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_flvr_foreign_key_id_invalid_type(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
@@ -283,7 +285,7 @@ class TestPlantGetByManager:
         when an invalid ID is passed to the method.
 
         Args:
-            plant_manager (PlantManager): The
+            obj_manager (PlantManager): The
                 instance of the PlantManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 
@@ -295,7 +297,7 @@ class TestPlantGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await plant_manager.get_by_flvr_foreign_key_id(
+            await obj_manager.get_by_flvr_foreign_key_id(
                 invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
@@ -304,7 +306,7 @@ class TestPlantGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_land_id_existing(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
@@ -317,7 +319,7 @@ class TestPlantGetByManager:
         1. Create a plant using the
             PlantFactory.
         2. Fetch the plant using the
-            `get_by_land_id` method of the plant_manager.
+            `get_by_land_id` method of the obj_manager.
         3. Assert that the fetched plants list contains
             only one plant.
         4. Assert that the fetched plant
@@ -336,34 +338,34 @@ class TestPlantGetByManager:
         """
         # Add a plant with a specific
         # land_id
-        plant1 = await PlantFactory.create_async(
+        obj_1 = await PlantFactory.create_async(
             session=session)
 
         # Fetch the plant using
         # the manager function
 
-        fetched_plants = await \
-            plant_manager.get_by_land_id(
-                plant1.land_id)
-        assert len(fetched_plants) == 1
-        assert isinstance(fetched_plants[0],
+        fetched_objs = await \
+            obj_manager.get_by_land_id(
+                obj_1.land_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           Plant)
-        assert fetched_plants[0].code == \
-            plant1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.Land).where(
-            models.Land._land_id == plant1.land_id)  # type: ignore  # noqa: E501
+            models.Land._land_id == obj_1.land_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         land = result.scalars().first()
 
         assert isinstance(land, models.Land)
 
-        assert fetched_plants[0].land_code_peek == land.code
+        assert fetched_objs[0].land_code_peek == land.code
 
     @pytest.mark.asyncio
     async def test_get_by_land_id_nonexistent(
         self,
-        plant_manager: PlantManager
+        obj_manager: PlantManager
     ):
         """
         Test case to verify the behavior of the
@@ -376,15 +378,15 @@ class TestPlantGetByManager:
 
         non_existent_id = 999
 
-        fetched_plants = await \
-            plant_manager.get_by_land_id(
+        fetched_objs = await \
+            obj_manager.get_by_land_id(
                 non_existent_id)
-        assert len(fetched_plants) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_land_id_invalid_type(
         self,
-        plant_manager: PlantManager,
+        obj_manager: PlantManager,
         session: AsyncSession
     ):
         """
@@ -392,7 +394,7 @@ class TestPlantGetByManager:
         `get_by_land_id` method when an invalid land ID is provided.
 
         Args:
-            plant_manager (PlantManager): An
+            obj_manager (PlantManager): An
                 instance of the PlantManager class.
             session (AsyncSession): An instance
                 of the AsyncSession class.
@@ -408,7 +410,7 @@ class TestPlantGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await plant_manager.get_by_land_id(
+            await obj_manager.get_by_land_id(
                 invalid_id)  # type: ignore
 
         await session.rollback()

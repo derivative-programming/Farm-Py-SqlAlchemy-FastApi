@@ -34,4 +34,3 @@ from .plant import PlantSchema  # noqa: F401
 from .role import RoleSchema  # noqa: F401
 from .tac import TacSchema  # noqa: F401
 from .tri_state_filter import TriStateFilterSchema  # noqa: F401
-

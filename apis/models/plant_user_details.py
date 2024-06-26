@@ -27,10 +27,12 @@ from apis.models.validation_error import ValidationErrorItem
 from helpers import SessionContext, TypeConversion
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
-from reports.plant_user_details import ReportManagerPlantUserDetails
+from reports.plant_user_details import (
+    ReportManagerPlantUserDetails)
 from reports.report_request_validation_error import \
     ReportRequestValidationError
-from reports.row_models.plant_user_details import ReportItemPlantUserDetails
+from reports.row_models.plant_user_details import (
+    ReportItemPlantUserDetails)
 
 
 class PlantUserDetailsGetModelRequest(CamelModel):
@@ -344,11 +346,14 @@ class PlantUserDetailsGetModelResponse(ListModel):
             None
         """
         try:
-            logging.info("loading model..."
-                         "PlantUserDetailsGetModelResponse")
-            generator = ReportManagerPlantUserDetails(session_context)
-            logging.info("processing..."
-                         "PlantUserDetailsGetModelResponse")
+            logging.info(
+                "loading model..."
+                "PlantUserDetailsGetModelResponse")
+            generator = ReportManagerPlantUserDetails(
+                session_context)
+            logging.info(
+                "processing..."
+                "PlantUserDetailsGetModelResponse")
             items = await generator.generate(
                 plant_code,
 
@@ -360,7 +365,8 @@ class PlantUserDetailsGetModelResponse(ListModel):
             )
             self.items = list()
             for item in items:
-                report_item = PlantUserDetailsGetModelResponseItem()
+                report_item = \
+                    PlantUserDetailsGetModelResponseItem()
                 report_item.load_report_item(item)
                 self.items.append(report_item)
             self.success = True
@@ -389,4 +395,3 @@ class PlantUserDetailsGetModelResponse(ListModel):
             str: The JSON representation of the response model.
         """
         return self.model_dump_json()
-

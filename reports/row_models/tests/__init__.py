@@ -3,4 +3,3 @@
 """
 This module contains the tests for the row_models module.
 """
-

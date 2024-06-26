@@ -4,7 +4,7 @@
 Unit tests for the
 CustomerRoleFluentBusObj class.
 """
-import math
+import math  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
@@ -32,39 +32,50 @@ class TestCustomerRoleFluentBusObj:
     CustomerRoleFluentBusObj class.
     """
     @pytest.fixture
-    def customer_role(self, session):
+    def new_fluent_bus_obj(self, session):
         """
         Return a CustomerRoleFluentBusObj
         object.
         """
         session_context = SessionContext(dict(), session=session)
         return CustomerRoleFluentBusObj(session_context)
-    def test_set_prop_customer_id(self, customer_role):
-        """
-        Test setting the customer_id property.
-        """
-        result = customer_role.set_prop_customer_id(1)
-        assert customer_role.customer_id == 1
-        assert result is customer_role
-    def test_set_prop_is_placeholder(self, customer_role):
+    # CustomerID
+    # isPlaceholder
+
+    def test_set_prop_is_placeholder(self, new_fluent_bus_obj):
         """
         Test setting the is_placeholder property.
         """
-        result = customer_role.set_prop_is_placeholder(True)
-        assert customer_role.is_placeholder is True
-        assert result is customer_role
-    def test_set_prop_placeholder(self, customer_role):
+        result = new_fluent_bus_obj.set_prop_is_placeholder(True)
+        assert new_fluent_bus_obj.is_placeholder is True
+        assert result is new_fluent_bus_obj
+    # placeholder
+
+    def test_set_prop_placeholder(self, new_fluent_bus_obj):
         """
         Test setting the placeholder property.
         """
-        result = customer_role.set_prop_placeholder(True)
-        assert customer_role.placeholder is True
-        assert result is customer_role
-    def test_set_prop_role_id(self, customer_role):
+        result = new_fluent_bus_obj.set_prop_placeholder(True)
+        assert new_fluent_bus_obj.placeholder is True
+        assert result is new_fluent_bus_obj
+    # RoleID
+    # CustomerID
+
+    def test_set_prop_customer_id(self, new_fluent_bus_obj):
+        """
+        Test setting the customer_id property.
+        """
+        result = new_fluent_bus_obj.set_prop_customer_id(1)
+        assert new_fluent_bus_obj.customer_id == 1
+        assert result is new_fluent_bus_obj
+    # isPlaceholder,
+    # placeholder,
+    # RoleID
+
+    def test_set_prop_role_id(self, new_fluent_bus_obj):
         """
         Test setting the role_id property.
         """
-        result = customer_role.set_prop_role_id(1)
-        assert customer_role.role_id == 1
-        assert result is customer_role
-
+        result = new_fluent_bus_obj.set_prop_role_id(1)
+        assert new_fluent_bus_obj.role_id == 1
+        assert result is new_fluent_bus_obj

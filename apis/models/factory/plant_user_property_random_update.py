@@ -54,14 +54,12 @@ class PlantUserPropertyRandomUpdatePostModelRequestFactory(
             An instance of
             PlantUserPropertyRandomUpdatePostModelRequest.
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
 
 
         obj = model_class(*args, **kwargs)
-
 
         return obj
 
@@ -88,7 +86,6 @@ class PlantUserPropertyRandomUpdatePostModelRequestFactory(
 
         obj = model_class(*args, **kwargs)
 
-
         return obj
 
     @classmethod
@@ -111,10 +108,9 @@ class PlantUserPropertyRandomUpdatePostModelRequestFactory(
         """
 
 
-        obj = PlantUserPropertyRandomUpdatePostModelRequestFactory.build(
-            session=None, *args, **kwargs
-        )
-
+        obj = PlantUserPropertyRandomUpdatePostModelRequestFactory \
+            .build(
+                session=None, *args, **kwargs
+            )
 
         return obj
-

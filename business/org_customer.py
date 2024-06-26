@@ -56,4 +56,3 @@ class OrgCustomerBusObj(OrgCustomerFluentBusObj):
             result.append(org_customer_bus_obj)
 
         return result
-

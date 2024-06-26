@@ -1,4 +1,5 @@
 # apis/models/tac_register.py
+# pylint: disable=unused-import
 
 """
 This module contains the models for the
@@ -11,7 +12,7 @@ import uuid  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 
-from pydantic import UUID4, Field
+from pydantic import UUID4, Field  # noqa: F401
 
 from apis.models.validation_error import ValidationErrorItem
 from business.tac import TacBusObj
@@ -19,7 +20,7 @@ from flows.base.flow_validation_error import FlowValidationError
 from flows.tac_register import (
     FlowTacRegister,
     FlowTacRegisterResult)
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel
 
@@ -143,16 +144,19 @@ class TacRegisterPostModelResponse(PostResponse):
         """
 
         try:
-            logging.info("loading model..."
-                         "TacRegisterPostModelResponse")
+            logging.info(
+                "loading model..."
+                "TacRegisterPostModelResponse")
             tac_bus_obj = TacBusObj(session_context)
             await tac_bus_obj.load_from_code(code=tac_code)
             if tac_bus_obj.get_tac_obj() is None:
                 logging.info("Invalid tac_code")
                 raise ValueError("Invalid tac_code")
-            flow = FlowTacRegister(session_context)
-            logging.info("process flow..."
-                         "TacRegisterPostModelResponse")
+            flow = FlowTacRegister(
+                session_context)
+            logging.info(
+                "process flow..."
+                "TacRegisterPostModelResponse")
             flow_response = await flow.process(
                 tac_bus_obj,
                 request.email,
@@ -166,7 +170,9 @@ class TacRegisterPostModelResponse(PostResponse):
             self.success = True
             self.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error...TacRegisterPostModelResponse")
+            logging.info(
+                "error..."
+                "TacRegisterPostModelResponse")
             self.success = False
             self.validation_errors = list()
             for key in ve.error_dict:
@@ -183,4 +189,3 @@ class TacRegisterPostModelResponse(PostResponse):
             str: The JSON representation of the object.
         """
         return self.model_dump_json()
-

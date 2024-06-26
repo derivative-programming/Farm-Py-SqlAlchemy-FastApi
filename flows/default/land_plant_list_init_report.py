@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 """
 This module contains the
-FlowLandPlantListInitReport class and related classes
+FlowLandPlantListInitReport class
+and related classes
 that handle the addition of a
  to a specific
 land in the flow process.
@@ -17,7 +18,7 @@ from flows.base.land_plant_list_init_report import (
 from flows.base import LogSeverity
 from business.land import LandBusObj
 from helpers import SessionContext  # noqa: F401
-from helpers import TypeConversion
+from helpers import TypeConversion  # noqa: F401
 
 
 class FlowLandPlantListInitReportResult():
@@ -25,8 +26,6 @@ class FlowLandPlantListInitReportResult():
     Represents the result of the
     FlowLandPlantListInitReport process.
     """
-
-    context_object_code: uuid.UUID = uuid.UUID(int=0)
     some_int_val: int = 0
     some_big_int_val: int = 0
     some_bit_val: bool = False
@@ -48,6 +47,7 @@ class FlowLandPlantListInitReportResult():
     land_code: uuid.UUID = uuid.UUID(int=0)
     tac_code: uuid.UUID = uuid.UUID(int=0)
     land_name: str = ""
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
 
     def __init__(self):
         """
@@ -119,7 +119,8 @@ class FlowLandPlantListInitReport(
     a  to
     a specific land in the flow process.
 
-    This class extends the BaseFlowLandPlantListInitReport class and
+    This class extends the
+    BaseFlowLandPlantListInitReportclass and
     initializes it with the provided session context.
     """
 
@@ -134,7 +135,8 @@ class FlowLandPlantListInitReport(
          to a specific land.
 
         Returns:
-            FlowLandPlantListInitReportResult: The result of the
+            FlowLandPlantListInitReportResult:
+                The result of the
                 FlowLandPlantListInitReport process.
         """
         super()._log_message_and_severity(
@@ -145,13 +147,11 @@ class FlowLandPlantListInitReport(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(land_bus_obj.code)
         )
-
         await super()._process_validation_rules(
             land_bus_obj,
 
 # endset  # noqa: E122
         )
-
         super()._throw_queued_validation_errors()
         some_int_val_output: int = 0
         some_big_int_val_output: int = 0
@@ -174,7 +174,6 @@ class FlowLandPlantListInitReport(
         land_code_output: uuid.UUID = uuid.UUID(int=0)
         tac_code_output: uuid.UUID = uuid.UUID(int=0)
         land_name_output: str = ""
-
         # TODO: add flow logic
 
 
@@ -182,7 +181,6 @@ class FlowLandPlantListInitReport(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowLandPlantListInitReportResult()
-
         result.context_object_code = land_bus_obj.code
         result.some_int_val = (
             some_int_val_output)
@@ -222,7 +220,6 @@ class FlowLandPlantListInitReport(
             tac_code_output)
         result.land_name = (
             land_name_output)
-
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
@@ -230,6 +227,4 @@ class FlowLandPlantListInitReport(
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
-
         return result
-

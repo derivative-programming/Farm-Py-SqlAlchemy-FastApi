@@ -1,4 +1,4 @@
-# models/managers/tests/role_test.py
+# managers/tests/role_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
@@ -16,10 +16,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.role import RoleManager
+from managers.role import (
+    RoleManager)
 from models import Role
-from models.factory import RoleFactory
-from models.serialization_schema.role import RoleSchema
+from models.factory import (
+    RoleFactory)
+from models.serialization_schema.role import (
+    RoleSchema)
 
 
 class TestRoleManager:
@@ -29,7 +32,7 @@ class TestRoleManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def role_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `RoleManager` for testing.
@@ -41,7 +44,7 @@ class TestRoleManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        role_manager: RoleManager
+        obj_manager: RoleManager
     ):
         """
         Test case for the `build` method of
@@ -54,10 +57,11 @@ class TestRoleManager:
 
         # Call the build function of the manager
         role = await \
-            role_manager.build(
+            obj_manager.build(
                 **mock_data)
 
-        # Assert that the returned object is an instance of Role
+        # Assert that the returned object is an
+        # instance of Role
         assert isinstance(
             role,
             Role)
@@ -69,7 +73,7 @@ class TestRoleManager:
     @pytest.mark.asyncio
     async def test_build_with_missing_data(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -84,14 +88,14 @@ class TestRoleManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await role_manager.build(**mock_data)
+            await obj_manager.build(**mock_data)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_add_correctly_adds_role_to_database(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -99,49 +103,51 @@ class TestRoleManager:
         `RoleManager` that checks if a
         role is correctly added to the database.
         """
-        test_role = await \
+        new_obj = await \
             RoleFactory.build_async(
                 session)
 
-        assert test_role.role_id == 0
+        assert new_obj.role_id == 0
 
         # Add the role using the
         # manager's add method
-        added_role = await \
-            role_manager.add(
-                role=test_role)
+        added_obj = await \
+            obj_manager.add(
+                role=new_obj)
 
-        assert isinstance(added_role,
+        assert isinstance(added_obj,
                           Role)
 
-        assert str(added_role.insert_user_id) == (
-            str(role_manager._session_context.customer_code))
-        assert str(added_role.last_update_user_id) == (
-            str(role_manager._session_context.customer_code))
+        assert str(added_obj.insert_user_id) == (
+            str(obj_manager._session_context.customer_code))
+        assert str(added_obj.last_update_user_id) == (
+            str(obj_manager._session_context.customer_code))
 
-        assert added_role.role_id > 0
+        assert added_obj.role_id > 0
 
         # Fetch the role from
         # the database directly
         result = await session.execute(
             select(Role).filter(
-                Role._role_id == added_role.role_id  # type: ignore
+                Role._role_id == (
+                    added_obj.role_id)  # type: ignore
             )
         )
-        fetched_role = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
         # Assert that the fetched role
         # is not None and matches the
         # added role
-        assert fetched_role is not None
-        assert isinstance(fetched_role,
+        assert fetched_obj is not None
+        assert isinstance(fetched_obj,
                           Role)
-        assert fetched_role.role_id == added_role.role_id
+        assert fetched_obj.role_id == \
+            added_obj.role_id
 
     @pytest.mark.asyncio
     async def test_add_returns_correct_role_object(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -152,42 +158,42 @@ class TestRoleManager:
         # Create a test role
         # using the RoleFactory
         # without persisting it to the database
-        test_role = await \
+        new_obj = await \
             RoleFactory.build_async(
                 session)
 
-        assert test_role.role_id == 0
+        assert new_obj.role_id == 0
 
-        test_role.code = uuid.uuid4()
+        new_obj.code = uuid.uuid4()
 
         # Add the role using
         # the manager's add method
-        added_role = await \
-            role_manager.add(
-                role=test_role)
+        added_obj = await \
+            obj_manager.add(
+                role=new_obj)
 
-        assert isinstance(added_role,
+        assert isinstance(added_obj,
                           Role)
 
-        assert str(added_role.insert_user_id) == (
-            str(role_manager._session_context.customer_code))
-        assert str(added_role.last_update_user_id) == (
-            str(role_manager._session_context.customer_code))
+        assert str(added_obj.insert_user_id) == (
+            str(obj_manager._session_context.customer_code))
+        assert str(added_obj.last_update_user_id) == (
+            str(obj_manager._session_context.customer_code))
 
-        assert added_role.role_id > 0
+        assert added_obj.role_id > 0
 
         # Assert that the returned
         # role matches the
         # test role
-        assert added_role.role_id == \
-            test_role.role_id
-        assert added_role.code == \
-            test_role.code
+        assert added_obj.role_id == \
+            new_obj.role_id
+        assert added_obj.code == \
+            new_obj.code
 
     @pytest.mark.asyncio
     async def test_update(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -196,48 +202,49 @@ class TestRoleManager:
         that checks if a role
         is correctly updated.
         """
-        test_role = await \
+        new_obj = await \
             RoleFactory.create_async(
                 session)
 
-        test_role.code = uuid.uuid4()
+        new_obj.code = uuid.uuid4()
 
-        updated_role = await \
-            role_manager.update(
-                role=test_role)
+        updated_obj = await \
+            obj_manager.update(
+                role=new_obj)
 
-        assert isinstance(updated_role,
+        assert isinstance(updated_obj,
                           Role)
 
-        assert str(updated_role.last_update_user_id) == str(
-            role_manager._session_context.customer_code)
+        assert str(updated_obj.last_update_user_id) == str(
+            obj_manager._session_context.customer_code)
 
-        assert updated_role.role_id == \
-            test_role.role_id
-        assert updated_role.code == \
-            test_role.code
+        assert updated_obj.role_id == \
+            new_obj.role_id
+        assert updated_obj.code == \
+            new_obj.code
 
         result = await session.execute(
             select(Role).filter(
-                Role._role_id == test_role.role_id)  # type: ignore
+                Role._role_id == (
+                    new_obj.role_id))  # type: ignore
         )
 
-        fetched_role = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert updated_role.role_id == \
-            fetched_role.role_id
-        assert updated_role.code == \
-            fetched_role.code
+        assert updated_obj.role_id == \
+            fetched_obj.role_id
+        assert updated_obj.code == \
+            fetched_obj.code
 
-        assert test_role.role_id == \
-            fetched_role.role_id
-        assert test_role.code == \
-            fetched_role.code
+        assert new_obj.role_id == \
+            fetched_obj.role_id
+        assert new_obj.code == \
+            fetched_obj.code
 
     @pytest.mark.asyncio
     async def test_update_via_dict(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -246,50 +253,51 @@ class TestRoleManager:
         that checks if a role is
         correctly updated using a dictionary.
         """
-        test_role = await \
+        new_obj = await \
             RoleFactory.create_async(
                 session)
 
         new_code = uuid.uuid4()
 
-        updated_role = await \
-            role_manager.update(
-                role=test_role,
+        updated_obj = await \
+            obj_manager.update(
+                role=new_obj,
                 code=new_code
             )
 
-        assert isinstance(updated_role,
+        assert isinstance(updated_obj,
                           Role)
 
-        assert str(updated_role.last_update_user_id) == str(
-            role_manager._session_context.customer_code
+        assert str(updated_obj.last_update_user_id) == str(
+            obj_manager._session_context.customer_code
         )
 
-        assert updated_role.role_id == \
-            test_role.role_id
-        assert updated_role.code == new_code
+        assert updated_obj.role_id == \
+            new_obj.role_id
+        assert updated_obj.code == new_code
 
         result = await session.execute(
             select(Role).filter(
-                Role._role_id == test_role.role_id)  # type: ignore
+                Role._role_id == (
+                    new_obj.role_id))  # type: ignore
         )
 
-        fetched_role = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert updated_role.role_id == \
-            fetched_role.role_id
-        assert updated_role.code == \
-            fetched_role.code
+        assert updated_obj.role_id == \
+            fetched_obj.role_id
+        assert updated_obj.code == \
+            fetched_obj.code
 
-        assert test_role.role_id == \
-            fetched_role.role_id
+        assert new_obj.role_id == \
+            fetched_obj.role_id
         assert new_code == \
-            fetched_role.code
+            fetched_obj.code
 
     @pytest.mark.asyncio
     async def test_update_invalid_role(
         self,
-        role_manager: RoleManager
+        obj_manager: RoleManager
     ):
         """
         Test case for the `update` method of
@@ -302,17 +310,17 @@ class TestRoleManager:
 
         new_code = uuid.uuid4()
 
-        updated_role = await (
-            role_manager.update(
+        updated_obj = await (
+            obj_manager.update(
                 role, code=new_code))  # type: ignore
 
         # Assertions
-        assert updated_role is None
+        assert updated_obj is None
 
     @pytest.mark.asyncio
     async def test_update_with_nonexistent_attribute(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -320,15 +328,15 @@ class TestRoleManager:
         `RoleManager`
         with a nonexistent attribute.
         """
-        test_role = await \
+        new_obj = await \
             RoleFactory.create_async(
                 session)
 
         new_code = uuid.uuid4()
 
         with pytest.raises(ValueError):
-            await role_manager.update(
-                role=test_role,
+            await obj_manager.update(
+                role=new_obj,
                 xxx=new_code
             )
 
@@ -337,66 +345,70 @@ class TestRoleManager:
     @pytest.mark.asyncio
     async def test_delete(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
         Test case for the `delete` method of
         `RoleManager`.
         """
-        role_data = await RoleFactory.create_async(
+        new_obj = await RoleFactory.create_async(
             session)
 
         result = await session.execute(
             select(Role).filter(
-                Role._role_id == role_data.role_id)  # type: ignore
+                Role._role_id == (
+                    new_obj.role_id))  # type: ignore
         )
-        fetched_role = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_role,
+        assert isinstance(fetched_obj,
                           Role)
 
-        assert fetched_role.role_id == \
-            role_data.role_id
+        assert fetched_obj.role_id == \
+            new_obj.role_id
 
-        await role_manager.delete(
-            role_id=role_data.role_id)
+        await obj_manager.delete(
+            role_id=new_obj.role_id)
 
         result = await session.execute(
             select(Role).filter(
-                Role._role_id == role_data.role_id)  # type: ignore
+                Role._role_id == (
+                    new_obj.role_id))  # type: ignore
         )
-        fetched_role = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert fetched_role is None
+        assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_nonexistent(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
-        Test case to verify the behavior of deleting a nonexistent role.
+        Test case to verify the behavior of deleting a nonexistent
+        role.
 
         This test case ensures that when the delete method
-        is called with the ID of a nonexistent role,
+        is called with the ID of a nonexistent
+        role,
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param role_manager: The instance of the
+        :param obj_manager: The instance of the
             RoleManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
-            await role_manager.delete(999)
+            await obj_manager.delete(999)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_invalid_type(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -404,13 +416,13 @@ class TestRoleManager:
         with an invalid type.
 
         This test case ensures that when the `delete` method
-        of the `role_manager` is called with an invalid type,
+        of the `obj_manager` is called with an invalid type,
         an exception is raised. The test case expects the
         `delete` method to raise an exception, and if it doesn't,
         the test case will fail.
 
         Args:
-            role_manager
+            obj_manager
             (RoleManager): An
                 instance of the
                 `RoleManager` class.
@@ -424,14 +436,14 @@ class TestRoleManager:
 
         """
         with pytest.raises(Exception):
-            await role_manager.delete("999")  # type: ignore
+            await obj_manager.delete("999")  # type: ignore
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_get_list(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -443,44 +455,50 @@ class TestRoleManager:
 
         Steps:
         1. Call the `get_list` method of the
-            `role_manager` instance.
+            `obj_manager` instance.
         2. Assert that the returned list is empty.
         3. Create 5 role objects using the
             `RoleFactory.create_async` method.
-        4. Assert that the `roles_data` variable is of type `List`.
+        4. Assert that the
+            `roles_data` variable
+            is of type `List`.
         5. Call the `get_list` method of the
-            `role_manager` instance again.
+            `obj_manager` instance again.
         6. Assert that the returned list contains 5 roles.
         7. Assert that all elements in the returned list are
-            instances of the `Role` class.
+            instances of the
+            `Role` class.
         """
 
-        roles = await role_manager.get_list()
+        roles = await obj_manager.get_list()
 
         assert len(roles) == 0
 
         roles_data = (
-            [await RoleFactory.create_async(session) for _ in range(5)])
+            [await RoleFactory.create_async(session)
+             for _ in range(5)])
 
         assert isinstance(roles_data, List)
 
-        roles = await role_manager.get_list()
+        roles = await obj_manager.get_list()
 
         assert len(roles) == 5
         assert all(isinstance(
-            role, Role) for role in roles)
+            role,
+            Role
+        ) for role in roles)
 
     @pytest.mark.asyncio
     async def test_to_json(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
         Test the 'to_json' method of the RoleManager class.
 
         Args:
-            role_manager
+            obj_manager
             (RoleManager): An
                 instance of the
                 RoleManager class.
@@ -496,7 +514,7 @@ class TestRoleManager:
             RoleFactory.build_async(
                 session)
 
-        json_data = role_manager.to_json(
+        json_data = obj_manager.to_json(
             role)
 
         assert json_data is not None
@@ -504,14 +522,14 @@ class TestRoleManager:
     @pytest.mark.asyncio
     async def test_to_dict(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
         Test the to_dict method of the RoleManager class.
 
         Args:
-            role_manager
+            obj_manager
             (RoleManager): An
                 instance of the
                 RoleManager class.
@@ -525,7 +543,7 @@ class TestRoleManager:
                 session)
 
         dict_data = \
-            role_manager.to_dict(
+            obj_manager.to_dict(
                 role)
 
         assert dict_data is not None
@@ -533,14 +551,16 @@ class TestRoleManager:
     @pytest.mark.asyncio
     async def test_from_json(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
-        Test the `from_json` method of the `RoleManager` class.
+        Test the `from_json` method of the
+        `RoleManager` class.
 
         This method tests the functionality of the
-        `from_json` method of the `RoleManager` class.
+        `from_json` method of the
+        `RoleManager` class.
         It creates a role using
         the `RoleFactory`
         and converts it to JSON using the `to_json` method.
@@ -551,7 +571,7 @@ class TestRoleManager:
         the same code as the original role.
 
         Args:
-            role_manager
+            obj_manager
             (RoleManager): An
                 instance of the
                 `RoleManager` class.
@@ -564,11 +584,11 @@ class TestRoleManager:
             RoleFactory.create_async(
                 session)
 
-        json_data = role_manager.to_json(
+        json_data = obj_manager.to_json(
             role)
 
         deserialized_role = await \
-                role_manager.from_json(json_data)
+            obj_manager.from_json(json_data)
 
         assert isinstance(deserialized_role,
                           Role)
@@ -578,7 +598,7 @@ class TestRoleManager:
     @pytest.mark.asyncio
     async def test_from_dict(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -591,10 +611,11 @@ class TestRoleManager:
         role object.
 
         Args:
-            role_manager
+            obj_manager
             (RoleManager): An instance
                 of the `RoleManager` class.
-            session (AsyncSession): An instance of the `AsyncSession` class.
+            session (AsyncSession): An instance of the
+            `AsyncSession` class.
 
         Returns:
             None
@@ -608,13 +629,13 @@ class TestRoleManager:
 
         schema = RoleSchema()
 
-        role_data = schema.dump(role)
+        new_obj = schema.dump(role)
 
-        assert isinstance(role_data, dict)
+        assert isinstance(new_obj, dict)
 
         deserialized_role = await \
-            role_manager.from_dict(
-                role_data)
+            obj_manager.from_dict(
+                new_obj)
 
         assert isinstance(deserialized_role,
                           Role)
@@ -625,7 +646,7 @@ class TestRoleManager:
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -641,32 +662,34 @@ class TestRoleManager:
         Steps:
         1. Create 5 role objects using
             the RoleFactory.
-        2. Call the count method of the role_manager.
+        2. Call the count method of the obj_manager.
         3. Assert that the count is equal to 5.
 
         """
         roles_data = (
-            [await RoleFactory.create_async(session) for _ in range(5)])
+            [await RoleFactory.create_async(session)
+             for _ in range(5)])
 
         assert isinstance(roles_data, List)
 
-        count = await role_manager.count()
+        count = await obj_manager.count()
 
         assert count == 5
 
     @pytest.mark.asyncio
     async def test_count_empty_database(
         self,
-        role_manager: RoleManager
+        obj_manager: RoleManager
     ):
         """
         Test the count method when the database is empty.
 
         This test case checks if the count method of the
-        RoleManager class returns 0 when the database is empty.
+        RoleManager class
+        returns 0 when the database is empty.
 
         Args:
-            role_manager
+            obj_manager
             (RoleManager): An
                 instance of the
                 RoleManager class.
@@ -675,14 +698,14 @@ class TestRoleManager:
             None
         """
 
-        count = await role_manager.count()
+        count = await obj_manager.count()
 
         assert count == 0
 
     @pytest.mark.asyncio
     async def test_refresh_basic(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -701,61 +724,63 @@ class TestRoleManager:
             it reflects the updated code.
 
         Args:
-            role_manager
+            obj_manager
             (RoleManager): The
                 manager responsible
                 for role operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a role
-        role1 = await RoleFactory.create_async(
+        obj_1 = await RoleFactory.create_async(
             session=session)
 
         # Retrieve the role from the database
         result = await session.execute(
             select(Role).filter(
-                Role._role_id == role1.role_id)  # type: ignore
+                Role._role_id == (
+                    obj_1.role_id))  # type: ignore
         )  # type: ignore
-        role2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
         # Verify that the retrieved role
         # matches the added role
-        assert role1.code == \
-            role2.code
+        assert obj_1.code == \
+            obj_2.code
 
         # Update the role's code
         updated_code1 = uuid.uuid4()
-        role1.code = updated_code1
-        updated_role1 = await role_manager.update(
-            role1)
+        obj_1.code = updated_code1
+        updated_obj_1 = await obj_manager.update(
+            obj_1)
 
         # Verify that the updated role
         # is of type Role
         # and has the updated code
-        assert isinstance(updated_role1,
+        assert isinstance(updated_obj_1,
                           Role)
 
-        assert updated_role1.code == updated_code1
+        assert updated_obj_1.code == updated_code1
 
         # Refresh the original role instance
-        refreshed_role2 = await role_manager.refresh(
-            role2)
+        refreshed_obj_2 = await obj_manager.refresh(
+            obj_2)
 
         # Verify that the refreshed role
         # reflects the updated code
-        assert refreshed_role2.code == updated_code1
+        assert refreshed_obj_2.code == updated_code1
 
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_role(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
-        Test case to verify the behavior of refreshing a nonexistent role.
+        Test case to verify the behavior of refreshing a
+        nonexistent role.
 
         Args:
-            role_manager
+            obj_manager
             (RoleManager): The
                 instance of the
                 RoleManager class.
@@ -772,7 +797,7 @@ class TestRoleManager:
             role_id=999)
 
         with pytest.raises(Exception):
-            await role_manager.refresh(
+            await obj_manager.refresh(
                 role)
 
         await session.rollback()
@@ -780,7 +805,7 @@ class TestRoleManager:
     @pytest.mark.asyncio
     async def test_exists_with_existing_role(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -788,7 +813,7 @@ class TestRoleManager:
         exists using the manager function.
 
         Args:
-            role_manager
+            obj_manager
             (RoleManager): The
                 role manager instance.
             session (AsyncSession): The async session object.
@@ -797,26 +822,28 @@ class TestRoleManager:
             None
         """
         # Add a role
-        role1 = await RoleFactory.create_async(
+        obj_1 = await RoleFactory.create_async(
             session=session)
 
         # Check if the role exists
         # using the manager function
-        assert await role_manager.exists(
-            role1.role_id) is True
+        assert await obj_manager.exists(
+            obj_1.role_id) is True
 
     @pytest.mark.asyncio
     async def test_is_equal_with_existing_role(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
         Test if the is_equal method of the
-        RoleManager class correctly compares two roles.
+        RoleManager
+        class correctly compares two
+        roles.
 
         Args:
-            role_manager
+            obj_manager
             (RoleManager): An
                 instance of the
                 RoleManager class.
@@ -826,39 +853,39 @@ class TestRoleManager:
             None
         """
         # Add a role
-        role1 = await \
+        obj_1 = await \
             RoleFactory.create_async(
                 session=session)
 
-        role2 = await \
-            role_manager.get_by_id(
-                role_id=role1.role_id)
+        obj_2 = await \
+            obj_manager.get_by_id(
+                role_id=obj_1.role_id)
 
-        assert role_manager.is_equal(
-            role1, role2) is True
+        assert obj_manager.is_equal(
+            obj_1, obj_2) is True
 
-        role1_dict = \
-            role_manager.to_dict(
-                role1)
+        obj_1_dict = \
+            obj_manager.to_dict(
+                obj_1)
 
         role3 = await \
-            role_manager.from_dict(
-                role1_dict)
+            obj_manager.from_dict(
+                obj_1_dict)
 
-        assert role_manager.is_equal(
-            role1, role3) is True
+        assert obj_manager.is_equal(
+            obj_1, role3) is True
 
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_role(
         self,
-        role_manager: RoleManager
+        obj_manager: RoleManager
     ):
         """
         Test case to check if a role with a
         non-existent ID exists in the database.
 
         Args:
-            role_manager
+            obj_manager
             (RoleManager): The
                 instance of the RoleManager class.
 
@@ -868,12 +895,12 @@ class TestRoleManager:
         """
         non_existent_id = 999
 
-        assert await role_manager.exists(non_existent_id) is False
+        assert await obj_manager.exists(non_existent_id) is False
 
     @pytest.mark.asyncio
     async def test_exists_with_invalid_id_type(
         self,
-        role_manager: RoleManager,
+        obj_manager: RoleManager,
         session: AsyncSession
     ):
         """
@@ -881,7 +908,7 @@ class TestRoleManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            role_manager
+            obj_manager
             (RoleManager): The instance
                 of the RoleManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -895,7 +922,6 @@ class TestRoleManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await role_manager.exists(invalid_id)  # type: ignore  # noqa: E501
+            await obj_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-

@@ -64,7 +64,8 @@ class TriStateFilterFactory(factory.Factory):
                 **kwargs: Arbitrary keyword arguments.
 
             Returns:
-                TriStateFilter: An instance of the
+                TriStateFilter:
+                    An instance of the
                     TriStateFilter model.
 
         """
@@ -153,7 +154,8 @@ class TriStateFilterFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = TriStateFilterFactory.build(session=None, *args, **kwargs)
+        obj = TriStateFilterFactory \
+            .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
@@ -185,7 +187,8 @@ class TriStateFilterFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
 
-        obj = TriStateFilterFactory.build(session=None, *args, **kwargs)
+        obj = TriStateFilterFactory \
+            .build(session=None, *args, **kwargs)
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
@@ -193,4 +196,3 @@ class TriStateFilterFactory(factory.Factory):
         # session.add(obj)
         # await session.flush()
         return obj
-

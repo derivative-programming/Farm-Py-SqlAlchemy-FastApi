@@ -7,7 +7,7 @@ LandAddPlantPostModelResponse class.
 """
 
 import uuid  # noqa: F401
-import math
+import math  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, patch
@@ -19,7 +19,7 @@ from flows.land_add_plant import (
     FlowLandAddPlant,
     FlowLandAddPlantResult)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.land import LandFactory
 
 from ...models.land_add_plant import (
@@ -244,9 +244,9 @@ class TestLandAddPlantPostModelRequest:
             "request_is_delete_allowed": False,
             "request_some_float_val": 3.14,
             "request_some_decimal_val": "10.5",
-            "request_some_utc_date_time_val": (
-                request.request_some_utc_date_time_val.isoformat()),
-            "request_some_date_val": 
+            "request_some_utc_date_time_val":
+                request.request_some_utc_date_time_val.isoformat(),
+            "request_some_date_val":
                 request.request_some_date_val.isoformat(),
             "request_some_money_val": "100.50",
             "request_some_n_var_char_val": "Test NVarChar",
@@ -299,8 +299,10 @@ class TestLandAddPlantPostModelRequest:
             "requestIsDeleteAllowed": False,
             "requestSomeFloatVal": 3.14,
             "requestSomeDecimalVal": "2.5",
-            "requestSomeUtcDateTimeVal": request.request_some_utc_date_time_val.isoformat(),
-            "requestSomeDateVal": str(request.request_some_date_val),
+            "requestSomeUtcDateTimeVal":
+                request.request_some_utc_date_time_val.isoformat(),
+            "requestSomeDateVal":
+                str(request.request_some_date_val),
             "requestSomeMoneyVal": "100.5",
             "requestSomeNVarCharVal": "Test N Var Char",
             "requestSomeVarCharVal": "Test Var Char",

@@ -1,4 +1,4 @@
-# customer_role_test.py
+# models/serialization_schema/tests/customer_role_test.py
 # pylint: disable=redefined-outer-name
 # pylint: disable=unused-import
 
@@ -15,13 +15,15 @@ transmitted over a network.
 
 The tests in this module cover the serialization
 and deserialization of CustomerRole
-instances using the CustomerRoleSchema class. They verify
+instances using the CustomerRoleSchema
+class. They verify
 that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a CustomerRole instance.
 
-The CustomerRoleSchema class is used to define
+The CustomerRoleSchema class
+is used to define
 the serialization and deserialization
 rules for CustomerRole instances. It
 specifies how each attribute of a
@@ -56,7 +58,7 @@ logger = get_logger(__name__)
 
 
 @pytest.fixture(scope="function")
-def customer_role(
+def new_obj(
     session
 ) -> CustomerRole:
     """
@@ -113,7 +115,7 @@ class TestCustomerRoleSchema:
 
     def test_customer_role_serialization(
         self,
-        customer_role: CustomerRole
+        new_obj: CustomerRole
     ):
         """
         Test the serialization of a
@@ -126,40 +128,40 @@ class TestCustomerRoleSchema:
         """
 
         schema = CustomerRoleSchema()
-        customer_role_data = schema.dump(customer_role)
+        customer_role_data = schema.dump(new_obj)
 
         assert isinstance(customer_role_data, dict)
 
         result = customer_role_data
 
-        assert result['code'] == str(customer_role.code)
+        assert result['code'] == str(new_obj.code)
         assert result['last_change_code'] == (
-            customer_role.last_change_code)
+            new_obj.last_change_code)
         assert result['insert_user_id'] == (
-            str(customer_role.insert_user_id))
+            str(new_obj.insert_user_id))
         assert result['last_update_user_id'] == (
-            str(customer_role.last_update_user_id))
+            str(new_obj.last_update_user_id))
 
         assert result['customer_id'] == (
-            customer_role.customer_id)
+            new_obj.customer_id)
         assert result['is_placeholder'] == (
-            customer_role.is_placeholder)
+            new_obj.is_placeholder)
         assert result['placeholder'] == (
-            customer_role.placeholder)
+            new_obj.placeholder)
         assert result['role_id'] == (
-            customer_role.role_id)
+            new_obj.role_id)
         assert result['insert_utc_date_time'] == (
-            customer_role.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
-            customer_role.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert result['customer_code_peek'] == (  # CustomerID
-            str(customer_role.customer_code_peek))
+            str(new_obj.customer_code_peek))
         assert result['role_code_peek'] == (  # RoleID
-            str(customer_role.role_code_peek))
+            str(new_obj.role_code_peek))
 
     def test_customer_role_deserialization(
         self,
-        customer_role
+        new_obj: CustomerRole
     ):
         """
         Test the deserialization of a
@@ -178,69 +180,69 @@ class TestCustomerRoleSchema:
         """
 
         schema = CustomerRoleSchema()
-        serialized_data = schema.dump(customer_role)
+        serialized_data = schema.dump(new_obj)
         deserialized_data = schema.load(serialized_data)
 
         assert deserialized_data['code'] == \
-            customer_role.code
+            new_obj.code
         assert deserialized_data['last_change_code'] == (
-            customer_role.last_change_code)
+            new_obj.last_change_code)
         assert deserialized_data['insert_user_id'] == (
-            customer_role.insert_user_id)
+            new_obj.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
-            customer_role.last_update_user_id)
+            new_obj.last_update_user_id)
         assert deserialized_data['customer_id'] == (
-            customer_role.customer_id)
+            new_obj.customer_id)
         assert deserialized_data['is_placeholder'] == (
-            customer_role.is_placeholder)
+            new_obj.is_placeholder)
         assert deserialized_data['placeholder'] == (
-            customer_role.placeholder)
+            new_obj.placeholder)
         assert deserialized_data['role_id'] == (
-            customer_role.role_id)
+            new_obj.role_id)
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
-            customer_role.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
-            customer_role.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert deserialized_data[(  # CustomerID
             'customer_code_peek')] == (
-            customer_role.customer_code_peek)
+            new_obj.customer_code_peek)
         assert deserialized_data[(  # RoleID
             'role_code_peek')] == (
-            customer_role.role_code_peek)
+            new_obj.role_code_peek)
 
-        new_customer_role = CustomerRole(
+        obj_from_dict = CustomerRole(
             **deserialized_data)
 
-        assert isinstance(new_customer_role,
+        assert isinstance(new_obj,
                           CustomerRole)
 
-        # Now compare the new_customer_role attributes with
+        # Now compare the new_obj attributes with
         # the customer_role attributes
-        assert new_customer_role.code == \
-            customer_role.code
-        assert new_customer_role.last_change_code == \
-            customer_role.last_change_code
-        assert new_customer_role.insert_user_id == \
-            customer_role.insert_user_id
-        assert new_customer_role.last_update_user_id == \
-            customer_role.last_update_user_id
-        assert new_customer_role.customer_id == (
-            customer_role.customer_id)
-        assert new_customer_role.is_placeholder == (
-            customer_role.is_placeholder)
-        assert new_customer_role.placeholder == (
-            customer_role.placeholder)
-        assert new_customer_role.role_id == (
-            customer_role.role_id)
+        assert obj_from_dict.code == \
+            new_obj.code
+        assert obj_from_dict.last_change_code == \
+            new_obj.last_change_code
+        assert obj_from_dict.insert_user_id == \
+            new_obj.insert_user_id
+        assert obj_from_dict.last_update_user_id == \
+            new_obj.last_update_user_id
+        assert obj_from_dict.customer_id == (
+            new_obj.customer_id)
+        assert obj_from_dict.is_placeholder == (
+            new_obj.is_placeholder)
+        assert obj_from_dict.placeholder == (
+            new_obj.placeholder)
+        assert obj_from_dict.role_id == (
+            new_obj.role_id)
 
-        assert new_customer_role.insert_utc_date_time.isoformat() == (
-            customer_role.insert_utc_date_time.isoformat())
-        assert new_customer_role.last_update_utc_date_time.isoformat() == (
-            customer_role.last_update_utc_date_time.isoformat())
-        assert new_customer_role.customer_code_peek == (  # CustomerID
-            customer_role.customer_code_peek)
-        assert new_customer_role.role_code_peek == (  # RoleID
-            customer_role.role_code_peek)
+        assert obj_from_dict.insert_utc_date_time.isoformat() == (
+            new_obj.insert_utc_date_time.isoformat())
+        assert obj_from_dict.last_update_utc_date_time.isoformat() == (
+            new_obj.last_update_utc_date_time.isoformat())
+        assert obj_from_dict.customer_code_peek == (  # CustomerID
+            new_obj.customer_code_peek)
+        assert obj_from_dict.role_code_peek == (  # RoleID
+            new_obj.role_code_peek)
 
     def test_from_json(self):
         """
@@ -309,7 +311,7 @@ class TestCustomerRoleSchema:
 
     def test_to_json(
         self,
-        customer_role: CustomerRole
+        new_obj: CustomerRole
     ):
         """
         Test the conversion of a
@@ -328,78 +330,77 @@ class TestCustomerRoleSchema:
         # to JSON using the schema
         customer_role_schema = CustomerRoleSchema()
         customer_role_dict = customer_role_schema.dump(
-            customer_role)
+            new_obj)
 
         # Convert the customer_role_dict to JSON string
         customer_role_json = json.dumps(
             customer_role_dict)
 
         # Convert the JSON strings back to dictionaries
-        customer_role_dict_from_json = json.loads(
+        dict_from_json = json.loads(
             customer_role_json)
         # sample_dict_from_json = json.loads(self.sample_data)
 
         logging.info(
-            "customer_role_dict_from_json.keys() %s",
-            customer_role_dict_from_json.keys())
+            "dict_from_json.keys() %s",
+            dict_from_json.keys())
 
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
 
         # Verify the keys in both dictionaries match
-        assert set(customer_role_dict_from_json.keys()) == (
+        assert set(dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
-            f"Got: {set(customer_role_dict_from_json.keys())}"
+            f"Got: {set(dict_from_json.keys())}"
         )
 
-        assert customer_role_dict_from_json['code'] == \
-            str(customer_role.code), (
+        assert dict_from_json['code'] == \
+            str(new_obj.code), (
             "failed on code"
         )
-        assert customer_role_dict_from_json['last_change_code'] == (
-            customer_role.last_change_code), (
+        assert dict_from_json['last_change_code'] == (
+            new_obj.last_change_code), (
             "failed on last_change_code"
         )
-        assert customer_role_dict_from_json['insert_user_id'] == (
-            str(customer_role.insert_user_id)), (
+        assert dict_from_json['insert_user_id'] == (
+            str(new_obj.insert_user_id)), (
             "failed on insert_user_id"
         )
-        assert customer_role_dict_from_json['last_update_user_id'] == (
-            str(customer_role.last_update_user_id)), (
+        assert dict_from_json['last_update_user_id'] == (
+            str(new_obj.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-        assert customer_role_dict_from_json['customer_id'] == (
-            customer_role.customer_id), (
+        assert dict_from_json['customer_id'] == (
+            new_obj.customer_id), (
             "failed on customer_id"
         )
-        assert customer_role_dict_from_json['is_placeholder'] == (
-            customer_role.is_placeholder), (
+        assert dict_from_json['is_placeholder'] == (
+            new_obj.is_placeholder), (
             "failed on is_placeholder"
         )
-        assert customer_role_dict_from_json['placeholder'] == (
-            customer_role.placeholder), (
+        assert dict_from_json['placeholder'] == (
+            new_obj.placeholder), (
             "failed on placeholder"
         )
-        assert customer_role_dict_from_json['role_id'] == (
-            customer_role.role_id), (
+        assert dict_from_json['role_id'] == (
+            new_obj.role_id), (
             "failed on role_id"
         )
-        assert customer_role_dict_from_json['insert_utc_date_time'] == (
-            customer_role.insert_utc_date_time.isoformat()), (
+        assert dict_from_json['insert_utc_date_time'] == (
+            new_obj.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
         )
-        assert customer_role_dict_from_json['last_update_utc_date_time'] == (
-            customer_role.last_update_utc_date_time.isoformat()), (
+        assert dict_from_json['last_update_utc_date_time'] == (
+            new_obj.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-        assert customer_role_dict_from_json[(  # CustomerID
+        assert dict_from_json[(  # CustomerID
             'customer_code_peek')] == (
-            str(customer_role.customer_code_peek)), (
+            str(new_obj.customer_code_peek)), (
             "failed on customer_code_peek"
         )
-        assert customer_role_dict_from_json[(  # RoleID
+        assert dict_from_json[(  # RoleID
             'role_code_peek')] == (
-            str(customer_role.role_code_peek)), (
+            str(new_obj.role_code_peek)), (
             "failed on role_code_peek"
         )
-

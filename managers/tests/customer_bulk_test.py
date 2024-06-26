@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.customer import CustomerManager
+from managers.customer import (
+    CustomerManager)
 from models import Customer
-from models.factory import CustomerFactory
+from models.factory import (
+    CustomerFactory)
 
 
 class TestCustomerBulkManager:
@@ -28,7 +30,7 @@ class TestCustomerBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def customer_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `CustomerManager` for testing.
@@ -40,7 +42,7 @@ class TestCustomerBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestCustomerBulkManager:
         1. Generate a list of customer data using the
             `CustomerFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `customer_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated customer data.
         3. Verify that the number of customers
@@ -79,35 +81,36 @@ class TestCustomerBulkManager:
         customers_data = [
             await CustomerFactory.build_async(session) for _ in range(5)]
 
-        customers = await customer_manager.add_bulk(
+        customers = await obj_manager.add_bulk(
             customers_data)
 
         assert len(customers) == 5
 
-        for updated_customer in customers:
+        for updated_obj in customers:
             result = await session.execute(
                 select(Customer).filter(
-                    Customer._customer_id == updated_customer.customer_id  # type: ignore
+                    Customer._customer_id == (
+                        updated_obj.customer_id)  # type: ignore
                 )
             )
-            fetched_customer = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_customer,
+                fetched_obj,
                 Customer)
 
-            assert str(fetched_customer.insert_user_id) == (
-                str(customer_manager._session_context.customer_code))
-            assert str(fetched_customer.last_update_user_id) == (
-                str(customer_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_customer.customer_id == \
-                updated_customer.customer_id
+            assert fetched_obj.customer_id == \
+                updated_obj.customer_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestCustomerBulkManager:
             the updated codes in the database.
 
         Args:
-            customer_manager (CustomerManager):
+            obj_manager (CustomerManager):
                 An instance of the
                 `CustomerManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestCustomerBulkManager:
             None
         """
         # Mocking customer instances
-        customer1 = await CustomerFactory. \
+        obj_1 = await CustomerFactory. \
             create_async(
                 session=session)
-        customer2 = await CustomerFactory. \
+        obj_2 = await CustomerFactory. \
             create_async(
                 session=session)
-        logging.info(customer1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestCustomerBulkManager:
         updates = [
             {
                 "customer_id":
-                    customer1.customer_id,
+                    obj_1.customer_id,
                 "code": code_updated1
             },
             {
                 "customer_id":
-                    customer2.customer_id,
+                    obj_2.customer_id,
                 "code": code_updated2
             }
         ]
-        updated_customers = await customer_manager.update_bulk(
+        updated_customers = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestCustomerBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        customers = await customer_manager.get_list()
+        customers = await obj_manager.get_list()
         logging.info(customers[0]
                      .__dict__)
         logging.info(customers[1]
@@ -192,40 +195,40 @@ class TestCustomerBulkManager:
 
         assert str(updated_customers[0]
                    .last_update_user_id) == (
-            str(customer_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_customers[1]
                    .last_update_user_id) == (
-            str(customer_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(Customer).filter(
                 Customer._customer_id == 1)  # type: ignore
         )
-        fetched_customer = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_customer,
+        assert isinstance(fetched_obj,
                           Customer)
 
-        assert fetched_customer.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(Customer).filter(
                 Customer._customer_id == 2)  # type: ignore
         )
-        fetched_customer = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_customer,
+        assert isinstance(fetched_obj,
                           Customer)
 
-        assert fetched_customer.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_customer_id(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestCustomerBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No customers to update since customer_id is missing
+        # No customers to update since
+        # customer_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await customer_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_customer_not_found(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestCustomerBulkManager:
             where each update
             contains a customer_id and a code.
         2. Calls the update_bulk method of the
-            customer_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the customer was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestCustomerBulkManager:
         updates = [{"customer_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await customer_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestCustomerBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param customer_manager: An instance of the
+        :param obj_manager: An instance of the
             CustomerManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestCustomerBulkManager:
         updates = [{"customer_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await customer_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestCustomerBulkManager:
             using the CustomerFactory.
         2. Delete the customers using the
             delete_bulk method
-            of the customer_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the customers no longer exist in the database.
+            checking if the customers
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The customers should no longer exist in the database.
+        - The customers should
+            no longer exist in the database.
 
         """
 
-        customer1 = await CustomerFactory.create_async(
+        obj_1 = await CustomerFactory.create_async(
             session=session)
 
-        customer2 = await CustomerFactory.create_async(
+        obj_2 = await CustomerFactory.create_async(
             session=session)
 
         # Delete customers
-        customer_ids = [customer1.customer_id,
-                     customer2.customer_id]
-        result = await customer_manager.delete_bulk(
+        customer_ids = [
+            obj_1.customer_id,
+            obj_2.customer_id
+        ]
+        result = await obj_manager.delete_bulk(
             customer_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestCustomerBulkManager:
         for customer_id in customer_ids:
             execute_result = await session.execute(
                 select(Customer).filter(
-                    Customer._customer_id == customer_id)  # type: ignore
+                    Customer._customer_id == (
+                        customer_id))  # type: ignore
             )
-            fetched_customer = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_customer is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_customers_not_found(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        customers when some customers are not found.
+        customers when some
+        customers are not found.
 
         Steps:
         1. Create a customer using the
@@ -392,17 +402,17 @@ class TestCustomerBulkManager:
         when some customers with the specified IDs are
         not found in the database.
         """
-        customer1 = await CustomerFactory.create_async(
+        obj_1 = await CustomerFactory.create_async(
             session=session)
 
-        assert isinstance(customer1,
+        assert isinstance(obj_1,
                           Customer)
 
         # Delete customers
         customer_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await customer_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 customer_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestCustomerBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        customer_manager: CustomerManager
+        obj_manager: CustomerManager
     ):
         """
         Test case to verify the behavior of deleting
         customers with an empty list.
 
         Args:
-            customer_manager (CustomerManager): The
+            obj_manager (CustomerManager): The
                 instance of the
                 CustomerManager class.
 
@@ -430,7 +440,7 @@ class TestCustomerBulkManager:
 
         # Delete customers with an empty list
         customer_ids = []
-        result = await customer_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             customer_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestCustomerBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        customer_manager: CustomerManager,
+        obj_manager: CustomerManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestCustomerBulkManager:
         method when invalid customer IDs are provided.
 
         Args:
-            customer_manager (CustomerManager): The
+            obj_manager (CustomerManager): The
                 instance of the
                 CustomerManager class.
             session (AsyncSession): The async session object.
@@ -463,8 +473,7 @@ class TestCustomerBulkManager:
         customer_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await customer_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 customer_ids)
 
         await session.rollback()
-

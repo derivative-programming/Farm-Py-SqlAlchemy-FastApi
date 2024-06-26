@@ -16,9 +16,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.date_greater_than_filter import DateGreaterThanFilterManager
+from managers.date_greater_than_filter import (
+    DateGreaterThanFilterManager)
 from models import DateGreaterThanFilter
-from models.factory import DateGreaterThanFilterFactory
+from models.factory import (
+    DateGreaterThanFilterFactory)
 
 
 class TestDateGreaterThanFilterBulkManager:
@@ -28,7 +30,7 @@ class TestDateGreaterThanFilterBulkManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def date_greater_than_filter_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `DateGreaterThanFilterManager` for testing.
@@ -40,7 +42,7 @@ class TestDateGreaterThanFilterBulkManager:
     @pytest.mark.asyncio
     async def test_add_bulk(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -55,7 +57,7 @@ class TestDateGreaterThanFilterBulkManager:
         1. Generate a list of date_greater_than_filter data using the
             `DateGreaterThanFilterFactory.build_async` method.
         2. Call the `add_bulk` method of the
-            `date_greater_than_filter_manager` instance,
+            `obj_manager` instance,
             passing in the
             generated date_greater_than_filter data.
         3. Verify that the number of date_greater_than_filters
@@ -79,35 +81,36 @@ class TestDateGreaterThanFilterBulkManager:
         date_greater_than_filters_data = [
             await DateGreaterThanFilterFactory.build_async(session) for _ in range(5)]
 
-        date_greater_than_filters = await date_greater_than_filter_manager.add_bulk(
+        date_greater_than_filters = await obj_manager.add_bulk(
             date_greater_than_filters_data)
 
         assert len(date_greater_than_filters) == 5
 
-        for updated_date_greater_than_filter in date_greater_than_filters:
+        for updated_obj in date_greater_than_filters:
             result = await session.execute(
                 select(DateGreaterThanFilter).filter(
-                    DateGreaterThanFilter._date_greater_than_filter_id == updated_date_greater_than_filter.date_greater_than_filter_id  # type: ignore
+                    DateGreaterThanFilter._date_greater_than_filter_id == (
+                        updated_obj.date_greater_than_filter_id)  # type: ignore
                 )
             )
-            fetched_date_greater_than_filter = result.scalars().first()
+            fetched_obj = result.scalars().first()
 
             assert isinstance(
-                fetched_date_greater_than_filter,
+                fetched_obj,
                 DateGreaterThanFilter)
 
-            assert str(fetched_date_greater_than_filter.insert_user_id) == (
-                str(date_greater_than_filter_manager._session_context.customer_code))
-            assert str(fetched_date_greater_than_filter.last_update_user_id) == (
-                str(date_greater_than_filter_manager._session_context.customer_code))
+            assert str(fetched_obj.insert_user_id) == (
+                str(obj_manager._session_context.customer_code))
+            assert str(fetched_obj.last_update_user_id) == (
+                str(obj_manager._session_context.customer_code))
 
-            assert fetched_date_greater_than_filter.date_greater_than_filter_id == \
-                updated_date_greater_than_filter.date_greater_than_filter_id
+            assert fetched_obj.date_greater_than_filter_id == \
+                updated_obj.date_greater_than_filter_id
 
     @pytest.mark.asyncio
     async def test_update_bulk_success(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -132,7 +135,7 @@ class TestDateGreaterThanFilterBulkManager:
             the updated codes in the database.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager):
+            obj_manager (DateGreaterThanFilterManager):
                 An instance of the
                 `DateGreaterThanFilterManager` class.
             session (AsyncSession): An instance of the `AsyncSession` class.
@@ -141,13 +144,13 @@ class TestDateGreaterThanFilterBulkManager:
             None
         """
         # Mocking date_greater_than_filter instances
-        date_greater_than_filter1 = await DateGreaterThanFilterFactory. \
+        obj_1 = await DateGreaterThanFilterFactory. \
             create_async(
                 session=session)
-        date_greater_than_filter2 = await DateGreaterThanFilterFactory. \
+        obj_2 = await DateGreaterThanFilterFactory. \
             create_async(
                 session=session)
-        logging.info(date_greater_than_filter1.__dict__)
+        logging.info(obj_1.__dict__)
 
         code_updated1 = uuid.uuid4()
         code_updated2 = uuid.uuid4()
@@ -158,16 +161,16 @@ class TestDateGreaterThanFilterBulkManager:
         updates = [
             {
                 "date_greater_than_filter_id":
-                    date_greater_than_filter1.date_greater_than_filter_id,
+                    obj_1.date_greater_than_filter_id,
                 "code": code_updated1
             },
             {
                 "date_greater_than_filter_id":
-                    date_greater_than_filter2.date_greater_than_filter_id,
+                    obj_2.date_greater_than_filter_id,
                 "code": code_updated2
             }
         ]
-        updated_date_greater_than_filters = await date_greater_than_filter_manager.update_bulk(
+        updated_date_greater_than_filters = await obj_manager.update_bulk(
             updates)
 
         logging.info('bulk update results')
@@ -179,7 +182,7 @@ class TestDateGreaterThanFilterBulkManager:
                      .__dict__)
 
         logging.info('getall')
-        date_greater_than_filters = await date_greater_than_filter_manager.get_list()
+        date_greater_than_filters = await obj_manager.get_list()
         logging.info(date_greater_than_filters[0]
                      .__dict__)
         logging.info(date_greater_than_filters[1]
@@ -192,40 +195,40 @@ class TestDateGreaterThanFilterBulkManager:
 
         assert str(updated_date_greater_than_filters[0]
                    .last_update_user_id) == (
-            str(date_greater_than_filter_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         assert str(updated_date_greater_than_filters[1]
                    .last_update_user_id) == (
-            str(date_greater_than_filter_manager
+            str(obj_manager
                 ._session_context.customer_code))
 
         result = await session.execute(
             select(DateGreaterThanFilter).filter(
                 DateGreaterThanFilter._date_greater_than_filter_id == 1)  # type: ignore
         )
-        fetched_date_greater_than_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_date_greater_than_filter,
+        assert isinstance(fetched_obj,
                           DateGreaterThanFilter)
 
-        assert fetched_date_greater_than_filter.code == code_updated1
+        assert fetched_obj.code == code_updated1
 
         result = await session.execute(
             select(DateGreaterThanFilter).filter(
                 DateGreaterThanFilter._date_greater_than_filter_id == 2)  # type: ignore
         )
-        fetched_date_greater_than_filter = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_date_greater_than_filter,
+        assert isinstance(fetched_obj,
                           DateGreaterThanFilter)
 
-        assert fetched_date_greater_than_filter.code == code_updated2
+        assert fetched_obj.code == code_updated2
 
     @pytest.mark.asyncio
     async def test_update_bulk_missing_date_greater_than_filter_id(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -243,18 +246,19 @@ class TestDateGreaterThanFilterBulkManager:
         4. Rollback the session to undo any changes made during the test.
 
         """
-        # No date_greater_than_filters to update since date_greater_than_filter_id is missing
+        # No date_greater_than_filters to update since
+        # date_greater_than_filter_id is missing
         updates = [{"name": "Red Rose"}]
 
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_date_greater_than_filter_not_found(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -266,7 +270,7 @@ class TestDateGreaterThanFilterBulkManager:
             where each update
             contains a date_greater_than_filter_id and a code.
         2. Calls the update_bulk method of the
-            date_greater_than_filter_manager with the list of updates.
+            obj_manager with the list of updates.
         3. Expects an exception to be raised, indicating that
             the date_greater_than_filter was not found.
         4. Rolls back the session to undo any changes made during the test.
@@ -281,14 +285,14 @@ class TestDateGreaterThanFilterBulkManager:
         updates = [{"date_greater_than_filter_id": 1, "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_update_bulk_invalid_type(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -301,7 +305,7 @@ class TestDateGreaterThanFilterBulkManager:
         that the session is rolled back after the test
         to maintain data integrity.
 
-        :param date_greater_than_filter_manager: An instance of the
+        :param obj_manager: An instance of the
             DateGreaterThanFilterManager class.
         :param session: An instance of the AsyncSession class.
         """
@@ -309,14 +313,14 @@ class TestDateGreaterThanFilterBulkManager:
         updates = [{"date_greater_than_filter_id": "2", "code": uuid.uuid4()}]
 
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.update_bulk(updates)
+            await obj_manager.update_bulk(updates)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_bulk_success(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -332,27 +336,31 @@ class TestDateGreaterThanFilterBulkManager:
             using the DateGreaterThanFilterFactory.
         2. Delete the date_greater_than_filters using the
             delete_bulk method
-            of the date_greater_than_filter_manager.
+            of the obj_manager.
         3. Verify that the delete operation was successful by
-            checking if the date_greater_than_filters no longer exist in the database.
+            checking if the date_greater_than_filters
+            no longer exist in the database.
 
         Expected Result:
         - The delete_bulk method should return True, indicating
             that the delete operation was successful.
-        - The date_greater_than_filters should no longer exist in the database.
+        - The date_greater_than_filters should
+            no longer exist in the database.
 
         """
 
-        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(
+        obj_1 = await DateGreaterThanFilterFactory.create_async(
             session=session)
 
-        date_greater_than_filter2 = await DateGreaterThanFilterFactory.create_async(
+        obj_2 = await DateGreaterThanFilterFactory.create_async(
             session=session)
 
         # Delete date_greater_than_filters
-        date_greater_than_filter_ids = [date_greater_than_filter1.date_greater_than_filter_id,
-                     date_greater_than_filter2.date_greater_than_filter_id]
-        result = await date_greater_than_filter_manager.delete_bulk(
+        date_greater_than_filter_ids = [
+            obj_1.date_greater_than_filter_id,
+            obj_2.date_greater_than_filter_id
+        ]
+        result = await obj_manager.delete_bulk(
             date_greater_than_filter_ids)
 
         assert result is True
@@ -360,21 +368,23 @@ class TestDateGreaterThanFilterBulkManager:
         for date_greater_than_filter_id in date_greater_than_filter_ids:
             execute_result = await session.execute(
                 select(DateGreaterThanFilter).filter(
-                    DateGreaterThanFilter._date_greater_than_filter_id == date_greater_than_filter_id)  # type: ignore
+                    DateGreaterThanFilter._date_greater_than_filter_id == (
+                        date_greater_than_filter_id))  # type: ignore
             )
-            fetched_date_greater_than_filter = execute_result.scalars().first()
+            fetched_obj = execute_result.scalars().first()
 
-            assert fetched_date_greater_than_filter is None
+            assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_bulk_date_greater_than_filters_not_found(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
         Test case to verify the behavior of deleting bulk
-        date_greater_than_filters when some date_greater_than_filters are not found.
+        date_greater_than_filters when some
+        date_greater_than_filters are not found.
 
         Steps:
         1. Create a date_greater_than_filter using the
@@ -392,17 +402,17 @@ class TestDateGreaterThanFilterBulkManager:
         when some date_greater_than_filters with the specified IDs are
         not found in the database.
         """
-        date_greater_than_filter1 = await DateGreaterThanFilterFactory.create_async(
+        obj_1 = await DateGreaterThanFilterFactory.create_async(
             session=session)
 
-        assert isinstance(date_greater_than_filter1,
+        assert isinstance(obj_1,
                           DateGreaterThanFilter)
 
         # Delete date_greater_than_filters
         date_greater_than_filter_ids = [1, 2]
 
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 date_greater_than_filter_ids)
 
         await session.rollback()
@@ -410,14 +420,14 @@ class TestDateGreaterThanFilterBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_empty_list(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager
+        obj_manager: DateGreaterThanFilterManager
     ):
         """
         Test case to verify the behavior of deleting
         date_greater_than_filters with an empty list.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): The
+            obj_manager (DateGreaterThanFilterManager): The
                 instance of the
                 DateGreaterThanFilterManager class.
 
@@ -430,7 +440,7 @@ class TestDateGreaterThanFilterBulkManager:
 
         # Delete date_greater_than_filters with an empty list
         date_greater_than_filter_ids = []
-        result = await date_greater_than_filter_manager.delete_bulk(
+        result = await obj_manager.delete_bulk(
             date_greater_than_filter_ids)
 
         # Assertions
@@ -439,7 +449,7 @@ class TestDateGreaterThanFilterBulkManager:
     @pytest.mark.asyncio
     async def test_delete_bulk_invalid_type(
         self,
-        date_greater_than_filter_manager: DateGreaterThanFilterManager,
+        obj_manager: DateGreaterThanFilterManager,
         session: AsyncSession
     ):
         """
@@ -447,7 +457,7 @@ class TestDateGreaterThanFilterBulkManager:
         method when invalid date_greater_than_filter IDs are provided.
 
         Args:
-            date_greater_than_filter_manager (DateGreaterThanFilterManager): The
+            obj_manager (DateGreaterThanFilterManager): The
                 instance of the
                 DateGreaterThanFilterManager class.
             session (AsyncSession): The async session object.
@@ -463,8 +473,7 @@ class TestDateGreaterThanFilterBulkManager:
         date_greater_than_filter_ids = ["1", 2]
 
         with pytest.raises(Exception):
-            await date_greater_than_filter_manager.delete_bulk(
+            await obj_manager.delete_bulk(
                 date_greater_than_filter_ids)
 
         await session.rollback()
-

@@ -70,14 +70,12 @@ class TacRegisterPostModelRequestFactory(
             An instance of
             TacRegisterPostModelRequest.
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
 
 
         obj = model_class(*args, **kwargs)
-
 
         return obj
 
@@ -104,7 +102,6 @@ class TacRegisterPostModelRequestFactory(
 
         obj = model_class(*args, **kwargs)
 
-
         return obj
 
     @classmethod
@@ -127,10 +124,9 @@ class TacRegisterPostModelRequestFactory(
         """
 
 
-        obj = TacRegisterPostModelRequestFactory.build(
-            session=None, *args, **kwargs
-        )
-
+        obj = TacRegisterPostModelRequestFactory \
+            .build(
+                session=None, *args, **kwargs
+            )
 
         return obj
-

@@ -1,4 +1,4 @@
-# org_api_key_test.py
+# models/serialization_schema/tests/org_api_key_test.py
 # pylint: disable=redefined-outer-name
 # pylint: disable=unused-import
 
@@ -15,13 +15,15 @@ transmitted over a network.
 
 The tests in this module cover the serialization
 and deserialization of OrgApiKey
-instances using the OrgApiKeySchema class. They verify
+instances using the OrgApiKeySchema
+class. They verify
 that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a OrgApiKey instance.
 
-The OrgApiKeySchema class is used to define
+The OrgApiKeySchema class
+is used to define
 the serialization and deserialization
 rules for OrgApiKey instances. It
 specifies how each attribute of a
@@ -56,7 +58,7 @@ logger = get_logger(__name__)
 
 
 @pytest.fixture(scope="function")
-def org_api_key(
+def new_obj(
     session
 ) -> OrgApiKey:
     """
@@ -122,7 +124,7 @@ class TestOrgApiKeySchema:
 
     def test_org_api_key_serialization(
         self,
-        org_api_key: OrgApiKey
+        new_obj: OrgApiKey
     ):
         """
         Test the serialization of a
@@ -135,50 +137,50 @@ class TestOrgApiKeySchema:
         """
 
         schema = OrgApiKeySchema()
-        org_api_key_data = schema.dump(org_api_key)
+        org_api_key_data = schema.dump(new_obj)
 
         assert isinstance(org_api_key_data, dict)
 
         result = org_api_key_data
 
-        assert result['code'] == str(org_api_key.code)
+        assert result['code'] == str(new_obj.code)
         assert result['last_change_code'] == (
-            org_api_key.last_change_code)
+            new_obj.last_change_code)
         assert result['insert_user_id'] == (
-            str(org_api_key.insert_user_id))
+            str(new_obj.insert_user_id))
         assert result['last_update_user_id'] == (
-            str(org_api_key.last_update_user_id))
+            str(new_obj.last_update_user_id))
 
         assert result['api_key_value'] == (
-            org_api_key.api_key_value)
+            new_obj.api_key_value)
         assert result['created_by'] == (
-            org_api_key.created_by)
+            new_obj.created_by)
         assert result['created_utc_date_time'] == (
-            org_api_key.created_utc_date_time.isoformat())
+            new_obj.created_utc_date_time.isoformat())
         assert result['expiration_utc_date_time'] == (
-            org_api_key.expiration_utc_date_time.isoformat())
+            new_obj.expiration_utc_date_time.isoformat())
         assert result['is_active'] == (
-            org_api_key.is_active)
+            new_obj.is_active)
         assert result['is_temp_user_key'] == (
-            org_api_key.is_temp_user_key)
+            new_obj.is_temp_user_key)
         assert result['name'] == (
-            org_api_key.name)
+            new_obj.name)
         assert result['organization_id'] == (
-            org_api_key.organization_id)
+            new_obj.organization_id)
         assert result['org_customer_id'] == (
-            org_api_key.org_customer_id)
+            new_obj.org_customer_id)
         assert result['insert_utc_date_time'] == (
-            org_api_key.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
-            org_api_key.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert result['organization_code_peek'] == (  # OrganizationID
-            str(org_api_key.organization_code_peek))
+            str(new_obj.organization_code_peek))
         assert result['org_customer_code_peek'] == (  # OrgCustomerID
-            str(org_api_key.org_customer_code_peek))
+            str(new_obj.org_customer_code_peek))
 
     def test_org_api_key_deserialization(
         self,
-        org_api_key
+        new_obj: OrgApiKey
     ):
         """
         Test the deserialization of a
@@ -197,89 +199,89 @@ class TestOrgApiKeySchema:
         """
 
         schema = OrgApiKeySchema()
-        serialized_data = schema.dump(org_api_key)
+        serialized_data = schema.dump(new_obj)
         deserialized_data = schema.load(serialized_data)
 
         assert deserialized_data['code'] == \
-            org_api_key.code
+            new_obj.code
         assert deserialized_data['last_change_code'] == (
-            org_api_key.last_change_code)
+            new_obj.last_change_code)
         assert deserialized_data['insert_user_id'] == (
-            org_api_key.insert_user_id)
+            new_obj.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
-            org_api_key.last_update_user_id)
+            new_obj.last_update_user_id)
         assert deserialized_data['api_key_value'] == (
-            org_api_key.api_key_value)
+            new_obj.api_key_value)
         assert deserialized_data['created_by'] == (
-            org_api_key.created_by)
+            new_obj.created_by)
         assert deserialized_data['created_utc_date_time'].isoformat() == (
-            org_api_key.created_utc_date_time.isoformat())
+            new_obj.created_utc_date_time.isoformat())
         assert deserialized_data['expiration_utc_date_time'].isoformat() == (
-            org_api_key.expiration_utc_date_time.isoformat())
+            new_obj.expiration_utc_date_time.isoformat())
         assert deserialized_data['is_active'] == (
-            org_api_key.is_active)
+            new_obj.is_active)
         assert deserialized_data['is_temp_user_key'] == (
-            org_api_key.is_temp_user_key)
+            new_obj.is_temp_user_key)
         assert deserialized_data['name'] == (
-            org_api_key.name)
+            new_obj.name)
         assert deserialized_data['organization_id'] == (
-            org_api_key.organization_id)
+            new_obj.organization_id)
         assert deserialized_data['org_customer_id'] == (
-            org_api_key.org_customer_id)
+            new_obj.org_customer_id)
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
-            org_api_key.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
-            org_api_key.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert deserialized_data[(  # OrganizationID
             'organization_code_peek')] == (
-            org_api_key.organization_code_peek)
+            new_obj.organization_code_peek)
         assert deserialized_data[(  # OrgCustomerID
             'org_customer_code_peek')] == (
-            org_api_key.org_customer_code_peek)
+            new_obj.org_customer_code_peek)
 
-        new_org_api_key = OrgApiKey(
+        obj_from_dict = OrgApiKey(
             **deserialized_data)
 
-        assert isinstance(new_org_api_key,
+        assert isinstance(new_obj,
                           OrgApiKey)
 
-        # Now compare the new_org_api_key attributes with
+        # Now compare the new_obj attributes with
         # the org_api_key attributes
-        assert new_org_api_key.code == \
-            org_api_key.code
-        assert new_org_api_key.last_change_code == \
-            org_api_key.last_change_code
-        assert new_org_api_key.insert_user_id == \
-            org_api_key.insert_user_id
-        assert new_org_api_key.last_update_user_id == \
-            org_api_key.last_update_user_id
-        assert new_org_api_key.api_key_value == (
-            org_api_key.api_key_value)
-        assert new_org_api_key.created_by == (
-            org_api_key.created_by)
-        assert new_org_api_key.created_utc_date_time.isoformat() == (
-            org_api_key.created_utc_date_time.isoformat())
-        assert new_org_api_key.expiration_utc_date_time.isoformat() == (
-            org_api_key.expiration_utc_date_time.isoformat())
-        assert new_org_api_key.is_active == (
-            org_api_key.is_active)
-        assert new_org_api_key.is_temp_user_key == (
-            org_api_key.is_temp_user_key)
-        assert new_org_api_key.name == (
-            org_api_key.name)
-        assert new_org_api_key.organization_id == (
-            org_api_key.organization_id)
-        assert new_org_api_key.org_customer_id == (
-            org_api_key.org_customer_id)
+        assert obj_from_dict.code == \
+            new_obj.code
+        assert obj_from_dict.last_change_code == \
+            new_obj.last_change_code
+        assert obj_from_dict.insert_user_id == \
+            new_obj.insert_user_id
+        assert obj_from_dict.last_update_user_id == \
+            new_obj.last_update_user_id
+        assert obj_from_dict.api_key_value == (
+            new_obj.api_key_value)
+        assert obj_from_dict.created_by == (
+            new_obj.created_by)
+        assert obj_from_dict.created_utc_date_time.isoformat() == (
+            new_obj.created_utc_date_time.isoformat())
+        assert obj_from_dict.expiration_utc_date_time.isoformat() == (
+            new_obj.expiration_utc_date_time.isoformat())
+        assert obj_from_dict.is_active == (
+            new_obj.is_active)
+        assert obj_from_dict.is_temp_user_key == (
+            new_obj.is_temp_user_key)
+        assert obj_from_dict.name == (
+            new_obj.name)
+        assert obj_from_dict.organization_id == (
+            new_obj.organization_id)
+        assert obj_from_dict.org_customer_id == (
+            new_obj.org_customer_id)
 
-        assert new_org_api_key.insert_utc_date_time.isoformat() == (
-            org_api_key.insert_utc_date_time.isoformat())
-        assert new_org_api_key.last_update_utc_date_time.isoformat() == (
-            org_api_key.last_update_utc_date_time.isoformat())
-        assert new_org_api_key.organization_code_peek == (  # OrganizationID
-            org_api_key.organization_code_peek)
-        assert new_org_api_key.org_customer_code_peek == (  # OrgCustomerID
-            org_api_key.org_customer_code_peek)
+        assert obj_from_dict.insert_utc_date_time.isoformat() == (
+            new_obj.insert_utc_date_time.isoformat())
+        assert obj_from_dict.last_update_utc_date_time.isoformat() == (
+            new_obj.last_update_utc_date_time.isoformat())
+        assert obj_from_dict.organization_code_peek == (  # OrganizationID
+            new_obj.organization_code_peek)
+        assert obj_from_dict.org_customer_code_peek == (  # OrgCustomerID
+            new_obj.org_customer_code_peek)
 
     def test_from_json(self):
         """
@@ -358,7 +360,7 @@ class TestOrgApiKeySchema:
 
     def test_to_json(
         self,
-        org_api_key: OrgApiKey
+        new_obj: OrgApiKey
     ):
         """
         Test the conversion of a
@@ -377,98 +379,97 @@ class TestOrgApiKeySchema:
         # to JSON using the schema
         org_api_key_schema = OrgApiKeySchema()
         org_api_key_dict = org_api_key_schema.dump(
-            org_api_key)
+            new_obj)
 
         # Convert the org_api_key_dict to JSON string
         org_api_key_json = json.dumps(
             org_api_key_dict)
 
         # Convert the JSON strings back to dictionaries
-        org_api_key_dict_from_json = json.loads(
+        dict_from_json = json.loads(
             org_api_key_json)
         # sample_dict_from_json = json.loads(self.sample_data)
 
         logging.info(
-            "org_api_key_dict_from_json.keys() %s",
-            org_api_key_dict_from_json.keys())
+            "dict_from_json.keys() %s",
+            dict_from_json.keys())
 
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
 
         # Verify the keys in both dictionaries match
-        assert set(org_api_key_dict_from_json.keys()) == (
+        assert set(dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
-            f"Got: {set(org_api_key_dict_from_json.keys())}"
+            f"Got: {set(dict_from_json.keys())}"
         )
 
-        assert org_api_key_dict_from_json['code'] == \
-            str(org_api_key.code), (
+        assert dict_from_json['code'] == \
+            str(new_obj.code), (
             "failed on code"
         )
-        assert org_api_key_dict_from_json['last_change_code'] == (
-            org_api_key.last_change_code), (
+        assert dict_from_json['last_change_code'] == (
+            new_obj.last_change_code), (
             "failed on last_change_code"
         )
-        assert org_api_key_dict_from_json['insert_user_id'] == (
-            str(org_api_key.insert_user_id)), (
+        assert dict_from_json['insert_user_id'] == (
+            str(new_obj.insert_user_id)), (
             "failed on insert_user_id"
         )
-        assert org_api_key_dict_from_json['last_update_user_id'] == (
-            str(org_api_key.last_update_user_id)), (
+        assert dict_from_json['last_update_user_id'] == (
+            str(new_obj.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-        assert org_api_key_dict_from_json['api_key_value'] == (
-            org_api_key.api_key_value), (
+        assert dict_from_json['api_key_value'] == (
+            new_obj.api_key_value), (
             "failed on api_key_value"
         )
-        assert org_api_key_dict_from_json['created_by'] == (
-            org_api_key.created_by), (
+        assert dict_from_json['created_by'] == (
+            new_obj.created_by), (
             "failed on created_by"
         )
-        assert org_api_key_dict_from_json['created_utc_date_time'] == (
-            org_api_key.created_utc_date_time.isoformat()), (
+        assert dict_from_json['created_utc_date_time'] == (
+            new_obj.created_utc_date_time.isoformat()), (
             "failed on created_utc_date_time"
         )
-        assert org_api_key_dict_from_json['expiration_utc_date_time'] == (
-            org_api_key.expiration_utc_date_time.isoformat()), (
+        assert dict_from_json['expiration_utc_date_time'] == (
+            new_obj.expiration_utc_date_time.isoformat()), (
             "failed on expiration_utc_date_time"
         )
-        assert org_api_key_dict_from_json['is_active'] == (
-            org_api_key.is_active), (
+        assert dict_from_json['is_active'] == (
+            new_obj.is_active), (
             "failed on is_active"
         )
-        assert org_api_key_dict_from_json['is_temp_user_key'] == (
-            org_api_key.is_temp_user_key), (
+        assert dict_from_json['is_temp_user_key'] == (
+            new_obj.is_temp_user_key), (
             "failed on is_temp_user_key"
         )
-        assert org_api_key_dict_from_json['name'] == (
-            org_api_key.name), (
+        assert dict_from_json['name'] == (
+            new_obj.name), (
             "failed on name"
         )
-        assert org_api_key_dict_from_json['organization_id'] == (
-            org_api_key.organization_id), (
+        assert dict_from_json['organization_id'] == (
+            new_obj.organization_id), (
             "failed on organization_id"
         )
-        assert org_api_key_dict_from_json['org_customer_id'] == (
-            org_api_key.org_customer_id), (
+        assert dict_from_json['org_customer_id'] == (
+            new_obj.org_customer_id), (
             "failed on org_customer_id"
         )
-        assert org_api_key_dict_from_json['insert_utc_date_time'] == (
-            org_api_key.insert_utc_date_time.isoformat()), (
+        assert dict_from_json['insert_utc_date_time'] == (
+            new_obj.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
         )
-        assert org_api_key_dict_from_json['last_update_utc_date_time'] == (
-            org_api_key.last_update_utc_date_time.isoformat()), (
+        assert dict_from_json['last_update_utc_date_time'] == (
+            new_obj.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-        assert org_api_key_dict_from_json[(  # OrganizationID
+        assert dict_from_json[(  # OrganizationID
             'organization_code_peek')] == (
-            str(org_api_key.organization_code_peek)), (
+            str(new_obj.organization_code_peek)), (
             "failed on organization_code_peek"
         )
-        assert org_api_key_dict_from_json[(  # OrgCustomerID
+        assert dict_from_json[(  # OrgCustomerID
             'org_customer_code_peek')] == (
-            str(org_api_key.org_customer_code_peek)), (
+            str(new_obj.org_customer_code_peek)), (
             "failed on org_customer_code_peek"
         )
-

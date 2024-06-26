@@ -1,4 +1,4 @@
-# models/managers/tests/tac_test.py
+# managers/tests/tac_test.py
 # pylint: disable=protected-access
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
@@ -16,10 +16,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from helpers.session_context import SessionContext
-from managers.tac import TacManager
+from managers.tac import (
+    TacManager)
 from models import Tac
-from models.factory import TacFactory
-from models.serialization_schema.tac import TacSchema
+from models.factory import (
+    TacFactory)
+from models.serialization_schema.tac import (
+    TacSchema)
 
 
 class TestTacManager:
@@ -29,7 +32,7 @@ class TestTacManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def tac_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `TacManager` for testing.
@@ -41,7 +44,7 @@ class TestTacManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        tac_manager: TacManager
+        obj_manager: TacManager
     ):
         """
         Test case for the `build` method of
@@ -54,10 +57,11 @@ class TestTacManager:
 
         # Call the build function of the manager
         tac = await \
-            tac_manager.build(
+            obj_manager.build(
                 **mock_data)
 
-        # Assert that the returned object is an instance of Tac
+        # Assert that the returned object is an
+        # instance of Tac
         assert isinstance(
             tac,
             Tac)
@@ -69,7 +73,7 @@ class TestTacManager:
     @pytest.mark.asyncio
     async def test_build_with_missing_data(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -84,14 +88,14 @@ class TestTacManager:
         # If the build method is expected to raise an exception for
         # missing data, test for that
         with pytest.raises(Exception):
-            await tac_manager.build(**mock_data)
+            await obj_manager.build(**mock_data)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_add_correctly_adds_tac_to_database(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -99,49 +103,51 @@ class TestTacManager:
         `TacManager` that checks if a
         tac is correctly added to the database.
         """
-        test_tac = await \
+        new_obj = await \
             TacFactory.build_async(
                 session)
 
-        assert test_tac.tac_id == 0
+        assert new_obj.tac_id == 0
 
         # Add the tac using the
         # manager's add method
-        added_tac = await \
-            tac_manager.add(
-                tac=test_tac)
+        added_obj = await \
+            obj_manager.add(
+                tac=new_obj)
 
-        assert isinstance(added_tac,
+        assert isinstance(added_obj,
                           Tac)
 
-        assert str(added_tac.insert_user_id) == (
-            str(tac_manager._session_context.customer_code))
-        assert str(added_tac.last_update_user_id) == (
-            str(tac_manager._session_context.customer_code))
+        assert str(added_obj.insert_user_id) == (
+            str(obj_manager._session_context.customer_code))
+        assert str(added_obj.last_update_user_id) == (
+            str(obj_manager._session_context.customer_code))
 
-        assert added_tac.tac_id > 0
+        assert added_obj.tac_id > 0
 
         # Fetch the tac from
         # the database directly
         result = await session.execute(
             select(Tac).filter(
-                Tac._tac_id == added_tac.tac_id  # type: ignore
+                Tac._tac_id == (
+                    added_obj.tac_id)  # type: ignore
             )
         )
-        fetched_tac = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
         # Assert that the fetched tac
         # is not None and matches the
         # added tac
-        assert fetched_tac is not None
-        assert isinstance(fetched_tac,
+        assert fetched_obj is not None
+        assert isinstance(fetched_obj,
                           Tac)
-        assert fetched_tac.tac_id == added_tac.tac_id
+        assert fetched_obj.tac_id == \
+            added_obj.tac_id
 
     @pytest.mark.asyncio
     async def test_add_returns_correct_tac_object(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -152,42 +158,42 @@ class TestTacManager:
         # Create a test tac
         # using the TacFactory
         # without persisting it to the database
-        test_tac = await \
+        new_obj = await \
             TacFactory.build_async(
                 session)
 
-        assert test_tac.tac_id == 0
+        assert new_obj.tac_id == 0
 
-        test_tac.code = uuid.uuid4()
+        new_obj.code = uuid.uuid4()
 
         # Add the tac using
         # the manager's add method
-        added_tac = await \
-            tac_manager.add(
-                tac=test_tac)
+        added_obj = await \
+            obj_manager.add(
+                tac=new_obj)
 
-        assert isinstance(added_tac,
+        assert isinstance(added_obj,
                           Tac)
 
-        assert str(added_tac.insert_user_id) == (
-            str(tac_manager._session_context.customer_code))
-        assert str(added_tac.last_update_user_id) == (
-            str(tac_manager._session_context.customer_code))
+        assert str(added_obj.insert_user_id) == (
+            str(obj_manager._session_context.customer_code))
+        assert str(added_obj.last_update_user_id) == (
+            str(obj_manager._session_context.customer_code))
 
-        assert added_tac.tac_id > 0
+        assert added_obj.tac_id > 0
 
         # Assert that the returned
         # tac matches the
         # test tac
-        assert added_tac.tac_id == \
-            test_tac.tac_id
-        assert added_tac.code == \
-            test_tac.code
+        assert added_obj.tac_id == \
+            new_obj.tac_id
+        assert added_obj.code == \
+            new_obj.code
 
     @pytest.mark.asyncio
     async def test_update(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -196,48 +202,49 @@ class TestTacManager:
         that checks if a tac
         is correctly updated.
         """
-        test_tac = await \
+        new_obj = await \
             TacFactory.create_async(
                 session)
 
-        test_tac.code = uuid.uuid4()
+        new_obj.code = uuid.uuid4()
 
-        updated_tac = await \
-            tac_manager.update(
-                tac=test_tac)
+        updated_obj = await \
+            obj_manager.update(
+                tac=new_obj)
 
-        assert isinstance(updated_tac,
+        assert isinstance(updated_obj,
                           Tac)
 
-        assert str(updated_tac.last_update_user_id) == str(
-            tac_manager._session_context.customer_code)
+        assert str(updated_obj.last_update_user_id) == str(
+            obj_manager._session_context.customer_code)
 
-        assert updated_tac.tac_id == \
-            test_tac.tac_id
-        assert updated_tac.code == \
-            test_tac.code
+        assert updated_obj.tac_id == \
+            new_obj.tac_id
+        assert updated_obj.code == \
+            new_obj.code
 
         result = await session.execute(
             select(Tac).filter(
-                Tac._tac_id == test_tac.tac_id)  # type: ignore
+                Tac._tac_id == (
+                    new_obj.tac_id))  # type: ignore
         )
 
-        fetched_tac = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert updated_tac.tac_id == \
-            fetched_tac.tac_id
-        assert updated_tac.code == \
-            fetched_tac.code
+        assert updated_obj.tac_id == \
+            fetched_obj.tac_id
+        assert updated_obj.code == \
+            fetched_obj.code
 
-        assert test_tac.tac_id == \
-            fetched_tac.tac_id
-        assert test_tac.code == \
-            fetched_tac.code
+        assert new_obj.tac_id == \
+            fetched_obj.tac_id
+        assert new_obj.code == \
+            fetched_obj.code
 
     @pytest.mark.asyncio
     async def test_update_via_dict(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -246,50 +253,51 @@ class TestTacManager:
         that checks if a tac is
         correctly updated using a dictionary.
         """
-        test_tac = await \
+        new_obj = await \
             TacFactory.create_async(
                 session)
 
         new_code = uuid.uuid4()
 
-        updated_tac = await \
-            tac_manager.update(
-                tac=test_tac,
+        updated_obj = await \
+            obj_manager.update(
+                tac=new_obj,
                 code=new_code
             )
 
-        assert isinstance(updated_tac,
+        assert isinstance(updated_obj,
                           Tac)
 
-        assert str(updated_tac.last_update_user_id) == str(
-            tac_manager._session_context.customer_code
+        assert str(updated_obj.last_update_user_id) == str(
+            obj_manager._session_context.customer_code
         )
 
-        assert updated_tac.tac_id == \
-            test_tac.tac_id
-        assert updated_tac.code == new_code
+        assert updated_obj.tac_id == \
+            new_obj.tac_id
+        assert updated_obj.code == new_code
 
         result = await session.execute(
             select(Tac).filter(
-                Tac._tac_id == test_tac.tac_id)  # type: ignore
+                Tac._tac_id == (
+                    new_obj.tac_id))  # type: ignore
         )
 
-        fetched_tac = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert updated_tac.tac_id == \
-            fetched_tac.tac_id
-        assert updated_tac.code == \
-            fetched_tac.code
+        assert updated_obj.tac_id == \
+            fetched_obj.tac_id
+        assert updated_obj.code == \
+            fetched_obj.code
 
-        assert test_tac.tac_id == \
-            fetched_tac.tac_id
+        assert new_obj.tac_id == \
+            fetched_obj.tac_id
         assert new_code == \
-            fetched_tac.code
+            fetched_obj.code
 
     @pytest.mark.asyncio
     async def test_update_invalid_tac(
         self,
-        tac_manager: TacManager
+        obj_manager: TacManager
     ):
         """
         Test case for the `update` method of
@@ -302,17 +310,17 @@ class TestTacManager:
 
         new_code = uuid.uuid4()
 
-        updated_tac = await (
-            tac_manager.update(
+        updated_obj = await (
+            obj_manager.update(
                 tac, code=new_code))  # type: ignore
 
         # Assertions
-        assert updated_tac is None
+        assert updated_obj is None
 
     @pytest.mark.asyncio
     async def test_update_with_nonexistent_attribute(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -320,15 +328,15 @@ class TestTacManager:
         `TacManager`
         with a nonexistent attribute.
         """
-        test_tac = await \
+        new_obj = await \
             TacFactory.create_async(
                 session)
 
         new_code = uuid.uuid4()
 
         with pytest.raises(ValueError):
-            await tac_manager.update(
-                tac=test_tac,
+            await obj_manager.update(
+                tac=new_obj,
                 xxx=new_code
             )
 
@@ -337,66 +345,70 @@ class TestTacManager:
     @pytest.mark.asyncio
     async def test_delete(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
         Test case for the `delete` method of
         `TacManager`.
         """
-        tac_data = await TacFactory.create_async(
+        new_obj = await TacFactory.create_async(
             session)
 
         result = await session.execute(
             select(Tac).filter(
-                Tac._tac_id == tac_data.tac_id)  # type: ignore
+                Tac._tac_id == (
+                    new_obj.tac_id))  # type: ignore
         )
-        fetched_tac = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert isinstance(fetched_tac,
+        assert isinstance(fetched_obj,
                           Tac)
 
-        assert fetched_tac.tac_id == \
-            tac_data.tac_id
+        assert fetched_obj.tac_id == \
+            new_obj.tac_id
 
-        await tac_manager.delete(
-            tac_id=tac_data.tac_id)
+        await obj_manager.delete(
+            tac_id=new_obj.tac_id)
 
         result = await session.execute(
             select(Tac).filter(
-                Tac._tac_id == tac_data.tac_id)  # type: ignore
+                Tac._tac_id == (
+                    new_obj.tac_id))  # type: ignore
         )
-        fetched_tac = result.scalars().first()
+        fetched_obj = result.scalars().first()
 
-        assert fetched_tac is None
+        assert fetched_obj is None
 
     @pytest.mark.asyncio
     async def test_delete_nonexistent(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
-        Test case to verify the behavior of deleting a nonexistent tac.
+        Test case to verify the behavior of deleting a nonexistent
+        tac.
 
         This test case ensures that when the delete method
-        is called with the ID of a nonexistent tac,
+        is called with the ID of a nonexistent
+        tac,
         an exception is raised. The test also verifies that
         the session is rolled back after the delete operation.
 
-        :param tac_manager: The instance of the
+        :param obj_manager: The instance of the
             TacManager class.
         :param session: The instance of the AsyncSession class.
         """
         with pytest.raises(Exception):
-            await tac_manager.delete(999)
+            await obj_manager.delete(999)
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_delete_invalid_type(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -404,13 +416,13 @@ class TestTacManager:
         with an invalid type.
 
         This test case ensures that when the `delete` method
-        of the `tac_manager` is called with an invalid type,
+        of the `obj_manager` is called with an invalid type,
         an exception is raised. The test case expects the
         `delete` method to raise an exception, and if it doesn't,
         the test case will fail.
 
         Args:
-            tac_manager
+            obj_manager
             (TacManager): An
                 instance of the
                 `TacManager` class.
@@ -424,14 +436,14 @@ class TestTacManager:
 
         """
         with pytest.raises(Exception):
-            await tac_manager.delete("999")  # type: ignore
+            await obj_manager.delete("999")  # type: ignore
 
         await session.rollback()
 
     @pytest.mark.asyncio
     async def test_get_list(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -443,44 +455,50 @@ class TestTacManager:
 
         Steps:
         1. Call the `get_list` method of the
-            `tac_manager` instance.
+            `obj_manager` instance.
         2. Assert that the returned list is empty.
         3. Create 5 tac objects using the
             `TacFactory.create_async` method.
-        4. Assert that the `tacs_data` variable is of type `List`.
+        4. Assert that the
+            `tacs_data` variable
+            is of type `List`.
         5. Call the `get_list` method of the
-            `tac_manager` instance again.
+            `obj_manager` instance again.
         6. Assert that the returned list contains 5 tacs.
         7. Assert that all elements in the returned list are
-            instances of the `Tac` class.
+            instances of the
+            `Tac` class.
         """
 
-        tacs = await tac_manager.get_list()
+        tacs = await obj_manager.get_list()
 
         assert len(tacs) == 0
 
         tacs_data = (
-            [await TacFactory.create_async(session) for _ in range(5)])
+            [await TacFactory.create_async(session)
+             for _ in range(5)])
 
         assert isinstance(tacs_data, List)
 
-        tacs = await tac_manager.get_list()
+        tacs = await obj_manager.get_list()
 
         assert len(tacs) == 5
         assert all(isinstance(
-            tac, Tac) for tac in tacs)
+            tac,
+            Tac
+        ) for tac in tacs)
 
     @pytest.mark.asyncio
     async def test_to_json(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
         Test the 'to_json' method of the TacManager class.
 
         Args:
-            tac_manager
+            obj_manager
             (TacManager): An
                 instance of the
                 TacManager class.
@@ -496,7 +514,7 @@ class TestTacManager:
             TacFactory.build_async(
                 session)
 
-        json_data = tac_manager.to_json(
+        json_data = obj_manager.to_json(
             tac)
 
         assert json_data is not None
@@ -504,14 +522,14 @@ class TestTacManager:
     @pytest.mark.asyncio
     async def test_to_dict(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
         Test the to_dict method of the TacManager class.
 
         Args:
-            tac_manager
+            obj_manager
             (TacManager): An
                 instance of the
                 TacManager class.
@@ -525,7 +543,7 @@ class TestTacManager:
                 session)
 
         dict_data = \
-            tac_manager.to_dict(
+            obj_manager.to_dict(
                 tac)
 
         assert dict_data is not None
@@ -533,14 +551,16 @@ class TestTacManager:
     @pytest.mark.asyncio
     async def test_from_json(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
-        Test the `from_json` method of the `TacManager` class.
+        Test the `from_json` method of the
+        `TacManager` class.
 
         This method tests the functionality of the
-        `from_json` method of the `TacManager` class.
+        `from_json` method of the
+        `TacManager` class.
         It creates a tac using
         the `TacFactory`
         and converts it to JSON using the `to_json` method.
@@ -551,7 +571,7 @@ class TestTacManager:
         the same code as the original tac.
 
         Args:
-            tac_manager
+            obj_manager
             (TacManager): An
                 instance of the
                 `TacManager` class.
@@ -564,11 +584,11 @@ class TestTacManager:
             TacFactory.create_async(
                 session)
 
-        json_data = tac_manager.to_json(
+        json_data = obj_manager.to_json(
             tac)
 
         deserialized_tac = await \
-                tac_manager.from_json(json_data)
+            obj_manager.from_json(json_data)
 
         assert isinstance(deserialized_tac,
                           Tac)
@@ -578,7 +598,7 @@ class TestTacManager:
     @pytest.mark.asyncio
     async def test_from_dict(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -591,10 +611,11 @@ class TestTacManager:
         tac object.
 
         Args:
-            tac_manager
+            obj_manager
             (TacManager): An instance
                 of the `TacManager` class.
-            session (AsyncSession): An instance of the `AsyncSession` class.
+            session (AsyncSession): An instance of the
+            `AsyncSession` class.
 
         Returns:
             None
@@ -608,13 +629,13 @@ class TestTacManager:
 
         schema = TacSchema()
 
-        tac_data = schema.dump(tac)
+        new_obj = schema.dump(tac)
 
-        assert isinstance(tac_data, dict)
+        assert isinstance(new_obj, dict)
 
         deserialized_tac = await \
-            tac_manager.from_dict(
-                tac_data)
+            obj_manager.from_dict(
+                new_obj)
 
         assert isinstance(deserialized_tac,
                           Tac)
@@ -625,7 +646,7 @@ class TestTacManager:
     @pytest.mark.asyncio
     async def test_count_basic_functionality(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -641,32 +662,34 @@ class TestTacManager:
         Steps:
         1. Create 5 tac objects using
             the TacFactory.
-        2. Call the count method of the tac_manager.
+        2. Call the count method of the obj_manager.
         3. Assert that the count is equal to 5.
 
         """
         tacs_data = (
-            [await TacFactory.create_async(session) for _ in range(5)])
+            [await TacFactory.create_async(session)
+             for _ in range(5)])
 
         assert isinstance(tacs_data, List)
 
-        count = await tac_manager.count()
+        count = await obj_manager.count()
 
         assert count == 5
 
     @pytest.mark.asyncio
     async def test_count_empty_database(
         self,
-        tac_manager: TacManager
+        obj_manager: TacManager
     ):
         """
         Test the count method when the database is empty.
 
         This test case checks if the count method of the
-        TacManager class returns 0 when the database is empty.
+        TacManager class
+        returns 0 when the database is empty.
 
         Args:
-            tac_manager
+            obj_manager
             (TacManager): An
                 instance of the
                 TacManager class.
@@ -675,14 +698,14 @@ class TestTacManager:
             None
         """
 
-        count = await tac_manager.count()
+        count = await obj_manager.count()
 
         assert count == 0
 
     @pytest.mark.asyncio
     async def test_refresh_basic(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -701,61 +724,63 @@ class TestTacManager:
             it reflects the updated code.
 
         Args:
-            tac_manager
+            obj_manager
             (TacManager): The
                 manager responsible
                 for tac operations.
             session (AsyncSession): The SQLAlchemy asynchronous session.
         """
         # Add a tac
-        tac1 = await TacFactory.create_async(
+        obj_1 = await TacFactory.create_async(
             session=session)
 
         # Retrieve the tac from the database
         result = await session.execute(
             select(Tac).filter(
-                Tac._tac_id == tac1.tac_id)  # type: ignore
+                Tac._tac_id == (
+                    obj_1.tac_id))  # type: ignore
         )  # type: ignore
-        tac2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
         # Verify that the retrieved tac
         # matches the added tac
-        assert tac1.code == \
-            tac2.code
+        assert obj_1.code == \
+            obj_2.code
 
         # Update the tac's code
         updated_code1 = uuid.uuid4()
-        tac1.code = updated_code1
-        updated_tac1 = await tac_manager.update(
-            tac1)
+        obj_1.code = updated_code1
+        updated_obj_1 = await obj_manager.update(
+            obj_1)
 
         # Verify that the updated tac
         # is of type Tac
         # and has the updated code
-        assert isinstance(updated_tac1,
+        assert isinstance(updated_obj_1,
                           Tac)
 
-        assert updated_tac1.code == updated_code1
+        assert updated_obj_1.code == updated_code1
 
         # Refresh the original tac instance
-        refreshed_tac2 = await tac_manager.refresh(
-            tac2)
+        refreshed_obj_2 = await obj_manager.refresh(
+            obj_2)
 
         # Verify that the refreshed tac
         # reflects the updated code
-        assert refreshed_tac2.code == updated_code1
+        assert refreshed_obj_2.code == updated_code1
 
     @pytest.mark.asyncio
     async def test_refresh_nonexistent_tac(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
-        Test case to verify the behavior of refreshing a nonexistent tac.
+        Test case to verify the behavior of refreshing a
+        nonexistent tac.
 
         Args:
-            tac_manager
+            obj_manager
             (TacManager): The
                 instance of the
                 TacManager class.
@@ -772,7 +797,7 @@ class TestTacManager:
             tac_id=999)
 
         with pytest.raises(Exception):
-            await tac_manager.refresh(
+            await obj_manager.refresh(
                 tac)
 
         await session.rollback()
@@ -780,7 +805,7 @@ class TestTacManager:
     @pytest.mark.asyncio
     async def test_exists_with_existing_tac(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -788,7 +813,7 @@ class TestTacManager:
         exists using the manager function.
 
         Args:
-            tac_manager
+            obj_manager
             (TacManager): The
                 tac manager instance.
             session (AsyncSession): The async session object.
@@ -797,26 +822,28 @@ class TestTacManager:
             None
         """
         # Add a tac
-        tac1 = await TacFactory.create_async(
+        obj_1 = await TacFactory.create_async(
             session=session)
 
         # Check if the tac exists
         # using the manager function
-        assert await tac_manager.exists(
-            tac1.tac_id) is True
+        assert await obj_manager.exists(
+            obj_1.tac_id) is True
 
     @pytest.mark.asyncio
     async def test_is_equal_with_existing_tac(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
         Test if the is_equal method of the
-        TacManager class correctly compares two tacs.
+        TacManager
+        class correctly compares two
+        tacs.
 
         Args:
-            tac_manager
+            obj_manager
             (TacManager): An
                 instance of the
                 TacManager class.
@@ -826,39 +853,39 @@ class TestTacManager:
             None
         """
         # Add a tac
-        tac1 = await \
+        obj_1 = await \
             TacFactory.create_async(
                 session=session)
 
-        tac2 = await \
-            tac_manager.get_by_id(
-                tac_id=tac1.tac_id)
+        obj_2 = await \
+            obj_manager.get_by_id(
+                tac_id=obj_1.tac_id)
 
-        assert tac_manager.is_equal(
-            tac1, tac2) is True
+        assert obj_manager.is_equal(
+            obj_1, obj_2) is True
 
-        tac1_dict = \
-            tac_manager.to_dict(
-                tac1)
+        obj_1_dict = \
+            obj_manager.to_dict(
+                obj_1)
 
         tac3 = await \
-            tac_manager.from_dict(
-                tac1_dict)
+            obj_manager.from_dict(
+                obj_1_dict)
 
-        assert tac_manager.is_equal(
-            tac1, tac3) is True
+        assert obj_manager.is_equal(
+            obj_1, tac3) is True
 
     @pytest.mark.asyncio
     async def test_exists_with_nonexistent_tac(
         self,
-        tac_manager: TacManager
+        obj_manager: TacManager
     ):
         """
         Test case to check if a tac with a
         non-existent ID exists in the database.
 
         Args:
-            tac_manager
+            obj_manager
             (TacManager): The
                 instance of the TacManager class.
 
@@ -868,12 +895,12 @@ class TestTacManager:
         """
         non_existent_id = 999
 
-        assert await tac_manager.exists(non_existent_id) is False
+        assert await obj_manager.exists(non_existent_id) is False
 
     @pytest.mark.asyncio
     async def test_exists_with_invalid_id_type(
         self,
-        tac_manager: TacManager,
+        obj_manager: TacManager,
         session: AsyncSession
     ):
         """
@@ -881,7 +908,7 @@ class TestTacManager:
         an exception when an invalid ID type is provided.
 
         Args:
-            tac_manager
+            obj_manager
             (TacManager): The instance
                 of the TacManager class.
             session (AsyncSession): The instance of the AsyncSession class.
@@ -895,7 +922,6 @@ class TestTacManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await tac_manager.exists(invalid_id)  # type: ignore  # noqa: E501
+            await obj_manager.exists(invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-

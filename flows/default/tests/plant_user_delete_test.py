@@ -21,7 +21,7 @@ from flows.plant_user_delete import (
     FlowPlantUserDelete,
     FlowPlantUserDeleteResult)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.plant import (
     PlantFactory)
 
@@ -32,7 +32,7 @@ class TestPlantUserDeletePostModelResponse:
     `FlowPlantUserDeleteResult` class.
     """
 
-    def test_flow_plant_user_delete_result_to_json(self):
+    def test_flow_result_to_json(self):
         """
         Test the `to_json` method of the
         `FlowPlantUserDeleteResult` class.
@@ -62,9 +62,12 @@ class TestPlantUserDeletePostModelResponse:
         """
 
         session_context = SessionContext(dict(), session)
-        flow = FlowPlantUserDelete(session_context)
+        flow = FlowPlantUserDelete(
+            session_context)
 
-        plant = await PlantFactory.create_async(session)
+        plant = await \
+            PlantFactory.create_async(
+                session)
 
         plant_bus_obj = PlantBusObj(session_context)
         plant_bus_obj.load_from_obj_instance(plant)
@@ -111,4 +114,3 @@ class TestPlantUserDeletePostModelResponse:
         #     request=request_instance
         #     )
         # assert isinstance(result,FlowPlantUserDeleteResult)
-

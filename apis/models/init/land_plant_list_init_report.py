@@ -20,7 +20,7 @@ from flows.base.flow_validation_error import FlowValidationError
 from flows.land_plant_list_init_report import (
     FlowLandPlantListInitReport,
     FlowLandPlantListInitReportResult)
-from helpers import SessionContext, TypeConversion
+from helpers import SessionContext, TypeConversion  # noqa: F401
 from helpers.formatting import snake_to_camel
 from helpers.pydantic_serialization import CamelModel, SnakeModel
 
@@ -180,7 +180,8 @@ class LandPlantListInitReportGetInitModelRequest(
             if land_bus_obj.get_land_obj() is None:
                 logging.info("Invalid land_code")
                 raise ValueError("Invalid land_code")
-            flow = FlowLandPlantListInitReport(session_context)
+            flow = FlowLandPlantListInitReport(
+                session_context)
             logging.info(
                 "process request..."
                 "LandPlantListInitReport"
@@ -192,9 +193,10 @@ class LandPlantListInitReportGetInitModelRequest(
             response.success = True
             response.message = "Success."
         except FlowValidationError as ve:
-            logging.info("error..."
-                         "LandPlantListInitReport"
-                         "GetInitModelRequest")
+            logging.info(
+                "error..."
+                "LandPlantListInitReport"
+                "GetInitModelRequest")
             response.success = False
             response.validation_errors = list()
             for key in ve.error_dict:
@@ -203,4 +205,3 @@ class LandPlantListInitReportGetInitModelRequest(
                 val_error.message = ve.error_dict[key]
                 response.validation_errors.append(val_error)
         return response
-

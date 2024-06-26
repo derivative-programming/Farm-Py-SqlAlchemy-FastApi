@@ -54,14 +54,12 @@ class CustomerUserLogOutPostModelRequestFactory(
             An instance of
             CustomerUserLogOutPostModelRequest.
         """
-
         if session is None:
             obj2 = model_class(*args, **kwargs)
             return obj2
 
 
         obj = model_class(*args, **kwargs)
-
 
         return obj
 
@@ -88,7 +86,6 @@ class CustomerUserLogOutPostModelRequestFactory(
 
         obj = model_class(*args, **kwargs)
 
-
         return obj
 
     @classmethod
@@ -111,10 +108,9 @@ class CustomerUserLogOutPostModelRequestFactory(
         """
 
 
-        obj = CustomerUserLogOutPostModelRequestFactory.build(
-            session=None, *args, **kwargs
-        )
-
+        obj = CustomerUserLogOutPostModelRequestFactory \
+            .build(
+                session=None, *args, **kwargs
+            )
 
         return obj
-

@@ -1,4 +1,4 @@
-# tri_state_filter_test.py
+# models/serialization_schema/tests/tri_state_filter_test.py
 # pylint: disable=redefined-outer-name
 # pylint: disable=unused-import
 
@@ -15,13 +15,15 @@ transmitted over a network.
 
 The tests in this module cover the serialization
 and deserialization of TriStateFilter
-instances using the TriStateFilterSchema class. They verify
+instances using the TriStateFilterSchema
+class. They verify
 that the serialized data
 matches the expected format and that the
 deserialized data can be used to
 reconstruct a TriStateFilter instance.
 
-The TriStateFilterSchema class is used to define
+The TriStateFilterSchema class
+is used to define
 the serialization and deserialization
 rules for TriStateFilter instances. It
 specifies how each attribute of a
@@ -56,7 +58,7 @@ logger = get_logger(__name__)
 
 
 @pytest.fixture(scope="function")
-def tri_state_filter(
+def new_obj(
     session
 ) -> TriStateFilter:
     """
@@ -114,7 +116,7 @@ class TestTriStateFilterSchema:
 
     def test_tri_state_filter_serialization(
         self,
-        tri_state_filter: TriStateFilter
+        new_obj: TriStateFilter
     ):
         """
         Test the serialization of a
@@ -127,44 +129,44 @@ class TestTriStateFilterSchema:
         """
 
         schema = TriStateFilterSchema()
-        tri_state_filter_data = schema.dump(tri_state_filter)
+        tri_state_filter_data = schema.dump(new_obj)
 
         assert isinstance(tri_state_filter_data, dict)
 
         result = tri_state_filter_data
 
-        assert result['code'] == str(tri_state_filter.code)
+        assert result['code'] == str(new_obj.code)
         assert result['last_change_code'] == (
-            tri_state_filter.last_change_code)
+            new_obj.last_change_code)
         assert result['insert_user_id'] == (
-            str(tri_state_filter.insert_user_id))
+            str(new_obj.insert_user_id))
         assert result['last_update_user_id'] == (
-            str(tri_state_filter.last_update_user_id))
+            str(new_obj.last_update_user_id))
 
         assert result['description'] == (
-            tri_state_filter.description)
+            new_obj.description)
         assert result['display_order'] == (
-            tri_state_filter.display_order)
+            new_obj.display_order)
         assert result['is_active'] == (
-            tri_state_filter.is_active)
+            new_obj.is_active)
         assert result['lookup_enum_name'] == (
-            tri_state_filter.lookup_enum_name)
+            new_obj.lookup_enum_name)
         assert result['name'] == (
-            tri_state_filter.name)
+            new_obj.name)
         assert result['pac_id'] == (
-            tri_state_filter.pac_id)
+            new_obj.pac_id)
         assert result['state_int_value'] == (
-            tri_state_filter.state_int_value)
+            new_obj.state_int_value)
         assert result['insert_utc_date_time'] == (
-            tri_state_filter.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert result['last_update_utc_date_time'] == (
-            tri_state_filter.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert result['pac_code_peek'] == (  # PacID
-            str(tri_state_filter.pac_code_peek))
+            str(new_obj.pac_code_peek))
 
     def test_tri_state_filter_deserialization(
         self,
-        tri_state_filter
+        new_obj: TriStateFilter
     ):
         """
         Test the deserialization of a
@@ -183,76 +185,76 @@ class TestTriStateFilterSchema:
         """
 
         schema = TriStateFilterSchema()
-        serialized_data = schema.dump(tri_state_filter)
+        serialized_data = schema.dump(new_obj)
         deserialized_data = schema.load(serialized_data)
 
         assert deserialized_data['code'] == \
-            tri_state_filter.code
+            new_obj.code
         assert deserialized_data['last_change_code'] == (
-            tri_state_filter.last_change_code)
+            new_obj.last_change_code)
         assert deserialized_data['insert_user_id'] == (
-            tri_state_filter.insert_user_id)
+            new_obj.insert_user_id)
         assert deserialized_data['last_update_user_id'] == (
-            tri_state_filter.last_update_user_id)
+            new_obj.last_update_user_id)
         assert deserialized_data['description'] == (
-            tri_state_filter.description)
+            new_obj.description)
         assert deserialized_data['display_order'] == (
-            tri_state_filter.display_order)
+            new_obj.display_order)
         assert deserialized_data['is_active'] == (
-            tri_state_filter.is_active)
+            new_obj.is_active)
         assert deserialized_data['lookup_enum_name'] == (
-            tri_state_filter.lookup_enum_name)
+            new_obj.lookup_enum_name)
         assert deserialized_data['name'] == (
-            tri_state_filter.name)
+            new_obj.name)
         assert deserialized_data['pac_id'] == (
-            tri_state_filter.pac_id)
+            new_obj.pac_id)
         assert deserialized_data['state_int_value'] == (
-            tri_state_filter.state_int_value)
+            new_obj.state_int_value)
         assert deserialized_data['insert_utc_date_time'].isoformat() == (
-            tri_state_filter.insert_utc_date_time.isoformat())
+            new_obj.insert_utc_date_time.isoformat())
         assert deserialized_data['last_update_utc_date_time'].isoformat() == (
-            tri_state_filter.last_update_utc_date_time.isoformat())
+            new_obj.last_update_utc_date_time.isoformat())
         assert deserialized_data[(  # PacID
             'pac_code_peek')] == (
-            tri_state_filter.pac_code_peek)
+            new_obj.pac_code_peek)
 
-        new_tri_state_filter = TriStateFilter(
+        obj_from_dict = TriStateFilter(
             **deserialized_data)
 
-        assert isinstance(new_tri_state_filter,
+        assert isinstance(new_obj,
                           TriStateFilter)
 
-        # Now compare the new_tri_state_filter attributes with
+        # Now compare the new_obj attributes with
         # the tri_state_filter attributes
-        assert new_tri_state_filter.code == \
-            tri_state_filter.code
-        assert new_tri_state_filter.last_change_code == \
-            tri_state_filter.last_change_code
-        assert new_tri_state_filter.insert_user_id == \
-            tri_state_filter.insert_user_id
-        assert new_tri_state_filter.last_update_user_id == \
-            tri_state_filter.last_update_user_id
-        assert new_tri_state_filter.description == (
-            tri_state_filter.description)
-        assert new_tri_state_filter.display_order == (
-            tri_state_filter.display_order)
-        assert new_tri_state_filter.is_active == (
-            tri_state_filter.is_active)
-        assert new_tri_state_filter.lookup_enum_name == (
-            tri_state_filter.lookup_enum_name)
-        assert new_tri_state_filter.name == (
-            tri_state_filter.name)
-        assert new_tri_state_filter.pac_id == (
-            tri_state_filter.pac_id)
-        assert new_tri_state_filter.state_int_value == (
-            tri_state_filter.state_int_value)
+        assert obj_from_dict.code == \
+            new_obj.code
+        assert obj_from_dict.last_change_code == \
+            new_obj.last_change_code
+        assert obj_from_dict.insert_user_id == \
+            new_obj.insert_user_id
+        assert obj_from_dict.last_update_user_id == \
+            new_obj.last_update_user_id
+        assert obj_from_dict.description == (
+            new_obj.description)
+        assert obj_from_dict.display_order == (
+            new_obj.display_order)
+        assert obj_from_dict.is_active == (
+            new_obj.is_active)
+        assert obj_from_dict.lookup_enum_name == (
+            new_obj.lookup_enum_name)
+        assert obj_from_dict.name == (
+            new_obj.name)
+        assert obj_from_dict.pac_id == (
+            new_obj.pac_id)
+        assert obj_from_dict.state_int_value == (
+            new_obj.state_int_value)
 
-        assert new_tri_state_filter.insert_utc_date_time.isoformat() == (
-            tri_state_filter.insert_utc_date_time.isoformat())
-        assert new_tri_state_filter.last_update_utc_date_time.isoformat() == (
-            tri_state_filter.last_update_utc_date_time.isoformat())
-        assert new_tri_state_filter.pac_code_peek == (  # PacID
-            tri_state_filter.pac_code_peek)
+        assert obj_from_dict.insert_utc_date_time.isoformat() == (
+            new_obj.insert_utc_date_time.isoformat())
+        assert obj_from_dict.last_update_utc_date_time.isoformat() == (
+            new_obj.last_update_utc_date_time.isoformat())
+        assert obj_from_dict.pac_code_peek == (  # PacID
+            new_obj.pac_code_peek)
 
     def test_from_json(self):
         """
@@ -324,7 +326,7 @@ class TestTriStateFilterSchema:
 
     def test_to_json(
         self,
-        tri_state_filter: TriStateFilter
+        new_obj: TriStateFilter
     ):
         """
         Test the conversion of a
@@ -343,85 +345,84 @@ class TestTriStateFilterSchema:
         # to JSON using the schema
         tri_state_filter_schema = TriStateFilterSchema()
         tri_state_filter_dict = tri_state_filter_schema.dump(
-            tri_state_filter)
+            new_obj)
 
         # Convert the tri_state_filter_dict to JSON string
         tri_state_filter_json = json.dumps(
             tri_state_filter_dict)
 
         # Convert the JSON strings back to dictionaries
-        tri_state_filter_dict_from_json = json.loads(
+        dict_from_json = json.loads(
             tri_state_filter_json)
         # sample_dict_from_json = json.loads(self.sample_data)
 
         logging.info(
-            "tri_state_filter_dict_from_json.keys() %s",
-            tri_state_filter_dict_from_json.keys())
+            "dict_from_json.keys() %s",
+            dict_from_json.keys())
 
         logging.info("self.sample_data.keys() %s", self.sample_data.keys())
 
         # Verify the keys in both dictionaries match
-        assert set(tri_state_filter_dict_from_json.keys()) == (
+        assert set(dict_from_json.keys()) == (
             set(self.sample_data.keys())), (
             f"Expected keys: {set(self.sample_data.keys())}, "
-            f"Got: {set(tri_state_filter_dict_from_json.keys())}"
+            f"Got: {set(dict_from_json.keys())}"
         )
 
-        assert tri_state_filter_dict_from_json['code'] == \
-            str(tri_state_filter.code), (
+        assert dict_from_json['code'] == \
+            str(new_obj.code), (
             "failed on code"
         )
-        assert tri_state_filter_dict_from_json['last_change_code'] == (
-            tri_state_filter.last_change_code), (
+        assert dict_from_json['last_change_code'] == (
+            new_obj.last_change_code), (
             "failed on last_change_code"
         )
-        assert tri_state_filter_dict_from_json['insert_user_id'] == (
-            str(tri_state_filter.insert_user_id)), (
+        assert dict_from_json['insert_user_id'] == (
+            str(new_obj.insert_user_id)), (
             "failed on insert_user_id"
         )
-        assert tri_state_filter_dict_from_json['last_update_user_id'] == (
-            str(tri_state_filter.last_update_user_id)), (
+        assert dict_from_json['last_update_user_id'] == (
+            str(new_obj.last_update_user_id)), (
             "failed on last_update_user_id"
         )
-        assert tri_state_filter_dict_from_json['description'] == (
-            tri_state_filter.description), (
+        assert dict_from_json['description'] == (
+            new_obj.description), (
             "failed on description"
         )
-        assert tri_state_filter_dict_from_json['display_order'] == (
-            tri_state_filter.display_order), (
+        assert dict_from_json['display_order'] == (
+            new_obj.display_order), (
             "failed on display_order"
         )
-        assert tri_state_filter_dict_from_json['is_active'] == (
-            tri_state_filter.is_active), (
+        assert dict_from_json['is_active'] == (
+            new_obj.is_active), (
             "failed on is_active"
         )
-        assert tri_state_filter_dict_from_json['lookup_enum_name'] == (
-            tri_state_filter.lookup_enum_name), (
+        assert dict_from_json['lookup_enum_name'] == (
+            new_obj.lookup_enum_name), (
             "failed on lookup_enum_name"
         )
-        assert tri_state_filter_dict_from_json['name'] == (
-            tri_state_filter.name), (
+        assert dict_from_json['name'] == (
+            new_obj.name), (
             "failed on name"
         )
-        assert tri_state_filter_dict_from_json['pac_id'] == (
-            tri_state_filter.pac_id), (
+        assert dict_from_json['pac_id'] == (
+            new_obj.pac_id), (
             "failed on pac_id"
         )
-        assert tri_state_filter_dict_from_json['state_int_value'] == (
-            tri_state_filter.state_int_value), (
+        assert dict_from_json['state_int_value'] == (
+            new_obj.state_int_value), (
             "failed on state_int_value"
         )
-        assert tri_state_filter_dict_from_json['insert_utc_date_time'] == (
-            tri_state_filter.insert_utc_date_time.isoformat()), (
+        assert dict_from_json['insert_utc_date_time'] == (
+            new_obj.insert_utc_date_time.isoformat()), (
             "failed on insert_utc_date_time"
         )
-        assert tri_state_filter_dict_from_json['last_update_utc_date_time'] == (
-            tri_state_filter.last_update_utc_date_time.isoformat()), (
+        assert dict_from_json['last_update_utc_date_time'] == (
+            new_obj.last_update_utc_date_time.isoformat()), (
             "failed on last_update_utc_date_time"
         )
-        assert tri_state_filter_dict_from_json[(  # PacID
+        assert dict_from_json[(  # PacID
             'pac_code_peek')] == (
-            str(tri_state_filter.pac_code_peek)), (
+            str(new_obj.pac_code_peek)), (
             "failed on pac_code_peek"
         )
-

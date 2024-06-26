@@ -16,9 +16,11 @@ from sqlalchemy.future import select
 
 import models
 from helpers.session_context import SessionContext
-from managers.org_api_key import OrgApiKeyManager
+from managers.org_api_key import (
+    OrgApiKeyManager)
 from models import OrgApiKey
-from models.factory import OrgApiKeyFactory
+from models.factory import (
+    OrgApiKeyFactory)
 
 
 class TestOrgApiKeyGetByManager:
@@ -28,7 +30,7 @@ class TestOrgApiKeyGetByManager:
     """
 
     @pytest_asyncio.fixture(scope="function")
-    async def org_api_key_manager(self, session: AsyncSession):
+    async def obj_manager(self, session: AsyncSession):
         """
         Fixture that returns an instance of
         `OrgApiKeyManager` for testing.
@@ -40,7 +42,7 @@ class TestOrgApiKeyGetByManager:
     @pytest.mark.asyncio
     async def test_build(
         self,
-        org_api_key_manager: OrgApiKeyManager
+        obj_manager: OrgApiKeyManager
     ):
         """
         Test case for the `build` method of
@@ -53,7 +55,7 @@ class TestOrgApiKeyGetByManager:
 
         # Call the build function of the manager
         org_api_key = await \
-            org_api_key_manager.build(
+            obj_manager.build(
                 **mock_data)
 
         # Assert that the returned object is an instance of
@@ -69,34 +71,34 @@ class TestOrgApiKeyGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_id(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
         Test case for the `get_by_id` method of
         `OrgApiKeyManager`.
         """
-        test_org_api_key = await \
+        new_obj = await \
             OrgApiKeyFactory.create_async(
                 session)
 
         org_api_key = await \
-            org_api_key_manager.get_by_id(
-                test_org_api_key.org_api_key_id)
+            obj_manager.get_by_id(
+                new_obj.org_api_key_id)
 
         assert isinstance(
             org_api_key,
             OrgApiKey)
 
-        assert test_org_api_key.org_api_key_id == \
+        assert new_obj.org_api_key_id == \
             org_api_key.org_api_key_id
-        assert test_org_api_key.code == \
+        assert new_obj.code == \
             org_api_key.code
 
     @pytest.mark.asyncio
     async def test_get_by_id_not_found(
         self,
-        org_api_key_manager: OrgApiKeyManager
+        obj_manager: OrgApiKeyManager
     ):
         """
         Test case for the `get_by_id` method of
@@ -107,7 +109,7 @@ class TestOrgApiKeyGetByManager:
         non_existent_id = 9999  # An ID that's not in the database
 
         retrieved_org_api_key = await \
-            org_api_key_manager.get_by_id(
+            obj_manager.get_by_id(
                 non_existent_id)
 
         assert retrieved_org_api_key is None
@@ -115,7 +117,7 @@ class TestOrgApiKeyGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_code_returns_org_api_key(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
@@ -125,27 +127,27 @@ class TestOrgApiKeyGetByManager:
         returned by its code.
         """
 
-        test_org_api_key = await \
+        new_obj = await \
             OrgApiKeyFactory.create_async(
                 session)
 
         org_api_key = await \
-            org_api_key_manager.get_by_code(
-                test_org_api_key.code)
+            obj_manager.get_by_code(
+                new_obj.code)
 
         assert isinstance(
             org_api_key,
             OrgApiKey)
 
-        assert test_org_api_key.org_api_key_id == \
+        assert new_obj.org_api_key_id == \
             org_api_key.org_api_key_id
-        assert test_org_api_key.code == \
+        assert new_obj.code == \
             org_api_key.code
 
     @pytest.mark.asyncio
     async def test_get_by_code_returns_none_for_nonexistent_code(
         self,
-        org_api_key_manager: OrgApiKeyManager
+        obj_manager: OrgApiKeyManager
     ):
         """
         Test case for the `get_by_code` method of
@@ -156,7 +158,7 @@ class TestOrgApiKeyGetByManager:
         random_code = uuid.uuid4()
 
         org_api_key = await \
-            org_api_key_manager.get_by_code(
+            obj_manager.get_by_code(
                 random_code)
 
         assert org_api_key is None
@@ -173,7 +175,7 @@ class TestOrgApiKeyGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_organization_id_existing(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
@@ -186,7 +188,7 @@ class TestOrgApiKeyGetByManager:
         1. Create a org_api_key using the
             OrgApiKeyFactory.
         2. Fetch the org_api_key using the
-            `get_by_organization_id` method of the org_api_key_manager.
+            `get_by_organization_id` method of the obj_manager.
         3. Assert that the fetched org_api_keys list contains
             only one org_api_key.
         4. Assert that the fetched org_api_key
@@ -205,34 +207,34 @@ class TestOrgApiKeyGetByManager:
         """
         # Add a org_api_key with a specific
         # organization_id
-        org_api_key1 = await OrgApiKeyFactory.create_async(
+        obj_1 = await OrgApiKeyFactory.create_async(
             session=session)
 
         # Fetch the org_api_key using
         # the manager function
 
-        fetched_org_api_keys = await \
-            org_api_key_manager.get_by_organization_id(
-                org_api_key1.organization_id)
-        assert len(fetched_org_api_keys) == 1
-        assert isinstance(fetched_org_api_keys[0],
+        fetched_objs = await \
+            obj_manager.get_by_organization_id(
+                obj_1.organization_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           OrgApiKey)
-        assert fetched_org_api_keys[0].code == \
-            org_api_key1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.Organization).where(
-            models.Organization._organization_id == org_api_key1.organization_id)  # type: ignore  # noqa: E501
+            models.Organization._organization_id == obj_1.organization_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         organization = result.scalars().first()
 
         assert isinstance(organization, models.Organization)
 
-        assert fetched_org_api_keys[0].organization_code_peek == organization.code
+        assert fetched_objs[0].organization_code_peek == organization.code
 
     @pytest.mark.asyncio
     async def test_get_by_organization_id_nonexistent(
         self,
-        org_api_key_manager: OrgApiKeyManager
+        obj_manager: OrgApiKeyManager
     ):
         """
         Test case to verify the behavior of the
@@ -245,15 +247,15 @@ class TestOrgApiKeyGetByManager:
 
         non_existent_id = 999
 
-        fetched_org_api_keys = await \
-            org_api_key_manager.get_by_organization_id(
+        fetched_objs = await \
+            obj_manager.get_by_organization_id(
                 non_existent_id)
-        assert len(fetched_org_api_keys) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_organization_id_invalid_type(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
@@ -261,7 +263,7 @@ class TestOrgApiKeyGetByManager:
         `get_by_organization_id` method when an invalid organization ID is provided.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): An
+            obj_manager (OrgApiKeyManager): An
                 instance of the OrgApiKeyManager class.
             session (AsyncSession): An instance
                 of the AsyncSession class.
@@ -277,7 +279,7 @@ class TestOrgApiKeyGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await org_api_key_manager.get_by_organization_id(
+            await obj_manager.get_by_organization_id(
                 invalid_id)  # type: ignore
 
         await session.rollback()
@@ -286,7 +288,7 @@ class TestOrgApiKeyGetByManager:
     @pytest.mark.asyncio
     async def test_get_by_org_customer_id_existing(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
@@ -300,7 +302,7 @@ class TestOrgApiKeyGetByManager:
             OrgApiKeyFactory.
         2. Fetch the org_api_key using the
             `get_by_org_customer_id`
-            method of the org_api_key_manager.
+            method of the obj_manager.
         3. Assert that the fetched org_api_keys list has a length of 1.
         4. Assert that the first element in the fetched
             org_api_keys list is an instance of the
@@ -319,34 +321,34 @@ class TestOrgApiKeyGetByManager:
         """
         # Add a org_api_key with a specific
         # org_customer_id
-        org_api_key1 = await OrgApiKeyFactory.create_async(
+        obj_1 = await OrgApiKeyFactory.create_async(
             session=session)
 
         # Fetch the org_api_key using the
         # manager function
 
-        fetched_org_api_keys = await \
-            org_api_key_manager.get_by_org_customer_id(
-                org_api_key1.org_customer_id)
-        assert len(fetched_org_api_keys) == 1
-        assert isinstance(fetched_org_api_keys[0],
+        fetched_objs = await \
+            obj_manager.get_by_org_customer_id(
+                obj_1.org_customer_id)
+        assert len(fetched_objs) == 1
+        assert isinstance(fetched_objs[0],
                           OrgApiKey)
-        assert fetched_org_api_keys[0].code == \
-            org_api_key1.code
+        assert fetched_objs[0].code == \
+            obj_1.code
 
         stmt = select(models.OrgCustomer).where(
-            models.OrgCustomer._org_customer_id == org_api_key1.org_customer_id)  # type: ignore  # noqa: E501
+            models.OrgCustomer._org_customer_id == obj_1.org_customer_id)  # type: ignore  # noqa: E501
         result = await session.execute(stmt)
         org_customer = result.scalars().first()
 
         assert isinstance(org_customer, models.OrgCustomer)
 
-        assert fetched_org_api_keys[0].org_customer_code_peek == org_customer.code
+        assert fetched_objs[0].org_customer_code_peek == org_customer.code
 
     @pytest.mark.asyncio
     async def test_get_by_org_customer_id_nonexistent(
         self,
-        org_api_key_manager: OrgApiKeyManager
+        obj_manager: OrgApiKeyManager
     ):
         """
         Test case to verify the behavior of the
@@ -368,15 +370,15 @@ class TestOrgApiKeyGetByManager:
         """
         non_existent_id = 999
 
-        fetched_org_api_keys = (
-            await org_api_key_manager.get_by_org_customer_id(
+        fetched_objs = (
+            await obj_manager.get_by_org_customer_id(
                 non_existent_id))
-        assert len(fetched_org_api_keys) == 0
+        assert len(fetched_objs) == 0
 
     @pytest.mark.asyncio
     async def test_get_by_org_customer_id_invalid_type(
         self,
-        org_api_key_manager: OrgApiKeyManager,
+        obj_manager: OrgApiKeyManager,
         session: AsyncSession
     ):
         """
@@ -388,7 +390,7 @@ class TestOrgApiKeyGetByManager:
         when an invalid ID is passed to the method.
 
         Args:
-            org_api_key_manager (OrgApiKeyManager): The
+            obj_manager (OrgApiKeyManager): The
                 instance of the OrgApiKeyManager class.
             session (AsyncSession): The instance of the AsyncSession class.
 
@@ -400,8 +402,7 @@ class TestOrgApiKeyGetByManager:
         invalid_id = "invalid_id"
 
         with pytest.raises(Exception):
-            await org_api_key_manager.get_by_org_customer_id(
+            await obj_manager.get_by_org_customer_id(
                 invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-

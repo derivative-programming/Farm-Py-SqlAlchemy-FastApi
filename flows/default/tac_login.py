@@ -2,7 +2,8 @@
 # pylint: disable=unused-import
 """
 This module contains the
-FlowTacLogin class and related classes
+FlowTacLogin class
+and related classes
 that handle the addition of a
  to a specific
 tac in the flow process.
@@ -17,7 +18,7 @@ from flows.base.tac_login import (
 from flows.base import LogSeverity
 from business.tac import TacBusObj
 from helpers import SessionContext  # noqa: F401
-from helpers import TypeConversion
+from helpers import TypeConversion  # noqa: F401
 
 
 class FlowTacLoginResult():
@@ -25,14 +26,13 @@ class FlowTacLoginResult():
     Represents the result of the
     FlowTacLogin process.
     """
-
-    context_object_code: uuid.UUID = uuid.UUID(int=0)
     customer_code: uuid.UUID = uuid.UUID(int=0)
     email: str = ""
     user_code_value: uuid.UUID = uuid.UUID(int=0)
     utc_offset_in_minutes: int = 0
     role_name_csv_list: str = ""
     api_key: str = ""
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
 
     def __init__(self):
         """
@@ -78,7 +78,8 @@ class FlowTacLogin(
     a  to
     a specific tac in the flow process.
 
-    This class extends the BaseFlowTacLogin class and
+    This class extends the
+    BaseFlowTacLoginclass and
     initializes it with the provided session context.
     """
 
@@ -94,7 +95,8 @@ class FlowTacLogin(
          to a specific tac.
 
         Returns:
-            FlowTacLoginResult: The result of the
+            FlowTacLoginResult:
+                The result of the
                 FlowTacLogin process.
         """
         super()._log_message_and_severity(
@@ -105,14 +107,12 @@ class FlowTacLogin(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Code::" + str(tac_bus_obj.code)
         )
-
         await super()._process_validation_rules(
             tac_bus_obj,
             email,
             password,
 # endset  # noqa: E122
         )
-
         super()._throw_queued_validation_errors()
         customer_code_output: uuid.UUID = uuid.UUID(int=0)
         email_output: str = ""
@@ -120,7 +120,6 @@ class FlowTacLogin(
         utc_offset_in_minutes_output: int = 0
         role_name_csv_list_output: str = ""
         api_key_output: str = ""
-
         # TODO: add flow logic
 
 
@@ -128,7 +127,6 @@ class FlowTacLogin(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
         result = FlowTacLoginResult()
-
         result.context_object_code = tac_bus_obj.code
         result.customer_code = (
             customer_code_output)
@@ -142,7 +140,6 @@ class FlowTacLogin(
             role_name_csv_list_output)
         result.api_key = (
             api_key_output)
-
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Result:" + result.to_json())
@@ -150,6 +147,4 @@ class FlowTacLogin(
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "End")
-
         return result
-

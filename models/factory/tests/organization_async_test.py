@@ -8,7 +8,7 @@ operations of the OrganizationFactory class.
 """
 
 import asyncio
-import math
+import math  # noqa: F401
 import time
 import uuid  # noqa: F401
 from datetime import date, datetime, timedelta  # noqa: F401
@@ -405,25 +405,25 @@ class TestOrganizationFactoryAsync:
         Raises:
             AssertionError: If any of the attribute types are incorrect.
         """
-        organization = await \
+        obj = await \
             OrganizationFactory.create_async(
                 session=session)
-        assert isinstance(organization.organization_id, int)
-        assert isinstance(organization.code, uuid.UUID)
-        assert isinstance(organization.last_change_code, int)
-        assert isinstance(organization.insert_user_id, uuid.UUID)
-        assert isinstance(organization.last_update_user_id, uuid.UUID)
-        assert organization.name == "" or isinstance(
-            organization.name, str)
-        assert isinstance(organization.tac_id, int)
+        assert isinstance(obj.organization_id, int)
+        assert isinstance(obj.code, uuid.UUID)
+        assert isinstance(obj.last_change_code, int)
+        assert isinstance(obj.insert_user_id, uuid.UUID)
+        assert isinstance(obj.last_update_user_id, uuid.UUID)
+        assert obj.name == "" or isinstance(
+            obj.name, str)
+        assert isinstance(obj.tac_id, int)
         # Check for the peek values
         # name,
         # tacID
 
-        assert isinstance(organization.tac_code_peek, uuid.UUID)
+        assert isinstance(obj.tac_code_peek, uuid.UUID)
 
-        assert isinstance(organization.insert_utc_date_time, datetime)
-        assert isinstance(organization.last_update_utc_date_time, datetime)
+        assert isinstance(obj.insert_utc_date_time, datetime)
+        assert isinstance(obj.last_update_utc_date_time, datetime)
 
     @pytest.mark.asyncio
     async def test_unique_code_constraint(self, session):
@@ -448,12 +448,13 @@ class TestOrganizationFactoryAsync:
         each organization.
         """
 
-        organization_1 = await OrganizationFactory.create_async(
+        obj_1 = await OrganizationFactory.create_async(
             session=session)
-        organization_2 = await OrganizationFactory.create_async(
+        obj_2 = await OrganizationFactory.create_async(
             session=session)
-        organization_2.code = organization_1.code
-        session.add_all([organization_1, organization_2])
+        obj_2.code = obj_1.code
+        session.add_all([obj_1,
+                         obj_2])
         with pytest.raises(Exception):
             await session.commit()
         await session.rollback()
@@ -471,20 +472,20 @@ class TestOrganizationFactoryAsync:
         or empty, and that the data types of certain fields are correct.
         """
 
-        organization = Organization()
-        assert organization.code is not None
-        assert organization.last_change_code is not None
-        assert organization.insert_user_id is not None
-        assert organization.last_update_user_id is not None
-        assert organization.insert_utc_date_time is not None
-        assert organization.last_update_utc_date_time is not None
+        new_obj = Organization()
+        assert new_obj.code is not None
+        assert new_obj.last_change_code is not None
+        assert new_obj.insert_user_id is not None
+        assert new_obj.last_update_user_id is not None
+        assert new_obj.insert_utc_date_time is not None
+        assert new_obj.last_update_utc_date_time is not None
 
         # name,
         # TacID
 
-        assert isinstance(organization.tac_code_peek, uuid.UUID)
-        assert organization.name == ""
-        assert organization.tac_id == 0
+        assert isinstance(new_obj.tac_code_peek, uuid.UUID)
+        assert new_obj.name == ""
+        assert new_obj.tac_id == 0
 
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):
@@ -532,24 +533,24 @@ class TestOrganizationFactoryAsync:
             Organization._organization_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 organization.organization_id))
         result = await session.execute(stmt)
-        organization_1 = result.scalars().first()
+        obj_1 = result.scalars().first()
 
-        # organization_1 = await session.query(Organization).filter_by(
+        # obj_1 = await session.query(Organization).filter_by(
         # organization_id=organization.organization_id).first()
-        organization_1.code = uuid.uuid4()
+        obj_1.code = uuid.uuid4()
         await session.commit()
 
         stmt = select(Organization).where(
             Organization._organization_id == (  # type: ignore # pylint: disable=protected-access  # noqa: ignore=E501
                 organization.organization_id))
         result = await session.execute(stmt)
-        organization_2 = result.scalars().first()
+        obj_2 = result.scalars().first()
 
-        # organization_2 = await session.query(Organization).filter_by(
+        # obj_2 = await session.query(Organization).filter_by(
         # organization_id=organization.organization_id).first()
-        organization_2.code = uuid.uuid4()
+        obj_2.code = uuid.uuid4()
         await session.commit()
-        assert organization_2.last_change_code != original_last_change_code
+        assert obj_2.last_change_code != original_last_change_code
     # name,
     # TacID
 
@@ -577,4 +578,3 @@ class TestOrganizationFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-

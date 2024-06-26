@@ -21,7 +21,7 @@ from flows.land_add_plant import (
     FlowLandAddPlant,
     FlowLandAddPlantResult)
 from helpers.session_context import SessionContext
-from helpers.type_conversion import TypeConversion
+from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.land import (
     LandFactory)
 
@@ -32,7 +32,7 @@ class TestLandAddPlantPostModelResponse:
     `FlowLandAddPlantResult` class.
     """
 
-    def test_flow_land_add_plant_result_to_json(self):
+    def test_flow_result_to_json(self):
         """
         Test the `to_json` method of the
         `FlowLandAddPlantResult` class.
@@ -119,9 +119,12 @@ class TestLandAddPlantPostModelResponse:
         """
 
         session_context = SessionContext(dict(), session)
-        flow = FlowLandAddPlant(session_context)
+        flow = FlowLandAddPlant(
+            session_context)
 
-        land = await LandFactory.create_async(session)
+        land = await \
+            LandFactory.create_async(
+                session)
 
         land_bus_obj = LandBusObj(session_context)
         land_bus_obj.load_from_obj_instance(land)
