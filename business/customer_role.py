@@ -11,6 +11,7 @@ CustomerRole.
 from typing import List
 from helpers.session_context import SessionContext
 from models import CustomerRole
+import models
 import managers as managers_and_enums  # noqa: F401
 from .customer_role_fluent import CustomerRoleFluentBusObj
 
@@ -56,3 +57,72 @@ class CustomerRoleBusObj(CustomerRoleFluentBusObj):
             result.append(customer_role_bus_obj)
 
         return result
+    # CustomerID
+
+    async def get_customer_id_obj(self) -> models.Customer:
+        """
+        Retrieves the related Customer object based
+        on the customer_id.
+
+        Returns:
+            An instance of the Customer model
+            representing the related customer.
+
+        """
+        customer_manager = managers_and_enums.CustomerManager(
+            self._session_context)
+        customer_obj = await customer_manager.get_by_id(
+            self.customer_id)
+        return customer_obj
+
+    async def get_customer_id_bus_obj(self):
+        """
+        Retrieves the related Customer
+        business object based
+        on the customer_id.
+
+        Returns:
+            An instance of the Customer
+            business object
+            representing the related customer.
+
+        """
+        from .customer import CustomerBusObj  # pylint: disable=import-outside-toplevel
+        bus_obj = CustomerBusObj(self._session_context)
+        await bus_obj.load_from_id(self.customer_id)
+        return bus_obj
+    # isPlaceholder,
+    # placeholder,
+    # RoleID
+
+    async def get_role_id_obj(self) -> models.Role:
+        """
+        Retrieves the related Role object based on the
+        role_id.
+
+        Returns:
+            The related Role object.
+
+        """
+        role_manager = managers_and_enums.RoleManager(
+            self._session_context)
+        role_obj = await role_manager.get_by_id(
+            self.role_id
+        )
+        return role_obj
+
+    async def get_role_id_bus_obj(self):
+        """
+        Retrieves the related Role
+        business object based on the
+        role_id.
+
+        Returns:
+            The related Role
+            business object.
+
+        """
+        from .role import RoleBusObj  # pylint: disable=import-outside-toplevel
+        bus_obj = RoleBusObj(self._session_context)
+        await bus_obj.load_from_id(self.role_id)
+        return bus_obj

@@ -982,28 +982,6 @@ class TacBaseBusObj(BaseBusObj):
         my_tac = self.get_tac_obj()
         return tac_manager.is_equal(
             tac, my_tac)
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
-    # PacID
-
-    async def get_pac_id_rel_obj(self) -> models.Pac:
-        """
-        Retrieves the related Pac object based
-        on the pac_id.
-
-        Returns:
-            An instance of the Pac model
-            representing the related pac.
-
-        """
-        pac_manager = managers_and_enums.PacManager(
-            self._session_context)
-        pac_obj = await pac_manager.get_by_id(
-            self.pac_id)
-        return pac_obj
 
     def get_obj(self) -> Tac:
         """
@@ -1069,6 +1047,8 @@ class TacBaseBusObj(BaseBusObj):
             which is an instance of the
             Pac model.
         """
-        pac = await self.get_pac_id_rel_obj()
-
-        return pac
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
+        return pac_obj

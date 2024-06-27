@@ -11,11 +11,12 @@ Land.
 from typing import List
 from helpers.session_context import SessionContext
 from models import Land
+import models
 import managers as managers_and_enums  # noqa: F401
 from .land_fluent import LandFluentBusObj
 
 
-from business.plant import PlantBusObj
+from .plant import PlantBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
@@ -59,10 +60,50 @@ class LandBusObj(LandFluentBusObj):
             result.append(land_bus_obj)
 
         return result
+    # description,
+    # displayOrder,
+    # isActive,
+    # lookupEnumName,
+    # name,
+    # PacID
+
+    async def get_pac_id_obj(self) -> models.Pac:
+        """
+        Retrieves the related Pac object based
+        on the pac_id.
+
+        Returns:
+            An instance of the Pac model
+            representing the related pac.
+
+        """
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
+        return pac_obj
+
+    async def get_pac_id_bus_obj(self):
+        """
+        Retrieves the related Pac
+        business object based
+        on the pac_id.
+
+        Returns:
+            An instance of the Pac
+            business object
+            representing the related pac.
+
+        """
+        from .pac import PacBusObj  # pylint: disable=import-outside-toplevel
+        bus_obj = PacBusObj(self._session_context)
+        await bus_obj.load_from_id(self.pac_id)
+        return bus_obj
 
 
     async def build_plant(
-        self) -> PlantBusObj:
+        self
+    ) -> PlantBusObj:
         """
         build plant
         instance (not saved yet)
@@ -83,7 +124,8 @@ class LandBusObj(LandFluentBusObj):
         return item
 
     async def get_all_plant(
-        self) -> List[PlantBusObj]:
+        self
+    ) -> List[PlantBusObj]:
         """
         get all plant
         """

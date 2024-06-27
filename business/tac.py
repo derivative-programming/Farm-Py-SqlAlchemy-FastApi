@@ -11,14 +11,15 @@ Tac.
 from typing import List
 from helpers.session_context import SessionContext
 from models import Tac
+import models
 import managers as managers_and_enums  # noqa: F401
 from .tac_fluent import TacFluentBusObj
 
 
-from business.organization import OrganizationBusObj
+from .organization import OrganizationBusObj
 
 
-from business.customer import CustomerBusObj
+from .customer import CustomerBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
@@ -62,10 +63,50 @@ class TacBusObj(TacFluentBusObj):
             result.append(tac_bus_obj)
 
         return result
+    # description,
+    # displayOrder,
+    # isActive,
+    # lookupEnumName,
+    # name,
+    # PacID
+
+    async def get_pac_id_obj(self) -> models.Pac:
+        """
+        Retrieves the related Pac object based
+        on the pac_id.
+
+        Returns:
+            An instance of the Pac model
+            representing the related pac.
+
+        """
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
+        return pac_obj
+
+    async def get_pac_id_bus_obj(self):
+        """
+        Retrieves the related Pac
+        business object based
+        on the pac_id.
+
+        Returns:
+            An instance of the Pac
+            business object
+            representing the related pac.
+
+        """
+        from .pac import PacBusObj  # pylint: disable=import-outside-toplevel
+        bus_obj = PacBusObj(self._session_context)
+        await bus_obj.load_from_id(self.pac_id)
+        return bus_obj
 
 
     async def build_organization(
-        self) -> OrganizationBusObj:
+        self
+    ) -> OrganizationBusObj:
         """
         build organization
         instance (not saved yet)
@@ -81,7 +122,8 @@ class TacBusObj(TacFluentBusObj):
         return item
 
     async def get_all_organization(
-        self) -> List[OrganizationBusObj]:
+        self
+    ) -> List[OrganizationBusObj]:
         """
         get all organization
         """
@@ -99,7 +141,8 @@ class TacBusObj(TacFluentBusObj):
 
 
     async def build_customer(
-        self) -> CustomerBusObj:
+        self
+    ) -> CustomerBusObj:
         """
         build customer
         instance (not saved yet)
@@ -115,7 +158,8 @@ class TacBusObj(TacFluentBusObj):
         return item
 
     async def get_all_customer(
-        self) -> List[CustomerBusObj]:
+        self
+    ) -> List[CustomerBusObj]:
         """
         get all customer
         """
@@ -131,7 +175,8 @@ class TacBusObj(TacFluentBusObj):
             results.append(bus_obj_item)
         return results
     async def get_customer_by_email_prop(
-        self, email) -> List[CustomerBusObj]:
+        self, email
+    ) -> List[CustomerBusObj]:
         """
         get customer by email
         """
@@ -147,7 +192,8 @@ class TacBusObj(TacFluentBusObj):
             results.append(bus_obj_item)
         return results
     async def get_customer_by_fs_user_code_value_prop(
-        self, fs_user_code_value) -> List[CustomerBusObj]:
+        self, fs_user_code_value
+    ) -> List[CustomerBusObj]:
         """
         get customer by fs_user_code_value
         """

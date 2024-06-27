@@ -1801,45 +1801,6 @@ class CustomerBaseBusObj(BaseBusObj):
         my_customer = self.get_customer_obj()
         return customer_manager.is_equal(
             customer, my_customer)
-    # activeOrganizationID,
-    # email,
-    # emailConfirmedUTCDateTime
-    # firstName,
-    # forgotPasswordKeyExpirationUTCDateTime
-    # forgotPasswordKeyValue,
-    # fSUserCodeValue,
-    # isActive,
-    # isEmailAllowed,
-    # isEmailConfirmed,
-    # isEmailMarketingAllowed,
-    # isLocked,
-    # isMultipleOrganizationsAllowed,
-    # isVerboseLoggingForced,
-    # lastLoginUTCDateTime
-    # lastName,
-    # password,
-    # phone,
-    # province,
-    # registrationUTCDateTime
-    # TacID
-
-    async def get_tac_id_rel_obj(self) -> models.Tac:
-        """
-        Retrieves the related Tac object based
-        on the tac_id.
-
-        Returns:
-            An instance of the Tac model
-            representing the related tac.
-
-        """
-        tac_manager = managers_and_enums.TacManager(
-            self._session_context)
-        tac_obj = await tac_manager.get_by_id(
-            self.tac_id)
-        return tac_obj
-    # uTCOffsetInMinutes,
-    # zip,
 
     def get_obj(self) -> Customer:
         """
@@ -1920,8 +1881,10 @@ class CustomerBaseBusObj(BaseBusObj):
             which is an instance of the
             Tac model.
         """
-        tac = await self.get_tac_id_rel_obj()
-
-        return tac
+        tac_manager = managers_and_enums.TacManager(
+            self._session_context)
+        tac_obj = await tac_manager.get_by_id(
+            self.tac_id)
+        return tac_obj
     # uTCOffsetInMinutes,
     # zip,

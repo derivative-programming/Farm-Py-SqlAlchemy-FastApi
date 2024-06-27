@@ -11,14 +11,15 @@ Organization.
 from typing import List
 from helpers.session_context import SessionContext
 from models import Organization
+import models
 import managers as managers_and_enums  # noqa: F401
 from .organization_fluent import OrganizationFluentBusObj
 
 
-from business.org_customer import OrgCustomerBusObj
+from .org_customer import OrgCustomerBusObj
 
 
-from business.org_api_key import OrgApiKeyBusObj
+from .org_api_key import OrgApiKeyBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
@@ -62,10 +63,46 @@ class OrganizationBusObj(OrganizationFluentBusObj):
             result.append(organization_bus_obj)
 
         return result
+    # name,
+    # TacID
+
+    async def get_tac_id_obj(self) -> models.Tac:
+        """
+        Retrieves the related Tac object based
+        on the tac_id.
+
+        Returns:
+            An instance of the Tac model
+            representing the related tac.
+
+        """
+        tac_manager = managers_and_enums.TacManager(
+            self._session_context)
+        tac_obj = await tac_manager.get_by_id(
+            self.tac_id)
+        return tac_obj
+
+    async def get_tac_id_bus_obj(self):
+        """
+        Retrieves the related Tac
+        business object based
+        on the tac_id.
+
+        Returns:
+            An instance of the Tac
+            business object
+            representing the related tac.
+
+        """
+        from .tac import TacBusObj  # pylint: disable=import-outside-toplevel
+        bus_obj = TacBusObj(self._session_context)
+        await bus_obj.load_from_id(self.tac_id)
+        return bus_obj
 
 
     async def build_org_customer(
-        self) -> OrgCustomerBusObj:
+        self
+    ) -> OrgCustomerBusObj:
         """
         build org_customer
         instance (not saved yet)
@@ -81,7 +118,8 @@ class OrganizationBusObj(OrganizationFluentBusObj):
         return item
 
     async def get_all_org_customer(
-        self) -> List[OrgCustomerBusObj]:
+        self
+    ) -> List[OrgCustomerBusObj]:
         """
         get all org_customer
         """
@@ -99,7 +137,8 @@ class OrganizationBusObj(OrganizationFluentBusObj):
 
 
     async def build_org_api_key(
-        self) -> OrgApiKeyBusObj:
+        self
+    ) -> OrgApiKeyBusObj:
         """
         build org_api_key
         instance (not saved yet)
@@ -115,7 +154,8 @@ class OrganizationBusObj(OrganizationFluentBusObj):
         return item
 
     async def get_all_org_api_key(
-        self) -> List[OrgApiKeyBusObj]:
+        self
+    ) -> List[OrgApiKeyBusObj]:
         """
         get all org_api_key
         """

@@ -11,11 +11,12 @@ Customer.
 from typing import List
 from helpers.session_context import SessionContext
 from models import Customer
+import models
 import managers as managers_and_enums  # noqa: F401
 from .customer_fluent import CustomerFluentBusObj
 
 
-from business.customer_role import CustomerRoleBusObj
+from .customer_role import CustomerRoleBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
@@ -59,10 +60,67 @@ class CustomerBusObj(CustomerFluentBusObj):
             result.append(customer_bus_obj)
 
         return result
+    # activeOrganizationID,
+    # email,
+    # emailConfirmedUTCDateTime
+    # firstName,
+    # forgotPasswordKeyExpirationUTCDateTime
+    # forgotPasswordKeyValue,
+    # fSUserCodeValue,
+    # isActive,
+    # isEmailAllowed,
+    # isEmailConfirmed,
+    # isEmailMarketingAllowed,
+    # isLocked,
+    # isMultipleOrganizationsAllowed,
+    # isVerboseLoggingForced,
+    # lastLoginUTCDateTime
+    # lastName,
+    # password,
+    # phone,
+    # province,
+    # registrationUTCDateTime
+    # TacID
+
+    async def get_tac_id_obj(self) -> models.Tac:
+        """
+        Retrieves the related Tac object based
+        on the tac_id.
+
+        Returns:
+            An instance of the Tac model
+            representing the related tac.
+
+        """
+        tac_manager = managers_and_enums.TacManager(
+            self._session_context)
+        tac_obj = await tac_manager.get_by_id(
+            self.tac_id)
+        return tac_obj
+
+    async def get_tac_id_bus_obj(self):
+        """
+        Retrieves the related Tac
+        business object based
+        on the tac_id.
+
+        Returns:
+            An instance of the Tac
+            business object
+            representing the related tac.
+
+        """
+        from .tac import TacBusObj  # pylint: disable=import-outside-toplevel
+        bus_obj = TacBusObj(self._session_context)
+        await bus_obj.load_from_id(self.tac_id)
+        return bus_obj
+    # uTCOffsetInMinutes,
+    # zip,
 
 
     async def build_customer_role(
-        self) -> CustomerRoleBusObj:
+        self
+    ) -> CustomerRoleBusObj:
         """
         build customer_role
         instance (not saved yet)
@@ -83,7 +141,8 @@ class CustomerBusObj(CustomerFluentBusObj):
         return item
 
     async def get_all_customer_role(
-        self) -> List[CustomerRoleBusObj]:
+        self
+    ) -> List[CustomerRoleBusObj]:
         """
         get all customer_role
         """

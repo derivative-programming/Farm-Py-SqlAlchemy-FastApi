@@ -1156,47 +1156,6 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
         my_org_api_key = self.get_org_api_key_obj()
         return org_api_key_manager.is_equal(
             org_api_key, my_org_api_key)
-    # apiKeyValue,
-    # createdBy,
-    # createdUTCDateTime
-    # expirationUTCDateTime
-    # isActive,
-    # isTempUserKey,
-    # name,
-    # OrganizationID
-
-    async def get_organization_id_rel_obj(self) -> models.Organization:
-        """
-        Retrieves the related Organization object based
-        on the organization_id.
-
-        Returns:
-            An instance of the Organization model
-            representing the related organization.
-
-        """
-        organization_manager = managers_and_enums.OrganizationManager(
-            self._session_context)
-        organization_obj = await organization_manager.get_by_id(
-            self.organization_id)
-        return organization_obj
-    # OrgCustomerID
-
-    async def get_org_customer_id_rel_obj(self) -> models.OrgCustomer:
-        """
-        Retrieves the related OrgCustomer object based on the
-        org_customer_id.
-
-        Returns:
-            The related OrgCustomer object.
-
-        """
-        org_customer_manager = managers_and_enums.OrgCustomerManager(
-            self._session_context)
-        org_customer_obj = await org_customer_manager.get_by_id(
-            self.org_customer_id
-        )
-        return org_customer_obj
 
     def get_obj(self) -> OrgApiKey:
         """
@@ -1264,7 +1223,9 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             which is an instance of the
             Organization model.
         """
-        organization = await self.get_organization_id_rel_obj()
-
-        return organization
+        organization_manager = managers_and_enums.OrganizationManager(
+            self._session_context)
+        organization_obj = await organization_manager.get_by_id(
+            self.organization_id)
+        return organization_obj
     # OrgCustomerID

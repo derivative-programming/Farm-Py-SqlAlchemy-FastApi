@@ -918,42 +918,6 @@ class CustomerRoleBaseBusObj(BaseBusObj):
         my_customer_role = self.get_customer_role_obj()
         return customer_role_manager.is_equal(
             customer_role, my_customer_role)
-    # CustomerID
-
-    async def get_customer_id_rel_obj(self) -> models.Customer:
-        """
-        Retrieves the related Customer object based
-        on the customer_id.
-
-        Returns:
-            An instance of the Customer model
-            representing the related customer.
-
-        """
-        customer_manager = managers_and_enums.CustomerManager(
-            self._session_context)
-        customer_obj = await customer_manager.get_by_id(
-            self.customer_id)
-        return customer_obj
-    # isPlaceholder,
-    # placeholder,
-    # RoleID
-
-    async def get_role_id_rel_obj(self) -> models.Role:
-        """
-        Retrieves the related Role object based on the
-        role_id.
-
-        Returns:
-            The related Role object.
-
-        """
-        role_manager = managers_and_enums.RoleManager(
-            self._session_context)
-        role_obj = await role_manager.get_by_id(
-            self.role_id
-        )
-        return role_obj
 
     def get_obj(self) -> CustomerRole:
         """
@@ -1014,9 +978,11 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             which is an instance of the
             Customer model.
         """
-        customer = await self.get_customer_id_rel_obj()
-
-        return customer
+        customer_manager = managers_and_enums.CustomerManager(
+            self._session_context)
+        customer_obj = await customer_manager.get_by_id(
+            self.customer_id)
+        return customer_obj
     # isPlaceholder,
     # placeholder,
     # RoleID

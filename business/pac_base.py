@@ -980,11 +980,6 @@ class PacBaseBusObj(BaseBusObj):
         my_pac = self.get_pac_obj()
         return pac_manager.is_equal(
             pac, my_pac)
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
 
     def get_obj(self) -> Pac:
         """

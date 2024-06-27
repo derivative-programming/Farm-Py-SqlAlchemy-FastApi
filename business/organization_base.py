@@ -800,24 +800,6 @@ class OrganizationBaseBusObj(BaseBusObj):
         my_organization = self.get_organization_obj()
         return organization_manager.is_equal(
             organization, my_organization)
-    # name,
-    # TacID
-
-    async def get_tac_id_rel_obj(self) -> models.Tac:
-        """
-        Retrieves the related Tac object based
-        on the tac_id.
-
-        Returns:
-            An instance of the Tac model
-            representing the related tac.
-
-        """
-        tac_manager = managers_and_enums.TacManager(
-            self._session_context)
-        tac_obj = await tac_manager.get_by_id(
-            self.tac_id)
-        return tac_obj
 
     def get_obj(self) -> Organization:
         """
@@ -879,6 +861,8 @@ class OrganizationBaseBusObj(BaseBusObj):
             which is an instance of the
             Tac model.
         """
-        tac = await self.get_tac_id_rel_obj()
-
-        return tac
+        tac_manager = managers_and_enums.TacManager(
+            self._session_context)
+        tac_obj = await tac_manager.get_by_id(
+            self.tac_id)
+        return tac_obj

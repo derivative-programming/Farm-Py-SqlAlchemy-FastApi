@@ -1085,30 +1085,6 @@ class ErrorLogBaseBusObj(BaseBusObj):
         my_error_log = self.get_error_log_obj()
         return error_log_manager.is_equal(
             error_log, my_error_log)
-    # browserCode,
-    # contextCode,
-    # createdUTCDateTime
-    # description,
-    # isClientSideError,
-    # isResolved,
-    # PacID
-
-    async def get_pac_id_rel_obj(self) -> models.Pac:
-        """
-        Retrieves the related Pac object based
-        on the pac_id.
-
-        Returns:
-            An instance of the Pac model
-            representing the related pac.
-
-        """
-        pac_manager = managers_and_enums.PacManager(
-            self._session_context)
-        pac_obj = await pac_manager.get_by_id(
-            self.pac_id)
-        return pac_obj
-    # url,
 
     def get_obj(self) -> ErrorLog:
         """
@@ -1175,7 +1151,9 @@ class ErrorLogBaseBusObj(BaseBusObj):
             which is an instance of the
             Pac model.
         """
-        pac = await self.get_pac_id_rel_obj()
-
-        return pac
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
+        return pac_obj
     # url,

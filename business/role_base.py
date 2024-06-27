@@ -982,28 +982,6 @@ class RoleBaseBusObj(BaseBusObj):
         my_role = self.get_role_obj()
         return role_manager.is_equal(
             role, my_role)
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
-    # PacID
-
-    async def get_pac_id_rel_obj(self) -> models.Pac:
-        """
-        Retrieves the related Pac object based
-        on the pac_id.
-
-        Returns:
-            An instance of the Pac model
-            representing the related pac.
-
-        """
-        pac_manager = managers_and_enums.PacManager(
-            self._session_context)
-        pac_obj = await pac_manager.get_by_id(
-            self.pac_id)
-        return pac_obj
 
     def get_obj(self) -> Role:
         """
@@ -1069,6 +1047,8 @@ class RoleBaseBusObj(BaseBusObj):
             which is an instance of the
             Pac model.
         """
-        pac = await self.get_pac_id_rel_obj()
-
-        return pac
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
+        return pac_obj

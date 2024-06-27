@@ -11,6 +11,7 @@ Plant.
 from typing import List
 from helpers.session_context import SessionContext
 from models import Plant
+import models
 import managers as managers_and_enums  # noqa: F401
 from .plant_fluent import PlantFluentBusObj
 ##GENINCLUDEFILE[GENVALPascalName.top.include.*]
@@ -56,4 +57,91 @@ class PlantBusObj(PlantFluentBusObj):
             result.append(plant_bus_obj)
 
         return result
+# endset
+    # isDeleteAllowed,
+    # isEditAllowed,
+    # otherFlavor,
+    # someBigIntVal,
+    # someBitVal,
+    # someDecimalVal,
+    # someEmailAddress,
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
+    # LandID
+
+    async def get_land_id_obj(self) -> models.Land:
+        """
+        Retrieves the related Land object based
+        on the land_id.
+
+        Returns:
+            An instance of the Land model
+            representing the related land.
+
+        """
+        land_manager = managers_and_enums.LandManager(
+            self._session_context)
+        land_obj = await land_manager.get_by_id(
+            self.land_id)
+        return land_obj
+
+    async def get_land_id_bus_obj(self):
+        """
+        Retrieves the related Land
+        business object based
+        on the land_id.
+
+        Returns:
+            An instance of the Land
+            business object
+            representing the related land.
+
+        """
+        from .land import LandBusObj  # pylint: disable=import-outside-toplevel
+        bus_obj = LandBusObj(self._session_context)
+        await bus_obj.load_from_id(self.land_id)
+        return bus_obj
+    # FlvrForeignKeyID
+
+    async def get_flvr_foreign_key_id_obj(self) -> models.Flavor:
+        """
+        Retrieves the related Flavor object based on the
+        flvr_foreign_key_id.
+
+        Returns:
+            The related Flavor object.
+
+        """
+        flavor_manager = managers_and_enums.FlavorManager(
+            self._session_context)
+        flavor_obj = await flavor_manager.get_by_id(
+            self.flvr_foreign_key_id
+        )
+        return flavor_obj
+
+    async def get_flvr_foreign_key_id_bus_obj(self):
+        """
+        Retrieves the related Flavor
+        business object based on the
+        flvr_foreign_key_id.
+
+        Returns:
+            The related Flavor
+            business object.
+
+        """
+        from .flavor import FlavorBusObj  # pylint: disable=import-outside-toplevel
+        bus_obj = FlavorBusObj(self._session_context)
+        await bus_obj.load_from_id(self.flvr_foreign_key_id)
+        return bus_obj
+    # somePhoneNumber,
+    # someTextVal,
+    # someUniqueidentifierVal,
+    # someVarCharVal,
+# endset
+
     ##GENINCLUDEFILE[GENVALPascalName.bottom.include.*]

@@ -880,41 +880,6 @@ class OrgCustomerBaseBusObj(BaseBusObj):
         my_org_customer = self.get_org_customer_obj()
         return org_customer_manager.is_equal(
             org_customer, my_org_customer)
-    # CustomerID
-
-    async def get_customer_id_rel_obj(self) -> models.Customer:
-        """
-        Retrieves the related Customer object based on the
-        customer_id.
-
-        Returns:
-            The related Customer object.
-
-        """
-        customer_manager = managers_and_enums.CustomerManager(
-            self._session_context)
-        customer_obj = await customer_manager.get_by_id(
-            self.customer_id
-        )
-        return customer_obj
-    # email,
-    # OrganizationID
-
-    async def get_organization_id_rel_obj(self) -> models.Organization:
-        """
-        Retrieves the related Organization object based
-        on the organization_id.
-
-        Returns:
-            An instance of the Organization model
-            representing the related organization.
-
-        """
-        organization_manager = managers_and_enums.OrganizationManager(
-            self._session_context)
-        organization_obj = await organization_manager.get_by_id(
-            self.organization_id)
-        return organization_obj
 
     def get_obj(self) -> OrgCustomer:
         """
@@ -977,6 +942,8 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             which is an instance of the
             Organization model.
         """
-        organization = await self.get_organization_id_rel_obj()
-
-        return organization
+        organization_manager = managers_and_enums.OrganizationManager(
+            self._session_context)
+        organization_obj = await organization_manager.get_by_id(
+            self.organization_id)
+        return organization_obj

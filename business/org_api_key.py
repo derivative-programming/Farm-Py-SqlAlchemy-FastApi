@@ -11,6 +11,7 @@ OrgApiKey.
 from typing import List
 from helpers.session_context import SessionContext
 from models import OrgApiKey
+import models
 import managers as managers_and_enums  # noqa: F401
 from .org_api_key_fluent import OrgApiKeyFluentBusObj
 
@@ -56,3 +57,77 @@ class OrgApiKeyBusObj(OrgApiKeyFluentBusObj):
             result.append(org_api_key_bus_obj)
 
         return result
+    # apiKeyValue,
+    # createdBy,
+    # createdUTCDateTime
+    # expirationUTCDateTime
+    # isActive,
+    # isTempUserKey,
+    # name,
+    # OrganizationID
+
+    async def get_organization_id_obj(self) -> models.Organization:
+        """
+        Retrieves the related Organization object based
+        on the organization_id.
+
+        Returns:
+            An instance of the Organization model
+            representing the related organization.
+
+        """
+        organization_manager = managers_and_enums.OrganizationManager(
+            self._session_context)
+        organization_obj = await organization_manager.get_by_id(
+            self.organization_id)
+        return organization_obj
+
+    async def get_organization_id_bus_obj(self):
+        """
+        Retrieves the related Organization
+        business object based
+        on the organization_id.
+
+        Returns:
+            An instance of the Organization
+            business object
+            representing the related organization.
+
+        """
+        from .organization import OrganizationBusObj  # pylint: disable=import-outside-toplevel
+        bus_obj = OrganizationBusObj(self._session_context)
+        await bus_obj.load_from_id(self.organization_id)
+        return bus_obj
+    # OrgCustomerID
+
+    async def get_org_customer_id_obj(self) -> models.OrgCustomer:
+        """
+        Retrieves the related OrgCustomer object based on the
+        org_customer_id.
+
+        Returns:
+            The related OrgCustomer object.
+
+        """
+        org_customer_manager = managers_and_enums.OrgCustomerManager(
+            self._session_context)
+        org_customer_obj = await org_customer_manager.get_by_id(
+            self.org_customer_id
+        )
+        return org_customer_obj
+
+    async def get_org_customer_id_bus_obj(self):
+        """
+        Retrieves the related OrgCustomer
+        business object based on the
+        org_customer_id.
+
+        Returns:
+            The related OrgCustomer
+            business object.
+
+        """
+        from .org_customer import OrgCustomerBusObj  # pylint: disable=import-outside-toplevel
+        bus_obj = OrgCustomerBusObj(self._session_context)
+        await bus_obj.load_from_id(self.org_customer_id)
+        return bus_obj

@@ -11,29 +11,30 @@ Pac.
 from typing import List
 from helpers.session_context import SessionContext
 from models import Pac
+import models
 import managers as managers_and_enums  # noqa: F401
 from .pac_fluent import PacFluentBusObj
 
 
-from business.tri_state_filter import TriStateFilterBusObj
+from .tri_state_filter import TriStateFilterBusObj
 
 
-from business.tac import TacBusObj
+from .tac import TacBusObj
 
 
-from business.role import RoleBusObj
+from .role import RoleBusObj
 
 
-from business.land import LandBusObj
+from .land import LandBusObj
 
 
-from business.flavor import FlavorBusObj
+from .flavor import FlavorBusObj
 
 
-from business.error_log import ErrorLogBusObj
+from .error_log import ErrorLogBusObj
 
 
-from business.date_greater_than_filter import DateGreaterThanFilterBusObj
+from .date_greater_than_filter import DateGreaterThanFilterBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
@@ -77,10 +78,16 @@ class PacBusObj(PacFluentBusObj):
             result.append(pac_bus_obj)
 
         return result
+    # description,
+    # displayOrder,
+    # isActive,
+    # lookupEnumName,
+    # name,
 
 
     async def build_tri_state_filter(
-        self) -> TriStateFilterBusObj:
+        self
+    ) -> TriStateFilterBusObj:
         """
         build tri_state_filter
         instance (not saved yet)
@@ -96,7 +103,8 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_tri_state_filter(
-        self) -> List[TriStateFilterBusObj]:
+        self
+    ) -> List[TriStateFilterBusObj]:
         """
         get all tri_state_filter
         """
@@ -114,7 +122,8 @@ class PacBusObj(PacFluentBusObj):
 
 
     async def build_tac(
-        self) -> TacBusObj:
+        self
+    ) -> TacBusObj:
         """
         build tac
         instance (not saved yet)
@@ -130,7 +139,8 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_tac(
-        self) -> List[TacBusObj]:
+        self
+    ) -> List[TacBusObj]:
         """
         get all tac
         """
@@ -148,7 +158,8 @@ class PacBusObj(PacFluentBusObj):
 
 
     async def build_role(
-        self) -> RoleBusObj:
+        self
+    ) -> RoleBusObj:
         """
         build role
         instance (not saved yet)
@@ -164,7 +175,8 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_role(
-        self) -> List[RoleBusObj]:
+        self
+    ) -> List[RoleBusObj]:
         """
         get all role
         """
@@ -182,7 +194,8 @@ class PacBusObj(PacFluentBusObj):
 
 
     async def build_land(
-        self) -> LandBusObj:
+        self
+    ) -> LandBusObj:
         """
         build land
         instance (not saved yet)
@@ -198,7 +211,8 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_land(
-        self) -> List[LandBusObj]:
+        self
+    ) -> List[LandBusObj]:
         """
         get all land
         """
@@ -216,7 +230,8 @@ class PacBusObj(PacFluentBusObj):
 
 
     async def build_flavor(
-        self) -> FlavorBusObj:
+        self
+    ) -> FlavorBusObj:
         """
         build flavor
         instance (not saved yet)
@@ -232,7 +247,8 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_flavor(
-        self) -> List[FlavorBusObj]:
+        self
+    ) -> List[FlavorBusObj]:
         """
         get all flavor
         """
@@ -250,7 +266,8 @@ class PacBusObj(PacFluentBusObj):
 
 
     async def build_error_log(
-        self) -> ErrorLogBusObj:
+        self
+    ) -> ErrorLogBusObj:
         """
         build error_log
         instance (not saved yet)
@@ -266,7 +283,8 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_error_log(
-        self) -> List[ErrorLogBusObj]:
+        self
+    ) -> List[ErrorLogBusObj]:
         """
         get all error_log
         """
@@ -284,7 +302,8 @@ class PacBusObj(PacFluentBusObj):
 
 
     async def build_date_greater_than_filter(
-        self) -> DateGreaterThanFilterBusObj:
+        self
+    ) -> DateGreaterThanFilterBusObj:
         """
         build date_greater_than_filter
         instance (not saved yet)
@@ -300,7 +319,8 @@ class PacBusObj(PacFluentBusObj):
         return item
 
     async def get_all_date_greater_than_filter(
-        self) -> List[DateGreaterThanFilterBusObj]:
+        self
+    ) -> List[DateGreaterThanFilterBusObj]:
         """
         get all date_greater_than_filter
         """

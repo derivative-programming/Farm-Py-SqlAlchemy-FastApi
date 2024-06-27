@@ -7,6 +7,7 @@ which represents the business object for a DateGreaterThanFilter.
 
 from typing import List
 from helpers.session_context import SessionContext
+import models
 from models import DateGreaterThanFilter
 import managers as managers_and_enums  # noqa: F401
 from .date_greater_than_filter_fluent import DateGreaterThanFilterFluentBusObj
@@ -53,6 +54,45 @@ class DateGreaterThanFilterBusObj(DateGreaterThanFilterFluentBusObj):
             result.append(date_greater_than_filter_bus_obj)
 
         return result
+    # description,
+    # displayOrder,
+    # isActive,
+    # lookupEnumName,
+    # name,
+    # PacID
+
+    async def get_pac_id_obj(self) -> models.Pac:
+        """
+        Retrieves the related Pac object based
+        on the pac_id.
+
+        Returns:
+            An instance of the Pac model
+            representing the related pac.
+
+        """
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
+        return pac_obj
+
+    async def get_pac_id_bus_obj(self):
+        """
+        Retrieves the related Pac
+        business object based
+        on the pac_id.
+
+        Returns:
+            An instance of the Pac
+            business object
+            representing the related pac.
+
+        """
+        from .pac import PacBusObj  # pylint: disable=import-outside-toplevel
+        bus_obj = PacBusObj(self._session_context)
+        await bus_obj.load_from_id(self.pac_id)
+        return bus_obj
 
 ##GENTrainingBlock[caseLookupEnums]Start
 ##GENLearn[isLookup=true]Start

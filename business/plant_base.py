@@ -1659,58 +1659,6 @@ class PlantBaseBusObj(BaseBusObj):
         return plant_manager.is_equal(
             plant, my_plant)
 # endset
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-    # LandID
-
-    async def get_land_id_rel_obj(self) -> models.Land:
-        """
-        Retrieves the related Land object based
-        on the land_id.
-
-        Returns:
-            An instance of the Land model
-            representing the related land.
-
-        """
-        land_manager = managers_and_enums.LandManager(
-            self._session_context)
-        land_obj = await land_manager.get_by_id(
-            self.land_id)
-        return land_obj
-    # FlvrForeignKeyID
-
-    async def get_flvr_foreign_key_id_rel_obj(self) -> models.Flavor:
-        """
-        Retrieves the related Flavor object based on the
-        flvr_foreign_key_id.
-
-        Returns:
-            The related Flavor object.
-
-        """
-        flavor_manager = managers_and_enums.FlavorManager(
-            self._session_context)
-        flavor_obj = await flavor_manager.get_by_id(
-            self.flvr_foreign_key_id
-        )
-        return flavor_obj
-    # somePhoneNumber,
-    # someTextVal,
-    # someUniqueidentifierVal,
-    # someVarCharVal,
-# endset
 
     def get_obj(self) -> Plant:
         """
@@ -1786,9 +1734,11 @@ class PlantBaseBusObj(BaseBusObj):
             which is an instance of the
             Land model.
         """
-        land = await self.get_land_id_rel_obj()
-
-        return land
+        land_manager = managers_and_enums.LandManager(
+            self._session_context)
+        land_obj = await land_manager.get_by_id(
+            self.land_id)
+        return land_obj
     # somePhoneNumber,
     # someTextVal,
     # someUniqueidentifierVal,

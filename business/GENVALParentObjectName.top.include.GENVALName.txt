@@ -2,4 +2,4 @@
 ##GENIF[calculatedIsParentObjectAvailable=false]Start
 //GENDELETETHISFILE
 ##GENIF[calculatedIsParentObjectAvailable=false]End
-from business.GENVALSnakeName import GENVALPascalNameBusObj
+from .GENVALSnakeName import GENVALPascalNameBusObj

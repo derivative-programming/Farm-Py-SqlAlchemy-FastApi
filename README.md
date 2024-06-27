@@ -54,6 +54,12 @@ uvicorn main:app --reload
 collect requirements...
 >pip freeze > requirements.txt
 
+run in docker...
+docker build -t myfastapiapp .
+docker run -d --name myfastapiapp -p 8000:8000 myfastapiapp
+
+run docker compose (api docker isntance and postgres docker instance)
+docker-compose up -d
 
 ## api
 /openapi.json

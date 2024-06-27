@@ -1032,29 +1032,6 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         my_tri_state_filter = self.get_tri_state_filter_obj()
         return tri_state_filter_manager.is_equal(
             tri_state_filter, my_tri_state_filter)
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
-    # PacID
-
-    async def get_pac_id_rel_obj(self) -> models.Pac:
-        """
-        Retrieves the related Pac object based
-        on the pac_id.
-
-        Returns:
-            An instance of the Pac model
-            representing the related pac.
-
-        """
-        pac_manager = managers_and_enums.PacManager(
-            self._session_context)
-        pac_obj = await pac_manager.get_by_id(
-            self.pac_id)
-        return pac_obj
-    # stateIntValue,
 
     def get_obj(self) -> TriStateFilter:
         """
@@ -1120,7 +1097,9 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             which is an instance of the
             Pac model.
         """
-        pac = await self.get_pac_id_rel_obj()
-
-        return pac
+        pac_manager = managers_and_enums.PacManager(
+            self._session_context)
+        pac_obj = await pac_manager.get_by_id(
+            self.pac_id)
+        return pac_obj
     # stateIntValue,

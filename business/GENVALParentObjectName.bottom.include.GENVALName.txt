@@ -3,7 +3,8 @@
 ##GENIF[calculatedIsParentObjectAvailable=false]End
 
     async def build_GENVALSnakeName(
-        self) -> GENVALPascalNameBusObj:
+        self
+    ) -> GENVALPascalNameBusObj:
         """
         build GENVALSnakeName
         instance (not saved yet)
@@ -29,7 +30,8 @@
         return item
 
     async def get_all_GENVALSnakeName(
-        self) -> List[GENVALPascalNameBusObj]:
+        self
+    ) -> List[GENVALPascalNameBusObj]:
         """
         get all GENVALSnakeName
         """
@@ -48,7 +50,8 @@
     ##GENIF[isFK=false,forceDBColumnIndex=true]Start
 
     async def get_GENVALSnakeObjectName_by_GENVALSnakeName_prop(
-        self, GENVALSnakeName) -> List[GENVALPascalObjectNameBusObj]: 
+        self, GENVALSnakeName
+    ) -> List[GENVALPascalObjectNameBusObj]: 
         """
         get GENVALSnakeObjectName by GENVALSnakeName
         """
