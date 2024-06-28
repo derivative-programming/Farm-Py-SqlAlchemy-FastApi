@@ -48,18 +48,43 @@ coverage run -m pytest
 coverage report  # for a simple report
 coverage html # for a larger report
 
-run...
+run local with sqlite...
 uvicorn main:app --reload
+http://127.0.0.1:8000
 
 collect requirements...
 >pip freeze > requirements.txt
+copy requirements.txt requirements.windows.txt
+remvoe "pywin32==306" from requirements.txt (this is for windows, not the linux images)
 
-run in docker...
-docker build -t myfastapiapp .
-docker run -d --name myfastapiapp -p 8000:8000 myfastapiapp
+build and run in docker with default sqlite db...
+docker build -f Dockerfile.app -t demo_app-image .
+docker run -d -p 8000:8000 --name demo_app-container  demo_app-image
+http://127.0.0.1:8000/redoc
 
-run docker compose (api docker isntance and postgres docker instance)
-docker-compose up -d
+run docker compose
+docker-compose up --build -d (build and run detached)
+docker-compose up -d (run detached)
+docker-compose ps (check status of containers)
+docker-compose logs <service-name>
+docker-compose down (stop running the containers)
+
+open pgadmin (full featured postgres ui)
+http://localhost:5050
+register db server with hostname as name of db instance in docker-compose (db), since its on the same network
+
+open adminer (simple open db ui)
+http://localhost:6060
+log in using db credentials. db name is not necessary
+
+prefect server ui...
+http://localhost:4200
+
+prefect server api docs...
+http://localhost:4200/docs
+
+prefect server api docs...
+http://localhost:4200/api
 
 ## api
 /openapi.json

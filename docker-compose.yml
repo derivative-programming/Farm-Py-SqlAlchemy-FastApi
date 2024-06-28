@@ -1,24 +1,126 @@
 version: '3.8'
 services:
-  fastapi-app:
-    build: .
+  # prefect-worker:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.prefect_worker
+  #   container_name: prefect-worker
+  #   environment:
+  #     DATABASE_URL: postgresql+asyncpg://user:password@db:5432/dp_farm
+  #     PREFECT__SERVER__HOST: http://prefect-server:4200
+  #   depends_on:
+  #     - db
+  #     - prefect-server
+  #   volumes:
+  #     - .:/usr/src/app
+  #   networks:
+  #     - app-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
     ports:
       - "8000:8000"
+    container_name: app
     depends_on:
-      - db
+      # - prefect-worker
+      - app-db-server
+      - prefect-server
     environment:
-      DATABASE_URL: postgresql://user:password@db:5432/mydatabase
-
-  db:
-    image: postgres:13
+      DATABASE_URL: postgresql+asyncpg://user:password@app-db-server:5433/dp_farm
+      PREFECT__SERVER__HOST: http://prefect-server:4200
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - app-network
+  
+  prefect-db-server:
+    image: postgres:14
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
+      POSTGRES_DB: prefect
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - prefect_postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+  
+  prefect-server:
+    image: prefecthq/prefect:2.12.0-python3.10
+    restart: always
+    container_name: prefect-server
+    volumes:
+      - prefect_server_data:/root/.prefect
+    entrypoint: ["/opt/prefect/entrypoint.sh", "prefect", "server", "start"]
+    environment:
+      # PREFECT_ORION_DATABASE_CONNECTION_URL: postgresql+asyncpg://user:password@prefect-db-server:5433/prefect
+      PREFECT_UI_URL: http://127.0.0.1:4200/api
+      PREFECT_API_URL: http://127.0.0.1:4200/api
+      # If you want to access Prefect Server UI from anywhere other than the Docker host machine, you will need to change
+      # PREFECT_UI_URL and PREFECT_API_URL to match the external hostname/IP of the host machine. For example:
+      #- PREFECT_UI_URL=http://external-ip:4200/api
+      #- PREFECT_API_URL=http://external-ip:4200/api
+      PREFECT_SERVER_API_HOST: 0.0.0.0
+      PREFECT_API_DATABASE_CONNECTION_URL: postgresql+asyncpg://user:password@prefect-db-server:5432/prefect
+      PREFECT_ORION_DATABASE_CONNECTION_URL: postgresql+asyncpg://user:password@prefect-db-server:5432/prefect
+      PREFECT_SERVER_DATABASE_CONNECTION_URL: postgresql+asyncpg://user:password@prefect-db-server:5432/prefect
+      # Uncomment the following line if you want to use the 'S3 Bucket' storage block instead of the older 'S3' storage
+      # - EXTRA_PIP_PACKAGES=prefect-aws
+    ports:
+      - "4200:4200"  # Prefect Orion UI port
+    depends_on:
+      - prefect-db-server
+    networks:
+      - app-network
+
+  app-db-server:
+    image: postgres:14
+    ports:
+      - "5433:5433"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dp_farm
+    volumes:
+      - app_postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    command: -p 5433
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - "5050:80"
+    depends_on:
+      - prefect-db-server
+      - app-db-server
+    networks:
+      - app-network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "6060:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: app-db-server
+    depends_on:
+      - prefect-db-server
+      - app-db-server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
-  postgres_data:
+  prefect_postgres_data:
+  app_postgres_data:
+  prefect_server_data:
