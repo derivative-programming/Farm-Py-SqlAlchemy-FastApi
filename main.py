@@ -32,8 +32,7 @@ logging.info('Start Main')
 
 app = FastAPI()
 
-app.include_router(fs_farm_api_v1_0_router)
-
+app.include_router(fs_farm_api_v1_0_router) 
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(

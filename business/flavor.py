@@ -96,3 +96,53 @@ class FlavorBusObj(FlavorFluentBusObj):
         bus_obj = PacBusObj(self._session_context)
         await bus_obj.load_from_id(self.pac_id)
         return bus_obj
+
+
+    @property
+    def lookup_enum(self) -> managers_and_enums.FlavorEnum:
+        """
+        Returns the corresponding FlavorEnum
+        value based on the lookup_enum_name.
+        Raises:
+            AttributeError: If the flavor
+                attribute is not initialized.
+        Returns:
+            managers_and_enums.FlavorEnum:
+                The corresponding FlavorEnum value.
+        """
+        if not self.flavor:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+        return (
+            managers_and_enums.FlavorEnum[
+                self.flavor.lookup_enum_name
+            ]
+        )
+
+    async def load_from_enum(
+        self,
+        flavor_enum:
+            managers_and_enums.FlavorEnum
+    ):
+        """
+        Load flavor data from dictionary.
+        :param flavor_dict: Dictionary
+            containing flavor data.
+        :raises ValueError: If flavor_dict
+            is not a dictionary or if no
+            flavor data is found.
+        """
+        if not isinstance(
+            flavor_enum,
+            managers_and_enums.FlavorEnum
+        ):
+            raise ValueError("flavor_enum must be a enum")
+        flavor_manager =  \
+            managers_and_enums.FlavorManager(
+                self._session_context
+            )
+        self.flavor = await (
+            flavor_manager.
+            from_enum(flavor_enum)
+        )

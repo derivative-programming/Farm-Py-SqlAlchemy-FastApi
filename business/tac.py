@@ -104,6 +104,56 @@ class TacBusObj(TacFluentBusObj):
         return bus_obj
 
 
+    @property
+    def lookup_enum(self) -> managers_and_enums.TacEnum:
+        """
+        Returns the corresponding TacEnum
+        value based on the lookup_enum_name.
+        Raises:
+            AttributeError: If the tac
+                attribute is not initialized.
+        Returns:
+            managers_and_enums.TacEnum:
+                The corresponding TacEnum value.
+        """
+        if not self.tac:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+        return (
+            managers_and_enums.TacEnum[
+                self.tac.lookup_enum_name
+            ]
+        )
+
+    async def load_from_enum(
+        self,
+        tac_enum:
+            managers_and_enums.TacEnum
+    ):
+        """
+        Load tac data from dictionary.
+        :param tac_dict: Dictionary
+            containing tac data.
+        :raises ValueError: If tac_dict
+            is not a dictionary or if no
+            tac data is found.
+        """
+        if not isinstance(
+            tac_enum,
+            managers_and_enums.TacEnum
+        ):
+            raise ValueError("tac_enum must be a enum")
+        tac_manager =  \
+            managers_and_enums.TacManager(
+                self._session_context
+            )
+        self.tac = await (
+            tac_manager.
+            from_enum(tac_enum)
+        )
+
+
     async def build_organization(
         self
     ) -> OrganizationBusObj:

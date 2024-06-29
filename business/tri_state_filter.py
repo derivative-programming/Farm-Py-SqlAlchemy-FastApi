@@ -97,3 +97,53 @@ class TriStateFilterBusObj(TriStateFilterFluentBusObj):
         await bus_obj.load_from_id(self.pac_id)
         return bus_obj
     # stateIntValue,
+
+
+    @property
+    def lookup_enum(self) -> managers_and_enums.TriStateFilterEnum:
+        """
+        Returns the corresponding TriStateFilterEnum
+        value based on the lookup_enum_name.
+        Raises:
+            AttributeError: If the tri_state_filter
+                attribute is not initialized.
+        Returns:
+            managers_and_enums.TriStateFilterEnum:
+                The corresponding TriStateFilterEnum value.
+        """
+        if not self.tri_state_filter:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+        return (
+            managers_and_enums.TriStateFilterEnum[
+                self.tri_state_filter.lookup_enum_name
+            ]
+        )
+
+    async def load_from_enum(
+        self,
+        tri_state_filter_enum:
+            managers_and_enums.TriStateFilterEnum
+    ):
+        """
+        Load tri_state_filter data from dictionary.
+        :param tri_state_filter_dict: Dictionary
+            containing tri_state_filter data.
+        :raises ValueError: If tri_state_filter_dict
+            is not a dictionary or if no
+            tri_state_filter data is found.
+        """
+        if not isinstance(
+            tri_state_filter_enum,
+            managers_and_enums.TriStateFilterEnum
+        ):
+            raise ValueError("tri_state_filter_enum must be a enum")
+        tri_state_filter_manager =  \
+            managers_and_enums.TriStateFilterManager(
+                self._session_context
+            )
+        self.tri_state_filter = await (
+            tri_state_filter_manager.
+            from_enum(tri_state_filter_enum)
+        )

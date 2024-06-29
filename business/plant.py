@@ -144,4 +144,9 @@ class PlantBusObj(PlantFluentBusObj):
     # someVarCharVal,
 # endset
 
+##GENTrainingBlock[caseLookupEnums]Start
+##GENLearn[isLookup=false]Start
+##GENLearn[isLookup=false]End
+##GENTrainingBlock[caseLookupEnums]End
+
     ##GENINCLUDEFILE[GENVALPascalName.bottom.include.*]

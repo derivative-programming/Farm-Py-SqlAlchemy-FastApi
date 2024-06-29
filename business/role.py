@@ -96,3 +96,53 @@ class RoleBusObj(RoleFluentBusObj):
         bus_obj = PacBusObj(self._session_context)
         await bus_obj.load_from_id(self.pac_id)
         return bus_obj
+
+
+    @property
+    def lookup_enum(self) -> managers_and_enums.RoleEnum:
+        """
+        Returns the corresponding RoleEnum
+        value based on the lookup_enum_name.
+        Raises:
+            AttributeError: If the role
+                attribute is not initialized.
+        Returns:
+            managers_and_enums.RoleEnum:
+                The corresponding RoleEnum value.
+        """
+        if not self.role:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+        return (
+            managers_and_enums.RoleEnum[
+                self.role.lookup_enum_name
+            ]
+        )
+
+    async def load_from_enum(
+        self,
+        role_enum:
+            managers_and_enums.RoleEnum
+    ):
+        """
+        Load role data from dictionary.
+        :param role_dict: Dictionary
+            containing role data.
+        :raises ValueError: If role_dict
+            is not a dictionary or if no
+            role data is found.
+        """
+        if not isinstance(
+            role_enum,
+            managers_and_enums.RoleEnum
+        ):
+            raise ValueError("role_enum must be a enum")
+        role_manager =  \
+            managers_and_enums.RoleManager(
+                self._session_context
+            )
+        self.role = await (
+            role_manager.
+            from_enum(role_enum)
+        )

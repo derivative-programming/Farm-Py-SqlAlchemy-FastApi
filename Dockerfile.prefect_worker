@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.11-slim
+FROM prefecthq/prefect:2-python3.11
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
@@ -12,4 +12,5 @@ RUN pip install --no-cache-dir prefect && \
     pip install --no-cache-dir -r requirements.txt
 
 # Register flows and then start Prefect agent
-CMD ["sh", "-c", "python worker/prefect/register_flows.py && prefect agent start local"]
+CMD ["sh", "-c", "sleep 1 && python register_flows.py"]
+# CMD ["python", "register_flows.py"]

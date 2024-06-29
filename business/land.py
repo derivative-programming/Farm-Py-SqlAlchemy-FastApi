@@ -101,6 +101,56 @@ class LandBusObj(LandFluentBusObj):
         return bus_obj
 
 
+    @property
+    def lookup_enum(self) -> managers_and_enums.LandEnum:
+        """
+        Returns the corresponding LandEnum
+        value based on the lookup_enum_name.
+        Raises:
+            AttributeError: If the land
+                attribute is not initialized.
+        Returns:
+            managers_and_enums.LandEnum:
+                The corresponding LandEnum value.
+        """
+        if not self.land:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+        return (
+            managers_and_enums.LandEnum[
+                self.land.lookup_enum_name
+            ]
+        )
+
+    async def load_from_enum(
+        self,
+        land_enum:
+            managers_and_enums.LandEnum
+    ):
+        """
+        Load land data from dictionary.
+        :param land_dict: Dictionary
+            containing land data.
+        :raises ValueError: If land_dict
+            is not a dictionary or if no
+            land data is found.
+        """
+        if not isinstance(
+            land_enum,
+            managers_and_enums.LandEnum
+        ):
+            raise ValueError("land_enum must be a enum")
+        land_manager =  \
+            managers_and_enums.LandManager(
+                self._session_context
+            )
+        self.land = await (
+            land_manager.
+            from_enum(land_enum)
+        )
+
+
     async def build_plant(
         self
     ) -> PlantBusObj:

@@ -1,8 +1,9 @@
 from prefect import task
+import asyncio
 
 
 @task
-def dyna_flow_task_a():
+async def dyna_flow_task_a():
     """
     This task is for prefect to run the
     dyna_flow_task_a flow.

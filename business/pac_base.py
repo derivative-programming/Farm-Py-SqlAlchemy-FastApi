@@ -773,7 +773,6 @@ class PacBaseBusObj(BaseBusObj):
 
         return self
 
-
     def get_session_context(self):
         """
         Returns the session context.

@@ -1415,10 +1415,6 @@ class PlantBaseBusObj(BaseBusObj):
                 plant_dict)
 
         return self
-##GENTrainingBlock[caseLookupEnums]Start
-##GENLearn[isLookup=false]Start
-##GENLearn[isLookup=false]End
-##GENTrainingBlock[caseLookupEnums]End
 
     def get_session_context(self):
         """

@@ -85,6 +85,56 @@ class PacBusObj(PacFluentBusObj):
     # name,
 
 
+    @property
+    def lookup_enum(self) -> managers_and_enums.PacEnum:
+        """
+        Returns the corresponding PacEnum
+        value based on the lookup_enum_name.
+        Raises:
+            AttributeError: If the pac
+                attribute is not initialized.
+        Returns:
+            managers_and_enums.PacEnum:
+                The corresponding PacEnum value.
+        """
+        if not self.pac:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+        return (
+            managers_and_enums.PacEnum[
+                self.pac.lookup_enum_name
+            ]
+        )
+
+    async def load_from_enum(
+        self,
+        pac_enum:
+            managers_and_enums.PacEnum
+    ):
+        """
+        Load pac data from dictionary.
+        :param pac_dict: Dictionary
+            containing pac data.
+        :raises ValueError: If pac_dict
+            is not a dictionary or if no
+            pac data is found.
+        """
+        if not isinstance(
+            pac_enum,
+            managers_and_enums.PacEnum
+        ):
+            raise ValueError("pac_enum must be a enum")
+        pac_manager =  \
+            managers_and_enums.PacManager(
+                self._session_context
+            )
+        self.pac = await (
+            pac_manager.
+            from_enum(pac_enum)
+        )
+
+
     async def build_tri_state_filter(
         self
     ) -> TriStateFilterBusObj:
