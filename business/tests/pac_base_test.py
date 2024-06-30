@@ -1213,6 +1213,356 @@ class TestPacBaseBusObj:
 
 
     @pytest.mark.asyncio
+    async def test_build_dyna_flow_type_schedule(
+        self,
+        new_bus_obj: PacBusObj,
+        new_obj: Pac,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
+
+        session_context = SessionContext(dict(), session)
+
+        await current_runtime.initialize(session_context)
+
+        await new_bus_obj.load_from_id(
+            new_obj.pac_id
+        )
+
+        child_bus_obj = await new_bus_obj.build_dyna_flow_type_schedule()
+
+        assert child_bus_obj.pac_id == new_bus_obj.pac_id
+        assert child_bus_obj.pac_code_peek == new_bus_obj.code
+
+        await child_bus_obj.save()
+
+        assert child_bus_obj.dyna_flow_type_schedule_id > 0
+
+    @pytest.mark.asyncio
+    async def test_get_all_dyna_flow_type_schedule(
+        self,
+        new_bus_obj: PacBusObj,
+        new_obj: Pac,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
+
+        session_context = SessionContext(dict(), session)
+
+        await current_runtime.initialize(session_context)
+
+        new_obj_pac_id = (
+            new_obj.pac_id
+        )
+
+        await new_bus_obj.load_from_id(
+            new_obj_pac_id
+        )
+
+        child_bus_obj = await new_bus_obj.build_dyna_flow_type_schedule()
+
+        await child_bus_obj.save()
+
+        child_bus_obj_list = await new_bus_obj.get_all_dyna_flow_type_schedule()
+
+        assert len(child_bus_obj_list) >= 1
+
+        assert child_bus_obj_list[0].dyna_flow_type_schedule_id > 0
+
+        # Check if any item in the list has a matching
+        # dyna_flow_type_schedule_id
+        assert any(
+            child.dyna_flow_type_schedule_id == (
+                child_bus_obj.dyna_flow_type_schedule_id)
+            for child in child_bus_obj_list
+        ), "No matching dyna_flow_type_schedule_id found in the list"
+
+
+    @pytest.mark.asyncio
+    async def test_build_dyna_flow_type(
+        self,
+        new_bus_obj: PacBusObj,
+        new_obj: Pac,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
+
+        session_context = SessionContext(dict(), session)
+
+        await current_runtime.initialize(session_context)
+
+        await new_bus_obj.load_from_id(
+            new_obj.pac_id
+        )
+
+        child_bus_obj = await new_bus_obj.build_dyna_flow_type()
+
+        assert child_bus_obj.pac_id == new_bus_obj.pac_id
+        assert child_bus_obj.pac_code_peek == new_bus_obj.code
+
+        await child_bus_obj.save()
+
+        assert child_bus_obj.dyna_flow_type_id > 0
+
+    @pytest.mark.asyncio
+    async def test_get_all_dyna_flow_type(
+        self,
+        new_bus_obj: PacBusObj,
+        new_obj: Pac,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
+
+        session_context = SessionContext(dict(), session)
+
+        await current_runtime.initialize(session_context)
+
+        new_obj_pac_id = (
+            new_obj.pac_id
+        )
+
+        await new_bus_obj.load_from_id(
+            new_obj_pac_id
+        )
+
+        child_bus_obj = await new_bus_obj.build_dyna_flow_type()
+
+        await child_bus_obj.save()
+
+        child_bus_obj_list = await new_bus_obj.get_all_dyna_flow_type()
+
+        assert len(child_bus_obj_list) >= 1
+
+        assert child_bus_obj_list[0].dyna_flow_type_id > 0
+
+        # Check if any item in the list has a matching
+        # dyna_flow_type_id
+        assert any(
+            child.dyna_flow_type_id == (
+                child_bus_obj.dyna_flow_type_id)
+            for child in child_bus_obj_list
+        ), "No matching dyna_flow_type_id found in the list"
+
+
+    @pytest.mark.asyncio
+    async def test_build_dyna_flow_task_type(
+        self,
+        new_bus_obj: PacBusObj,
+        new_obj: Pac,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
+
+        session_context = SessionContext(dict(), session)
+
+        await current_runtime.initialize(session_context)
+
+        await new_bus_obj.load_from_id(
+            new_obj.pac_id
+        )
+
+        child_bus_obj = await new_bus_obj.build_dyna_flow_task_type()
+
+        assert child_bus_obj.pac_id == new_bus_obj.pac_id
+        assert child_bus_obj.pac_code_peek == new_bus_obj.code
+
+        await child_bus_obj.save()
+
+        assert child_bus_obj.dyna_flow_task_type_id > 0
+
+    @pytest.mark.asyncio
+    async def test_get_all_dyna_flow_task_type(
+        self,
+        new_bus_obj: PacBusObj,
+        new_obj: Pac,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
+
+        session_context = SessionContext(dict(), session)
+
+        await current_runtime.initialize(session_context)
+
+        new_obj_pac_id = (
+            new_obj.pac_id
+        )
+
+        await new_bus_obj.load_from_id(
+            new_obj_pac_id
+        )
+
+        child_bus_obj = await new_bus_obj.build_dyna_flow_task_type()
+
+        await child_bus_obj.save()
+
+        child_bus_obj_list = await new_bus_obj.get_all_dyna_flow_task_type()
+
+        assert len(child_bus_obj_list) >= 1
+
+        assert child_bus_obj_list[0].dyna_flow_task_type_id > 0
+
+        # Check if any item in the list has a matching
+        # dyna_flow_task_type_id
+        assert any(
+            child.dyna_flow_task_type_id == (
+                child_bus_obj.dyna_flow_task_type_id)
+            for child in child_bus_obj_list
+        ), "No matching dyna_flow_task_type_id found in the list"
+
+
+    @pytest.mark.asyncio
+    async def test_build_dyna_flow(
+        self,
+        new_bus_obj: PacBusObj,
+        new_obj: Pac,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
+
+        session_context = SessionContext(dict(), session)
+
+        await current_runtime.initialize(session_context)
+
+        await new_bus_obj.load_from_id(
+            new_obj.pac_id
+        )
+
+        child_bus_obj = await new_bus_obj.build_dyna_flow()
+
+        assert child_bus_obj.pac_id == new_bus_obj.pac_id
+        assert child_bus_obj.pac_code_peek == new_bus_obj.code
+
+        await child_bus_obj.save()
+
+        assert child_bus_obj.dyna_flow_id > 0
+
+    @pytest.mark.asyncio
+    async def test_get_all_dyna_flow(
+        self,
+        new_bus_obj: PacBusObj,
+        new_obj: Pac,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
+
+        session_context = SessionContext(dict(), session)
+
+        await current_runtime.initialize(session_context)
+
+        new_obj_pac_id = (
+            new_obj.pac_id
+        )
+
+        await new_bus_obj.load_from_id(
+            new_obj_pac_id
+        )
+
+        child_bus_obj = await new_bus_obj.build_dyna_flow()
+
+        await child_bus_obj.save()
+
+        child_bus_obj_list = await new_bus_obj.get_all_dyna_flow()
+
+        assert len(child_bus_obj_list) >= 1
+
+        assert child_bus_obj_list[0].dyna_flow_id > 0
+
+        # Check if any item in the list has a matching
+        # dyna_flow_id
+        assert any(
+            child.dyna_flow_id == (
+                child_bus_obj.dyna_flow_id)
+            for child in child_bus_obj_list
+        ), "No matching dyna_flow_id found in the list"
+
+
+    @pytest.mark.asyncio
+    async def test_build_df_maintenance(
+        self,
+        new_bus_obj: PacBusObj,
+        new_obj: Pac,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
+
+        session_context = SessionContext(dict(), session)
+
+        await current_runtime.initialize(session_context)
+
+        await new_bus_obj.load_from_id(
+            new_obj.pac_id
+        )
+
+        child_bus_obj = await new_bus_obj.build_df_maintenance()
+
+        assert child_bus_obj.pac_id == new_bus_obj.pac_id
+        assert child_bus_obj.pac_code_peek == new_bus_obj.code
+
+        await child_bus_obj.save()
+
+        assert child_bus_obj.df_maintenance_id > 0
+
+    @pytest.mark.asyncio
+    async def test_get_all_df_maintenance(
+        self,
+        new_bus_obj: PacBusObj,
+        new_obj: Pac,
+        session: AsyncSession
+    ):
+        """
+            #TODO add comment
+        """
+
+        session_context = SessionContext(dict(), session)
+
+        await current_runtime.initialize(session_context)
+
+        new_obj_pac_id = (
+            new_obj.pac_id
+        )
+
+        await new_bus_obj.load_from_id(
+            new_obj_pac_id
+        )
+
+        child_bus_obj = await new_bus_obj.build_df_maintenance()
+
+        await child_bus_obj.save()
+
+        child_bus_obj_list = await new_bus_obj.get_all_df_maintenance()
+
+        assert len(child_bus_obj_list) >= 1
+
+        assert child_bus_obj_list[0].df_maintenance_id > 0
+
+        # Check if any item in the list has a matching
+        # df_maintenance_id
+        assert any(
+            child.df_maintenance_id == (
+                child_bus_obj.df_maintenance_id)
+            for child in child_bus_obj_list
+        ), "No matching df_maintenance_id found in the list"
+
+
+    @pytest.mark.asyncio
     async def test_build_date_greater_than_filter(
         self,
         new_bus_obj: PacBusObj,

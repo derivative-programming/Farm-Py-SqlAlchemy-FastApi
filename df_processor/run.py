@@ -1,5 +1,6 @@
 import os
 import sys
+import uuid
 import asyncio
 import tempfile
 import os
@@ -28,6 +29,10 @@ from services.machine_identifier import MachineIdentifier
 import current_runtime
 from models import Base
 from business import PacBusObj
+from reports import (
+    ReportManagerLandPlantList,
+    ReportItemLandPlantList
+)
 import managers as managers_and_enums  # noqa: F401
 
 
@@ -54,6 +59,8 @@ class DynaFlowProcessor:
 
         self._custom_temp_folder = CustomTempFolder(
             "dyna_flow_processor_temp_files")
+        
+        self._pac_code = uuid.UUID('00000000-0000-0000-0000-000000000000')
 
     async def run(self):
         """
@@ -72,6 +79,12 @@ class DynaFlowProcessor:
                 
                 await pac.load_from_enum(
                     pac_enum=managers_and_enums.PacEnum.UNKNOWN)
+                
+                dyna_flow_task_type_list = \
+                    await pac.get_all_dyna_flow_task_type()
+                
+                dyna_flow_type_list = \
+                    await pac.get_all_dyna_flow_type()
 
                 await session.commit()
 
@@ -87,12 +100,12 @@ class DynaFlowProcessor:
 
             self._custom_temp_folder.clear_temp_folder()
 
-        dyna_flow_task_type_list = List()  # await self.get_dyna_flow_task_type_list_async(session_context)
-        dyna_flow_type_list = List()  # await self.get_dyna_flow_type_list_async(session_context)
+            # dyna_flow_task_type_list = self.  # await self.get_dyna_flow_task_type_list_async(session_context)
+            # dyna_flow_type_list = List()  # await self.get_dyna_flow_type_list_async(session_context)
 
-        await self.log_async(
-            session_context,
-            f"GetInstanceID() : {self.get_instance_id()}")
+            await self.log_async(
+                session_context,
+                f"GetInstanceID() : {self.get_instance_id()}")
 
         # await self.request_scheduled_dyna_flows(session_context, pac)
 
@@ -123,6 +136,8 @@ class DynaFlowProcessor:
         #     if local_run_loop == "true" and run_to_do_count == 0 and build_to_do_count == 0 and result_message_count == 0:
         #         print("Sleeping...")
         #         await asyncio.sleep(15)
+ 
+
 
     async def init_app_async(self):
         """

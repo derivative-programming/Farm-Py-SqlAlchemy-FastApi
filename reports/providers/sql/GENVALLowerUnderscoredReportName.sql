@@ -4,7 +4,7 @@
 		--GENIF[calculatedFKObjectName=TriStateFilter]Start
 		--TriStateFilter GENVALName
 		DECLARE @GENVALName_TriStateFilterValue int = -1
-		select @GENVALName_TriStateFilterValue = StateIntValue from TriStateFilter where code = :GENVALLowerUnderscoredReportParamName
+		select @GENVALName_TriStateFilterValue = state_int_value from farm_tri_state_filter where code = :GENVALLowerUnderscoredReportParamName
 		--GENIF[calculatedFKObjectName=TriStateFilter]End
 		--GENIF[calculatedFKObjectName=DateGreaterThanFilter]Start
 		--DateGreaterThanFilter GENVALName

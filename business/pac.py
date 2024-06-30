@@ -34,6 +34,21 @@ from .flavor import FlavorBusObj
 from .error_log import ErrorLogBusObj
 
 
+from .dyna_flow_type_schedule import DynaFlowTypeScheduleBusObj
+
+
+from .dyna_flow_type import DynaFlowTypeBusObj
+
+
+from .dyna_flow_task_type import DynaFlowTaskTypeBusObj
+
+
+from .dyna_flow import DynaFlowBusObj
+
+
+from .df_maintenance import DFMaintenanceBusObj
+
+
 from .date_greater_than_filter import DateGreaterThanFilterBusObj
 
 
@@ -345,6 +360,264 @@ class PacBusObj(PacFluentBusObj):
             self.pac_id)
         for obj_item in obj_list:
             bus_obj_item = ErrorLogBusObj(
+                self._session_context)
+            bus_obj_item.load_from_obj_instance(obj_item)
+            results.append(bus_obj_item)
+        return results
+
+
+    async def build_dyna_flow_type_schedule(
+        self
+    ) -> DynaFlowTypeScheduleBusObj:
+        """
+        build dyna_flow_type_schedule
+        instance (not saved yet)
+        """
+        item = DynaFlowTypeScheduleBusObj(self._session_context)
+
+        assert item.dyna_flow_type_schedule is not None
+        dyna_flow_type_manager = managers_and_enums.DynaFlowTypeManager(
+            self._session_context)
+        dyna_flow_type_id_dyna_flow_type = await dyna_flow_type_manager.from_enum(
+            managers_and_enums.DynaFlowTypeEnum.UNKNOWN)
+        item.dyna_flow_type_id = dyna_flow_type_id_dyna_flow_type.dyna_flow_type_id
+        item.dyna_flow_type_schedule.dyna_flow_type_id_code_peek = dyna_flow_type_id_dyna_flow_type.code
+
+        item.pac_id = self.pac_id
+        item.dyna_flow_type_schedule.pac_code_peek = self.code
+
+        return item
+
+    async def get_all_dyna_flow_type_schedule(
+        self
+    ) -> List[DynaFlowTypeScheduleBusObj]:
+        """
+        get all dyna_flow_type_schedule
+        """
+        results = list()
+        dyna_flow_type_schedule_manager = managers_and_enums.DynaFlowTypeScheduleManager(
+            self._session_context)
+        obj_list = await dyna_flow_type_schedule_manager.get_by_pac_id(
+            self.pac_id)
+        for obj_item in obj_list:
+            bus_obj_item = DynaFlowTypeScheduleBusObj(
+                self._session_context)
+            bus_obj_item.load_from_obj_instance(obj_item)
+            results.append(bus_obj_item)
+        return results
+
+
+    async def build_dyna_flow_type(
+        self
+    ) -> DynaFlowTypeBusObj:
+        """
+        build dyna_flow_type
+        instance (not saved yet)
+        """
+        item = DynaFlowTypeBusObj(self._session_context)
+
+        assert item.dyna_flow_type is not None
+
+
+        item.pac_id = self.pac_id
+        item.dyna_flow_type.pac_code_peek = self.code
+
+        return item
+
+    async def get_all_dyna_flow_type(
+        self
+    ) -> List[DynaFlowTypeBusObj]:
+        """
+        get all dyna_flow_type
+        """
+        results = list()
+        dyna_flow_type_manager = managers_and_enums.DynaFlowTypeManager(
+            self._session_context)
+        obj_list = await dyna_flow_type_manager.get_by_pac_id(
+            self.pac_id)
+        for obj_item in obj_list:
+            bus_obj_item = DynaFlowTypeBusObj(
+                self._session_context)
+            bus_obj_item.load_from_obj_instance(obj_item)
+            results.append(bus_obj_item)
+        return results
+
+
+    async def build_dyna_flow_task_type(
+        self
+    ) -> DynaFlowTaskTypeBusObj:
+        """
+        build dyna_flow_task_type
+        instance (not saved yet)
+        """
+        item = DynaFlowTaskTypeBusObj(self._session_context)
+
+        assert item.dyna_flow_task_type is not None
+
+
+        item.pac_id = self.pac_id
+        item.dyna_flow_task_type.pac_code_peek = self.code
+
+        return item
+
+    async def get_all_dyna_flow_task_type(
+        self
+    ) -> List[DynaFlowTaskTypeBusObj]:
+        """
+        get all dyna_flow_task_type
+        """
+        results = list()
+        dyna_flow_task_type_manager = managers_and_enums.DynaFlowTaskTypeManager(
+            self._session_context)
+        obj_list = await dyna_flow_task_type_manager.get_by_pac_id(
+            self.pac_id)
+        for obj_item in obj_list:
+            bus_obj_item = DynaFlowTaskTypeBusObj(
+                self._session_context)
+            bus_obj_item.load_from_obj_instance(obj_item)
+            results.append(bus_obj_item)
+        return results
+
+
+    async def build_dyna_flow(
+        self
+    ) -> DynaFlowBusObj:
+        """
+        build dyna_flow
+        instance (not saved yet)
+        """
+        item = DynaFlowBusObj(self._session_context)
+
+        assert item.dyna_flow is not None
+        dyna_flow_type_manager = managers_and_enums.DynaFlowTypeManager(
+            self._session_context)
+        dyna_flow_type_id_dyna_flow_type = await dyna_flow_type_manager.from_enum(
+            managers_and_enums.DynaFlowTypeEnum.UNKNOWN)
+        item.dyna_flow_type_id = dyna_flow_type_id_dyna_flow_type.dyna_flow_type_id
+        item.dyna_flow.dyna_flow_type_id_code_peek = dyna_flow_type_id_dyna_flow_type.code
+
+        item.pac_id = self.pac_id
+        item.dyna_flow.pac_code_peek = self.code
+
+        return item
+
+    async def get_all_dyna_flow(
+        self
+    ) -> List[DynaFlowBusObj]:
+        """
+        get all dyna_flow
+        """
+        results = list()
+        dyna_flow_manager = managers_and_enums.DynaFlowManager(
+            self._session_context)
+        obj_list = await dyna_flow_manager.get_by_pac_id(
+            self.pac_id)
+        for obj_item in obj_list:
+            bus_obj_item = DynaFlowBusObj(
+                self._session_context)
+            bus_obj_item.load_from_obj_instance(obj_item)
+            results.append(bus_obj_item)
+        return results
+    async def get_dyna_flow_by_dependency_dyna_flow_id_prop(
+        self, dependency_dyna_flow_id
+    ) -> List[DynaFlowBusObj]:
+        """
+        get dyna_flow by dependency_dyna_flow_id
+        """
+        results = list()
+        dyna_flow_manager = managers_and_enums.DynaFlowManager(
+            self._session_context)
+        obj_list = await dyna_flow_manager.get_by_dependency_dyna_flow_id_prop(
+            dependency_dyna_flow_id)
+        for obj_item in obj_list:
+            bus_obj_item = DynaFlowBusObj(
+                self._session_context)
+            bus_obj_item.load_from_obj_instance(obj_item)
+            results.append(bus_obj_item)
+        return results
+    async def get_dyna_flow_by_is_completed_prop(
+        self, is_completed
+    ) -> List[DynaFlowBusObj]:
+        """
+        get dyna_flow by is_completed
+        """
+        results = list()
+        dyna_flow_manager = managers_and_enums.DynaFlowManager(
+            self._session_context)
+        obj_list = await dyna_flow_manager.get_by_is_completed_prop(
+            is_completed)
+        for obj_item in obj_list:
+            bus_obj_item = DynaFlowBusObj(
+                self._session_context)
+            bus_obj_item.load_from_obj_instance(obj_item)
+            results.append(bus_obj_item)
+        return results
+    async def get_dyna_flow_by_root_dyna_flow_id_prop(
+        self, root_dyna_flow_id
+    ) -> List[DynaFlowBusObj]:
+        """
+        get dyna_flow by root_dyna_flow_id
+        """
+        results = list()
+        dyna_flow_manager = managers_and_enums.DynaFlowManager(
+            self._session_context)
+        obj_list = await dyna_flow_manager.get_by_root_dyna_flow_id_prop(
+            root_dyna_flow_id)
+        for obj_item in obj_list:
+            bus_obj_item = DynaFlowBusObj(
+                self._session_context)
+            bus_obj_item.load_from_obj_instance(obj_item)
+            results.append(bus_obj_item)
+        return results
+    async def get_dyna_flow_by_subject_code_prop(
+        self, subject_code
+    ) -> List[DynaFlowBusObj]:
+        """
+        get dyna_flow by subject_code
+        """
+        results = list()
+        dyna_flow_manager = managers_and_enums.DynaFlowManager(
+            self._session_context)
+        obj_list = await dyna_flow_manager.get_by_subject_code_prop(
+            subject_code)
+        for obj_item in obj_list:
+            bus_obj_item = DynaFlowBusObj(
+                self._session_context)
+            bus_obj_item.load_from_obj_instance(obj_item)
+            results.append(bus_obj_item)
+        return results
+
+
+    async def build_df_maintenance(
+        self
+    ) -> DFMaintenanceBusObj:
+        """
+        build df_maintenance
+        instance (not saved yet)
+        """
+        item = DFMaintenanceBusObj(self._session_context)
+
+        assert item.df_maintenance is not None
+
+
+        item.pac_id = self.pac_id
+        item.df_maintenance.pac_code_peek = self.code
+
+        return item
+
+    async def get_all_df_maintenance(
+        self
+    ) -> List[DFMaintenanceBusObj]:
+        """
+        get all df_maintenance
+        """
+        results = list()
+        df_maintenance_manager = managers_and_enums.DFMaintenanceManager(
+            self._session_context)
+        obj_list = await df_maintenance_manager.get_by_pac_id(
+            self.pac_id)
+        for obj_item in obj_list:
+            bus_obj_item = DFMaintenanceBusObj(
                 self._session_context)
             bus_obj_item.load_from_obj_instance(obj_item)
             results.append(bus_obj_item)

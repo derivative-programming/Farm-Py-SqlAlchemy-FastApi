@@ -1,7 +1,8 @@
 {
     "templateType":"report",  
     "dimension" :{
-        "name":"LandPlantList"
+        "name":"LandPlantList",
+        "calculatedIsPage":"true"
     },
     "ignoreDimensionPropertyList": [   
         "reportParam.calculatedIsTargetColumnNameAvailable",

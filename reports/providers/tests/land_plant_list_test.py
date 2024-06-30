@@ -68,7 +68,8 @@ class TestReportProviderLandPlantList:
         some_text_val: str = ""
         some_phone_number: str = ""
         some_email_address: str = ""
-        flavor_code: uuid.UUID = uuid.uuid4()  # type: ignore
+        flavor_code: uuid.UUID = (
+            uuid.uuid4())  # type: ignore
 
         # Generate the report
         page_number = 1

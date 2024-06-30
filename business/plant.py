@@ -49,7 +49,8 @@ class PlantBusObj(PlantFluentBusObj):
         result = list()
 
         for plant in obj_list:
-            plant_bus_obj = PlantBusObj(session_context)
+            plant_bus_obj = PlantBusObj(
+                session_context)
 
             plant_bus_obj.load_from_obj_instance(
                 plant)

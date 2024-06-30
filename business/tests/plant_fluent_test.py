@@ -55,7 +55,8 @@ class TestPlantFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return PlantFluentBusObj(session_context)
+        return PlantFluentBusObj(
+            session_context)
     # FlvrForeignKeyID
     # isDeleteAllowed
 

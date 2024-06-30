@@ -17,6 +17,9 @@ from .report_request_validation_error import (  # noqa: F401
 ##GENLearn[modelType=report,name=LandPlantList]Start
 from .land_plant_list import (  # noqa: F401
     ReportManagerLandPlantList)
+from .row_models.land_plant_list import (  # noqa: F401
+    ReportItemLandPlantList
+)
 ##GENLearn[modelType=report,name=LandPlantList]End
 ##GENTrainingBlock[b]End
 ##GENLOOPReportEnd
@@ -37,5 +40,24 @@ from .pac_user_tri_state_filter_list import (  # noqa: F401
     ReportManagerPacUserTriStateFilterList)
 from .plant_user_details import (  # noqa: F401
     ReportManagerPlantUserDetails)
+
+
+from .row_models.tac_farm_dashboard import (  # noqa: F401
+    ReportItemTacFarmDashboard)
+from .row_models.pac_user_date_greater_than_filter_list import (  # noqa: F401
+    ReportItemPacUserDateGreaterThanFilterList)
+from .row_models.pac_user_flavor_list import (  # noqa: F401
+    ReportItemPacUserFlavorList)
+from .row_models.pac_user_land_list import (  # noqa: F401
+    ReportItemPacUserLandList)
+from .row_models.pac_user_role_list import (  # noqa: F401
+    ReportItemPacUserRoleList)
+from .row_models.pac_user_tac_list import (  # noqa: F401
+    ReportItemPacUserTacList)
+from .row_models.pac_user_tri_state_filter_list import (  # noqa: F401
+    ReportItemPacUserTriStateFilterList)
+from .row_models.plant_user_details import (  # noqa: F401
+    ReportItemPlantUserDetails)
+
 ##GENTrainingBlock[a]End
 ##GENLOOPObjectEnd

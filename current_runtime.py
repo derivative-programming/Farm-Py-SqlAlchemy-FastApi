@@ -36,4 +36,11 @@ async def initialize(session_context: SessionContext):
     await managers.RoleManager(session_context).initialize()
     await managers.TacManager(session_context).initialize()
     await managers.TriStateFilterManager(session_context).initialize()
+    await managers.DynaFlowManager(session_context).initialize()
+    await managers.DynaFlowTaskManager(session_context).initialize()
+    await managers.DynaFlowTypeManager(session_context).initialize()
+    await managers.DynaFlowTaskTypeManager(session_context).initialize()
+    await managers.DynaFlowTypeManager(session_context).initialize()
+    await managers.DFTDependencyManager(session_context).initialize()
+    await managers.DFMaintenanceManager(session_context).initialize()
 # endset
