@@ -2,21 +2,21 @@
 
 		--DateGreaterThanFilter StartedDateGreaterThanFilterCode
 		DECLARE @StartedDateGreaterThanFilterCode_DateGreaterThanFilterIntValue int = -1
-		select @StartedDateGreaterThanFilterCode_DateGreaterThanFilterIntValue = DayCount from DateGreaterThanFilter where code = :started_date_greater_than_filter_code
+		select @StartedDateGreaterThanFilterCode_DateGreaterThanFilterIntValue = DayCount from farm_date_greater_than_filter where code = :started_date_greater_than_filter_code
 		DECLARE @StartedDateGreaterThanFilterCode_DateGreaterThanFilterUtcDateTimeValue datetime = getutcdate()
 		select @StartedDateGreaterThanFilterCode_DateGreaterThanFilterUtcDateTimeValue = dateadd(d,(-1 * @StartedDateGreaterThanFilterCode_DateGreaterThanFilterIntValue),getutcdate())
 
 		--TriStateFilter IsStartedTriStateFilterCode
 		DECLARE @IsStartedTriStateFilterCode_TriStateFilterValue int = -1
-		select @IsStartedTriStateFilterCode_TriStateFilterValue = StateIntValue from TriStateFilter where code = :is_started_tri_state_filter_code
+		select @IsStartedTriStateFilterCode_TriStateFilterValue = state_int_value from farm_tri_state_filter where code = :is_started_tri_state_filter_code
 
 		--TriStateFilter IsCompletedTriStateFilterCode
 		DECLARE @IsCompletedTriStateFilterCode_TriStateFilterValue int = -1
-		select @IsCompletedTriStateFilterCode_TriStateFilterValue = StateIntValue from TriStateFilter where code = :is_completed_tri_state_filter_code
+		select @IsCompletedTriStateFilterCode_TriStateFilterValue = state_int_value from farm_tri_state_filter where code = :is_completed_tri_state_filter_code
 
 		--TriStateFilter IsSuccessfulTriStateFilterCode
 		DECLARE @IsSuccessfulTriStateFilterCode_TriStateFilterValue int = -1
-		select @IsSuccessfulTriStateFilterCode_TriStateFilterValue = StateIntValue from TriStateFilter where code = :is_successful_tri_state_filter_code
+		select @IsSuccessfulTriStateFilterCode_TriStateFilterValue = state_int_value from farm_tri_state_filter where code = :is_successful_tri_state_filter_code
 
 	SELECT * FROM
 	(

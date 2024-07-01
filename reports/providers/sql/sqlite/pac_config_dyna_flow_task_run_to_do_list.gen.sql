@@ -1,8 +1,8 @@
 
 
 		--TriStateFilter IsRunTaskDebugRequiredTriStateFilterCode
-		DECLARE @IsRunTaskDebugRequiredTriStateFilterCode_TriStateFilterValue int = -1
-		select @IsRunTaskDebugRequiredTriStateFilterCode_TriStateFilterValue = StateIntValue from TriStateFilter where code = :is_run_task_debug_required_tri_state_filter_code
+		-- DECLARE @IsRunTaskDebugRequiredTriStateFilterCode_TriStateFilterValue int = -1
+		-- select @IsRunTaskDebugRequiredTriStateFilterCode_TriStateFilterValue = state_int_value from farm_tri_state_filter where code = :is_run_task_debug_required_tri_state_filter_code
 
 	SELECT * FROM
 	(
@@ -53,7 +53,21 @@
 			   )
 
 				--TriStateFilter IsRunTaskDebugRequiredTriStateFilterCode @IsRunTaskDebugRequiredTriStateFilterCode_TriStateFilterValue
-			and (:is_run_task_debug_required_tri_state_filter_code is null or :is_run_task_debug_required_tri_state_filter_code = '00000000-0000-0000-0000-000000000000' or @IsRunTaskDebugRequiredTriStateFilterCode_TriStateFilterValue = -1 or @IsRunTaskDebugRequiredTriStateFilterCode_TriStateFilterValue = dyna_flow_task.is_run_task_debug_required)
+			and (
+				:is_run_task_debug_required_tri_state_filter_code is null or
+				:is_run_task_debug_required_tri_state_filter_code = '00000000-0000-0000-0000-000000000000' or
+				(
+					(
+						select
+							state_int_value
+						from
+							farm_tri_state_filter
+						where code = :is_run_task_debug_required_tri_state_filter_code
+					) in (
+					-1,
+					dyna_flow_task.is_run_task_debug_required
+					)
+				)
 
 	) AS TBL
 	WHERE

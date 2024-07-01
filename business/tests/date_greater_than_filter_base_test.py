@@ -91,7 +91,8 @@ class TestDateGreaterThanFilterBaseBusObj:
         DateGreaterThanFilterBusObj class.
         """
         session_context = SessionContext(dict(), session)
-        return DateGreaterThanFilterBusObj(session_context)
+        return DateGreaterThanFilterBusObj(
+            session_context)
 
     @pytest_asyncio.fixture(scope="function")
     async def new_obj(self, session):

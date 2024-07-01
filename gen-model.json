@@ -1767,6 +1767,22 @@
                 "isDynaFlowTask": "true"
               },
               {
+                "name": "DynaFlowTaskPlantTaskOne",
+                "isPage": "false",
+                "objectWorkflowParam": [],
+                "objectWorkflowOutputVar": [],
+                "objectWorkflowButton": [],
+                "isDynaFlowTask": "true"
+              },
+              {
+                "name": "DynaFlowTaskPlantTaskTwo",
+                "isPage": "false",
+                "objectWorkflowParam": [],
+                "objectWorkflowOutputVar": [],
+                "objectWorkflowButton": [],
+                "isDynaFlowTask": "true"
+              },
+              {
                 "name": "ProcessAllDynaFlowTypeScheduleTask",
                 "isPage": "false",
                 "objectWorkflowParam": [],
@@ -1937,6 +1953,18 @@
                 "displayName": "Process All Scheduled DynaFlowTypes",
                 "description": "Process All Scheduled DynaFlowTypes",
                 "isActive": "true"
+              },
+              {
+                "name": "DynaFlowTaskPlantTaskOne",
+                "displayName": "Dyna Flow Task Plant Task One",
+                "description": "Dyna Flow Task Plant Task One",
+                "isActive": "true"
+              },
+              {
+                "name": "DynaFlowTaskPlantTaskTwo",
+                "displayName": "Dyna Flow Task Plant Task Two",
+                "description": "Dyna Flow Task Plant Task Two",
+                "isActive": "true"
               }
             ],
             "report": [],
@@ -2096,6 +2124,12 @@
                 "name": "PacProcessAllDynaFlowTypeScheduleFlow",
                 "displayName": "Pac Process All Dyna Flow Type Schedule Flow",
                 "description": "Pac Process All Dyna Flow Type Schedule Flow",
+                "isActive": "true"
+              },
+              {
+                "name": "PlantSampleWorkflow",
+                "displayName": "Plant Sample Workflow",
+                "description": "Plant Sample Workflow",
                 "isActive": "true"
               }
             ],
@@ -7649,6 +7683,24 @@
               }
             ],
             "objectWorkflow": [
+              {
+                "name": "PlantSampleWorkflow",
+                "isPage": "false",
+                "roleRequired": "",
+                "objectWorkflowParam": [],
+                "objectWorkflowOutputVar": [],
+                "objectWorkflowButton": [],
+                "dynaFlowTask": [
+                  {
+                    "name": "DynaFlowTaskPlantTaskOne"
+                  },
+                  {
+                    "name": "DynaFlowTaskPlantTaskTwo"
+                  }
+                ],
+                "isExposedInBusinessObject": "true",
+                "isDynaFlow": "true"
+              },
               {
                 "name": "PlantUserDelete",
                 "isPage": "false",

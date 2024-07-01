@@ -91,7 +91,8 @@ class TestRoleBaseBusObj:
         RoleBusObj class.
         """
         session_context = SessionContext(dict(), session)
-        return RoleBusObj(session_context)
+        return RoleBusObj(
+            session_context)
 
     @pytest_asyncio.fixture(scope="function")
     async def new_obj(self, session):

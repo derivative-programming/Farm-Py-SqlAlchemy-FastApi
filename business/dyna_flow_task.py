@@ -52,7 +52,8 @@ class DynaFlowTaskBusObj(DynaFlowTaskFluentBusObj):
         result = list()
 
         for dyna_flow_task in obj_list:
-            dyna_flow_task_bus_obj = DynaFlowTaskBusObj(session_context)
+            dyna_flow_task_bus_obj = DynaFlowTaskBusObj(
+                session_context)
 
             dyna_flow_task_bus_obj.load_from_obj_instance(
                 dyna_flow_task)

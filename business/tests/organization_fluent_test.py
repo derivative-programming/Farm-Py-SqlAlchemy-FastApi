@@ -36,7 +36,8 @@ class TestOrganizationFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return OrganizationFluentBusObj(session_context)
+        return OrganizationFluentBusObj(
+            session_context)
     # name
 
     def test_set_prop_name(self, new_fluent_bus_obj):

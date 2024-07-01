@@ -103,15 +103,22 @@ class ReportProviderPacConfigDynaFlowDFTBuildToDoList():
 
         if ReportProviderPacConfigDynaFlowDFTBuildToDoList \
                 ._cached_sql_query == "":
+
+            sql_folder = "sql_server"
+            db_engine_url = str(self._session_context.session.bind.engine.url)
+            if 'sqlite' in db_engine_url:
+                sql_folder = "sqlite"
+            if 'postgresql' in db_engine_url:
+                sql_folder = "postgres"
             # Prioritize
             # 'pac_config_dyna_flow_dft_build_to_do_list.inc.sql'
             # if it exists
             inc_file_path = (
-                "reports/providers/sql/"
+                f"reports/providers/sql/{sql_folder}/"
                 "pac_config_dyna_flow_dft_build_to_do_list.inc.sql"
             )
             gen_file_path = (
-                "reports/providers/sql/"
+                f"reports/providers/sql/{sql_folder}/"
                 "pac_config_dyna_flow_dft_build_to_do_list.gen.sql"
             )
             if os.path.exists(inc_file_path):

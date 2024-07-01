@@ -51,7 +51,8 @@ class TestReportProviderPacConfigDynaFlowDFTBuildToDoList:
         pac_code = pac.code
 
         # Set up test data
-        is_build_task_debug_required_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
+        is_build_task_debug_required_tri_state_filter_code: uuid.UUID = (
+            uuid.uuid4())  # type: ignore
         # Generate the report
         page_number = 1
         item_count_per_page = 10

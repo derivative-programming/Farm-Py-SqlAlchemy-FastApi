@@ -40,7 +40,8 @@ class TestDynaFlowTypeScheduleFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return DynaFlowTypeScheduleFluentBusObj(session_context)
+        return DynaFlowTypeScheduleFluentBusObj(
+            session_context)
     # DynaFlowTypeID
     # frequencyInHours
 

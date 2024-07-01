@@ -49,7 +49,8 @@ class DFMaintenanceBusObj(DFMaintenanceFluentBusObj):
         result = list()
 
         for df_maintenance in obj_list:
-            df_maintenance_bus_obj = DFMaintenanceBusObj(session_context)
+            df_maintenance_bus_obj = DFMaintenanceBusObj(
+                session_context)
 
             df_maintenance_bus_obj.load_from_obj_instance(
                 df_maintenance)

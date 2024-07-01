@@ -49,7 +49,8 @@ class ErrorLogBusObj(ErrorLogFluentBusObj):
         result = list()
 
         for error_log in obj_list:
-            error_log_bus_obj = ErrorLogBusObj(session_context)
+            error_log_bus_obj = ErrorLogBusObj(
+                session_context)
 
             error_log_bus_obj.load_from_obj_instance(
                 error_log)

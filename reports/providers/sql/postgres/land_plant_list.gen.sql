@@ -1,4 +1,6 @@
+DO $$
 
+BEGIN
 
 	SELECT * FROM
 	(
@@ -172,5 +174,5 @@
 
 	) AS TBL
 	WHERE
-		ROWNUMBER BETWEEN ((:page_number - 1) * :item_count_per_page + 1) AND (:page_number * :item_count_per_page)
-
+		ROWNUMBER BETWEEN ((:page_number - 1) * :item_count_per_page + 1) AND (:page_number * :item_count_per_page);
+END $$;

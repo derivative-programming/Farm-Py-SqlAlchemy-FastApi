@@ -91,7 +91,8 @@ class TestLandBaseBusObj:
         LandBusObj class.
         """
         session_context = SessionContext(dict(), session)
-        return LandBusObj(session_context)
+        return LandBusObj(
+            session_context)
 
     @pytest_asyncio.fixture(scope="function")
     async def new_obj(self, session):

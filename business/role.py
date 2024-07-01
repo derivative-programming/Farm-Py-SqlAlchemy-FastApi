@@ -49,7 +49,8 @@ class RoleBusObj(RoleFluentBusObj):
         result = list()
 
         for role in obj_list:
-            role_bus_obj = RoleBusObj(session_context)
+            role_bus_obj = RoleBusObj(
+                session_context)
 
             role_bus_obj.load_from_obj_instance(
                 role)

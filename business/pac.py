@@ -85,7 +85,8 @@ class PacBusObj(PacFluentBusObj):
         result = list()
 
         for pac in obj_list:
-            pac_bus_obj = PacBusObj(session_context)
+            pac_bus_obj = PacBusObj(
+                session_context)
 
             pac_bus_obj.load_from_obj_instance(
                 pac)

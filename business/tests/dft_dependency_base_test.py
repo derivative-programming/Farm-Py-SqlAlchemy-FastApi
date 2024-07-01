@@ -91,7 +91,8 @@ class TestDFTDependencyBaseBusObj:
         DFTDependencyBusObj class.
         """
         session_context = SessionContext(dict(), session)
-        return DFTDependencyBusObj(session_context)
+        return DFTDependencyBusObj(
+            session_context)
 
     @pytest_asyncio.fixture(scope="function")
     async def new_obj(self, session):

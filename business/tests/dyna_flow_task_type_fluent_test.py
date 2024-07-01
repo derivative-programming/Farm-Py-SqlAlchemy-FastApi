@@ -41,7 +41,8 @@ class TestDynaFlowTaskTypeFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return DynaFlowTaskTypeFluentBusObj(session_context)
+        return DynaFlowTaskTypeFluentBusObj(
+            session_context)
     # description
 
     def test_set_prop_description(self, new_fluent_bus_obj):

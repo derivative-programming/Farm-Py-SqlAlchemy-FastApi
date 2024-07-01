@@ -49,7 +49,8 @@ class OrgApiKeyBusObj(OrgApiKeyFluentBusObj):
         result = list()
 
         for org_api_key in obj_list:
-            org_api_key_bus_obj = OrgApiKeyBusObj(session_context)
+            org_api_key_bus_obj = OrgApiKeyBusObj(
+                session_context)
 
             org_api_key_bus_obj.load_from_obj_instance(
                 org_api_key)

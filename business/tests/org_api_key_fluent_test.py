@@ -43,7 +43,8 @@ class TestOrgApiKeyFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return OrgApiKeyFluentBusObj(session_context)
+        return OrgApiKeyFluentBusObj(
+            session_context)
     # apiKeyValue
 
     def test_set_prop_api_key_value(self, new_fluent_bus_obj):

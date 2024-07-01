@@ -101,15 +101,22 @@ class ReportProviderPacUserTriStateFilterList():
 
         if ReportProviderPacUserTriStateFilterList \
                 ._cached_sql_query == "":
+
+            sql_folder = "sql_server"
+            db_engine_url = str(self._session_context.session.bind.engine.url)
+            if 'sqlite' in db_engine_url:
+                sql_folder = "sqlite"
+            if 'postgresql' in db_engine_url:
+                sql_folder = "postgres"
             # Prioritize
             # 'pac_user_tri_state_filter_list.inc.sql'
             # if it exists
             inc_file_path = (
-                "reports/providers/sql/"
+                f"reports/providers/sql/{sql_folder}/"
                 "pac_user_tri_state_filter_list.inc.sql"
             )
             gen_file_path = (
-                "reports/providers/sql/"
+                f"reports/providers/sql/{sql_folder}/"
                 "pac_user_tri_state_filter_list.gen.sql"
             )
             if os.path.exists(inc_file_path):

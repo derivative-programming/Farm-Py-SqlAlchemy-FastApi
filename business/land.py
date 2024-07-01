@@ -52,7 +52,8 @@ class LandBusObj(LandFluentBusObj):
         result = list()
 
         for land in obj_list:
-            land_bus_obj = LandBusObj(session_context)
+            land_bus_obj = LandBusObj(
+                session_context)
 
             land_bus_obj.load_from_obj_instance(
                 land)

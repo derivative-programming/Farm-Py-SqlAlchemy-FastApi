@@ -91,7 +91,8 @@ class TestDFMaintenanceBaseBusObj:
         DFMaintenanceBusObj class.
         """
         session_context = SessionContext(dict(), session)
-        return DFMaintenanceBusObj(session_context)
+        return DFMaintenanceBusObj(
+            session_context)
 
     @pytest_asyncio.fixture(scope="function")
     async def new_obj(self, session):

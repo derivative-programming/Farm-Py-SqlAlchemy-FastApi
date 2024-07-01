@@ -180,11 +180,11 @@ class ReportProviderLandPlantList():
                 ._cached_sql_query == "":
 
             sql_folder = "sql_server"
-            db_engine_url = self._session_context.session.bind.engine.url
+            db_engine_url = str(self._session_context.session.bind.engine.url)
             if 'sqlite' in db_engine_url:
                 sql_folder = "sqlite"
             if 'postgresql' in db_engine_url:
-                sql_folder = "postgresql"
+                sql_folder = "postgres"
             # Prioritize
             # 'land_plant_list.inc.sql'
             # if it exists

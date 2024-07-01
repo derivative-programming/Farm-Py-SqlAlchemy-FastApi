@@ -49,7 +49,8 @@ class DynaFlowTypeScheduleBusObj(DynaFlowTypeScheduleFluentBusObj):
         result = list()
 
         for dyna_flow_type_schedule in obj_list:
-            dyna_flow_type_schedule_bus_obj = DynaFlowTypeScheduleBusObj(session_context)
+            dyna_flow_type_schedule_bus_obj = DynaFlowTypeScheduleBusObj(
+                session_context)
 
             dyna_flow_type_schedule_bus_obj.load_from_obj_instance(
                 dyna_flow_type_schedule)

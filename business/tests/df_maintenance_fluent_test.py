@@ -43,7 +43,8 @@ class TestDFMaintenanceFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return DFMaintenanceFluentBusObj(session_context)
+        return DFMaintenanceFluentBusObj(
+            session_context)
     # isPaused
 
     def test_set_prop_is_paused(self, new_fluent_bus_obj):

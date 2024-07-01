@@ -41,7 +41,8 @@ class TestDateGreaterThanFilterFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return DateGreaterThanFilterFluentBusObj(session_context)
+        return DateGreaterThanFilterFluentBusObj(
+            session_context)
     # dayCount
 
     def test_set_prop_day_count(self, new_fluent_bus_obj):

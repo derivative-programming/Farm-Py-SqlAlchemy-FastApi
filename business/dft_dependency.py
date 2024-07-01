@@ -49,7 +49,8 @@ class DFTDependencyBusObj(DFTDependencyFluentBusObj):
         result = list()
 
         for dft_dependency in obj_list:
-            dft_dependency_bus_obj = DFTDependencyBusObj(session_context)
+            dft_dependency_bus_obj = DFTDependencyBusObj(
+                session_context)
 
             dft_dependency_bus_obj.load_from_obj_instance(
                 dft_dependency)

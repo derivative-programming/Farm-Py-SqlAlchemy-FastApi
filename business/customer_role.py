@@ -49,7 +49,8 @@ class CustomerRoleBusObj(CustomerRoleFluentBusObj):
         result = list()
 
         for customer_role in obj_list:
-            customer_role_bus_obj = CustomerRoleBusObj(session_context)
+            customer_role_bus_obj = CustomerRoleBusObj(
+                session_context)
 
             customer_role_bus_obj.load_from_obj_instance(
                 customer_role)

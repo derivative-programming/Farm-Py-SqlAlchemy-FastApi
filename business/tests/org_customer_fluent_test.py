@@ -37,7 +37,8 @@ class TestOrgCustomerFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return OrgCustomerFluentBusObj(session_context)
+        return OrgCustomerFluentBusObj(
+            session_context)
     # CustomerID
     # email
 

@@ -91,7 +91,8 @@ class TestTriStateFilterBaseBusObj:
         TriStateFilterBusObj class.
         """
         session_context = SessionContext(dict(), session)
-        return TriStateFilterBusObj(session_context)
+        return TriStateFilterBusObj(
+            session_context)
 
     @pytest_asyncio.fixture(scope="function")
     async def new_obj(self, session):

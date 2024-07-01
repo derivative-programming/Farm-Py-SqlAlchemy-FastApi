@@ -2,7 +2,7 @@
 
 		--TriStateFilter IsBuildTaskDebugRequiredTriStateFilterCode
 		DECLARE @IsBuildTaskDebugRequiredTriStateFilterCode_TriStateFilterValue int = -1
-		select @IsBuildTaskDebugRequiredTriStateFilterCode_TriStateFilterValue = StateIntValue from TriStateFilter where code = :is_build_task_debug_required_tri_state_filter_code
+		select @IsBuildTaskDebugRequiredTriStateFilterCode_TriStateFilterValue = state_int_value from farm_tri_state_filter where code = :is_build_task_debug_required_tri_state_filter_code
 
 	SELECT * FROM
 	(

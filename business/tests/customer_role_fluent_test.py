@@ -38,7 +38,8 @@ class TestCustomerRoleFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return CustomerRoleFluentBusObj(session_context)
+        return CustomerRoleFluentBusObj(
+            session_context)
     # CustomerID
     # isPlaceholder
 

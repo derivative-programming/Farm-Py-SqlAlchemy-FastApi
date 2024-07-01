@@ -49,7 +49,8 @@ class DynaFlowTypeBusObj(DynaFlowTypeFluentBusObj):
         result = list()
 
         for dyna_flow_type in obj_list:
-            dyna_flow_type_bus_obj = DynaFlowTypeBusObj(session_context)
+            dyna_flow_type_bus_obj = DynaFlowTypeBusObj(
+                session_context)
 
             dyna_flow_type_bus_obj.load_from_obj_instance(
                 dyna_flow_type)

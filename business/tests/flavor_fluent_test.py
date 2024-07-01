@@ -40,7 +40,8 @@ class TestFlavorFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return FlavorFluentBusObj(session_context)
+        return FlavorFluentBusObj(
+            session_context)
     # description
 
     def test_set_prop_description(self, new_fluent_bus_obj):

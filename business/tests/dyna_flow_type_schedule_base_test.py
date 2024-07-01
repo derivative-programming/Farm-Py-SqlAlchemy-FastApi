@@ -91,7 +91,8 @@ class TestDynaFlowTypeScheduleBaseBusObj:
         DynaFlowTypeScheduleBusObj class.
         """
         session_context = SessionContext(dict(), session)
-        return DynaFlowTypeScheduleBusObj(session_context)
+        return DynaFlowTypeScheduleBusObj(
+            session_context)
 
     @pytest_asyncio.fixture(scope="function")
     async def new_obj(self, session):

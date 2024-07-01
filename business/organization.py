@@ -55,7 +55,8 @@ class OrganizationBusObj(OrganizationFluentBusObj):
         result = list()
 
         for organization in obj_list:
-            organization_bus_obj = OrganizationBusObj(session_context)
+            organization_bus_obj = OrganizationBusObj(
+                session_context)
 
             organization_bus_obj.load_from_obj_instance(
                 organization)

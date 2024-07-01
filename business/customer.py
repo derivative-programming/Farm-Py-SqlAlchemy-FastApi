@@ -52,7 +52,8 @@ class CustomerBusObj(CustomerFluentBusObj):
         result = list()
 
         for customer in obj_list:
-            customer_bus_obj = CustomerBusObj(session_context)
+            customer_bus_obj = CustomerBusObj(
+                session_context)
 
             customer_bus_obj.load_from_obj_instance(
                 customer)

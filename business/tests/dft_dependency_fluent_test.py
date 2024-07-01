@@ -37,7 +37,8 @@ class TestDFTDependencyFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return DFTDependencyFluentBusObj(session_context)
+        return DFTDependencyFluentBusObj(
+            session_context)
     # dependencyDFTaskID
 
     def test_set_prop_dependency_df_task_id(self, new_fluent_bus_obj):

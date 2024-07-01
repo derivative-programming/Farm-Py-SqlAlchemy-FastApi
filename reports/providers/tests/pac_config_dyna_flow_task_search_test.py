@@ -51,11 +51,15 @@ class TestReportProviderPacConfigDynaFlowTaskSearch:
         pac_code = pac.code
 
         # Set up test data
-        started_date_greater_than_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
+        started_date_greater_than_filter_code: uuid.UUID = (
+            uuid.uuid4())  # type: ignore
         processor_identifier: str = ""
-        is_started_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
-        is_completed_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
-        is_successful_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
+        is_started_tri_state_filter_code: uuid.UUID = (
+            uuid.uuid4())  # type: ignore
+        is_completed_tri_state_filter_code: uuid.UUID = (
+            uuid.uuid4())  # type: ignore
+        is_successful_tri_state_filter_code: uuid.UUID = (
+            uuid.uuid4())  # type: ignore
         # Generate the report
         page_number = 1
         item_count_per_page = 10

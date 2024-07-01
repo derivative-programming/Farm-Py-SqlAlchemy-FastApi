@@ -49,7 +49,8 @@ class TriStateFilterBusObj(TriStateFilterFluentBusObj):
         result = list()
 
         for tri_state_filter in obj_list:
-            tri_state_filter_bus_obj = TriStateFilterBusObj(session_context)
+            tri_state_filter_bus_obj = TriStateFilterBusObj(
+                session_context)
 
             tri_state_filter_bus_obj.load_from_obj_instance(
                 tri_state_filter)

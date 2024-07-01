@@ -1,21 +1,32 @@
-
+DO $$
                
         --GENLOOPReportParamStart
 		--GENIF[calculatedFKObjectName=TriStateFilter]Start
 		--TriStateFilter GENVALName
-		DECLARE @GENVALName_TriStateFilterValue int = -1
-		select @GENVALName_TriStateFilterValue = state_int_value from farm_tri_state_filter where code = :GENVALLowerUnderscoredReportParamName
+		DECLARE @GENVALName_TriStateFilterValue INTEGER := -1;
 		--GENIF[calculatedFKObjectName=TriStateFilter]End
 		--GENIF[calculatedFKObjectName=DateGreaterThanFilter]Start
 		--DateGreaterThanFilter GENVALName
-		DECLARE @GENVALName_DateGreaterThanFilterIntValue int = -1
-		select @GENVALName_DateGreaterThanFilterIntValue = DayCount from farm_date_greater_than_filter where code = :GENVALLowerUnderscoredReportParamName
-		DECLARE @GENVALName_DateGreaterThanFilterUtcDateTimeValue datetime = getutcdate()
-		select @GENVALName_DateGreaterThanFilterUtcDateTimeValue = dateadd(d,(-1 * @GENVALName_DateGreaterThanFilterIntValue),getutcdate())
+		DECLARE 
+		@GENVALName_DateGreaterThanFilterIntValue INTEGER := -1;
+		@GENVALName_DateGreaterThanFilterUtcDateTimeValue TIMESTAMP := CURRENT_TIMESTAMP AT TIME ZONE 'UTC';
 		--GENIF[calculatedFKObjectName=DateGreaterThanFilter]End
         --GENLOOPReportParamEnd
 
+BEGIN
    
+		--GENLOOPReportParamStart
+		--GENIF[calculatedFKObjectName=TriStateFilter]Start
+		--TriStateFilter GENVALName
+		select @GENVALName_TriStateFilterValue = state_int_value from farm_tri_state_filter where code = :GENVALLowerUnderscoredReportParamName;
+		--GENIF[calculatedFKObjectName=TriStateFilter]End
+		--GENIF[calculatedFKObjectName=DateGreaterThanFilter]Start
+		--DateGreaterThanFilter GENVALName
+		select @GENVALName_DateGreaterThanFilterIntValue = DayCount from farm_date_greater_than_filter where code = :GENVALLowerUnderscoredReportParamName;
+		select @GENVALName_DateGreaterThanFilterUtcDateTimeValue = dateadd(d,(-1 * @GENVALName_DateGreaterThanFilterIntValue),getutcdate());
+		--GENIF[calculatedFKObjectName=DateGreaterThanFilter]End
+		--GENLOOPReportParamEnd
+	
 	SELECT * FROM 
 	(
 		SELECT    
@@ -148,7 +159,7 @@
 			--GENLOOPobjJoinTreeSTART   
 			left join farm_GENVALLowerUnderscoredchildObjName GENVALLowerUnderscoredchildObjName on GENVALLowerUnderscoredchildObjName.GENVALLowerUnderscoredchildPropName = GENVALLowerUnderscoredparentObjName.GENVALLowerUnderscoredparentObjName_id  -- up obj join tree
 			--GENLOOPchildObjLookupsSTART   
-			left join farm_GENVALLowerUnderscoredlookupName GENVALLowerUnderscoredchildObjNameGENVALLowerUnderscoredlookupName on GENVALLowerUnderscoredchildObjName.GENVALLowerUnderscoredimplementationPropName = GENVALLowerUnderscoredchildObjNameGENVALlookupName.GENVALLowerUnderscoredlookupName_id -- join tree hild obj lookup prop
+			left join farm_GENVALLowerUnderscoredlookupName GENVALLowerUnderscoredchildObjNameGENVALLowerUnderscoredlookupName on GENVALLowerUnderscoredchildObjName.GENVALLowerUnderscoredimplementationPropName = GENVALLowerUnderscoredchildObjNameGENVALLowerUnderscoredlookupName.GENVALLowerUnderscoredlookupName_id -- join tree hild obj lookup prop
 			--GENLOOPchildObjLookupsEnd 
 			--GENLOOPobjJoinTreeEnd 
 			
@@ -178,17 +189,17 @@
 			--GENLOOPtargetChildObjectIntersectionObjEnd
 			
 			--GENIF[calculatedIsRowLevelOrgCustomerSecurityUsed=true]Start 
-			join farm_customer Customer_Security on farm_org_customer.CustomerID = Customer_Security.CustomerID
+			join farm_customer Customer_Security on farm_org_customer.customer_id = Customer_Security.customer_id
 			--GENIF[calculatedIsRowLevelOrgCustomerSecurityUsed=true]End
 			
 			--GENIF[calculatedIsRowLevelOrganizationSecurityUsed=true]Start
-			join farm_org_customer orgCustomer_Security on orgCustomer_Security.OrganizationID = farm_organization.OrganizationID
-			join farm_customer Customer_Security on farm_org_customer_Security.CustomerID = Customer_Security.CustomerID
+			join farm_org_customer orgCustomer_Security on orgCustomer_Security.organization_id = farm_organization.organization_id
+			join farm_customer Customer_Security on farm_org_customer_Security.customer_id = Customer_Security.customer_id
 			--GENIF[calculatedIsRowLevelOrganizationSecurityUsed=true]End
 
 		where
 			 (GENVALLowerUnderscoredObjectName.code = :context_code
-			 GENVALfilteringSqlLogic  )
+			 GENVALLowerSpacedUnderscoredfilteringSqlLogic  )
 			--GENIF[calculatedIsRowLevelCustomerSecurityUsed=true]Start
 			and (:user_id is not null and :user_id <> '00000000-0000-0000-0000-000000000000' and Customer.Code = :user_id )
 			--GENIF[calculatedIsRowLevelCustomerSecurityUsed=true]End
@@ -251,5 +262,5 @@
    
 	) AS TBL
 	WHERE 
-		ROWNUMBER BETWEEN ((:page_number - 1) * :item_count_per_page + 1) AND (:page_number * :item_count_per_page) 
-		  
+		ROWNUMBER BETWEEN ((:page_number - 1) * :item_count_per_page + 1) AND (:page_number * :item_count_per_page);
+END $$;

@@ -55,7 +55,8 @@ class TacBusObj(TacFluentBusObj):
         result = list()
 
         for tac in obj_list:
-            tac_bus_obj = TacBusObj(session_context)
+            tac_bus_obj = TacBusObj(
+                session_context)
 
             tac_bus_obj.load_from_obj_instance(
                 tac)

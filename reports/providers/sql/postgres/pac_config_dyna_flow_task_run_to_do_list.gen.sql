@@ -1,8 +1,12 @@
-
+DO $$
 
 		--TriStateFilter IsRunTaskDebugRequiredTriStateFilterCode
-		DECLARE @IsRunTaskDebugRequiredTriStateFilterCode_TriStateFilterValue int = -1
-		select @IsRunTaskDebugRequiredTriStateFilterCode_TriStateFilterValue = StateIntValue from TriStateFilter where code = :is_run_task_debug_required_tri_state_filter_code
+		DECLARE @IsRunTaskDebugRequiredTriStateFilterCode_TriStateFilterValue INTEGER := -1;
+
+BEGIN
+
+		--TriStateFilter IsRunTaskDebugRequiredTriStateFilterCode
+		select @IsRunTaskDebugRequiredTriStateFilterCode_TriStateFilterValue = state_int_value from farm_tri_state_filter where code = :is_run_task_debug_required_tri_state_filter_code;
 
 	SELECT * FROM
 	(
@@ -57,5 +61,5 @@
 
 	) AS TBL
 	WHERE
-		ROWNUMBER BETWEEN ((:page_number - 1) * :item_count_per_page + 1) AND (:page_number * :item_count_per_page)
-
+		ROWNUMBER BETWEEN ((:page_number - 1) * :item_count_per_page + 1) AND (:page_number * :item_count_per_page);
+END $$;

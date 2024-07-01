@@ -91,7 +91,8 @@ class TestOrgApiKeyBaseBusObj:
         OrgApiKeyBusObj class.
         """
         session_context = SessionContext(dict(), session)
-        return OrgApiKeyBusObj(session_context)
+        return OrgApiKeyBusObj(
+            session_context)
 
     @pytest_asyncio.fixture(scope="function")
     async def new_obj(self, session):

@@ -57,7 +57,8 @@ class TestCustomerFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return CustomerFluentBusObj(session_context)
+        return CustomerFluentBusObj(
+            session_context)
     # activeOrganizationID
 
     def test_set_prop_active_organization_id(self, new_fluent_bus_obj):

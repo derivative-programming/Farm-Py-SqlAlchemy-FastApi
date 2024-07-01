@@ -39,7 +39,8 @@ class TestPacFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return PacFluentBusObj(session_context)
+        return PacFluentBusObj(
+            session_context)
     # description
 
     def test_set_prop_description(self, new_fluent_bus_obj):

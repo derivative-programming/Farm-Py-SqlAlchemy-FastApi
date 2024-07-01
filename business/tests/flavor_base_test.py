@@ -91,7 +91,8 @@ class TestFlavorBaseBusObj:
         FlavorBusObj class.
         """
         session_context = SessionContext(dict(), session)
-        return FlavorBusObj(session_context)
+        return FlavorBusObj(
+            session_context)
 
     @pytest_asyncio.fixture(scope="function")
     async def new_obj(self, session):

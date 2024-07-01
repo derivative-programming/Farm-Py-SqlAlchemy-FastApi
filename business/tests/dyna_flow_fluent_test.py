@@ -60,7 +60,8 @@ class TestDynaFlowFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return DynaFlowFluentBusObj(session_context)
+        return DynaFlowFluentBusObj(
+            session_context)
     # completedUTCDateTime
 
     def test_set_prop_completed_utc_date_time(self, new_fluent_bus_obj):

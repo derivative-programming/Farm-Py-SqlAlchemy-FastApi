@@ -28,7 +28,7 @@
 
 		where
 			 (pac.code = :context_code
-			 And DynaFlowTask.IsSuccessful = 0 and DynaFlowTask.IsCanceled = 0 and DynaFlowTask.IsStarted = 1 and DynaFlowTask.RequestedUTCDateTime > dateadd(HOUR,-24,getutcdate()) and DynaFlowTask.StartedUTCDateTime < dateadd(HOUR,-2,getutcdate()) and not (DynaFlowTask.IsStarted = 0 and DynaFlowTask.IsCompleted = 0 and DynaFlowTask.IsCanceled = 0 and DynaFlowTask.IsCancelRequested = 0)  )
+			 and dyna_flow_task.is_successful = 0 and dyna_flow_task.is_canceled = 0 and dyna_flow_task.is_started = 1 and dyna_flow_task.requested_utc_date_time > dateadd(hour,-24,getutcdate()) and dyna_flow_task.started_utc_date_time < dateadd(hour,-2,getutcdate()) and not (dyna_flow_task.is_started = 0 and dyna_flow_task.is_completed = 0 and dyna_flow_task.is_canceled = 0 and dyna_flow_task.is_cancel_requested = 0)  )
 
 	) AS TBL
 	WHERE

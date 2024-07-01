@@ -49,7 +49,8 @@ class FlavorBusObj(FlavorFluentBusObj):
         result = list()
 
         for flavor in obj_list:
-            flavor_bus_obj = FlavorBusObj(session_context)
+            flavor_bus_obj = FlavorBusObj(
+                session_context)
 
             flavor_bus_obj.load_from_obj_instance(
                 flavor)

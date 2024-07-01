@@ -42,7 +42,8 @@ class TestErrorLogFluentBusObj:
         object.
         """
         session_context = SessionContext(dict(), session=session)
-        return ErrorLogFluentBusObj(session_context)
+        return ErrorLogFluentBusObj(
+            session_context)
     # browserCode
 
     def test_set_prop_browser_code(self, new_fluent_bus_obj):

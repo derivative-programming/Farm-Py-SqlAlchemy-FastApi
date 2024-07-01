@@ -91,7 +91,8 @@ class TestErrorLogBaseBusObj:
         ErrorLogBusObj class.
         """
         session_context = SessionContext(dict(), session)
-        return ErrorLogBusObj(session_context)
+        return ErrorLogBusObj(
+            session_context)
 
     @pytest_asyncio.fixture(scope="function")
     async def new_obj(self, session):
