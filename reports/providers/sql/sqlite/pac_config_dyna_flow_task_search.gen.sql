@@ -1,10 +1,5 @@
 
 
-		--DateGreaterThanFilter StartedDateGreaterThanFilterCode
-		DECLARE @StartedDateGreaterThanFilterCode_DateGreaterThanFilterIntValue int = -1
-		select @StartedDateGreaterThanFilterCode_DateGreaterThanFilterIntValue = DayCount from farm_date_greater_than_filter where code = :started_date_greater_than_filter_code
-		DECLARE @StartedDateGreaterThanFilterCode_DateGreaterThanFilterUtcDateTimeValue datetime = getutcdate()
-		select @StartedDateGreaterThanFilterCode_DateGreaterThanFilterUtcDateTimeValue = dateadd(d,(-1 * @StartedDateGreaterThanFilterCode_DateGreaterThanFilterIntValue),getutcdate())
 
 	SELECT * FROM
 	(
@@ -56,19 +51,16 @@
 
 			left join farm_dyna_flow dyna_flow on dyna_flow.pac_id = pac.pac_id  -- up obj join tree
 
-			left join farm_dyna_flow_type dyna_flowdyna_flow_type on dyna_flow.dyna_flow_type_id = dyna_flowDynaFlowType.dyna_flow_type_id -- join tree hild obj lookup prop
+			left join farm_dyna_flow_type dyna_flowdyna_flow_type on dyna_flow.dyna_flow_type_id = dyna_flowdyna_flow_type.dyna_flow_type_id -- join tree hild obj lookup prop
 
 			left join farm_dyna_flow_task dyna_flow_task on dyna_flow_task.dyna_flow_id = dyna_flow.dyna_flow_id  -- up obj join tree
 
-			left join farm_dyna_flow_task_type dyna_flow_taskdyna_flow_task_type on dyna_flow_task.dyna_flow_task_type_id = dyna_flow_taskDynaFlowTaskType.dyna_flow_task_type_id -- join tree hild obj lookup prop
+			left join farm_dyna_flow_task_type dyna_flow_taskdyna_flow_task_type on dyna_flow_task.dyna_flow_task_type_id = dyna_flow_taskdyna_flow_task_type.dyna_flow_task_type_id -- join tree hild obj lookup prop
 
 		where
 			 (pac.code = :context_code
 			   )
-
-				--DateGreaterThanFilter StartedDateGreaterThanFilterCode @StartedDateGreaterThanFilterCode_DateGreaterThanFilterUtcDateTimeValue
-			and (:started_date_greater_than_filter_code is null or :started_date_greater_than_filter_code = '00000000-0000-0000-0000-000000000000' or @StartedDateGreaterThanFilterCode_DateGreaterThanFilterUtcDateTimeValue < dyna_flow_task.started_utc_date_time)
-
+ 
 			and (:processor_identifier is null or :processor_identifier = '' or  dyna_flow_task.processor_identifier like :like_processor_identifier)
 
 				--TriStateFilter IsStartedTriStateFilterCode @IsStartedTriStateFilterCode_TriStateFilterValue

@@ -1,30 +1,30 @@
-# flows/default/pac_process_all_dyna_flow_type_schedule_flow.py
+# flows/default/plant_sample_workflow.py
 # pylint: disable=unused-import
 """
 This module contains the
-FlowPacProcessAllDynaFlowTypeScheduleFlow class
+FlowPlantSampleWorkflow class
 and related classes
 that handle the addition of a
  to a specific
-pac in the flow process.
+plant in the flow process.
 """
 
 import uuid  # noqa: F401
 import json
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from flows.base.pac_process_all_dyna_flow_type_schedule_flow import (
-    BaseFlowPacProcessAllDynaFlowTypeScheduleFlow)
+from flows.base.plant_sample_workflow import (
+    BaseFlowPlantSampleWorkflow)
 from flows.base import LogSeverity
-from business.pac import PacBusObj
+from business.plant import PlantBusObj
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 
 
-class FlowPacProcessAllDynaFlowTypeScheduleFlowResult():
+class FlowPlantSampleWorkflowResult():
     """
     Represents the result of the
-    FlowPacProcessAllDynaFlowTypeScheduleFlow process.
+    FlowPlantSampleWorkflow process.
     """
 
     context_object_code: uuid.UUID = uuid.UUID(int=0)
@@ -32,12 +32,12 @@ class FlowPacProcessAllDynaFlowTypeScheduleFlowResult():
     def __init__(self):
         """
         Initializes a new instance of the
-        FlowPacProcessAllDynaFlowTypeScheduleFlowResult class.
+        FlowPlantSampleWorkflowResult class.
         """
 
     def to_json(self):
         """
-        Converts the FlowPacProcessAllDynaFlowTypeScheduleFlowResult
+        Converts the FlowPlantSampleWorkflowResult
         instance to a JSON string.
 
         Returns:
@@ -54,33 +54,33 @@ class FlowPacProcessAllDynaFlowTypeScheduleFlowResult():
         return json.dumps(data)
 
 
-class FlowPacProcessAllDynaFlowTypeScheduleFlow(
-    BaseFlowPacProcessAllDynaFlowTypeScheduleFlow
+class FlowPlantSampleWorkflow(
+    BaseFlowPlantSampleWorkflow
 ):
     """
-    FlowPacProcessAllDynaFlowTypeScheduleFlow handles the addition of
+    FlowPlantSampleWorkflow handles the addition of
     a  to
-    a specific pac in the flow process.
+    a specific plant in the flow process.
 
     This class extends the
-    BaseFlowPacProcessAllDynaFlowTypeScheduleFlowclass and
+    BaseFlowPlantSampleWorkflowclass and
     initializes it with the provided session context.
     """
 
     async def process(
         self,
-        pac_bus_obj: PacBusObj,
+        plant_bus_obj: PlantBusObj,
 
 # endset  # noqa: E122
-    ) -> FlowPacProcessAllDynaFlowTypeScheduleFlowResult:
+    ) -> FlowPlantSampleWorkflowResult:
         """
         Processes the addition of a
-         to a specific pac.
+         to a specific plant.
 
         Returns:
-            FlowPacProcessAllDynaFlowTypeScheduleFlowResult:
+            FlowPlantSampleWorkflowResult:
                 The result of the
-                FlowPacProcessAllDynaFlowTypeScheduleFlow process.
+                FlowPlantSampleWorkflow process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
@@ -88,10 +88,10 @@ class FlowPacProcessAllDynaFlowTypeScheduleFlow(
         )
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
-            "Code::" + str(pac_bus_obj.code)
+            "Code::" + str(plant_bus_obj.code)
         )
         await super()._process_validation_rules(
-            pac_bus_obj,
+            plant_bus_obj,
 
 # endset  # noqa: E122
         )
@@ -99,11 +99,12 @@ class FlowPacProcessAllDynaFlowTypeScheduleFlow(
 
         # TODO: add flow logic
 
+
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
-        result = FlowPacProcessAllDynaFlowTypeScheduleFlowResult()
-        result.context_object_code = pac_bus_obj.code
+        result = FlowPlantSampleWorkflowResult()
+        result.context_object_code = plant_bus_obj.code
 
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

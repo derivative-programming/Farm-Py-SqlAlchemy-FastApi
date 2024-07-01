@@ -48,7 +48,7 @@
 
 			plant.code as random_property_updates_link_plant_code,
 
-			tac.code as back_to_dashboard_link_tac_code,
+			(select code from farm_tac where lookup_enum_name = 'Primary') as back_to_dashboard_link_tac_code,
 
 			ROW_NUMBER() OVER(
 				ORDER BY
@@ -65,8 +65,6 @@
 			left join farm_land land on land.land_id = plant.land_id  -- up obj tree
 
 			left join farm_pac pac on pac.pac_id = land.pac_id  -- up obj tree
-
-			join farm_tac tac on pac.pac_id = tac.pac_id and tac.lookup_enum_name = 'Primary'
 
 		where
 			 (plant.code = :context_code

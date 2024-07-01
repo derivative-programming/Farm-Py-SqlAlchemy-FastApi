@@ -1,9 +1,5 @@
 
 
-		--TriStateFilter IsBuildTaskDebugRequiredTriStateFilterCode
-		DECLARE @IsBuildTaskDebugRequiredTriStateFilterCode_TriStateFilterValue int = -1
-		select @IsBuildTaskDebugRequiredTriStateFilterCode_TriStateFilterValue = state_int_value from farm_tri_state_filter where code = :is_build_task_debug_required_tri_state_filter_code
-
 	SELECT * FROM
 	(
 		SELECT
@@ -70,12 +66,38 @@
 
 			left join farm_dyna_flow_type dyna_flowdyna_flow_type on dyna_flow.dyna_flow_type_id = dyna_flowdyna_flow_type.dyna_flow_type_id --child obj lookup prop
 
+			left join farm_dyna_flow dep_flow on dyna_flow.dependency_dyna_flow_id = dep_flow.dyna_flow_id  
+			left join farm_dyna_flow_task t on dyna_flow.dyna_flow_id = t.dyna_flow_id 
+			
 		where
 			 (pac.code = :context_code
 			   )
 
 				--TriStateFilter IsBuildTaskDebugRequiredTriStateFilterCode @IsBuildTaskDebugRequiredTriStateFilterCode_TriStateFilterValue
-			and (:is_build_task_debug_required_tri_state_filter_code is null or :is_build_task_debug_required_tri_state_filter_code = '00000000-0000-0000-0000-000000000000' or @IsBuildTaskDebugRequiredTriStateFilterCode_TriStateFilterValue = -1 or @IsBuildTaskDebugRequiredTriStateFilterCode_TriStateFilterValue = dyna_flow.is_build_task_debug_required)
+			and (
+				:is_build_task_debug_required_tri_state_filter_code is null or
+				:is_build_task_debug_required_tri_state_filter_code = '00000000-0000-0000-0000-000000000000' or
+				(
+					(
+						select
+							state_int_value
+						from
+							farm_tri_state_filter
+						where code = :is_build_task_debug_required_tri_state_filter_code
+					) in (
+					-1,
+					dyna_flow.is_build_task_debug_required
+					)
+				)
+			)
+			
+		  and
+				dyna_flow.is_canceled = 0 and
+				dyna_flow.is_started = 0 and
+				dyna_flow.is_completed = 0 and 
+				dyna_flow.is_task_creation_started = 0 and 
+				(ifnull(dep_flow.is_completed,1) = 1 or ifnull(dep_flow.is_canceled,1) = 1)  and
+				t.dyna_flow_task_id is null
 
 	) AS TBL
 	WHERE

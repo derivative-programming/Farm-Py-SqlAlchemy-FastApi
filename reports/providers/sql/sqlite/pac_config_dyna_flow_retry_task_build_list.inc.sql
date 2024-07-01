@@ -22,7 +22,13 @@
 
 		where
 			 (pac.code = :context_code
-			 And DynaFlow.IsStarted = 1 and DynaFlow.IsSuccessful = 0 and DynaFlow.IsCanceled = 0 and DynaFlow.IsCancelRequested = 0 and DynaFlow.IsTasksCreated = 0 and DynaFlow.IsTaskCreationStarted = 1 and DynaFlow.StartedUTCDateTime < dateadd(HOUR,-2,getutcdate())  )
+			 and dyna_flow.is_started = 1 and 
+			 dyna_flow.is_successful = 0 and 
+			 dyna_flow.is_canceled = 0 and 
+			 dyna_flow.is_cancel_requested = 0 and 
+			 dyna_flow.is_tasks_created = 0 and 
+			 dyna_flow.is_task_creation_started = 1 and 
+			 dyna_flow.started_utc_date_time < datetime('now', '-2 hours')  )
 
 	) AS TBL
 	WHERE

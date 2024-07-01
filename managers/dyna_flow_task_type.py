@@ -45,6 +45,8 @@ class DynaFlowTaskTypeEnum(Enum):
     UNKNOWN = 'Unknown'
     DYNAFLOWTASKDYNAFLOWCLEANUP = 'DynaFlowTaskDynaFlowCleanup'
     PROCESSALLDYNAFLOWTYPESCHEDULETASK = 'ProcessAllDynaFlowTypeScheduleTask'
+    DYNAFLOWTASKPLANTTASKONE = 'DynaFlowTaskPlantTaskOne'
+    DYNAFLOWTASKPLANTTASKTWO = 'DynaFlowTaskPlantTaskTwo'
 
 
 class DynaFlowTaskTypeManager:
@@ -119,6 +121,26 @@ class DynaFlowTaskTypeManager:
             item.name = "Process All Scheduled DynaFlowTypes"
             item.lookup_enum_name = "ProcessAllDynaFlowTypeScheduleTask"
             item.description = "Process All Scheduled DynaFlowTypes"
+            item.display_order = await self.count()
+            item.is_active = True
+            # item.max_retry_count = 1
+            await self.add(item)
+        if await self.from_enum(DynaFlowTaskTypeEnum.DYNAFLOWTASKPLANTTASKONE) \
+                is None:
+            item = await self._build_lookup_item(pac)
+            item.name = "Dyna Flow Task Plant Task One"
+            item.lookup_enum_name = "DynaFlowTaskPlantTaskOne"
+            item.description = "Dyna Flow Task Plant Task One"
+            item.display_order = await self.count()
+            item.is_active = True
+            # item.max_retry_count = 1
+            await self.add(item)
+        if await self.from_enum(DynaFlowTaskTypeEnum.DYNAFLOWTASKPLANTTASKTWO) \
+                is None:
+            item = await self._build_lookup_item(pac)
+            item.name = "Dyna Flow Task Plant Task Two"
+            item.lookup_enum_name = "DynaFlowTaskPlantTaskTwo"
+            item.description = "Dyna Flow Task Plant Task Two"
             item.display_order = await self.count()
             item.is_active = True
             # item.max_retry_count = 1

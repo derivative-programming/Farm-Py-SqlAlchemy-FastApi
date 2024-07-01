@@ -73,8 +73,8 @@ class TestReportProviderTacFarmDashboard:
             assert isinstance(result, dict), (
                 "Each result should be a dictionary")
             expected_keys = [
-                "field_one_plant_list_link_land_code"
-                "conditional_btn_example_link_land_code"
+                "field_one_plant_list_link_land_code",
+                "conditional_btn_example_link_land_code",
                 "is_conditional_btn_available",
 # endset  # noqa: E122
             ]

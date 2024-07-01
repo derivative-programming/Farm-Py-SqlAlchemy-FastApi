@@ -18,15 +18,10 @@
 				) AS ROWNUMBER
 		  -- select *
 		from
-		 	farm_tac  tac  --owner obj
-
-			left join farm_pac pac on pac.pac_id = tac.pac_id  -- up obj tree
-
-			join farm_land land on pac.pac_id = land.pac_id and land.lookup_enum_name = 'Field_One'
+		 	farm_land  land  --owner obj 
 
 		where
-			 (tac.code = :context_code
-			   )
+			 land.lookup_enum_name = 'Field_One' 
 
 	) AS TBL
 	WHERE

@@ -1,16 +1,5 @@
 
-               
-        --GENLOOPReportParamStart
-		--GENIF[calculatedFKObjectName=TriStateFilter]Start
-		--GENIF[calculatedFKObjectName=TriStateFilter]End
-		--GENIF[calculatedFKObjectName=DateGreaterThanFilter]Start
-		--DateGreaterThanFilter GENVALName
-		DECLARE @GENVALName_DateGreaterThanFilterIntValue int = -1
-		select @GENVALName_DateGreaterThanFilterIntValue = DayCount from farm_date_greater_than_filter where code = :GENVALLowerUnderscoredReportParamName
-		DECLARE @GENVALName_DateGreaterThanFilterUtcDateTimeValue datetime = getutcdate()
-		select @GENVALName_DateGreaterThanFilterUtcDateTimeValue = dateadd(d,(-1 * @GENVALName_DateGreaterThanFilterIntValue),getutcdate())
-		--GENIF[calculatedFKObjectName=DateGreaterThanFilter]End
-        --GENLOOPReportParamEnd
+                
 
    
 	SELECT * FROM 
@@ -235,16 +224,6 @@
 				)
 			)
 				--GENIF[calculatedFKObjectName=TriStateFilter]End
-				--GENIF[calculatedFKObjectName=DateGreaterThanFilter]Start
-				--DateGreaterThanFilter GENVALName @GENVALName_DateGreaterThanFilterUtcDateTimeValue
-			and (:GENVALLowerUnderscoredReportParamName is null or :GENVALLowerUnderscoredReportParamName = '00000000-0000-0000-0000-000000000000' or @GENVALName_DateGreaterThanFilterUtcDateTimeValue < GENVALLowerUnderscoredcalculatedTargetLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedTargetObjectName.GENVALLowerUnderscoredcalculatedTargetPropertyName)
-				--GENIF[calculatedFKObjectName=DateGreaterThanFilter]End
-				
-				--GENIF[calculatedFKObjectName!=TriStateFilter]Start
-				--GENIF[calculatedFKObjectName!=DateGreaterThanFilter]Start
-			and (:GENVALLowerUnderscoredReportParamName is null or :GENVALLowerUnderscoredReportParamName = GENVALcalculatedSqlServerSingleQuoteDefaultValue or :GENVALLowerUnderscoredReportParamName = GENVALLowerUnderscoredcalculatedTargetLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedTargetObjectName.GENVALLowerUnderscoredcalculatedTargetPropertyName)
-				--GENIF[calculatedFKObjectName!=DateGreaterThanFilter]End
-				--GENIF[calculatedFKObjectName!=TriStateFilter]End
 
 				--GENElseEnd 
 				--GENCASE[calculatedCSharpDataType]End

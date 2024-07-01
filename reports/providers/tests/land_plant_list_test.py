@@ -129,7 +129,7 @@ class TestReportProviderLandPlantList:
                 "n_var_char_as_url",
                 "update_link_plant_code",
                 "delete_async_button_link_plant_code",
-                "details_link_plant_code"
+                "details_link_plant_code",
 # endset  # noqa: E122
             ]
             for key in expected_keys:

@@ -1,30 +1,30 @@
-# flows/default/pac_process_all_dyna_flow_type_schedule_flow.py
+# flows/default/dyna_flow_task_plant_task_two.py
 # pylint: disable=unused-import
 """
 This module contains the
-FlowPacProcessAllDynaFlowTypeScheduleFlow class
+FlowDynaFlowTaskPlantTaskTwo class
 and related classes
 that handle the addition of a
  to a specific
-pac in the flow process.
+dyna_flow_task in the flow process.
 """
 
 import uuid  # noqa: F401
 import json
 from datetime import date, datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from flows.base.pac_process_all_dyna_flow_type_schedule_flow import (
-    BaseFlowPacProcessAllDynaFlowTypeScheduleFlow)
+from flows.base.dyna_flow_task_plant_task_two import (
+    BaseFlowDynaFlowTaskPlantTaskTwo)
 from flows.base import LogSeverity
-from business.pac import PacBusObj
+from business.dyna_flow_task import DynaFlowTaskBusObj
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 
 
-class FlowPacProcessAllDynaFlowTypeScheduleFlowResult():
+class FlowDynaFlowTaskPlantTaskTwoResult():
     """
     Represents the result of the
-    FlowPacProcessAllDynaFlowTypeScheduleFlow process.
+    FlowDynaFlowTaskPlantTaskTwo process.
     """
 
     context_object_code: uuid.UUID = uuid.UUID(int=0)
@@ -32,12 +32,12 @@ class FlowPacProcessAllDynaFlowTypeScheduleFlowResult():
     def __init__(self):
         """
         Initializes a new instance of the
-        FlowPacProcessAllDynaFlowTypeScheduleFlowResult class.
+        FlowDynaFlowTaskPlantTaskTwoResult class.
         """
 
     def to_json(self):
         """
-        Converts the FlowPacProcessAllDynaFlowTypeScheduleFlowResult
+        Converts the FlowDynaFlowTaskPlantTaskTwoResult
         instance to a JSON string.
 
         Returns:
@@ -54,33 +54,33 @@ class FlowPacProcessAllDynaFlowTypeScheduleFlowResult():
         return json.dumps(data)
 
 
-class FlowPacProcessAllDynaFlowTypeScheduleFlow(
-    BaseFlowPacProcessAllDynaFlowTypeScheduleFlow
+class FlowDynaFlowTaskPlantTaskTwo(
+    BaseFlowDynaFlowTaskPlantTaskTwo
 ):
     """
-    FlowPacProcessAllDynaFlowTypeScheduleFlow handles the addition of
+    FlowDynaFlowTaskPlantTaskTwo handles the addition of
     a  to
-    a specific pac in the flow process.
+    a specific dyna_flow_task in the flow process.
 
     This class extends the
-    BaseFlowPacProcessAllDynaFlowTypeScheduleFlowclass and
+    BaseFlowDynaFlowTaskPlantTaskTwoclass and
     initializes it with the provided session context.
     """
 
     async def process(
         self,
-        pac_bus_obj: PacBusObj,
+        dyna_flow_task_bus_obj: DynaFlowTaskBusObj,
 
 # endset  # noqa: E122
-    ) -> FlowPacProcessAllDynaFlowTypeScheduleFlowResult:
+    ) -> FlowDynaFlowTaskPlantTaskTwoResult:
         """
         Processes the addition of a
-         to a specific pac.
+         to a specific dyna_flow_task.
 
         Returns:
-            FlowPacProcessAllDynaFlowTypeScheduleFlowResult:
+            FlowDynaFlowTaskPlantTaskTwoResult:
                 The result of the
-                FlowPacProcessAllDynaFlowTypeScheduleFlow process.
+                FlowDynaFlowTaskPlantTaskTwo process.
         """
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
@@ -88,10 +88,10 @@ class FlowPacProcessAllDynaFlowTypeScheduleFlow(
         )
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
-            "Code::" + str(pac_bus_obj.code)
+            "Code::" + str(dyna_flow_task_bus_obj.code)
         )
         await super()._process_validation_rules(
-            pac_bus_obj,
+            dyna_flow_task_bus_obj,
 
 # endset  # noqa: E122
         )
@@ -99,11 +99,12 @@ class FlowPacProcessAllDynaFlowTypeScheduleFlow(
 
         # TODO: add flow logic
 
+
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,
             "Building result")
-        result = FlowPacProcessAllDynaFlowTypeScheduleFlowResult()
-        result.context_object_code = pac_bus_obj.code
+        result = FlowDynaFlowTaskPlantTaskTwoResult()
+        result.context_object_code = dyna_flow_task_bus_obj.code
 
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

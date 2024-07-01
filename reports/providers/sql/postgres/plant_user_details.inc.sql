@@ -48,7 +48,7 @@
 
 			plant.code as random_property_updates_link_plant_code,
 
-			tac.code as back_to_dashboard_link_tac_code,
+			(select code from farm_tac where lookup_enum_name = 'Primary') as back_to_dashboard_link_tac_code,
 
 			ROW_NUMBER() OVER(
 				ORDER BY

@@ -44,6 +44,7 @@ class DynaFlowTypeEnum(Enum):
     """
     UNKNOWN = 'Unknown'
     PACPROCESSALLDYNAFLOWTYPESCHEDULEFLOW = 'PacProcessAllDynaFlowTypeScheduleFlow'
+    PLANTSAMPLEWORKFLOW = 'PlantSampleWorkflow'
 
 
 class DynaFlowTypeManager:
@@ -108,6 +109,16 @@ class DynaFlowTypeManager:
             item.name = "Pac Process All Dyna Flow Type Schedule Flow"
             item.lookup_enum_name = "PacProcessAllDynaFlowTypeScheduleFlow"
             item.description = "Pac Process All Dyna Flow Type Schedule Flow"
+            item.display_order = await self.count()
+            item.is_active = True
+            # item.priority_level = 1
+            await self.add(item)
+        if await self.from_enum(DynaFlowTypeEnum.PLANTSAMPLEWORKFLOW) \
+                is None:
+            item = await self._build_lookup_item(pac)
+            item.name = "Plant Sample Workflow"
+            item.lookup_enum_name = "PlantSampleWorkflow"
+            item.description = "Plant Sample Workflow"
             item.display_order = await self.count()
             item.is_active = True
             # item.priority_level = 1
