@@ -1148,12 +1148,6 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
     # someBitVal,
     # someDecimalVal,
     # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
     # DynaFlowID
     # DynaFlowTaskTypeID
 
@@ -1292,6 +1286,12 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow_task.dyna_flow_code_peek
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
 
     # insert_utc_date_time
 

@@ -563,12 +563,6 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
     # someBitVal,
     # someDecimalVal,
     # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
     # OrganizationID
     # OrgCustomerID
 
@@ -707,6 +701,12 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             )
 
         return self.org_api_key.organization_code_peek
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
 
     # insert_utc_date_time
 

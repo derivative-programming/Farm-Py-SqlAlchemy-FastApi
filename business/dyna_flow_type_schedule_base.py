@@ -443,12 +443,6 @@ class DynaFlowTypeScheduleBaseBusObj(BaseBusObj):
     # someBitVal,
     # someDecimalVal,
     # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
     # DynaFlowTypeID
 
     @property
@@ -587,6 +581,12 @@ class DynaFlowTypeScheduleBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow_type_schedule.pac_code_peek
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
 
     # insert_utc_date_time
 

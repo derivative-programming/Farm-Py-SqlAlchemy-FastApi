@@ -1248,12 +1248,6 @@ class CustomerBaseBusObj(BaseBusObj):
     # someBitVal,
     # someDecimalVal,
     # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
     # TacID
     @property
     def tac_id(self):
@@ -1322,6 +1316,12 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         return self.customer.tac_code_peek
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
 
     # insert_utc_date_time
 

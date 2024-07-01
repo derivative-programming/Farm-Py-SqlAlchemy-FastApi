@@ -470,12 +470,6 @@ class RoleBaseBusObj(BaseBusObj):
     # someBitVal,
     # someDecimalVal,
     # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
     # PacID
     @property
     def pac_id(self):
@@ -544,6 +538,12 @@ class RoleBaseBusObj(BaseBusObj):
             )
 
         return self.role.pac_code_peek
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
 
     # insert_utc_date_time
 

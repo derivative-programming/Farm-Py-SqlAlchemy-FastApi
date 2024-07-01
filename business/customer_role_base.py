@@ -339,12 +339,6 @@ class CustomerRoleBaseBusObj(BaseBusObj):
     # someBitVal,
     # someDecimalVal,
     # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
     # CustomerID
     # RoleID
 
@@ -483,6 +477,12 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             )
 
         return self.customer_role.customer_code_peek
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
 
     # insert_utc_date_time
 

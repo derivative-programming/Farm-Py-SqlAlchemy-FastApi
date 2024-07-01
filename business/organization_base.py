@@ -296,12 +296,6 @@ class OrganizationBaseBusObj(BaseBusObj):
     # someBitVal,
     # someDecimalVal,
     # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
     # TacID
     @property
     def tac_id(self):
@@ -370,6 +364,12 @@ class OrganizationBaseBusObj(BaseBusObj):
             )
 
         return self.organization.tac_code_peek
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
 
     # insert_utc_date_time
 

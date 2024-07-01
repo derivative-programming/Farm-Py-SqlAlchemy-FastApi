@@ -569,12 +569,6 @@ class ErrorLogBaseBusObj(BaseBusObj):
     # someBitVal,
     # someDecimalVal,
     # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
     # PacID
     @property
     def pac_id(self):
@@ -643,6 +637,12 @@ class ErrorLogBaseBusObj(BaseBusObj):
             )
 
         return self.error_log.pac_code_peek
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
 
     # insert_utc_date_time
 

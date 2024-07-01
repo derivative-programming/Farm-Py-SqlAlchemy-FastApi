@@ -344,12 +344,6 @@ class DFTDependencyBaseBusObj(BaseBusObj):
     # someBitVal,
     # someDecimalVal,
     # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
     # DynaFlowTaskID
     @property
     def dyna_flow_task_id(self):
@@ -418,6 +412,12 @@ class DFTDependencyBaseBusObj(BaseBusObj):
             )
 
         return self.dft_dependency.dyna_flow_task_code_peek
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
 
     # insert_utc_date_time
 

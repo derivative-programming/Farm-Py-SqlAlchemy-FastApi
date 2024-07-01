@@ -303,12 +303,6 @@ class OrgCustomerBaseBusObj(BaseBusObj):
     # someBitVal,
     # someDecimalVal,
     # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
     # CustomerID
 
     @property
@@ -447,6 +441,12 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             )
 
         return self.org_customer.organization_code_peek
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
 
     # insert_utc_date_time
 

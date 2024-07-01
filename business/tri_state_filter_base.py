@@ -518,12 +518,6 @@ class TriStateFilterBaseBusObj(BaseBusObj):
     # someBitVal,
     # someDecimalVal,
     # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
     # PacID
     @property
     def pac_id(self):
@@ -592,6 +586,12 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             )
 
         return self.tri_state_filter.pac_code_peek
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
 
     # insert_utc_date_time
 
