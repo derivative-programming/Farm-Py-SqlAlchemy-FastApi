@@ -543,6 +543,7 @@ class PacBaseBusObj(BaseBusObj):
             )
 
         return self.pac._code_peek
+
     # insert_utc_date_time
 
     @property

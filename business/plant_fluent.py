@@ -9,9 +9,12 @@ to the business object for a
 Plant.
 """
 
-from decimal import Decimal  # noqa: F401
 import uuid  # noqa: F401
-from datetime import datetime, date  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+
+import managers as managers_and_enums
+
 from .plant_base import PlantBaseBusObj
 
 
@@ -320,6 +323,30 @@ class PlantFluentBusObj(PlantBaseBusObj):
         """
         self.flvr_foreign_key_id = value
         return self
+
+    async def set_prop_flvr_foreign_key_id_by_enum(
+        self,
+        flavor_enum: managers_and_enums.FlavorEnum
+    ):
+        """
+        """
+        if not isinstance(
+            flavor_enum,
+            managers_and_enums.FlavorEnum
+        ):
+            raise ValueError("flavor_enum must be a FlavorEnum")
+
+        flavor_manager =  \
+            managers_and_enums.FlavorManager(
+                self._session_context
+            )
+        flavor_obj = await (
+            flavor_manager.
+            from_enum(flavor_enum)
+        )
+
+        self.flvr_foreign_key_id = flavor_obj.flavor_id
+        return self
     # LandID
 
     def set_prop_land_id(self, value: int):
@@ -337,6 +364,7 @@ class PlantFluentBusObj(PlantBaseBusObj):
 
         self.land_id = value
         return self
+
     # somePhoneNumber,
     # someTextVal,
     # someUniqueidentifierVal,

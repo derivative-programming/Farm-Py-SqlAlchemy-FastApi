@@ -587,6 +587,7 @@ class DynaFlowTypeScheduleBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow_type_schedule.pac_code_peek
+
     # insert_utc_date_time
 
     @property

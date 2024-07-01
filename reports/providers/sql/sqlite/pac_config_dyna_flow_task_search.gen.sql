@@ -1,6 +1,5 @@
 
 
-
 	SELECT * FROM
 	(
 		SELECT
@@ -60,7 +59,7 @@
 		where
 			 (pac.code = :context_code
 			   )
- 
+
 			and (:processor_identifier is null or :processor_identifier = '' or  dyna_flow_task.processor_identifier like :like_processor_identifier)
 
 				--TriStateFilter IsStartedTriStateFilterCode @IsStartedTriStateFilterCode_TriStateFilterValue

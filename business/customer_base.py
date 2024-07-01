@@ -1322,6 +1322,7 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         return self.customer.tac_code_peek
+
     # insert_utc_date_time
 
     @property

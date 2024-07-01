@@ -592,6 +592,7 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
             )
 
         return self.date_greater_than_filter.pac_code_peek
+
     # insert_utc_date_time
 
     @property

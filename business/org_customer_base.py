@@ -447,6 +447,7 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             )
 
         return self.org_customer.organization_code_peek
+
     # insert_utc_date_time
 
     @property

@@ -544,6 +544,7 @@ class TacBaseBusObj(BaseBusObj):
             )
 
         return self.tac.pac_code_peek
+
     # insert_utc_date_time
 
     @property

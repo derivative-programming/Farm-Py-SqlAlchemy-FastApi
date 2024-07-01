@@ -483,6 +483,7 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             )
 
         return self.customer_role.customer_code_peek
+
     # insert_utc_date_time
 
     @property

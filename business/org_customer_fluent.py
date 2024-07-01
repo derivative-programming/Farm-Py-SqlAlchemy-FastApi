@@ -9,9 +9,12 @@ to the business object for a
 OrgCustomer.
 """
 
-from decimal import Decimal  # noqa: F401
 import uuid  # noqa: F401
-from datetime import datetime, date  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+
+import managers as managers_and_enums
+
 from .org_customer_base import OrgCustomerBaseBusObj
 
 
@@ -55,6 +58,30 @@ class OrgCustomerFluentBusObj(OrgCustomerBaseBusObj):
 
         """
         self.customer_id = value
+        return self
+
+    async def set_prop_customer_id_by_enum(
+        self,
+        customer_enum: managers_and_enums.CustomerEnum
+    ):
+        """
+        """
+        if not isinstance(
+            customer_enum,
+            managers_and_enums.CustomerEnum
+        ):
+            raise ValueError("customer_enum must be a CustomerEnum")
+
+        customer_manager =  \
+            managers_and_enums.CustomerManager(
+                self._session_context
+            )
+        customer_obj = await (
+            customer_manager.
+            from_enum(customer_enum)
+        )
+
+        self.customer_id = customer_obj.customer_id
         return self
     # email,
     # OrganizationID

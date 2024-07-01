@@ -1040,12 +1040,6 @@ class PlantBaseBusObj(BaseBusObj):
     # someBitVal,
     # someDecimalVal,
     # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
     # FlvrForeignKeyID
 
     @property
@@ -1185,6 +1179,13 @@ class PlantBaseBusObj(BaseBusObj):
             )
 
         return self.plant.land_code_peek
+    # someFloatVal,
+    # someIntVal,
+    # someMoneyVal,
+    # someNVarCharVal,
+    # someDateVal
+    # someUTCDateTimeVal
+
 # endset
     # insert_utc_date_time
 

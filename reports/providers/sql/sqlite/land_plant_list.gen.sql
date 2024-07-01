@@ -138,28 +138,6 @@
 			 (land.code = :context_code
 			   )
 
-			and (:flavor_code is null or :flavor_code = '00000000-0000-0000-0000-000000000000' or :flavor_code = plantflavor.code)
-
-			and (:some_int_val is null or :some_int_val = 0 or :some_int_val = plant.some_int_val)
-
-			and (:some_big_int_val is null or :some_big_int_val = 0 or :some_big_int_val = plant.some_big_int_val)
-
-			and (:some_float_val is null or :some_float_val = 0 or :some_float_val = plant.some_float_val)
-
-			and (:some_bit_val is null or :some_bit_val = 0 or :some_bit_val = plant.some_bit_val)
-
-			and (:is_edit_allowed is null or :is_edit_allowed = 0 or :is_edit_allowed = plant.is_edit_allowed)
-
-			and (:is_delete_allowed is null or :is_delete_allowed = 0 or :is_delete_allowed = plant.is_edit_allowed)
-
-			and (:some_decimal_val is null or :some_decimal_val = 0 or :some_decimal_val = plant.some_decimal_val)
-
-			and (:some_min_utc_date_time_val is null or :some_min_utc_date_time_val = Null or :some_min_utc_date_time_val = plant.some_utc_date_time_val)
-
-			and (:some_min_date_val is null or :some_min_date_val = Null or :some_min_date_val = plant.some_date_val)
-
-			and (:some_money_val is null or :some_money_val = 0 or :some_money_val = plant.some_money_val)
-
 			and (:some_n_var_char_val is null or :some_n_var_char_val = '' or  plant.some_n_var_char_val like :like_some_n_var_char_val)
 
 			and (:some_var_char_val is null or :some_var_char_val = '' or  plant.some_var_char_val like :like_some_var_char_val)

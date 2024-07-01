@@ -1,3 +1,4 @@
+# services/machine_identifier.py
 """
 This module is used to generate a unique identifier
 for the machine that the application is running on.

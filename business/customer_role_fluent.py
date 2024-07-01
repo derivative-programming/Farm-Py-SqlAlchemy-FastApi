@@ -9,9 +9,12 @@ to the business object for a
 CustomerRole.
 """
 
-from decimal import Decimal  # noqa: F401
 import uuid  # noqa: F401
-from datetime import datetime, date  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+
+import managers as managers_and_enums
+
 from .customer_role_base import CustomerRoleBaseBusObj
 
 
@@ -86,4 +89,28 @@ class CustomerRoleFluentBusObj(CustomerRoleBaseBusObj):
 
         """
         self.role_id = value
+        return self
+
+    async def set_prop_role_id_by_enum(
+        self,
+        role_enum: managers_and_enums.RoleEnum
+    ):
+        """
+        """
+        if not isinstance(
+            role_enum,
+            managers_and_enums.RoleEnum
+        ):
+            raise ValueError("role_enum must be a RoleEnum")
+
+        role_manager =  \
+            managers_and_enums.RoleManager(
+                self._session_context
+            )
+        role_obj = await (
+            role_manager.
+            from_enum(role_enum)
+        )
+
+        self.role_id = role_obj.role_id
         return self

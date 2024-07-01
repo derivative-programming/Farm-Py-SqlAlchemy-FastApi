@@ -592,6 +592,7 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             )
 
         return self.tri_state_filter.pac_code_peek
+
     # insert_utc_date_time
 
     @property

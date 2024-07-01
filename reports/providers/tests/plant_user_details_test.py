@@ -93,9 +93,9 @@ class TestReportProviderPlantUserDetails:
                 "some_var_char_val",
                 "phone_num_conditional_on_is_editable",
                 "n_var_char_as_url",
-                "update_button_text_link_plant_code"
+                "update_button_text_link_plant_code",
                 "random_property_updates_link_plant_code",
-                "back_to_dashboard_link_tac_code"
+                "back_to_dashboard_link_tac_code",
 # endset  # noqa: E122
             ]
             for key in expected_keys:

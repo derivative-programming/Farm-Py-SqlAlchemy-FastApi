@@ -22,6 +22,13 @@ from .plant import PlantBusObj
 from .role import RoleBusObj
 from .tac import TacBusObj
 from .tri_state_filter import TriStateFilterBusObj
+from .dyna_flow import DynaFlowBusObj  # noqa: F401
+from .dyna_flow_task import DynaFlowTaskBusObj  # noqa: F401
+from .dyna_flow_task_type import DynaFlowTaskTypeBusObj  # noqa: F401
+from .dyna_flow_type import DynaFlowTypeBusObj  # noqa: F401
+from .dyna_flow_type_schedule import DynaFlowTypeScheduleBusObj  # noqa: F401
+from .dft_dependency import DFTDependencyBusObj  # noqa: F401
+from .df_maintenance import DFMaintenanceBusObj  # noqa: F401
 
 
 class BusObjFactory:
@@ -117,6 +124,41 @@ class BusObjFactory:
         elif name == 'Tac':
             return await (
                 TacBusObj(session_context)
+                .load_from_code(code)
+            )
+        elif name == 'DynaFlow':
+            return await (
+                DynaFlowBusObj(session_context)
+                .load_from_code(code)
+            )
+        elif name == 'DynaFlowTask':
+            return await (
+                DynaFlowTaskBusObj(session_context)
+                .load_from_code(code)
+            )
+        elif name == 'DynaFlowTaskType':
+            return await (
+                DynaFlowTaskTypeBusObj(session_context)
+                .load_from_code(code)
+            )
+        elif name == 'DynaFlowType':
+            return await (
+                DynaFlowTypeBusObj(session_context)
+                .load_from_code(code)
+            )
+        elif name == 'DynaFlowTypeSchedule':
+            return await (
+                DynaFlowTypeScheduleBusObj(session_context)
+                .load_from_code(code)
+            )
+        elif name == 'DFMaintenance':
+            return await (
+                DFMaintenanceBusObj(session_context)
+                .load_from_code(code)
+            )
+        elif name == 'DFTDependency':
+            return await (
+                DFTDependencyBusObj(session_context)
                 .load_from_code(code)
             )
         elif name == 'TriStateFilter':
@@ -219,6 +261,41 @@ class BusObjFactory:
         elif name == 'TriStateFilter':
             return await (
                 TriStateFilterBusObj(session_context)
+                .load_from_id(obj_id)
+            )
+        elif name == 'DynaFlow':
+            return await (
+                DynaFlowBusObj(session_context)
+                .load_from_id(obj_id)
+            )
+        elif name == 'DynaFlowTask':
+            return await (
+                DynaFlowTaskBusObj(session_context)
+                .load_from_id(obj_id)
+            )
+        elif name == 'DynaFlowTaskType':
+            return await (
+                DynaFlowTaskTypeBusObj(session_context)
+                .load_from_id(obj_id)
+            )
+        elif name == 'DynaFlowType':
+            return await (
+                DynaFlowTypeBusObj(session_context)
+                .load_from_id(obj_id)
+            )
+        elif name == 'DynaFlowTypeSchedule':
+            return await (
+                DynaFlowTypeScheduleBusObj(session_context)
+                .load_from_id(obj_id)
+            )
+        elif name == 'DFMaintenance':
+            return await (
+                DFMaintenanceBusObj(session_context)
+                .load_from_id(obj_id)
+            )
+        elif name == 'DFTDependency':
+            return await (
+                DFTDependencyBusObj(session_context)
                 .load_from_id(obj_id)
             )
 

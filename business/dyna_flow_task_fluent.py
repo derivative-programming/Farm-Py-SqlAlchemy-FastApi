@@ -9,9 +9,12 @@ to the business object for a
 DynaFlowTask.
 """
 
-from decimal import Decimal  # noqa: F401
 import uuid  # noqa: F401
-from datetime import datetime, date  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+
+import managers as managers_and_enums
+
 from .dyna_flow_task_base import DynaFlowTaskBaseBusObj
 
 
@@ -354,6 +357,30 @@ class DynaFlowTaskFluentBusObj(DynaFlowTaskBaseBusObj):
 
         """
         self.dyna_flow_task_type_id = value
+        return self
+
+    async def set_prop_dyna_flow_task_type_id_by_enum(
+        self,
+        dyna_flow_task_type_enum: managers_and_enums.DynaFlowTaskTypeEnum
+    ):
+        """
+        """
+        if not isinstance(
+            dyna_flow_task_type_enum,
+            managers_and_enums.DynaFlowTaskTypeEnum
+        ):
+            raise ValueError("dyna_flow_task_type_enum must be a DynaFlowTaskTypeEnum")
+
+        dyna_flow_task_type_manager =  \
+            managers_and_enums.DynaFlowTaskTypeManager(
+                self._session_context
+            )
+        dyna_flow_task_type_obj = await (
+            dyna_flow_task_type_manager.
+            from_enum(dyna_flow_task_type_enum)
+        )
+
+        self.dyna_flow_task_type_id = dyna_flow_task_type_obj.dyna_flow_task_type_id
         return self
     # isCanceled,
     # isCancelRequested,

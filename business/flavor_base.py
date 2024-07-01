@@ -544,6 +544,7 @@ class FlavorBaseBusObj(BaseBusObj):
             )
 
         return self.flavor.pac_code_peek
+
     # insert_utc_date_time
 
     @property
