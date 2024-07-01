@@ -7,7 +7,7 @@ from decimal import Decimal  # noqa: F401
 from datetime import date, datetime  # noqa: F401
 from typing import List
 from helpers import SessionContext, TypeConversion  # noqa: F401
-from models import Plant
+from models import Land
 import models
 import managers as managers_and_enums  # noqa: F401
 ##GENLOOPObjectStart
@@ -25,10 +25,10 @@ from reports import (  # noqa: F401
 ##GENLearn[modelType=object,name=Land]End
 ##GENTrainingBlock[a]End
 ##GENLOOPObjectEnd
-from .plant_fluent import PlantFluentBusObj
+from .land_fluent import LandFluentBusObj
 
 
-class PlantReportsBusObj(PlantFluentBusObj):
+class LandReportsBusObj(LandFluentBusObj):
     """
     """
 
@@ -74,7 +74,7 @@ class PlantReportsBusObj(PlantFluentBusObj):
             str = "",
 # endset  # noqa: E122
         page_number: int = 1,
-        item_count_per_page: int = 1,
+        item_count_per_page: int = 100,
         order_by_column_name: str = "",
         order_by_descending: bool = False,
     ) -> List[ReportItemLandPlantList]:
@@ -86,7 +86,7 @@ class PlantReportsBusObj(PlantFluentBusObj):
         """
         report_manager = ReportManagerLandPlantList(self._session_context)
         return await report_manager.generate(
-            self.land_code_peek,
+            self.code,
 # endset  # noqa: E122
             flavor_code,
             some_int_val,
