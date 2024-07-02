@@ -1315,13 +1315,9 @@ class DynaFlowBaseBusObj(BaseBusObj):
 
         assert isinstance(value, str), "task_creation_processor_identifier must be a string"
         self.dyna_flow.task_creation_processor_identifier = value
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
+    # completedUTCDateTime
+    # dependencyDynaFlowID,
+    # description,
     # DynaFlowTypeID
 
     @property
@@ -1392,7 +1388,20 @@ class DynaFlowBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow.dyna_flow_type_code_peek
+    # isBuildTaskDebugRequired,
+    # isCanceled,
+    # isCancelRequested,
+    # isCompleted,
+    # isPaused,
+    # isResubmitted,
+    # isRunTaskDebugRequired,
+    # isStarted,
+    # isSuccessful,
+    # isTaskCreationStarted,
+    # isTasksCreated,
+    # minStartUTCDateTime
     # PacID
+
     @property
     def pac_id(self):
         """
@@ -1460,13 +1469,15 @@ class DynaFlowBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow.pac_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
+    # param1,
+    # parentDynaFlowID,
+    # priorityLevel,
+    # requestedUTCDateTime
+    # resultValue,
+    # rootDynaFlowID,
+    # startedUTCDateTime
+    # subjectCode,
+    # taskCreationProcessorIdentifier,
     # insert_utc_date_time
 
     @property

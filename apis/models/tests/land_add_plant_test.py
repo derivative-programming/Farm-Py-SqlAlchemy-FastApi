@@ -179,7 +179,7 @@ class TestLandAddPlantPostModelRequest:
         assert camel_case_dict['requestIsDeleteAllowed'] is True
         assert math.isclose(camel_case_dict['requestSomeFloatVal'], 3.14)
         assert camel_case_dict['requestSomeDecimalVal'] == Decimal('99.99')
-        # assert camel_case_dict['requestSomeUtcDateTimeVal'] == datetime(2023, 1, 1, 12, 0, 0).isoformat()
+        # assert camel_case_dict['requestSomeUTCDateTimeVal'] == datetime(2023, 1, 1, 12, 0, 0).isoformat()
         # assert camel_case_dict['requestSomeDateVal'] == date(2023, 1, 1).isoformat()
         assert camel_case_dict['requestSomeMoneyVal'] == Decimal('100.00')
         assert camel_case_dict['requestSomeNVarCharVal'] == \
@@ -207,7 +207,7 @@ class TestLandAddPlantPostModelRequest:
             force_error_message="Test Error Message",
 # endset  # noqa: E122
             request_flavor_code=uuid.uuid4(),
-            request_other_flavor="Test Flavor",
+            request_other_flavor="Test Text",
             request_some_int_val=123,
             request_some_big_int_val=456,
             request_some_bit_val=True,
@@ -236,7 +236,7 @@ class TestLandAddPlantPostModelRequest:
             "force_error_message": "Test Error Message",
 # endset  # noqa: E122
             "request_flavor_code": str(request.request_flavor_code),
-            "request_other_flavor": "Test Flavor",
+            "request_other_flavor": "Test Text",
             "request_some_int_val": 123,
             "request_some_big_int_val": 456,
             "request_some_bit_val": True,
@@ -269,7 +269,7 @@ class TestLandAddPlantPostModelRequest:
         request = LandAddPlantPostModelRequest(
             force_error_message="Test Error Message",
             request_flavor_code=uuid.uuid4(),
-            request_other_flavor="Test Flavor",
+            request_other_flavor="Test Text",
             request_some_int_val=123,
             request_some_big_int_val=456,
             request_some_bit_val=True,
@@ -291,7 +291,7 @@ class TestLandAddPlantPostModelRequest:
         expected_data = {
             "forceErrorMessage": "Test Error Message",
             "requestFlavorCode": str(request.request_flavor_code),
-            "requestOtherFlavor": "Test Flavor",
+            "requestOtherFlavor": "Test Text",
             "requestSomeIntVal": 123,
             "requestSomeBigIntVal": 456,
             "requestSomeBitVal": True,
@@ -299,7 +299,7 @@ class TestLandAddPlantPostModelRequest:
             "requestIsDeleteAllowed": False,
             "requestSomeFloatVal": 3.14,
             "requestSomeDecimalVal": "2.5",
-            "requestSomeUtcDateTimeVal":
+            "requestSomeUTCDateTimeVal":
                 request.request_some_utc_date_time_val.isoformat(),
             "requestSomeDateVal":
                 str(request.request_some_date_val),

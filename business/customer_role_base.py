@@ -332,14 +332,77 @@ class CustomerRoleBaseBusObj(BaseBusObj):
 
         self.customer_role.placeholder = value
     # RoleID
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
     # CustomerID
+
+    @property
+    def customer_id(self):
+        """
+        Returns the customer ID
+        associated with the
+        customer_role.
+
+        Raises:
+            AttributeError: If the
+                customer_role is not initialized.
+
+        Returns:
+            int: The customer ID of the customer_role.
+        """
+        if not self.customer_role:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+
+        return self.customer_role.customer_id
+
+    @customer_id.setter
+    def customer_id(self, value):
+        """
+        Sets the customer ID
+        for the customer_role.
+
+        Args:
+            value (int or None): The
+                customer ID to be set.
+                Must be an integer or None.
+
+        Raises:
+            AttributeError: If the
+                customer_role is not initialized.
+
+        """
+        if not self.customer_role:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+
+        assert isinstance(value, int) or value is None, (
+            "customer_id must be an integer or None")
+
+        self.customer_role.customer_id = value
+
+    @property
+    def customer_code_peek(self) -> uuid.UUID:
+        """
+        Returns the customer id code peek
+        of the customer_role.
+
+        Raises:
+            AttributeError: If the
+            customer_role is not initialized.
+
+        Returns:
+            uuid.UUID: The customer id code peek
+            of the customer_role.
+        """
+        if not self.customer_role:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+
+        return self.customer_role.customer_code_peek
+    # isPlaceholder,
+    # placeholder,
     # RoleID
 
     @property
@@ -410,80 +473,6 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             )
 
         return self.customer_role.role_code_peek
-    @property
-    def customer_id(self):
-        """
-        Returns the customer ID
-        associated with the
-        customer_role.
-
-        Raises:
-            AttributeError: If the
-                customer_role is not initialized.
-
-        Returns:
-            int: The customer ID of the customer_role.
-        """
-        if not self.customer_role:
-            raise AttributeError(
-                NOT_INITIALIZED_ERROR_MESSAGE
-            )
-
-        return self.customer_role.customer_id
-
-    @customer_id.setter
-    def customer_id(self, value):
-        """
-        Sets the customer ID
-        for the customer_role.
-
-        Args:
-            value (int or None): The
-                customer ID to be set.
-                Must be an integer or None.
-
-        Raises:
-            AttributeError: If the
-                customer_role is not initialized.
-
-        """
-        if not self.customer_role:
-            raise AttributeError(
-                NOT_INITIALIZED_ERROR_MESSAGE
-            )
-
-        assert isinstance(value, int) or value is None, (
-            "customer_id must be an integer or None")
-
-        self.customer_role.customer_id = value
-
-    @property
-    def customer_code_peek(self) -> uuid.UUID:
-        """
-        Returns the customer id code peek
-        of the customer_role.
-
-        Raises:
-            AttributeError: If the
-            customer_role is not initialized.
-
-        Returns:
-            uuid.UUID: The customer id code peek
-            of the customer_role.
-        """
-        if not self.customer_role:
-            raise AttributeError(
-                NOT_INITIALIZED_ERROR_MESSAGE
-            )
-
-        return self.customer_role.customer_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
     # insert_utc_date_time
 
     @property

@@ -1141,14 +1141,79 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
             "started_utc_date_time "
             "must be a datetime object")
         self.dyna_flow_task.started_utc_date_time = value
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
+    # completedUTCDateTime
+    # dependencyDynaFlowTaskID,
+    # description,
     # DynaFlowID
+
+    @property
+    def dyna_flow_id(self):
+        """
+        Returns the dyna_flow ID
+        associated with the
+        dyna_flow_task.
+
+        Raises:
+            AttributeError: If the
+                dyna_flow_task is not initialized.
+
+        Returns:
+            int: The dyna_flow ID of the dyna_flow_task.
+        """
+        if not self.dyna_flow_task:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+
+        return self.dyna_flow_task.dyna_flow_id
+
+    @dyna_flow_id.setter
+    def dyna_flow_id(self, value):
+        """
+        Sets the dyna_flow ID
+        for the dyna_flow_task.
+
+        Args:
+            value (int or None): The
+                dyna_flow ID to be set.
+                Must be an integer or None.
+
+        Raises:
+            AttributeError: If the
+                dyna_flow_task is not initialized.
+
+        """
+        if not self.dyna_flow_task:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+
+        assert isinstance(value, int) or value is None, (
+            "dyna_flow_id must be an integer or None")
+
+        self.dyna_flow_task.dyna_flow_id = value
+
+    @property
+    def dyna_flow_code_peek(self) -> uuid.UUID:
+        """
+        Returns the dyna_flow id code peek
+        of the dyna_flow_task.
+
+        Raises:
+            AttributeError: If the
+            dyna_flow_task is not initialized.
+
+        Returns:
+            uuid.UUID: The dyna_flow id code peek
+            of the dyna_flow_task.
+        """
+        if not self.dyna_flow_task:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+
+        return self.dyna_flow_task.dyna_flow_code_peek
+    # dynaFlowSubjectCode,
     # DynaFlowTaskTypeID
 
     @property
@@ -1219,80 +1284,22 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow_task.dyna_flow_task_type_code_peek
-    @property
-    def dyna_flow_id(self):
-        """
-        Returns the dyna_flow ID
-        associated with the
-        dyna_flow_task.
-
-        Raises:
-            AttributeError: If the
-                dyna_flow_task is not initialized.
-
-        Returns:
-            int: The dyna_flow ID of the dyna_flow_task.
-        """
-        if not self.dyna_flow_task:
-            raise AttributeError(
-                NOT_INITIALIZED_ERROR_MESSAGE
-            )
-
-        return self.dyna_flow_task.dyna_flow_id
-
-    @dyna_flow_id.setter
-    def dyna_flow_id(self, value):
-        """
-        Sets the dyna_flow ID
-        for the dyna_flow_task.
-
-        Args:
-            value (int or None): The
-                dyna_flow ID to be set.
-                Must be an integer or None.
-
-        Raises:
-            AttributeError: If the
-                dyna_flow_task is not initialized.
-
-        """
-        if not self.dyna_flow_task:
-            raise AttributeError(
-                NOT_INITIALIZED_ERROR_MESSAGE
-            )
-
-        assert isinstance(value, int) or value is None, (
-            "dyna_flow_id must be an integer or None")
-
-        self.dyna_flow_task.dyna_flow_id = value
-
-    @property
-    def dyna_flow_code_peek(self) -> uuid.UUID:
-        """
-        Returns the dyna_flow id code peek
-        of the dyna_flow_task.
-
-        Raises:
-            AttributeError: If the
-            dyna_flow_task is not initialized.
-
-        Returns:
-            uuid.UUID: The dyna_flow id code peek
-            of the dyna_flow_task.
-        """
-        if not self.dyna_flow_task:
-            raise AttributeError(
-                NOT_INITIALIZED_ERROR_MESSAGE
-            )
-
-        return self.dyna_flow_task.dyna_flow_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
+    # isCanceled,
+    # isCancelRequested,
+    # isCompleted,
+    # isParallelRunAllowed,
+    # isRunTaskDebugRequired,
+    # isStarted,
+    # isSuccessful,
+    # maxRetryCount,
+    # minStartUTCDateTime
+    # param1,
+    # param2,
+    # processorIdentifier,
+    # requestedUTCDateTime
+    # resultValue,
+    # retryCount,
+    # startedUTCDateTime
     # insert_utc_date_time
 
     @property

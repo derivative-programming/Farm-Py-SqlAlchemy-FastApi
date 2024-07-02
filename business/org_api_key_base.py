@@ -556,14 +556,82 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
         self.org_api_key.name = value
     # OrganizationID
     # OrgCustomerID
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
+    # apiKeyValue,
+    # createdBy,
+    # createdUTCDateTime
+    # expirationUTCDateTime
+    # isActive,
+    # isTempUserKey,
+    # name,
     # OrganizationID
+
+    @property
+    def organization_id(self):
+        """
+        Returns the organization ID
+        associated with the
+        org_api_key.
+
+        Raises:
+            AttributeError: If the
+                org_api_key is not initialized.
+
+        Returns:
+            int: The organization ID of the org_api_key.
+        """
+        if not self.org_api_key:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+
+        return self.org_api_key.organization_id
+
+    @organization_id.setter
+    def organization_id(self, value):
+        """
+        Sets the organization ID
+        for the org_api_key.
+
+        Args:
+            value (int or None): The
+                organization ID to be set.
+                Must be an integer or None.
+
+        Raises:
+            AttributeError: If the
+                org_api_key is not initialized.
+
+        """
+        if not self.org_api_key:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+
+        assert isinstance(value, int) or value is None, (
+            "organization_id must be an integer or None")
+
+        self.org_api_key.organization_id = value
+
+    @property
+    def organization_code_peek(self) -> uuid.UUID:
+        """
+        Returns the organization id code peek
+        of the org_api_key.
+
+        Raises:
+            AttributeError: If the
+            org_api_key is not initialized.
+
+        Returns:
+            uuid.UUID: The organization id code peek
+            of the org_api_key.
+        """
+        if not self.org_api_key:
+            raise AttributeError(
+                NOT_INITIALIZED_ERROR_MESSAGE
+            )
+
+        return self.org_api_key.organization_code_peek
     # OrgCustomerID
 
     @property
@@ -634,80 +702,6 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             )
 
         return self.org_api_key.org_customer_code_peek
-    @property
-    def organization_id(self):
-        """
-        Returns the organization ID
-        associated with the
-        org_api_key.
-
-        Raises:
-            AttributeError: If the
-                org_api_key is not initialized.
-
-        Returns:
-            int: The organization ID of the org_api_key.
-        """
-        if not self.org_api_key:
-            raise AttributeError(
-                NOT_INITIALIZED_ERROR_MESSAGE
-            )
-
-        return self.org_api_key.organization_id
-
-    @organization_id.setter
-    def organization_id(self, value):
-        """
-        Sets the organization ID
-        for the org_api_key.
-
-        Args:
-            value (int or None): The
-                organization ID to be set.
-                Must be an integer or None.
-
-        Raises:
-            AttributeError: If the
-                org_api_key is not initialized.
-
-        """
-        if not self.org_api_key:
-            raise AttributeError(
-                NOT_INITIALIZED_ERROR_MESSAGE
-            )
-
-        assert isinstance(value, int) or value is None, (
-            "organization_id must be an integer or None")
-
-        self.org_api_key.organization_id = value
-
-    @property
-    def organization_code_peek(self) -> uuid.UUID:
-        """
-        Returns the organization id code peek
-        of the org_api_key.
-
-        Raises:
-            AttributeError: If the
-            org_api_key is not initialized.
-
-        Returns:
-            uuid.UUID: The organization id code peek
-            of the org_api_key.
-        """
-        if not self.org_api_key:
-            raise AttributeError(
-                NOT_INITIALIZED_ERROR_MESSAGE
-            )
-
-        return self.org_api_key.organization_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
     # insert_utc_date_time
 
     @property

@@ -562,14 +562,14 @@ class ErrorLogBaseBusObj(BaseBusObj):
 
         assert isinstance(value, str), "url must be a string"
         self.error_log.url = value
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
+    # browserCode,
+    # contextCode,
+    # createdUTCDateTime
+    # description,
+    # isClientSideError,
+    # isResolved,
     # PacID
+
     @property
     def pac_id(self):
         """
@@ -637,13 +637,7 @@ class ErrorLogBaseBusObj(BaseBusObj):
             )
 
         return self.error_log.pac_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
+    # url,
     # insert_utc_date_time
 
     @property

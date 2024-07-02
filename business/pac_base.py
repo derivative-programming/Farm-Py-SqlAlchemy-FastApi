@@ -462,88 +462,11 @@ class PacBaseBusObj(BaseBusObj):
 
         assert isinstance(value, str), "name must be a string"
         self.pac.name = value
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
-
-    @property
-    def _id(self):
-        """
-        Returns the  ID
-        associated with the
-        pac.
-
-        Raises:
-            AttributeError: If the
-                pac is not initialized.
-
-        Returns:
-            int: The  ID of the pac.
-        """
-        if not self.pac:
-            raise AttributeError(
-                NOT_INITIALIZED_ERROR_MESSAGE
-            )
-
-        return self.pac._id
-
-    @_id.setter
-    def _id(self, value):
-        """
-        Sets the  ID
-        for the pac.
-
-        Args:
-            value (int or None): The
-                 ID to be set.
-                Must be an integer or None.
-
-        Raises:
-            AttributeError: If the
-                pac is not initialized.
-
-        """
-        if not self.pac:
-            raise AttributeError(
-                NOT_INITIALIZED_ERROR_MESSAGE
-            )
-
-        assert isinstance(value, int) or value is None, (
-            "_id must be an integer or None")
-
-        self.pac._id = value
-
-    @property
-    def _code_peek(self) -> uuid.UUID:
-        """
-        Returns the  id code peek
-        of the pac.
-
-        Raises:
-            AttributeError: If the
-            pac is not initialized.
-
-        Returns:
-            uuid.UUID: The  id code peek
-            of the pac.
-        """
-        if not self.pac:
-            raise AttributeError(
-                NOT_INITIALIZED_ERROR_MESSAGE
-            )
-
-        return self.pac._code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
+    # description,
+    # displayOrder,
+    # isActive,
+    # lookupEnumName,
+    # name,
     # insert_utc_date_time
 
     @property

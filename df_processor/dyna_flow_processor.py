@@ -232,20 +232,16 @@ class DynaFlowProcessor:
 
                 print("request any scheduled dataflows")
 
-                # await pac['PacProcessAllDynaFlowTypeScheduleFlow_ViaDynaFlow']("Process all scheduled data flows")
+                # TODO await pac['PacProcessAllDynaFlowTypeScheduleFlow_ViaDynaFlow']("Process all scheduled data flows")
 
-                rebuild_items_manager = \
-                    ReportManagerPacConfigDynaFlowRetryTaskBuildList(
-                        session_context)
-
-                rebuild_items = await rebuild_items_manager. \
-                    generate(
-                        pac.code,
+                rebuild_items = await pac. \
+                    generate_report_pac_config_dyna_flow_retry_task_build_list(
                         1,
                         100,
                         "",
                         False
                     )
+
                 for item in rebuild_items:
 
                     dyna_flow = DynaFlowBusObj(session_context)
@@ -259,18 +255,14 @@ class DynaFlowProcessor:
 
                     await dyna_flow.save()
 
-                rerun_items_manager = \
-                    ReportManagerPacConfigDynaFlowTaskRetryRunList(
-                        session_context)
-
-                rerun_items = await rerun_items_manager. \
-                    generate(
-                        pac.code,
+                rerun_items = await pac. \
+                    generate_report_pac_config_dyna_flow_task_retry_run_list(
                         1,
                         100,
                         "",
                         False
                     )
+
                 for item in rerun_items:
 
                     dyna_flow_task = DynaFlowTaskBusObj(session_context)
@@ -401,10 +393,6 @@ class DynaFlowProcessor:
 
                 print("cleanup past dataflow task items")
 
-                past_task_list_manager = \
-                    ReportManagerPacConfigDynaFlowTaskSearch(
-                        session_context)
-                
                 tri_state_yes = TriStateFilterBusObj(session_context)
                 await tri_state_yes.load_from_enum(
                     tri_state_filter_enum=(
@@ -417,14 +405,13 @@ class DynaFlowProcessor:
                         managers_and_enums.TriStateFilterEnum.NO)
                 )
 
-                past_task_list = await past_task_list_manager.generate(
-                    pac.code,
-                    processor_identifier=self.get_instance_id(),
-                    is_started_tri_state_filter_code=tri_state_yes.code,
-                    is_completed_tri_state_filter_code=tri_state_no.code,
-                    is_successful_tri_state_filter_code=tri_state_no.code,
-                    item_count_per_page=100,
-                )
+                past_task_list = await pac. \
+                    generate_report_pac_config_dyna_flow_task_search(
+                        processor_identifier=self.get_instance_id(),
+                        is_started_tri_state_filter_code=tri_state_yes.code,
+                        is_completed_tri_state_filter_code=tri_state_no.code,
+                        is_successful_tri_state_filter_code=tri_state_no.code,
+                        item_count_per_page=100)
 
                 for item in past_task_list:
                     dyna_flow_task = DynaFlowTaskBusObj(
@@ -531,25 +518,19 @@ class DynaFlowProcessor:
                 await pac.load_from_enum(
                     pac_enum=managers_and_enums.PacEnum.UNKNOWN)
 
-                report_manager = \
-                    ReportManagerPacConfigDynaFlowDFTBuildToDoList(
-                        session_context
-                    )
-
                 tri_state_no = TriStateFilterBusObj(session_context)
                 await tri_state_no.load_from_enum(
                     tri_state_filter_enum=(
                         managers_and_enums.TriStateFilterEnum.NO)
                 )
 
-                build_to_do_list = await report_manager.generate(
-                    pac.code,
-                    order_by_column_name="RequestedUTCDateTime",
-                    order_by_descending=False,
-                    is_build_task_debug_required_tri_state_filter_code=(
-                        tri_state_no.code),
-                    item_count_per_page=100
-                )
+                build_to_do_list = await pac. \
+                    generate_report_pac_config_dyna_flow_dft_build_to_do_list(
+                        order_by_column_name="RequestedUTCDateTime",
+                        order_by_descending=False,
+                        is_build_task_debug_required_tri_state_filter_code=(
+                            tri_state_no.code),
+                        item_count_per_page=100)
 
                 await session.commit()
             except Exception as e:
@@ -761,25 +742,19 @@ class DynaFlowProcessor:
                 await pac.load_from_enum(
                     pac_enum=managers_and_enums.PacEnum.UNKNOWN)
 
-                report_manager = \
-                    ReportManagerPacConfigDynaFlowTaskRunToDoList(
-                        session_context
-                    )
-
                 tri_state_no = TriStateFilterBusObj(session_context)
                 await tri_state_no.load_from_enum(
                     tri_state_filter_enum=(
                         managers_and_enums.TriStateFilterEnum.NO)
                 )
 
-                run_to_do_list = await report_manager.generate(
-                    pac.code,
-                    order_by_column_name="DynaFlowPriorityLevel",
-                    order_by_descending=True,
-                    is_run_task_debug_required_tri_state_filter_code=(
-                        tri_state_no.code),
-                    item_count_per_page=100
-                )
+                run_to_do_list = await pac. \
+                    generate_report_pac_config_dyna_flow_task_run_to_do_list(
+                        order_by_column_name="DynaFlowPriorityLevel",
+                        order_by_descending=True,
+                        is_run_task_debug_required_tri_state_filter_code=(
+                            tri_state_no.code),
+                        item_count_per_page=100)
 
                 await session.commit()
             except Exception as e:

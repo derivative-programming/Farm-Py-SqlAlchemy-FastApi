@@ -463,14 +463,13 @@ class LandBaseBusObj(BaseBusObj):
         assert isinstance(value, str), "name must be a string"
         self.land.name = value
     # PacID
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
+    # description,
+    # displayOrder,
+    # isActive,
+    # lookupEnumName,
+    # name,
     # PacID
+
     @property
     def pac_id(self):
         """
@@ -538,13 +537,6 @@ class LandBaseBusObj(BaseBusObj):
             )
 
         return self.land.pac_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
     # insert_utc_date_time
 
     @property

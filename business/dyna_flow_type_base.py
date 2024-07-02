@@ -511,14 +511,13 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
         assert isinstance(value, int), (
             "priority_level must be an integer")
         self.dyna_flow_type.priority_level = value
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
+    # description,
+    # displayOrder,
+    # isActive,
+    # lookupEnumName,
+    # name,
     # PacID
+
     @property
     def pac_id(self):
         """
@@ -586,13 +585,7 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow_type.pac_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
+    # priorityLevel,
     # insert_utc_date_time
 
     @property

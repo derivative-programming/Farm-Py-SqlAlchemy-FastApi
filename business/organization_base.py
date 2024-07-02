@@ -289,14 +289,9 @@ class OrganizationBaseBusObj(BaseBusObj):
         assert isinstance(value, str), "name must be a string"
         self.organization.name = value
     # TacID
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
+    # name,
     # TacID
+
     @property
     def tac_id(self):
         """
@@ -364,13 +359,6 @@ class OrganizationBaseBusObj(BaseBusObj):
             )
 
         return self.organization.tac_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
     # insert_utc_date_time
 
     @property

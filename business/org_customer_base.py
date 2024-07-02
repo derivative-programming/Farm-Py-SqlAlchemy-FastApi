@@ -296,13 +296,6 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             "email must be a string")
         self.org_customer.email = value
     # OrganizationID
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
     # CustomerID
 
     @property
@@ -373,7 +366,9 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             )
 
         return self.org_customer.customer_code_peek
+    # email,
     # OrganizationID
+
     @property
     def organization_id(self):
         """
@@ -441,13 +436,6 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             )
 
         return self.org_customer.organization_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
     # insert_utc_date_time
 
     @property

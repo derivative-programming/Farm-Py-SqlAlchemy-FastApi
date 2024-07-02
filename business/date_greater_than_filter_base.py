@@ -511,14 +511,14 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
         assert isinstance(value, str), "name must be a string"
         self.date_greater_than_filter.name = value
     # PacID
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
+    # dayCount,
+    # description,
+    # displayOrder,
+    # isActive,
+    # lookupEnumName,
+    # name,
     # PacID
+
     @property
     def pac_id(self):
         """
@@ -586,13 +586,6 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
             )
 
         return self.date_greater_than_filter.pac_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
     # insert_utc_date_time
 
     @property

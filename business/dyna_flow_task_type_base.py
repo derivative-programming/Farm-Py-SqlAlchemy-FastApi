@@ -511,14 +511,14 @@ class DynaFlowTaskTypeBaseBusObj(BaseBusObj):
         assert isinstance(value, str), "name must be a string"
         self.dyna_flow_task_type.name = value
     # PacID
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
+    # description,
+    # displayOrder,
+    # isActive,
+    # lookupEnumName,
+    # maxRetryCount,
+    # name,
     # PacID
+
     @property
     def pac_id(self):
         """
@@ -586,13 +586,6 @@ class DynaFlowTaskTypeBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow_task_type.pac_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
     # insert_utc_date_time
 
     @property

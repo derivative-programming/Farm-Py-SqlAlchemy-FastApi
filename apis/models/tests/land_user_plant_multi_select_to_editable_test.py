@@ -94,7 +94,7 @@ class TestLandUserPlantMultiSelectToEditablePostModelRequest:
         request = LandUserPlantMultiSelectToEditablePostModelRequest(
             force_error_message="Test Error Message",
 # endset  # noqa: E122
-            plant_code_list_csv="Test Flavor",
+            plant_code_list_csv="Test Text",
 # endset  # noqa: E122
         )
 
@@ -106,7 +106,7 @@ class TestLandUserPlantMultiSelectToEditablePostModelRequest:
         expected_data = {
             "force_error_message": "Test Error Message",
 # endset  # noqa: E122
-            "plant_code_list_csv": "Test Flavor",
+            "plant_code_list_csv": "Test Text",
 # endset  # noqa: E122
         }
 
@@ -120,12 +120,12 @@ class TestLandUserPlantMultiSelectToEditablePostModelRequest:
         """
         request = LandUserPlantMultiSelectToEditablePostModelRequest(
             force_error_message="Test Error Message",
-            plant_code_list_csv="Test Flavor",
+            plant_code_list_csv="Test Text",
         )
 
         expected_data = {
             "forceErrorMessage": "Test Error Message",
-            "plantCodeListCsv": "Test Flavor",
+            "plantCodeListCsv": "Test Text",
         }
 
         data = request.to_dict_camel_serialized()

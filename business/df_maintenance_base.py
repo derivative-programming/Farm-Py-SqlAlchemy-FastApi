@@ -604,14 +604,13 @@ class DFMaintenanceBaseBusObj(BaseBusObj):
 
         assert isinstance(value, str), "scheduled_df_process_request_processor_identifier must be a string"
         self.df_maintenance.scheduled_df_process_request_processor_identifier = value
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
+    # isPaused,
+    # isScheduledDFProcessRequestCompleted,
+    # isScheduledDFProcessRequestStarted,
+    # lastScheduledDFProcessRequestUTCDateTime
+    # nextScheduledDFProcessRequestUTCDateTime
     # PacID
+
     @property
     def pac_id(self):
         """
@@ -679,13 +678,9 @@ class DFMaintenanceBaseBusObj(BaseBusObj):
             )
 
         return self.df_maintenance.pac_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
+    # pausedByUsername,
+    # pausedUTCDateTime
+    # scheduledDFProcessRequestProcessorIdentifier,
     # insert_utc_date_time
 
     @property

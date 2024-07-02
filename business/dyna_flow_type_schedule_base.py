@@ -436,13 +436,6 @@ class DynaFlowTypeScheduleBaseBusObj(BaseBusObj):
             "must be a datetime object")
         self.dyna_flow_type_schedule.next_utc_date_time = value
     # PacID
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
     # DynaFlowTypeID
 
     @property
@@ -513,7 +506,12 @@ class DynaFlowTypeScheduleBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow_type_schedule.dyna_flow_type_code_peek
+    # frequencyInHours,
+    # isActive,
+    # lastUTCDateTime
+    # nextUTCDateTime
     # PacID
+
     @property
     def pac_id(self):
         """
@@ -581,13 +579,6 @@ class DynaFlowTypeScheduleBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow_type_schedule.pac_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
     # insert_utc_date_time
 
     @property

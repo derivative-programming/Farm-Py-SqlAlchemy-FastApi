@@ -1241,14 +1241,28 @@ class CustomerBaseBusObj(BaseBusObj):
 
         assert isinstance(value, str), "zip must be a string"
         self.customer.zip = value
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
+    # activeOrganizationID,
+    # email,
+    # emailConfirmedUTCDateTime
+    # firstName,
+    # forgotPasswordKeyExpirationUTCDateTime
+    # forgotPasswordKeyValue,
+    # fSUserCodeValue,
+    # isActive,
+    # isEmailAllowed,
+    # isEmailConfirmed,
+    # isEmailMarketingAllowed,
+    # isLocked,
+    # isMultipleOrganizationsAllowed,
+    # isVerboseLoggingForced,
+    # lastLoginUTCDateTime
+    # lastName,
+    # password,
+    # phone,
+    # province,
+    # registrationUTCDateTime
     # TacID
+
     @property
     def tac_id(self):
         """
@@ -1316,13 +1330,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         return self.customer.tac_code_peek
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
-    # someDateVal
-    # someUTCDateTimeVal
-
+    # uTCOffsetInMinutes,
+    # zip,
     # insert_utc_date_time
 
     @property
