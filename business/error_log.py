@@ -13,14 +13,14 @@ from helpers.session_context import SessionContext
 from models import ErrorLog
 import models
 import managers as managers_and_enums  # noqa: F401
-from .error_log_fluent import ErrorLogFluentBusObj
+from .error_log_dyna_flows import ErrorLogDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "ErrorLog object is not initialized")
 
 
-class ErrorLogBusObj(ErrorLogFluentBusObj):
+class ErrorLogBusObj(ErrorLogDynaFlowsBusObj):
     """
     This class represents the business object for a ErrorLog.
     It requires a valid session context for initialization.

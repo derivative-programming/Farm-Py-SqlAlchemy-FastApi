@@ -60,29 +60,29 @@ class OrgCustomerFluentBusObj(OrgCustomerBaseBusObj):
         self.customer_id = value
         return self
 
-    async def set_prop_customer_id_by_enum(
-        self,
-        customer_enum: managers_and_enums.CustomerEnum
-    ):
-        """
-        """
-        if not isinstance(
-            customer_enum,
-            managers_and_enums.CustomerEnum
-        ):
-            raise ValueError("customer_enum must be a CustomerEnum")
+    # async def set_prop_customer_id_by_enum(
+    #     self,
+    #     customer_enum: managers_and_enums.CustomerEnum
+    # ):
+    #     """
+    #     """
+    #     if not isinstance(
+    #         customer_enum,
+    #         managers_and_enums.CustomerEnum
+    #     ):
+    #         raise ValueError("customer_enum must be a CustomerEnum")
 
-        customer_manager =  \
-            managers_and_enums.CustomerManager(
-                self._session_context
-            )
-        customer_obj = await (
-            customer_manager.
-            from_enum(customer_enum)
-        )
+    #     customer_manager =  \
+    #         managers_and_enums.CustomerManager(
+    #             self._session_context
+    #         )
+    #     customer_obj = await (
+    #         customer_manager.
+    #         from_enum(customer_enum)
+    #     )
 
-        self.customer_id = customer_obj.customer_id
-        return self
+    #     self.customer_id = customer_obj.customer_id
+    #     return self
     # email,
     # OrganizationID
 

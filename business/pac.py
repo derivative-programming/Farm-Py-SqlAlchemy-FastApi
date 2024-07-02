@@ -13,7 +13,7 @@ from helpers.session_context import SessionContext
 from models import Pac
 import models
 import managers as managers_and_enums  # noqa: F401
-from .pac_fluent import PacFluentBusObj
+from .pac_dyna_flows import PacDynaFlowsBusObj
 
 
 from .tri_state_filter import TriStateFilterBusObj
@@ -56,7 +56,7 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "Pac object is not initialized")
 
 
-class PacBusObj(PacFluentBusObj):
+class PacBusObj(PacDynaFlowsBusObj):
     """
     This class represents the business object for a Pac.
     It requires a valid session context for initialization.

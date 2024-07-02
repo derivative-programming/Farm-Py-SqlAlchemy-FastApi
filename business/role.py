@@ -13,14 +13,14 @@ from helpers.session_context import SessionContext
 from models import Role
 import models
 import managers as managers_and_enums  # noqa: F401
-from .role_fluent import RoleFluentBusObj
+from .role_dyna_flows import RoleDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "Role object is not initialized")
 
 
-class RoleBusObj(RoleFluentBusObj):
+class RoleBusObj(RoleDynaFlowsBusObj):
     """
     This class represents the business object for a Role.
     It requires a valid session context for initialization.

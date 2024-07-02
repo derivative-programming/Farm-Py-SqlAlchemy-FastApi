@@ -64,7 +64,6 @@ class TestDynaFlowTaskFactory:
         """
         Test case for checking the default value of the code attribute.
         """
-        logging.info("vrtest")
         new_obj = DynaFlowTaskFactory.create(
             session=session)
         assert isinstance(new_obj.code, uuid.UUID)

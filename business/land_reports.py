@@ -1,4 +1,4 @@
-# business/plant.py
+# business/land.py
 # pylint: disable=unused-import
 """
 """
@@ -10,34 +10,15 @@ from helpers import SessionContext, TypeConversion  # noqa: F401
 from models import Land
 import models
 import managers as managers_and_enums  # noqa: F401
-##GENLOOPObjectStart
-##GENTrainingBlock[a]Start
-##GENLearn[modelType=object,name=Land]Start
-##GENLOOPReportStart
-##GENTrainingBlock[b]Start
-##GENLearn[modelType=report,name=LandPlantList]Start
-from reports import (  # noqa: F401
-    ReportManagerLandPlantList,
-    ReportItemLandPlantList)
-##GENLearn[modelType=report,name=LandPlantList]End
-##GENTrainingBlock[b]End
-##GENLOOPReportEnd
-##GENLearn[modelType=object,name=Land]End
-##GENTrainingBlock[a]End
-##GENLOOPObjectEnd
 from .land_fluent import LandFluentBusObj
+import reports as reports_managers  # noqa: F401
 
 
 class LandReportsBusObj(LandFluentBusObj):
     """
     """
 
-##GENLOOPObjectStart
-##GENTrainingBlock[a]Start
-##GENLearn[modelType=object,name=Land]Start
-##GENLOOPReportStart
-##GENTrainingBlock[b]Start
-##GENLearn[modelType=report,name=LandPlantList]Start
+
     async def generate_report_land_plant_list(
         self,
         flavor_code:
@@ -46,14 +27,14 @@ class LandReportsBusObj(LandFluentBusObj):
             int = 0,
         some_big_int_val:
             int = 0,
+        some_float_val:
+            float = 0,
         some_bit_val:
             bool = False,
         is_edit_allowed:
             bool = False,
         is_delete_allowed:
             bool = False,
-        some_float_val:
-            float = 0,
         some_decimal_val:
             Decimal = Decimal(0),
         some_min_utc_date_time_val:
@@ -72,29 +53,29 @@ class LandReportsBusObj(LandFluentBusObj):
             str = "",
         some_email_address:
             str = "",
-# endset  # noqa: E122
         page_number: int = 1,
         item_count_per_page: int = 100,
         order_by_column_name: str = "",
         order_by_descending: bool = False,
-    ) -> List[ReportItemLandPlantList]:
+    ) -> List[reports_managers.ReportItemLandPlantList]:
         """
-        Get the land plant list report.
+        Get the Land Plant List report.
 
         Returns:
-            List[ReportItemLandPlantList]: The land plant list report.
+            List[ReportItemLandPlantList]: The Land Plant List report.
         """
-        report_manager = ReportManagerLandPlantList(self._session_context)
+        report_manager = reports_managers. \
+            ReportManagerLandPlantList(
+                self._session_context)
         return await report_manager.generate(
             self.code,
-# endset  # noqa: E122
             flavor_code,
             some_int_val,
             some_big_int_val,
+            some_float_val,
             some_bit_val,
             is_edit_allowed,
             is_delete_allowed,
-            some_float_val,
             some_decimal_val,
             some_min_utc_date_time_val,
             some_min_date_val,
@@ -104,15 +85,8 @@ class LandReportsBusObj(LandFluentBusObj):
             some_text_val,
             some_phone_number,
             some_email_address,
-# endset  # noqa: E122
             page_number,
             item_count_per_page,
             order_by_column_name,
             order_by_descending
         )
-##GENLearn[modelType=report,name=LandPlantList]End
-##GENTrainingBlock[b]End
-##GENLOOPReportEnd
-##GENLearn[modelType=object,name=Land]End
-##GENTrainingBlock[a]End
-##GENLOOPObjectEnd

@@ -9,7 +9,7 @@ tasks for plant sample workflows.
 
 from datetime import datetime  # noqa: F401
 from business.dyna_flow import DynaFlowBusObj
-from managers import DynaFlowTaskTypeEnum
+from managers import DynaFlowTaskTypeEnum, DynaFlowTaskTypeManager
 
 
 class DynaFlowPlantSampleWorkflow:
@@ -89,10 +89,19 @@ class DynaFlowPlantSampleWorkflow:
         Returns:
             int: The ID of the built task.
         """
+        dyna_flow_task_type_manager = DynaFlowTaskTypeManager(
+            dyna_flow_bus_obj.get_session_context()
+        )
+
+        dyna_flow_task_type = await dyna_flow_task_type_manager. \
+            from_enum(task_type)
+
         task = await dyna_flow_bus_obj.build_dyna_flow_task()
         task.dyna_flow_subject_code = dyna_flow_bus_obj.subject_code
-        task.is_run_task_debug_required = dyna_flow_bus_obj.is_run_task_debug_required
-        await task.set_prop_dyna_flow_task_type_id_by_enum(task_type)
+        task.is_run_task_debug_required = \
+            dyna_flow_bus_obj.is_run_task_debug_required
+        task.dyna_flow_task_type_id = \
+            dyna_flow_task_type.dyna_flow_task_type_id
         task.description = description
         task.requested_utc_date_time = datetime.utcnow()
         task.dependency_dyna_flow_task_id = last_task_id

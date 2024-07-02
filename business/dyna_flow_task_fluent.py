@@ -359,29 +359,29 @@ class DynaFlowTaskFluentBusObj(DynaFlowTaskBaseBusObj):
         self.dyna_flow_task_type_id = value
         return self
 
-    async def set_prop_dyna_flow_task_type_id_by_enum(
-        self,
-        dyna_flow_task_type_enum: managers_and_enums.DynaFlowTaskTypeEnum
-    ):
-        """
-        """
-        if not isinstance(
-            dyna_flow_task_type_enum,
-            managers_and_enums.DynaFlowTaskTypeEnum
-        ):
-            raise ValueError("dyna_flow_task_type_enum must be a DynaFlowTaskTypeEnum")
+    # async def set_prop_dyna_flow_task_type_id_by_enum(
+    #     self,
+    #     dyna_flow_task_type_enum: managers_and_enums.DynaFlowTaskTypeEnum
+    # ):
+    #     """
+    #     """
+    #     if not isinstance(
+    #         dyna_flow_task_type_enum,
+    #         managers_and_enums.DynaFlowTaskTypeEnum
+    #     ):
+    #         raise ValueError("dyna_flow_task_type_enum must be a DynaFlowTaskTypeEnum")
 
-        dyna_flow_task_type_manager =  \
-            managers_and_enums.DynaFlowTaskTypeManager(
-                self._session_context
-            )
-        dyna_flow_task_type_obj = await (
-            dyna_flow_task_type_manager.
-            from_enum(dyna_flow_task_type_enum)
-        )
+    #     dyna_flow_task_type_manager =  \
+    #         managers_and_enums.DynaFlowTaskTypeManager(
+    #             self._session_context
+    #         )
+    #     dyna_flow_task_type_obj = await (
+    #         dyna_flow_task_type_manager.
+    #         from_enum(dyna_flow_task_type_enum)
+    #     )
 
-        self.dyna_flow_task_type_id = dyna_flow_task_type_obj.dyna_flow_task_type_id
-        return self
+    #     self.dyna_flow_task_type_id = dyna_flow_task_type_obj.dyna_flow_task_type_id
+    #     return self
     # isCanceled,
     # isCancelRequested,
     # isCompleted,

@@ -1,9 +1,42 @@
-import os
+# df_processor/dyna_flow_processor.py
+"""
+This module contains the `DynaFlowProcessor` class, which is
+responsible for running the DynaFlowProcessor application. The
+`DynaFlowProcessor` class initializes the application, processes
+scheduled DynaFlows, and manages the task queues for DynaFlow tasks.
+
+The `DynaFlowProcessor` class has the following attributes:
+- `_task_result_queue_name`: The name of the task result queue.
+- `_task_dead_queue_name`: The name of the dead queue.
+- `_task_processor_queue_name`: The name of the processor queue.
+- `_is_task_queue_used`: A boolean indicating whether the task queue is used.
+- `_is_dyna_flow_task_master`: A boolean indicating whether the DynaFlow
+    task master is enabled.
+- `_is_dyna_flow_task_processor`: A boolean indicating whether the DynaFlow
+    task processor is enabled.
+- `_queue_manager`: An instance of the `QueueManager` class for managing the
+    task queues.
+- `_explicit_instance_id`: The explicit instance ID of the DynaFlowProcessor.
+- `_force_task_error`: A boolean indicating whether to force task errors.
+- `_processor_queue_count`: The count of messages in the processor queue.
+- `_dead_queue_count`: The count of messages in the dead queue.
+- `_result_queue_count`: The count of messages in the result queue.
+- `_custom_temp_folder`: An instance of the `CustomTempFolder` class for
+    managing temporary files.
+- `_pac_code`: The UUID of the PAC (Process Automation Control) code.
+
+The `DynaFlowProcessor` class has the following methods:
+- `run()`: Runs the DynaFlowProcessor application.
+- `init_app()`: Initializes the application.
+- `get_message_count_async(queue_name)`: Gets the count of messages in a queue.
+- `get_instance_id()`: Gets the explicit instance ID of the DynaFlowProcessor.
+- `request_scheduled_dyna_flows()`: Requests scheduled DynaFlows for
+    processing.
+- `claim_dyna_flow_maintenace_for_processing()`: Claims DynaFlow
+    maintenance for processing.
+"""
 import sys
 import uuid
-import asyncio
-import tempfile
-import os
 from typing import List
 
 from config import (
@@ -12,11 +45,9 @@ from config import (
     IS_DYNAFLOW_TASK_PROCESSOR,
     DYNAFLOW_TASK_RESULT_QUEUE_NAME,
     DYNAFLOW_TASK_DEAD_QUEUE_NAME,
-    DYNAFLOW_TASK_PROCESSOR_QUEUE_NAME,
-    AZURE_SERVICE_BUS_CONNECTION_STRING
+    DYNAFLOW_TASK_PROCESSOR_QUEUE_NAME
 )
 from datetime import datetime, timedelta, timezone
-import asyncio
 from database import get_db, engine
 from helpers.session_context import SessionContext
 from services.custom_temp_folder import CustomTempFolder
@@ -48,6 +79,12 @@ from dyna_flows.dyna_flow_factory import DynaFlowFactory  # noqa: F401
 
 
 class DynaFlowProcessor:
+    """
+    The DynaFlowProcessor class is responsible for running the
+    DynaFlowProcessor application. The DynaFlowProcessor initializes
+    the application, processes scheduled DynaFlows, and manages the
+    task queues for DynaFlow tasks.
+    """
     def __init__(self):
         self._task_result_queue_name = DYNAFLOW_TASK_RESULT_QUEUE_NAME
         self._task_dead_queue_name = DYNAFLOW_TASK_DEAD_QUEUE_NAME
@@ -58,9 +95,8 @@ class DynaFlowProcessor:
 
         self._queue_manager = QueueManager()
 
-
         machine_identifier = MachineIdentifier()
-        
+
         self._explicit_instance_id = machine_identifier.get_id()
         self._force_task_error = False
         self._processor_queue_count = 0
@@ -69,7 +105,7 @@ class DynaFlowProcessor:
 
         self._custom_temp_folder = CustomTempFolder(
             "dyna_flow_processor_temp_files")
-        
+
         self._pac_code = uuid.UUID('00000000-0000-0000-0000-000000000000')
 
     async def run(self):
@@ -103,7 +139,7 @@ class DynaFlowProcessor:
                     self.process_dyna_flow_queue_task_results()
 
                 build_to_do_count = await self.build_dyna_flow_tasks()
-    
+
                 if self._is_task_queue_used is True:
 
                     run_to_do_count = await self.serve_dyna_flow_tasks()
@@ -112,10 +148,10 @@ class DynaFlowProcessor:
                         self.process_dyna_flow_queue_task_results()
 
             if self._is_dyna_flow_task_processor is True:
-                if not self._is_task_queue_used is True:
-                    run_to_do_count = await self.run_dyna_flow_db_tasks()
-                else:
+                if self._is_task_queue_used is True:
                     await self.run_dyna_flow_queue_tasks()
+                else:
+                    run_to_do_count = await self.run_dyna_flow_db_tasks()
 
     async def init_app(self):
         """
@@ -165,9 +201,15 @@ class DynaFlowProcessor:
         return count
 
     def get_instance_id(self):
+        """
+        Get the explicit instance ID of the DynaFlowProcessor.
+        """
         return self._explicit_instance_id
 
     async def request_scheduled_dyna_flows(self):
+        """
+        Request scheduled DynaFlows for processing.
+        """
 
         ownership = await self.claim_dyna_flow_maintenace_for_processing()
 
@@ -263,6 +305,9 @@ class DynaFlowProcessor:
     async def claim_dyna_flow_maintenace_for_processing(
         self
     ) -> bool:
+        """
+        Claim DynaFlow maintenance for processing.
+        """
 
         ownership = True
 
@@ -320,6 +365,9 @@ class DynaFlowProcessor:
         return ownership
 
     async def get_dFMaintenance(self, session_context) -> DFMaintenanceBusObj:
+        """
+        Get the DynaFlow maintenance object.
+        """
 
         pac = PacBusObj(session_context)
 
@@ -337,7 +385,9 @@ class DynaFlowProcessor:
         return df_maintenance
 
     async def cleanup_my_past_dyna_flow_tasks(self):
-
+        """
+        Cleanup past DynaFlow tasks.
+        """
         async for session in get_db():
 
             session_context = SessionContext(dict(), session)
@@ -357,14 +407,14 @@ class DynaFlowProcessor:
                 
                 tri_state_yes = TriStateFilterBusObj(session_context)
                 await tri_state_yes.load_from_enum(
-                    tri_state_filter_enum=
-                    managers_and_enums.TriStateFilterEnum.YES
+                    tri_state_filter_enum=(
+                        managers_and_enums.TriStateFilterEnum.YES)
                 )
 
                 tri_state_no = TriStateFilterBusObj(session_context)
                 await tri_state_no.load_from_enum(
-                    tri_state_filter_enum=
-                    managers_and_enums.TriStateFilterEnum.NO
+                    tri_state_filter_enum=(
+                        managers_and_enums.TriStateFilterEnum.NO)
                 )
 
                 past_task_list = await past_task_list_manager.generate(
@@ -400,7 +450,9 @@ class DynaFlowProcessor:
                 await session.close()
 
     async def process_dyna_flow_queue_task_results(self):
-
+        """
+        Process DynaFlow queue task results.
+        """
         message_count = 0
 
         while True:
@@ -413,7 +465,8 @@ class DynaFlowProcessor:
             print("Message found...")
             # not necessary. worker is saving it currently
             # try:
-            #     dyna_flow_task = self.create_dyna_flow_task_from_message(message)
+            #     dyna_flow_task = 
+            #   self.create_dyna_flow_task_from_message(message)
             #     await self.save_dyna_flow_task(dyna_flow_task)
             # except Exception as ex:
             #     print("Error reading message")
@@ -427,10 +480,16 @@ class DynaFlowProcessor:
         return message_count
 
     async def send_message_async(self, queue_name, message):
+        """
+        Send a message to a queue.
+        """
 
         await self._queue_manager.send_message_async(queue_name, message)
 
     async def build_dyna_flow_tasks(self):
+        """
+        Build DynaFlow tasks.
+        """
 
         build_to_do_count = 0
 
@@ -456,7 +515,9 @@ class DynaFlowProcessor:
     async def get_task_build_todo_list(
         self
     ) -> List[ReportItemPacConfigDynaFlowDFTBuildToDoList]:
-
+        """
+        Get the task build to-do list.
+        """
         build_to_do_list = list()
 
         async for session in get_db():
@@ -477,14 +538,16 @@ class DynaFlowProcessor:
 
                 tri_state_no = TriStateFilterBusObj(session_context)
                 await tri_state_no.load_from_enum(
-                    tri_state_filter_enum=managers_and_enums.TriStateFilterEnum.NO
+                    tri_state_filter_enum=(
+                        managers_and_enums.TriStateFilterEnum.NO)
                 )
 
                 build_to_do_list = await report_manager.generate(
                     pac.code,
                     order_by_column_name="RequestedUTCDateTime",
                     order_by_descending=False,
-                    is_build_task_debug_required_tri_state_filter_code=tri_state_no.code,
+                    is_build_task_debug_required_tri_state_filter_code=(
+                        tri_state_no.code),
                     item_count_per_page=100
                 )
 
@@ -500,7 +563,9 @@ class DynaFlowProcessor:
     async def get_dyna_flow_type_list(
         self
     ) -> List[DynaFlowTypeBusObj]:
-
+        """
+        Get the DynaFlow type list.
+        """
         dyna_flow_type_list = list()
 
         async for session in get_db():
@@ -528,7 +593,9 @@ class DynaFlowProcessor:
     async def get_dyna_flow_task_type_list(
         self
     ) -> List[DynaFlowTaskTypeBusObj]:
-
+        """
+        Get the DynaFlow task type list.
+        """
         dyna_flow_task_type_list = list()
 
         async for session in get_db():
@@ -559,7 +626,9 @@ class DynaFlowProcessor:
         dyna_flow_code: uuid.UUID,
         dyna_flow_type_list: List[DynaFlowTypeBusObj]
     ):
-        # get ownership of the dyna flow
+        """
+        Build tasks for a DynaFlow.
+        """
 
         task_ownership = self.claim_dyna_flow_for_task_build(
             dyna_flow_code,
@@ -591,7 +660,8 @@ class DynaFlowProcessor:
                 elif dyna_flow.is_cancel_requested is not True:
                     try:
 
-                        dyna_flow_type = await dyna_flow.get_dyna_flow_type_id_obj()
+                        dyna_flow_type = await \
+                            dyna_flow.get_dyna_flow_type_id_obj()
 
                         build_task_processor = DynaFlowFactory.create_instance(
                             dyna_flow_type.lookup_enum_name
@@ -624,7 +694,9 @@ class DynaFlowProcessor:
         dyna_flow_code: uuid.UUID,
         dyna_flow_type_list: List[DynaFlowTypeBusObj]
     ) -> bool:
-
+        """
+        Claim a DynaFlow for task build
+        """
         task_ownership = True
 
         async for session in get_db():
@@ -673,7 +745,9 @@ class DynaFlowProcessor:
     async def get_task_run_todo_list(
         self
     ) -> List[ReportItemPacConfigDynaFlowTaskRunToDoList]:
-
+        """
+        Get the task run to-do list
+        """
         run_to_do_list = list()
 
         async for session in get_db():
@@ -694,14 +768,16 @@ class DynaFlowProcessor:
 
                 tri_state_no = TriStateFilterBusObj(session_context)
                 await tri_state_no.load_from_enum(
-                    tri_state_filter_enum=managers_and_enums.TriStateFilterEnum.NO
+                    tri_state_filter_enum=(
+                        managers_and_enums.TriStateFilterEnum.NO)
                 )
 
                 run_to_do_list = await report_manager.generate(
                     pac.code,
                     order_by_column_name="DynaFlowPriorityLevel",
                     order_by_descending=True,
-                    is_run_task_debug_required_tri_state_filter_code==tri_state_no.code,
+                    is_run_task_debug_required_tri_state_filter_code=(
+                        tri_state_no.code),
                     item_count_per_page=100
                 )
 
@@ -719,7 +795,9 @@ class DynaFlowProcessor:
         dyna_flow_task_code: uuid.UUID,
         dyna_flow_task_type_list: List[DynaFlowTaskTypeBusObj]
     ) -> bool:
-
+        """
+        Claim a DynaFlow task for task run
+        """
         task_ownership = True
 
         async for session in get_db():
@@ -763,13 +841,14 @@ class DynaFlowProcessor:
                 await session.close()
 
         return task_ownership
-    
-    
+
     async def get_dyna_flow_task_json(
         self,
         dyna_flow_task_code: uuid.UUID
     ) -> str:
-        
+        """
+        Get the JSON representation of a DynaFlow task
+        """
         json = ""
         async for session in get_db():
 
@@ -797,6 +876,9 @@ class DynaFlowProcessor:
         dyna_flow_task_code: uuid.UUID,
         dyna_flow_task_type_list: List[DynaFlowTaskTypeBusObj]
     ):
+        """
+        Serve a DynaFlow task
+        """
         if self._is_task_queue_used is not True:
             return
         
@@ -817,7 +899,9 @@ class DynaFlowProcessor:
             json)
         
     async def serve_dyna_flow_tasks(self):
-
+        """
+        Serve DynaFlow tasks
+        """
         if self._is_task_queue_used is not True:
             return
 
@@ -842,9 +926,12 @@ class DynaFlowProcessor:
                 dyna_flow_task_type_list)
 
         return run_to_do_count
-        
+
     async def run_dyna_flow_db_tasks(self):
-        
+        """
+        Run DynaFlow tasks from the
+        database
+        """
         run_to_do_list = await self.get_task_run_todo_list()
 
         dyna_flow_task_type_list = await self.get_dyna_flow_task_type_list()
@@ -873,6 +960,10 @@ class DynaFlowProcessor:
         dyna_flow_task_code: uuid.UUID,
         dyna_flow_task_type_list: List[DynaFlowTaskTypeBusObj]
     ):
+        """
+        Run a DynaFlow task from the
+        database
+        """
         if self._is_dyna_flow_task_processor is not True:
             return
         
@@ -887,7 +978,10 @@ class DynaFlowProcessor:
         await self.run_dyna_flow_task(dyna_flow_task_code)
 
     async def run_dyna_flow_queue_tasks(self):
-        
+        """
+        Run DynaFlow tasks from the
+        queue
+        """
         print("Checking for message...")
 
         while True:
@@ -946,9 +1040,11 @@ class DynaFlowProcessor:
     async def run_dyna_flow_task(
             self,
             dyna_flow_task_code: uuid.UUID):
-        
+        """
+        Run a DynaFlow task.
+        """
         success = False
-        
+
         async for session in get_db():
 
             session_context = SessionContext(dict(), session)
@@ -960,7 +1056,7 @@ class DynaFlowProcessor:
                 await dyna_flow_task.load_from_code(dyna_flow_task_code)
 
                 self._custom_temp_folder.clear_temp_folder()
- 
+
                 dyna_flow_task.started_utc_date_time = datetime.now(timezone.utc)
                 dyna_flow_task.is_started = True
                 await dyna_flow_task.save()
@@ -970,7 +1066,7 @@ class DynaFlowProcessor:
                     dyna_flow.is_started = True
                     dyna_flow.started_utc_date_time = datetime.now(timezone.utc)
                     await dyna_flow.save()  
-                
+
                 if dyna_flow.is_completed:
                     print("DynaFlowTask already completed.  Skipping Run.")
 
@@ -979,8 +1075,9 @@ class DynaFlowProcessor:
                     dyna_flow_task.is_canceled = True
                     await dyna_flow_task.save()
                     if dyna_flow.is_cancel_requested:
-                    
-                        dyna_flow_task_list = await dyna_flow.get_all_dyna_flow_task()
+
+                        dyna_flow_task_list = await \
+                            dyna_flow.get_all_dyna_flow_task()
 
                         dyna_flow_task_list = [
                             x
@@ -988,7 +1085,7 @@ class DynaFlowProcessor:
                             if x.is_completed is not True and 
                             not x.is_canceled is not True
                         ]
-                        
+
                         if len(dyna_flow_task_list) == 0:
                             dyna_flow.is_canceled = True
                             await dyna_flow.save()
@@ -999,7 +1096,8 @@ class DynaFlowProcessor:
                     )
                     
                     # get dyna flow task type of dyna flow task
-                    dyna_flow_task_type = await dyna_flow_task.get_dyna_flow_task_type_id_bus_obj()
+                    dyna_flow_task_type = await \
+                        dyna_flow_task.get_dyna_flow_task_type_id_bus_obj()
 
                     # create flow of requested dynaflowtask using factory
                     flow = FlowFactory.create_instance(
@@ -1030,15 +1128,15 @@ class DynaFlowProcessor:
                         dyna_flow_task.completed_utc_date_time = \
                             datetime.now(timezone.utc)
                         dyna_flow_task.is_completed = True
-                        await dyna_flow_task.save()        
-          
+                        await dyna_flow_task.save()
+
                 await session.commit()
 
             except Exception:
                 await session.rollback()
             finally:
                 await session.close()
-        
+
         if success is not True:
             async for session in get_db():
 
@@ -1053,11 +1151,11 @@ class DynaFlowProcessor:
                     if dyna_flow_task.retry_count >= \
                     dyna_flow_task.max_retry_count:
                         if dyna_flow_task.max_retry_count > 0:
-                            print(str(ex))
                             print("Max Retry count completed. Not Successful.")
                         dyna_flow_task.is_completed = True
                         dyna_flow_task.is_successful = False
-                        dyna_flow_task.completed_utc_date_time = datetime.utcnow()
+                        dyna_flow_task.completed_utc_date_time = \
+                            datetime.utcnow()
                     else:
                         dyna_flow_task.retry_count +=1
                         dyna_flow_task.min_start_utc_date_time = \
@@ -1071,15 +1169,14 @@ class DynaFlowProcessor:
                     await session.commit()
                 except Exception:
                     await session.rollback()
-                    task_ownership = False
                 finally:
                     await session.close()
-                
+
         if self._is_task_queue_used:
-            
+
             print(f"sending to result queue dft "
                   f"{str(dyna_flow_task.code)}")
-            
+
             await self.send_message_async(
                 self._task_result_queue_name,
                 dyna_flow_task.to_json())

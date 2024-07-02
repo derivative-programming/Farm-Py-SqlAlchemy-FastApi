@@ -13,14 +13,14 @@ from helpers.session_context import SessionContext
 from models import TriStateFilter
 import models
 import managers as managers_and_enums  # noqa: F401
-from .tri_state_filter_fluent import TriStateFilterFluentBusObj
+from .tri_state_filter_dyna_flows import TriStateFilterDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "TriStateFilter object is not initialized")
 
 
-class TriStateFilterBusObj(TriStateFilterFluentBusObj):
+class TriStateFilterBusObj(TriStateFilterDynaFlowsBusObj):
     """
     This class represents the business object for a TriStateFilter.
     It requires a valid session context for initialization.

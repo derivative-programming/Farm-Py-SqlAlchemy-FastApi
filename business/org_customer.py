@@ -13,14 +13,14 @@ from helpers.session_context import SessionContext
 from models import OrgCustomer
 import models
 import managers as managers_and_enums  # noqa: F401
-from .org_customer_fluent import OrgCustomerFluentBusObj
+from .org_customer_dyna_flows import OrgCustomerDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "OrgCustomer object is not initialized")
 
 
-class OrgCustomerBusObj(OrgCustomerFluentBusObj):
+class OrgCustomerBusObj(OrgCustomerDynaFlowsBusObj):
     """
     This class represents the business object for a OrgCustomer.
     It requires a valid session context for initialization.

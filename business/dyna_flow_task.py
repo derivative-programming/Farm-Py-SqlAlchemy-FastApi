@@ -13,7 +13,7 @@ from helpers.session_context import SessionContext
 from models import DynaFlowTask
 import models
 import managers as managers_and_enums  # noqa: F401
-from .dyna_flow_task_fluent import DynaFlowTaskFluentBusObj
+from .dyna_flow_task_dyna_flows import DynaFlowTaskDynaFlowsBusObj
 
 
 from .dft_dependency import DFTDependencyBusObj
@@ -23,7 +23,7 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "DynaFlowTask object is not initialized")
 
 
-class DynaFlowTaskBusObj(DynaFlowTaskFluentBusObj):
+class DynaFlowTaskBusObj(DynaFlowTaskDynaFlowsBusObj):
     """
     This class represents the business object for a DynaFlowTask.
     It requires a valid session context for initialization.

@@ -13,14 +13,14 @@ from helpers.session_context import SessionContext
 from models import CustomerRole
 import models
 import managers as managers_and_enums  # noqa: F401
-from .customer_role_fluent import CustomerRoleFluentBusObj
+from .customer_role_dyna_flows import CustomerRoleDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "CustomerRole object is not initialized")
 
 
-class CustomerRoleBusObj(CustomerRoleFluentBusObj):
+class CustomerRoleBusObj(CustomerRoleDynaFlowsBusObj):
     """
     This class represents the business object for a CustomerRole.
     It requires a valid session context for initialization.

@@ -48,14 +48,14 @@ class ReportManagerLandPlantList():
             int = 0,
         some_big_int_val:
             int = 0,
+        some_float_val:
+            float = 0,
         some_bit_val:
             bool = False,
         is_edit_allowed:
             bool = False,
         is_delete_allowed:
             bool = False,
-        some_float_val:
-            float = 0,
         some_decimal_val:
             Decimal = Decimal(0),
         some_min_utc_date_time_val:
@@ -119,10 +119,10 @@ class ReportManagerLandPlantList():
             flavor_code,
             some_int_val,
             some_big_int_val,
+            some_float_val,
             some_bit_val,
             is_edit_allowed,
             is_delete_allowed,
-            some_float_val,
             some_decimal_val,
             some_min_utc_date_time_val,
             some_min_date_val,

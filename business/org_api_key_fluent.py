@@ -168,26 +168,26 @@ class OrgApiKeyFluentBusObj(OrgApiKeyBaseBusObj):
         self.org_customer_id = value
         return self
 
-    async def set_prop_org_customer_id_by_enum(
-        self,
-        org_customer_enum: managers_and_enums.OrgCustomerEnum
-    ):
-        """
-        """
-        if not isinstance(
-            org_customer_enum,
-            managers_and_enums.OrgCustomerEnum
-        ):
-            raise ValueError("org_customer_enum must be a OrgCustomerEnum")
+    # async def set_prop_org_customer_id_by_enum(
+    #     self,
+    #     org_customer_enum: managers_and_enums.OrgCustomerEnum
+    # ):
+    #     """
+    #     """
+    #     if not isinstance(
+    #         org_customer_enum,
+    #         managers_and_enums.OrgCustomerEnum
+    #     ):
+    #         raise ValueError("org_customer_enum must be a OrgCustomerEnum")
 
-        org_customer_manager =  \
-            managers_and_enums.OrgCustomerManager(
-                self._session_context
-            )
-        org_customer_obj = await (
-            org_customer_manager.
-            from_enum(org_customer_enum)
-        )
+    #     org_customer_manager =  \
+    #         managers_and_enums.OrgCustomerManager(
+    #             self._session_context
+    #         )
+    #     org_customer_obj = await (
+    #         org_customer_manager.
+    #         from_enum(org_customer_enum)
+    #     )
 
-        self.org_customer_id = org_customer_obj.org_customer_id
-        return self
+    #     self.org_customer_id = org_customer_obj.org_customer_id
+    #     return self

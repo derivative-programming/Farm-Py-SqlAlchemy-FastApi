@@ -13,14 +13,14 @@ from helpers.session_context import SessionContext
 from models import DFMaintenance
 import models
 import managers as managers_and_enums  # noqa: F401
-from .df_maintenance_fluent import DFMaintenanceFluentBusObj
+from .df_maintenance_dyna_flows import DFMaintenanceDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "DFMaintenance object is not initialized")
 
 
-class DFMaintenanceBusObj(DFMaintenanceFluentBusObj):
+class DFMaintenanceBusObj(DFMaintenanceDynaFlowsBusObj):
     """
     This class represents the business object for a DFMaintenance.
     It requires a valid session context for initialization.

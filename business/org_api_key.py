@@ -13,14 +13,14 @@ from helpers.session_context import SessionContext
 from models import OrgApiKey
 import models
 import managers as managers_and_enums  # noqa: F401
-from .org_api_key_fluent import OrgApiKeyFluentBusObj
+from .org_api_key_dyna_flows import OrgApiKeyDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "OrgApiKey object is not initialized")
 
 
-class OrgApiKeyBusObj(OrgApiKeyFluentBusObj):
+class OrgApiKeyBusObj(OrgApiKeyDynaFlowsBusObj):
     """
     This class represents the business object for a OrgApiKey.
     It requires a valid session context for initialization.

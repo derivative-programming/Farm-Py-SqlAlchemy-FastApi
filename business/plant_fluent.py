@@ -324,29 +324,29 @@ class PlantFluentBusObj(PlantBaseBusObj):
         self.flvr_foreign_key_id = value
         return self
 
-    async def set_prop_flvr_foreign_key_id_by_enum(
-        self,
-        flavor_enum: managers_and_enums.FlavorEnum
-    ):
-        """
-        """
-        if not isinstance(
-            flavor_enum,
-            managers_and_enums.FlavorEnum
-        ):
-            raise ValueError("flavor_enum must be a FlavorEnum")
+    # async def set_prop_flvr_foreign_key_id_by_enum(
+    #     self,
+    #     flavor_enum: managers_and_enums.FlavorEnum
+    # ):
+    #     """
+    #     """
+    #     if not isinstance(
+    #         flavor_enum,
+    #         managers_and_enums.FlavorEnum
+    #     ):
+    #         raise ValueError("flavor_enum must be a FlavorEnum")
 
-        flavor_manager =  \
-            managers_and_enums.FlavorManager(
-                self._session_context
-            )
-        flavor_obj = await (
-            flavor_manager.
-            from_enum(flavor_enum)
-        )
+    #     flavor_manager =  \
+    #         managers_and_enums.FlavorManager(
+    #             self._session_context
+    #         )
+    #     flavor_obj = await (
+    #         flavor_manager.
+    #         from_enum(flavor_enum)
+    #     )
 
-        self.flvr_foreign_key_id = flavor_obj.flavor_id
-        return self
+    #     self.flvr_foreign_key_id = flavor_obj.flavor_id
+    #     return self
     # LandID
 
     def set_prop_land_id(self, value: int):

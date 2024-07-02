@@ -13,14 +13,14 @@ from helpers.session_context import SessionContext
 from models import Flavor
 import models
 import managers as managers_and_enums  # noqa: F401
-from .flavor_fluent import FlavorFluentBusObj
+from .flavor_dyna_flows import FlavorDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "Flavor object is not initialized")
 
 
-class FlavorBusObj(FlavorFluentBusObj):
+class FlavorBusObj(FlavorDynaFlowsBusObj):
     """
     This class represents the business object for a Flavor.
     It requires a valid session context for initialization.

@@ -13,14 +13,14 @@ from helpers.session_context import SessionContext
 from models import DynaFlowType
 import models
 import managers as managers_and_enums  # noqa: F401
-from .dyna_flow_type_fluent import DynaFlowTypeFluentBusObj
+from .dyna_flow_type_dyna_flows import DynaFlowTypeDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "DynaFlowType object is not initialized")
 
 
-class DynaFlowTypeBusObj(DynaFlowTypeFluentBusObj):
+class DynaFlowTypeBusObj(DynaFlowTypeDynaFlowsBusObj):
     """
     This class represents the business object for a DynaFlowType.
     It requires a valid session context for initialization.

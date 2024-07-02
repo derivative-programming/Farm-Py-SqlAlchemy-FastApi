@@ -13,7 +13,7 @@ from helpers.session_context import SessionContext
 from models import Tac
 import models
 import managers as managers_and_enums  # noqa: F401
-from .tac_fluent import TacFluentBusObj
+from .tac_dyna_flows import TacDynaFlowsBusObj
 
 
 from .organization import OrganizationBusObj
@@ -26,7 +26,7 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "Tac object is not initialized")
 
 
-class TacBusObj(TacFluentBusObj):
+class TacBusObj(TacDynaFlowsBusObj):
     """
     This class represents the business object for a Tac.
     It requires a valid session context for initialization.

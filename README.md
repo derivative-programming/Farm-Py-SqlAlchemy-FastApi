@@ -23,7 +23,7 @@ tests use sqllite im-memory db
 models: usual orm stuff
 reports: for queries across models. Pagenated, searchable,
 managers: controllers to access models
-business: wraps model instances to give enhanced features
+business: uses model instances and reports to give enhanced features
 flows: holds business logic. format [owner model name].[business flow name]
 apis: endpoints to access reports and flows
 

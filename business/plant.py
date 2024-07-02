@@ -13,14 +13,14 @@ from helpers.session_context import SessionContext
 from models import Plant
 import models
 import managers as managers_and_enums  # noqa: F401
-from .plant_reports import PlantReportsBusObj
+from .plant_dyna_flows import PlantDynaFlowsBusObj
 ##GENINCLUDEFILE[GENVALPascalName.top.include.*]
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "Plant object is not initialized")
 
 
-class PlantBusObj(PlantReportsBusObj):
+class PlantBusObj(PlantDynaFlowsBusObj):
     """
     This class represents the business object for a Plant.
     It requires a valid session context for initialization.

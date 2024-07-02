@@ -13,14 +13,14 @@ from helpers.session_context import SessionContext
 from models import DFTDependency
 import models
 import managers as managers_and_enums  # noqa: F401
-from .dft_dependency_fluent import DFTDependencyFluentBusObj
+from .dft_dependency_dyna_flows import DFTDependencyDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "DFTDependency object is not initialized")
 
 
-class DFTDependencyBusObj(DFTDependencyFluentBusObj):
+class DFTDependencyBusObj(DFTDependencyDynaFlowsBusObj):
     """
     This class represents the business object for a DFTDependency.
     It requires a valid session context for initialization.

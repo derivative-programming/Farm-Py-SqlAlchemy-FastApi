@@ -13,7 +13,7 @@ from helpers.session_context import SessionContext
 from models import Land
 import models
 import managers as managers_and_enums  # noqa: F401
-from .land_fluent import LandFluentBusObj
+from .land_dyna_flows import LandDynaFlowsBusObj
 
 
 from .plant import PlantBusObj
@@ -23,7 +23,7 @@ NOT_INITIALIZED_ERROR_MESSAGE = (
     "Land object is not initialized")
 
 
-class LandBusObj(LandFluentBusObj):
+class LandBusObj(LandDynaFlowsBusObj):
     """
     This class represents the business object for a Land.
     It requires a valid session context for initialization.

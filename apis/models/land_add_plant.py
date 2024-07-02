@@ -50,6 +50,9 @@ class LandAddPlantPostModelRequest(CamelModel):
     request_some_big_int_val: int = Field(
         default=0,
         description="Request Some Big Int Val")
+    request_some_float_val: float = Field(
+        default=0,
+        description="Request Some Float Val")
     request_some_bit_val: bool = Field(
         default=False,
         description="Request Some Bit Val")
@@ -59,9 +62,6 @@ class LandAddPlantPostModelRequest(CamelModel):
     request_is_delete_allowed: bool = Field(
         default=False,
         description="Request Is Delete Allowed")
-    request_some_float_val: float = Field(
-        default=0,
-        description="Request Some Float Val")
     request_some_decimal_val: Decimal = Field(
         default=Decimal(0),
         description="Request Some Decimal Val")

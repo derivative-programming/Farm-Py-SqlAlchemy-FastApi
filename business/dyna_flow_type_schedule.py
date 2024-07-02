@@ -13,14 +13,14 @@ from helpers.session_context import SessionContext
 from models import DynaFlowTypeSchedule
 import models
 import managers as managers_and_enums  # noqa: F401
-from .dyna_flow_type_schedule_fluent import DynaFlowTypeScheduleFluentBusObj
+from .dyna_flow_type_schedule_dyna_flows import DynaFlowTypeScheduleDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
     "DynaFlowTypeSchedule object is not initialized")
 
 
-class DynaFlowTypeScheduleBusObj(DynaFlowTypeScheduleFluentBusObj):
+class DynaFlowTypeScheduleBusObj(DynaFlowTypeScheduleDynaFlowsBusObj):
     """
     This class represents the business object for a DynaFlowTypeSchedule.
     It requires a valid session context for initialization.
