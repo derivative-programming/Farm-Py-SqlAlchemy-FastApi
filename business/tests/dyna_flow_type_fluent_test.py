@@ -5,7 +5,7 @@ Unit tests for the
 DynaFlowTypeFluentBusObj class.
 """
 import math  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
 

@@ -94,18 +94,18 @@
 					CASE WHEN :order_by_descending = 1 and :order_by_column_name = 'placeholder' THEN ''  END DESC 
 
 				) AS ROWNUMBER 
-		  -- select * 
+		 
 		from 
-		 	farm_GENVALLowerUnderscoredObjectName  GENVALLowerUnderscoredObjectName  --owner obj
+		 	farm_GENVALLowerUnderscoredObjectName  GENVALLowerUnderscoredObjectName  /* owner obj */
 			
 			--GENIF[calculatedIsTargetChildObjectAvailable=true]Start
 			--GENIF[calculatedIsTrueParentChild=false]Start
 			--left join farm_GENVALLowerUnderscoredcalculatedTargetChildObject GENVALLowerUnderscoredcalculatedTargetChildObject on 1=1			
 			--GENIF[calculatedIsTrueParentChild=false]End
 			--GENIF[calculatedIsTrueParentChild=true]Start
-			  join farm_GENVALLowerUnderscoredcalculatedTargetChildObject GENVALLowerUnderscoredcalculatedTargetChildObject on GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredObjectName_id = GENVALLowerUnderscoredcalculatedTargetChildObject.GENVALLowerUnderscoredObjectName_id		 --child obj
+			  join farm_GENVALLowerUnderscoredcalculatedTargetChildObject GENVALLowerUnderscoredcalculatedTargetChildObject on GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredObjectName_id = GENVALLowerUnderscoredcalculatedTargetChildObject.GENVALLowerUnderscoredObjectName_id		 /* child obj*/
 			--GENLOOPchildObjLookupsSTART
-			left join farm_GENVALLowerUnderscoredlookupName GENVALLowerUnderscoredcalculatedTargetChildObjectGENVALLowerUnderscoredlookupName on GENVALLowerUnderscoredcalculatedTargetChildObject.GENVALLowerUnderscoredimplementationPropName = GENVALLowerUnderscoredcalculatedTargetChildObjectGENVALLowerUnderscoredlookupName.GENVALLowerUnderscoredlookupName_id --child obj lookup prop
+			left join farm_GENVALLowerUnderscoredlookupName GENVALLowerUnderscoredcalculatedTargetChildObjectGENVALLowerUnderscoredlookupName on GENVALLowerUnderscoredcalculatedTargetChildObject.GENVALLowerUnderscoredimplementationPropName = GENVALLowerUnderscoredcalculatedTargetChildObjectGENVALLowerUnderscoredlookupName.GENVALLowerUnderscoredlookupName_id /* child obj lookup prop*/
 			--GENLOOPchildObjLookupsEnd 
 			--GENIF[calculatedIsTrueParentChild=true]End 
 			--GENIF[calculatedIsTargetChildObjectAvailable=true]End
@@ -114,27 +114,27 @@
 			--GENIF[isFK=true]Start
 			--GENIF[calculatedisFKObjectParentOFOwnerObject=false]Start
 			--GENIF[isFKLookup=false]Start
-			left join farm_GENVALLowerUnderscoredPROPcalculatedFKObjectName GENVALLowerUnderscoredPROPcalculatedFKObjectName on GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredPropName = GENVALLowerUnderscoredPROPcalculatedFKObjectName.GENVALLowerUnderscoredPROPcalculatedFKObjectPropertyName   -- fk prop
+			left join farm_GENVALLowerUnderscoredPROPcalculatedFKObjectName GENVALLowerUnderscoredPROPcalculatedFKObjectName on GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredPropName = GENVALLowerUnderscoredPROPcalculatedFKObjectName.GENVALLowerUnderscoredPROPcalculatedFKObjectPropertyName   /*  fk prop*/
 			--GENIF[isFKLookup=false]End
 			--GENIF[isFKLookup=true]Start
-			left join farm_GENVALLowerUnderscoredPROPcalculatedFKObjectName GENVALLowerUnderscoredObjectNameGENVALPROPcalculatedFKObjectName on GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredPropName = GENVALLowerUnderscoredObjectNameGENVALPROPcalculatedFKObjectName.GENVALLowerUnderscoredPROPcalculatedFKObjectPropertyName   -- fk prop
+			left join farm_GENVALLowerUnderscoredPROPcalculatedFKObjectName GENVALLowerUnderscoredObjectNameGENVALPROPcalculatedFKObjectName on GENVALLowerUnderscoredObjectName.GENVALLowerUnderscoredPropName = GENVALLowerUnderscoredObjectNameGENVALPROPcalculatedFKObjectName.GENVALLowerUnderscoredPROPcalculatedFKObjectPropertyName   /*  fk prop*/
 			--GENIF[isFKLookup=true]End
 			--GENIF[calculatedisFKObjectParentOFOwnerObject=false]End  
 			--GENIF[isFK=true]End 
 			--GENLOOPPropEnd  
 			
 			--GENLOOPobjTreePathSTART   
-			left join farm_GENVALLowerUnderscoredparentObjName GENVALLowerUnderscoredparentObjName on GENVALLowerUnderscoredparentObjName.GENVALLowerUnderscoredparentObjName_id = GENVALLowerUnderscoredchildObjName.GENVALLowerUnderscoredchildPropName  -- up obj tree
+			left join farm_GENVALLowerUnderscoredparentObjName GENVALLowerUnderscoredparentObjName on GENVALLowerUnderscoredparentObjName.GENVALLowerUnderscoredparentObjName_id = GENVALLowerUnderscoredchildObjName.GENVALLowerUnderscoredchildPropName  /*  up obj tree*/
 			--GENLOOPparentObjLookupsSTART   
-			left join farm_GENVALLowerUnderscoredlookupName GENVALLowerUnderscoredparentObjNameGENVALlookupName on GENVALLowerUnderscoredparentObjName.GENVALLowerUnderscoredimplementationPropName = GENVALLowerUnderscoredparentObjNameGENVALlookupName.GENVALLowerUnderscoredlookupName_id -- tree parent obj lookup prop
+			left join farm_GENVALLowerUnderscoredlookupName GENVALLowerUnderscoredparentObjNameGENVALlookupName on GENVALLowerUnderscoredparentObjName.GENVALLowerUnderscoredimplementationPropName = GENVALLowerUnderscoredparentObjNameGENVALlookupName.GENVALLowerUnderscoredlookupName_id /*  tree parent obj lookup prop*/
 			--GENLOOPparentObjLookupsEnd 
 			--GENLOOPobjTreePathEnd 
 			 
 
 			--GENLOOPobjJoinTreeSTART   
-			left join farm_GENVALLowerUnderscoredchildObjName GENVALLowerUnderscoredchildObjName on GENVALLowerUnderscoredchildObjName.GENVALLowerUnderscoredchildPropName = GENVALLowerUnderscoredparentObjName.GENVALLowerUnderscoredparentObjName_id  -- up obj join tree
+			left join farm_GENVALLowerUnderscoredchildObjName GENVALLowerUnderscoredchildObjName on GENVALLowerUnderscoredchildObjName.GENVALLowerUnderscoredchildPropName = GENVALLowerUnderscoredparentObjName.GENVALLowerUnderscoredparentObjName_id  /*  up obj join tree*/
 			--GENLOOPchildObjLookupsSTART   
-			left join farm_GENVALLowerUnderscoredlookupName GENVALLowerUnderscoredchildObjNameGENVALLowerUnderscoredlookupName on GENVALLowerUnderscoredchildObjName.GENVALLowerUnderscoredimplementationPropName = GENVALLowerUnderscoredchildObjNameGENVALLowerUnderscoredlookupName.GENVALLowerUnderscoredlookupName_id -- join tree hild obj lookup prop
+			left join farm_GENVALLowerUnderscoredlookupName GENVALLowerUnderscoredchildObjNameGENVALLowerUnderscoredlookupName on GENVALLowerUnderscoredchildObjName.GENVALLowerUnderscoredimplementationPropName = GENVALLowerUnderscoredchildObjNameGENVALLowerUnderscoredlookupName.GENVALLowerUnderscoredlookupName_id /*  join tree hild obj lookup prop*/
 			--GENLOOPchildObjLookupsEnd 
 			--GENLOOPobjJoinTreeEnd 
 			
@@ -173,18 +173,18 @@
 			--GENIF[calculatedIsRowLevelOrganizationSecurityUsed=true]End
 
 		where
-			 (GENVALLowerUnderscoredObjectName.code = :context_code
+			 (GENVALLowerUnderscoredObjectName.code = REPLACE(:context_code, '-', '')
 			 GENVALLowerSpacedUnderscoredfilteringSqlLogic  )
 			--GENIF[calculatedIsRowLevelCustomerSecurityUsed=true]Start
-			and (:user_id is not null and :user_id <> '00000000-0000-0000-0000-000000000000' and Customer.Code = :user_id )
+			and (:user_id is not null and :user_id <> REPLACE('00000000-0000-0000-0000-000000000000', '-', '') and Customer.Code = REPLACE(:user_id, '-', '') )
 			--GENIF[calculatedIsRowLevelCustomerSecurityUsed=true]End
 
 			--GENIF[calculatedIsRowLevelOrgCustomerSecurityUsed=true]Start
-			and (:user_id is not null and :user_id <> '00000000-0000-0000-0000-000000000000' and Customer_Security.Code = :user_id )
+			and (:user_id is not null and :user_id <> REPLACE('00000000-0000-0000-0000-000000000000', '-', '') and Customer_Security.Code = REPLACE(:user_id, '-', '') )
 			--GENIF[calculatedIsRowLevelOrgCustomerSecurityUsed=true]End
 
 			--GENIF[calculatedIsRowLevelOrganizationSecurityUsed=true]Start
-			and (:user_id is not null and :user_id <> '00000000-0000-0000-0000-000000000000' and Customer_Security.Code = :user_id )
+			and (:user_id is not null and :user_id <> REPLACE('00000000-0000-0000-0000-000000000000', '-', '') and Customer_Security.Code = REPLACE(:user_id, '-', '') )
 			--GENIF[calculatedIsRowLevelOrganizationSecurityUsed=true]End
 			 
 			--GENIF[calculatedIsTargetChildObjAPairedIntersectionObj=false]Start
@@ -209,14 +209,14 @@
 				--TriStateFilter GENVALName @GENVALName_TriStateFilterValue
 			and (
 				:GENVALLowerUnderscoredReportParamName is null or 
-				:GENVALLowerUnderscoredReportParamName = '00000000-0000-0000-0000-000000000000' or 
+				:GENVALLowerUnderscoredReportParamName = REPLACE('00000000-0000-0000-0000-000000000000', '-', '') or 
 				(
 					(
 						select 
 							state_int_value 
 						from 
 							farm_tri_state_filter 
-						where code = :GENVALLowerUnderscoredReportParamName
+						where code = REPLACE(:GENVALLowerUnderscoredReportParamName, '-', '')
 					) in (
 					-1,
 					GENVALLowerUnderscoredcalculatedTargetLookupObjImplementationObjNameGENVALLowerUnderscoredcalculatedTargetObjectName.GENVALLowerUnderscoredcalculatedTargetPropertyName

@@ -7,7 +7,7 @@ various field values for testing.
 """
 
 import uuid  # noqa: F401
-from datetime import datetime  # noqa: F401
+from datetime import datetime, timezone  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 import factory
 from factory import Faker  # noqa: F401
@@ -52,7 +52,7 @@ class LandAddPlantPostModelRequestFactory(
         positive=True
     )
     request_some_utc_date_time_val = factory.LazyFunction(
-        datetime.utcnow
+        lambda: datetime.now(timezone.utc)
     )
     request_some_date_val = Faker('date_object')
     request_some_money_val = Faker(

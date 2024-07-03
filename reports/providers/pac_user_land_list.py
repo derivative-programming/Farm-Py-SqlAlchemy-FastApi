@@ -9,7 +9,7 @@ of pac lands based on the provided parameters.
 """
 
 import json
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 import os
 from typing import Any
 import uuid  # noqa: F401

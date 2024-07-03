@@ -48,14 +48,14 @@
 					CASE WHEN :order_by_descending = 1 and :order_by_column_name = 'placeholder' THEN ''  END DESC
 
 				) AS ROWNUMBER
-		  -- select *
-		from
-		 	farm_pac  pac  --owner obj
 
-			  join farm_tri_state_filter tri_state_filter on pac.pac_id = tri_state_filter.pac_id		 --child obj
+		from
+		 	farm_pac  pac  /* owner obj */
+
+			  join farm_tri_state_filter tri_state_filter on pac.pac_id = tri_state_filter.pac_id		 /* child obj*/
 
 		where
-			 (pac.code = :context_code
+			 (pac.code = REPLACE(:context_code, '-', '')
 			   )
 
 	) AS TBL

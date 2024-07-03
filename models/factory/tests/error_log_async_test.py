@@ -11,7 +11,7 @@ import asyncio
 import math  # noqa: F401
 import time
 import uuid  # noqa: F401
-from datetime import date, datetime, timedelta  # noqa: F401
+from datetime import date, datetime, timedelta, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
@@ -236,7 +236,7 @@ class TestErrorLogFactoryAsync:
         assert error_log.insert_utc_date_time is not None
         assert isinstance(
             error_log.insert_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         error_log.code = uuid.uuid4()
         session.add(error_log)
         await session.commit()
@@ -318,7 +318,7 @@ class TestErrorLogFactoryAsync:
         assert error_log.last_update_utc_date_time is not None
         assert isinstance(
             error_log.last_update_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         error_log.code = uuid.uuid4()
         session.add(error_log)
         await session.commit()
@@ -505,7 +505,7 @@ class TestErrorLogFactoryAsync:
         # url,
         assert isinstance(new_obj.browser_code, uuid.UUID)
         assert isinstance(new_obj.context_code, uuid.UUID)
-        assert new_obj.created_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.created_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.description == ""
         assert new_obj.is_client_side_error is False
         assert new_obj.is_resolved is False

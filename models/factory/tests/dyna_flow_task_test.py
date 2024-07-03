@@ -10,7 +10,7 @@ import time
 import math  # noqa: F401
 import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta  # noqa: F401
+from datetime import datetime, date, timedelta, timezone  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -120,7 +120,7 @@ class TestDynaFlowTaskFactory:
         assert new_obj.insert_utc_date_time is not None
         assert isinstance(
             new_obj.insert_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         new_obj.code = uuid.uuid4()
         session.add(new_obj)
         session.commit()
@@ -164,7 +164,7 @@ class TestDynaFlowTaskFactory:
         assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
             new_obj.last_update_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         new_obj.code = uuid.uuid4()
         session.add(new_obj)
         session.commit()
@@ -336,7 +336,7 @@ class TestDynaFlowTaskFactory:
         # retryCount,
         # startedUTCDateTime
         assert new_obj is not None
-        assert new_obj.completed_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.completed_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.dependency_dyna_flow_task_id == 0
         assert new_obj.description == ""
         assert new_obj.dyna_flow_id == 0
@@ -354,14 +354,14 @@ class TestDynaFlowTaskFactory:
         assert new_obj.is_started is False
         assert new_obj.is_successful is False
         assert new_obj.max_retry_count == 0
-        assert new_obj.min_start_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.min_start_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.param_1 == ""
         assert new_obj.param_2 == ""
         assert new_obj.processor_identifier == ""
-        assert new_obj.requested_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.requested_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.result_value == ""
         assert new_obj.retry_count == 0
-        assert new_obj.started_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.started_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
 
     def test_last_change_code_concurrency(self, session):
         """

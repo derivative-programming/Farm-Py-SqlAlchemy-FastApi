@@ -5,7 +5,7 @@ Unit tests for the
 CustomerFluentBusObj class.
 """
 import math  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
 
@@ -85,7 +85,7 @@ class TestCustomerFluentBusObj:
         """
         Test setting the email_confirmed_utc_date_time property.
         """
-        test_datetime = datetime(2023, 1, 1, 12, 0, 0)
+        test_datetime = datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
         result = new_fluent_bus_obj.set_prop_email_confirmed_utc_date_time(
             test_datetime)
         assert new_fluent_bus_obj.email_confirmed_utc_date_time == \
@@ -108,7 +108,7 @@ class TestCustomerFluentBusObj:
         """
         Test setting the forgot_password_key_expiration_utc_date_time property.
         """
-        test_datetime = datetime(2023, 1, 1, 12, 0, 0)
+        test_datetime = datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
         result = new_fluent_bus_obj.set_prop_forgot_password_key_expiration_utc_date_time(
             test_datetime)
         assert new_fluent_bus_obj.forgot_password_key_expiration_utc_date_time == \
@@ -206,7 +206,7 @@ class TestCustomerFluentBusObj:
         """
         Test setting the last_login_utc_date_time property.
         """
-        test_datetime = datetime(2023, 1, 1, 12, 0, 0)
+        test_datetime = datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
         result = new_fluent_bus_obj.set_prop_last_login_utc_date_time(
             test_datetime)
         assert new_fluent_bus_obj.last_login_utc_date_time == \
@@ -262,7 +262,7 @@ class TestCustomerFluentBusObj:
         """
         Test setting the registration_utc_date_time property.
         """
-        test_datetime = datetime(2023, 1, 1, 12, 0, 0)
+        test_datetime = datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
         result = new_fluent_bus_obj.set_prop_registration_utc_date_time(
             test_datetime)
         assert new_fluent_bus_obj.registration_utc_date_time == \

@@ -6,7 +6,7 @@ This module contains the unit tests for the
 `BaseFlowLandUserPlantMultiSelectToEditable` class.
 """
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 import pytest
 import flows.constants.land_user_plant_multi_select_to_editable \

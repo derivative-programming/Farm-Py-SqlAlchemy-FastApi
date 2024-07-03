@@ -222,7 +222,7 @@ class DynaFlowProcessor:
             try:
                 await self.log_async(session_context, f"Claiming DynaFlowTask #{i + 1} of {run_to_do_count} : {run_to_do['DynaFlowTaskCode']}")
                 dyna_flow_task['IsStarted'] = True
-                dyna_flow_task['StartedUTCDateTime'] = datetime.utcnow()
+                dyna_flow_task['StartedUTCDateTime'] = datetime.now(timezone.utc)
                 dyna_flow_task['ProcessorIdentifier'] = self.get_instance_id()
                 dyna_flow_task['MaxRetryCount'] = next(x['MaxRetryCount'] for x in dyna_flow_task_type_list if x['DynaFlowTaskTypeID'] == dyna_flow_task['DynaFlowTaskTypeID'])
                 await self.save_dyna_flow_task(dyna_flow_task)
@@ -275,10 +275,10 @@ class DynaFlowProcessor:
                     await self.log_async(session_context, "Max Retry count completed. Not Successful.")
                 dyna_flow_task['IsCompleted'] = True
                 dyna_flow_task['IsSuccessful'] = False
-                dyna_flow_task['CompletedUTCDateTime'] = datetime.utcnow()
+                dyna_flow_task['CompletedUTCDateTime'] = datetime.now(timezone.utc)
             else:
                 dyna_flow_task['RetryCount'] += 1
-                dyna_flow_task['MinStartUTCDateTime'] = datetime.utcnow() + timedelta(minutes=3)
+                dyna_flow_task['MinStartUTCDateTime'] = datetime.now(timezone.utc) + timedelta(minutes=3)
                 dyna_flow_task['IsStarted'] = False
                 dyna_flow_task['IsCompleted'] = False
                 await self.log_async(session_context, f"Request Retry Attempt {dyna_flow_task['RetryCount']}")
@@ -329,7 +329,7 @@ class DynaFlowProcessor:
                 dyna_flow = await self.get_dyna_flow_async(session_context, build_to_do['DynaFlowCode'])
                 dyna_flow['IsCompleted'] = True
                 dyna_flow['IsSuccessful'] = False
-                dyna_flow['CompletedUTCDateTime'] = datetime.utcnow()
+                dyna_flow['CompletedUTCDateTime'] = datetime.now(timezone.utc)
                 await self.save_dyna_flow(dyna_flow)
 
         return build_to_do_count
@@ -368,9 +368,9 @@ class DynaFlowProcessor:
             return
 
         await dFMaintenance['refresh']()
-        if dFMaintenance['NextScheduledDFProcessRequestUTCDateTime'] < datetime.utcnow() and (
+        if dFMaintenance['NextScheduledDFProcessRequestUTCDateTime'] < datetime.now(timezone.utc) and (
                 not dFMaintenance['IsScheduledDFProcessRequestStarted'] or
-                dFMaintenance['NextScheduledDFProcessRequestUTCDateTime'] < datetime.utcnow() - timedelta(days=1)):
+                dFMaintenance['NextScheduledDFProcessRequestUTCDateTime'] < datetime.now(timezone.utc) - timedelta(days=1)):
             print("request any scheduled dataflows")
             task_ownership = True
             try:
@@ -401,8 +401,8 @@ class DynaFlowProcessor:
 
                 dFMaintenance['IsScheduledDFProcessRequestCompleted'] = True
                 dFMaintenance['IsScheduledDFProcessRequestStarted'] = False
-                dFMaintenance['LastScheduledDFProcessRequestUTCDateTime'] = datetime.utcnow()
-                dFMaintenance['NextScheduledDFProcessRequestUTCDateTime'] = datetime.utcnow() + timedelta(minutes=30)
+                dFMaintenance['LastScheduledDFProcessRequestUTCDateTime'] = datetime.now(timezone.utc)
+                dFMaintenance['NextScheduledDFProcessRequestUTCDateTime'] = datetime.now(timezone.utc) + timedelta(minutes=30)
                 await self.save_dFMaintenance(dFMaintenance)
 
     async def get_dFMaintenance(self, session_context, pac):

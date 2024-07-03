@@ -58,29 +58,29 @@
 					CASE WHEN :order_by_descending = 1 and :order_by_column_name = 'placeholder' THEN ''  END DESC
 
 				) AS ROWNUMBER
-		  -- select *
+
 		from
-		 	farm_pac  pac  --owner obj
+		 	farm_pac  pac  /* owner obj */
 
-			  join farm_dyna_flow dyna_flow on pac.pac_id = dyna_flow.pac_id		 --child obj
+			  join farm_dyna_flow dyna_flow on pac.pac_id = dyna_flow.pac_id		 /* child obj*/
 
-			left join farm_dyna_flow_type dyna_flowdyna_flow_type on dyna_flow.dyna_flow_type_id = dyna_flowdyna_flow_type.dyna_flow_type_id --child obj lookup prop
+			left join farm_dyna_flow_type dyna_flowdyna_flow_type on dyna_flow.dyna_flow_type_id = dyna_flowdyna_flow_type.dyna_flow_type_id /* child obj lookup prop*/
 
 		where
-			 (pac.code = :context_code
+			 (pac.code = REPLACE(:context_code, '-', '')
 			   )
 
 				--TriStateFilter IsBuildTaskDebugRequiredTriStateFilterCode @IsBuildTaskDebugRequiredTriStateFilterCode_TriStateFilterValue
 			and (
 				:is_build_task_debug_required_tri_state_filter_code is null or
-				:is_build_task_debug_required_tri_state_filter_code = '00000000-0000-0000-0000-000000000000' or
+				:is_build_task_debug_required_tri_state_filter_code = REPLACE('00000000-0000-0000-0000-000000000000', '-', '') or
 				(
 					(
 						select
 							state_int_value
 						from
 							farm_tri_state_filter
-						where code = :is_build_task_debug_required_tri_state_filter_code
+						where code = REPLACE(:is_build_task_debug_required_tri_state_filter_code, '-', '')
 					) in (
 					-1,
 					dyna_flow.is_build_task_debug_required

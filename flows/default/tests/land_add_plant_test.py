@@ -9,7 +9,7 @@ This module contains unit tests for the
 
 import json
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 
 import pytest
@@ -52,7 +52,7 @@ class TestLandAddPlantPostModelResponse:
         result.output_is_delete_allowed = False
         result.output_some_float_val = 12.34
         result.output_some_decimal_val = Decimal("123.45")
-        result.output_some_utc_date_time_val = datetime.utcnow()
+        result.output_some_utc_date_time_val = datetime.now(timezone.utc)
         result.output_some_date_val = date.today()
         result.output_some_money_val = Decimal("67.89")
         result.output_some_n_var_char_val = "nvarchar test"

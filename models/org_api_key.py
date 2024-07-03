@@ -8,7 +8,7 @@ the Base model and is mapped to the
 """
 from decimal import Decimal  # noqa: F401
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
                         Column, Date, DateTime, Float,
@@ -80,7 +80,7 @@ class OrgApiKey(Base):
     _created_utc_date_time = Column(
         'created_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             org_api_key_constants.
             created_utc_date_time_calculatedIsDBColumnIndexed
@@ -89,7 +89,7 @@ class OrgApiKey(Base):
     _expiration_utc_date_time = Column(
         'expiration_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             org_api_key_constants.
             expiration_utc_date_time_calculatedIsDBColumnIndexed
@@ -172,9 +172,9 @@ class OrgApiKey(Base):
         self.created_by = kwargs.get(
             'created_by', "")
         self.created_utc_date_time = kwargs.get(
-            'created_utc_date_time', datetime(1753, 1, 1))
+            'created_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.expiration_utc_date_time = kwargs.get(
-            'expiration_utc_date_time', datetime(1753, 1, 1))
+            'expiration_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.is_active = kwargs.get(
             'is_active', False)
         self.is_temp_user_key = kwargs.get(
@@ -186,9 +186,9 @@ class OrgApiKey(Base):
         self.org_customer_id = kwargs.get(
             'org_customer_id', 0)
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1))
+            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1))
+            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.organization_code_peek = kwargs.get(  # OrganizationID
             'organization_code_peek', uuid.UUID(int=0))
         self.org_customer_code_peek = kwargs.get(  # OrgCustomerID
@@ -221,7 +221,7 @@ class OrgApiKey(Base):
             self._code = value
         else:
             self._code = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def org_api_key_id(self) -> int:
@@ -278,7 +278,7 @@ class OrgApiKey(Base):
             self._insert_user_id = value
         else:
             self._insert_user_id = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def last_update_user_id(self):
@@ -297,7 +297,7 @@ class OrgApiKey(Base):
             self._last_update_user_id = value
         else:
             self._last_update_user_id = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def insert_utc_date_time(self) -> datetime:
@@ -309,17 +309,24 @@ class OrgApiKey(Base):
             datetime: The UTC date and time for the
                 org_api_key.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_insert_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value: datetime) -> None:
         """
         Set the insert_utc_date_time.
         """
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
 
         self._insert_utc_date_time = value
 
@@ -332,17 +339,25 @@ class OrgApiKey(Base):
         :return: A datetime object representing the
             last update UTC date and time.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_last_update_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value: datetime) -> None:
         """
         Set the last_update_utc_date_time.
         """
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
 
         self._last_update_utc_date_time = value
     # apiKeyValue,
@@ -397,18 +412,24 @@ class OrgApiKey(Base):
         Returns:
             datetime: The value of created_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_created_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @created_utc_date_time.setter
     def created_utc_date_time(self, value: datetime) -> None:
         """
         Set the created_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._created_utc_date_time = value
     # expirationUTCDateTime
 
@@ -420,18 +441,24 @@ class OrgApiKey(Base):
         Returns:
             datetime: The value of expiration_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_expiration_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @expiration_utc_date_time.setter
     def expiration_utc_date_time(self, value: datetime) -> None:
         """
         Set the expiration_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._expiration_utc_date_time = value
     # isActive,
 
@@ -581,8 +608,8 @@ def set_created_on(
     Returns:
         None
     """
-    target.insert_utc_date_time = datetime.utcnow()
-    target.last_update_utc_date_time = datetime.utcnow()
+    target.insert_utc_date_time = datetime.now(timezone.utc)
+    target.last_update_utc_date_time = datetime.now(timezone.utc)
 
 
 @event.listens_for(OrgApiKey, 'before_update')
@@ -599,4 +626,4 @@ def set_updated_on(
     :param connection: The SQLAlchemy connection object.
     :param target: The target object to update.
     """
-    target.last_update_utc_date_time = datetime.utcnow()
+    target.last_update_utc_date_time = datetime.now(timezone.utc)

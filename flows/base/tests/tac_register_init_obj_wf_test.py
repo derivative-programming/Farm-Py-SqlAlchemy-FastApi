@@ -6,7 +6,7 @@ This module contains the unit tests for the
 `BaseFlowTacRegisterInitObjWF` class.
 """
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 import pytest
 import flows.constants.tac_register_init_obj_wf \

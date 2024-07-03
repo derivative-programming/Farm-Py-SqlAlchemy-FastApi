@@ -4,7 +4,7 @@
 This module contains functions and classes related to API token handling.
 """
 
-import datetime
+from datetime import datetime, timezone, timedelta
 import logging
 import jwt
 from fastapi.security import APIKeyHeader
@@ -50,7 +50,7 @@ class ApiToken:
             """
         logging.info("create_token Start")
 
-        payload["exp"] = datetime.datetime.utcnow() + datetime.timedelta(
+        payload["exp"] = datetime.now(timezone.utc) + timedelta(
             days=expires_in_day_count)
 
         logging.info(str(payload))

@@ -16,7 +16,7 @@ Land Plant List API.
 import json
 import logging
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import List
 
@@ -44,68 +44,89 @@ class LandPlantListGetModelRequest(CamelModel):
 
     page_number: int = Field(
         default=0,
+        alias="pageNumber",
         description="Page Number")
     item_count_per_page: int = Field(
         default=0,
+        alias="itemCountPerPage",
         description="Item Count Per Page")
     order_by_column_name: str = Field(
         default="",
+        alias="orderByColumnName",
         description="Order By Column Name")
     order_by_descending: bool = Field(
         default=False,
+        alias="orderByDescending",
         description="Order By Descending")
     force_error_message: str = Field(
         default="",
+        alias="forceErrorMessage",
         description="Force Error Message")
     flavor_code: uuid.UUID = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="flavorCode",
         description="Flavor Code")
     some_int_val: int = Field(
         default=0,
+        alias="someIntVal",
         description="Some Int Val")
     some_big_int_val: int = Field(
         default=0,
+        alias="someBigIntVal",
         description="Some Big Int Val")
     some_float_val: float = Field(
         default=0,
+        alias="someFloatVal",
         description="Some Float Val")
     some_bit_val: bool = Field(
         default=False,
+        alias="someBitVal",
         description="Some Bit Val")
     is_edit_allowed: bool = Field(
         default=False,
+        alias="isEditAllowed",
         description="Is Edit Allowed")
     is_delete_allowed: bool = Field(
         default=False,
+        alias="isDeleteAllowed",
         description="Is Delete Allowed")
     some_decimal_val: Decimal = Field(
         default=Decimal(0),
+        alias="someDecimalVal",
         description="Some Decimal Val")
     some_min_utc_date_time_val: datetime = Field(
         default_factory=TypeConversion.get_default_date_time,
+        alias="someMinUTCDateTimeVal",
         description="Some Min UTC Date Time Val")
     some_min_date_val: date = Field(
         default_factory=TypeConversion.get_default_date,
+        alias="someMinDateVal",
         description="Some Min Date Val")
     some_money_val: Decimal = Field(
         default=Decimal(0),
+        alias="someMoneyVal",
         description="Some Money Val")
     some_n_var_char_val: str = Field(
         default="",
+        alias="someNVarCharVal",
         description="Some N Var Char Val")
     some_var_char_val: str = Field(
         default="",
+        alias="someVarCharVal",
         description="Some Var Char Val")
     some_text_val: str = Field(
         default="",
+        alias="someTextVal",
         description="Some Text Val")
     some_phone_number: str = Field(
         default="",
+        alias="somePhoneNumber",
         description="Some Phone Number")
     some_email_address: str = Field(
         default="",
+        alias="someEmailAddress",
         description="Some Email Address")
 # endset
 
@@ -118,9 +139,10 @@ class LandPlantListGetModelRequest(CamelModel):
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
         """
-        json_encoders = {
-            datetime: lambda v: v.isoformat()
-        }
+        populate_by_name = True
+        # json_encoders = {
+        #     datetime: lambda v: v.isoformat()
+        # }
 
     def to_dict_snake(self):
         """
@@ -141,16 +163,16 @@ class LandPlantListGetModelRequest(CamelModel):
         """
         Convert the model to a dictionary with camelCase keys.
         """
-        data = self.model_dump()
-        return {snake_to_camel(k): v for k, v in data.items()}
+        data = self.model_dump(by_alias=True)
+        return data  # {snake_to_camel(k): v for k, v in data.items()}
 
     def to_dict_camel_serialized(self):
         """
         Convert the model to a dictionary with camelCase
         keys and serialized values.
         """
-        data = json.loads(self.model_dump_json())
-        return {snake_to_camel(k): v for k, v in data.items()}
+        data = json.loads(self.model_dump_json(by_alias=True))
+        return data  # {snake_to_camel(k): v for k, v in data.items()}
 
 
 class LandPlantListGetModelResponseItem(CamelModel):
@@ -164,80 +186,103 @@ class LandPlantListGetModelResponseItem(CamelModel):
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="plantCode",
         description="Plant Code")
     some_int_val: int = Field(
         default=0,
+        alias="someIntVal",
         description="Some Int Val")
     some_big_int_val: int = Field(
         default=0,
+        alias="someBigIntVal",
         description="Some Big Int Val")
     some_bit_val: bool = Field(
         default=False,
+        alias="someBitVal",
         description="Some Bit Val")
     is_edit_allowed: bool = Field(
         default=False,
+        alias="isEditAllowed",
         description="Is Edit Allowed")
     is_delete_allowed: bool = Field(
         default=False,
+        alias="isDeleteAllowed",
         description="Is Delete Allowed")
     some_float_val: float = Field(
         default=0,
+        alias="someFloatVal",
         description="Some Float Val")
     some_decimal_val: Decimal = Field(
         default=Decimal(0),
+        alias="someDecimalVal",
         description="Some Decimal Val")
     some_utc_date_time_val: datetime = Field(
         default_factory=TypeConversion.get_default_date_time,
+        alias="someUTCDateTimeVal",
         description="Some UTC Date Time Val")
     some_date_val: date = Field(
         default_factory=TypeConversion.get_default_date,
+        alias="someDateVal",
         description="Some Date Val")
     some_money_val: Decimal = Field(
         default=Decimal(0),
+        alias="someMoneyVal",
         description="Some Money Val")
     some_n_var_char_val: str = Field(
         default="",
+        alias="someNVarCharVal",
         description="Some N Var Char Val")
     some_var_char_val: str = Field(
         default="",
+        alias="someVarCharVal",
         description="Some Var Char Val")
     some_text_val: str = Field(
         default="",
+        alias="someTextVal",
         description="Some Text Val")
     some_phone_number: str = Field(
         default="",
+        alias="somePhoneNumber",
         description="Some Phone Number")
     some_email_address: str = Field(
         default="",
+        alias="someEmailAddress",
         description="Some Email Address")
     flavor_name: str = Field(
         default="",
+        alias="flavorName",
         description="Flavor Name")
     flavor_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="flavorCode",
         description="Flavor Code")
     some_int_conditional_on_deletable: int = Field(
         default=0,
+        alias="someIntConditionalOnDeletable",
         description="Some Int Conditional On Deleteable")
     n_var_char_as_url: str = Field(
         default="",
+        alias="nVarCharAsUrl",
         description="N Var Char As Url")
     update_link_plant_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="updateLinkPlantCode",
         description="Update Link Plant Code")
     delete_async_button_link_plant_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="deleteAsyncButtonLinkPlantCode",
         description="Delete Async Button Link Plant Code")
     details_link_plant_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="detailsLinkPlantCode",
         description="Details Link Plant Code")
 # endset
 

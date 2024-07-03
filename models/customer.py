@@ -8,7 +8,7 @@ the Base model and is mapped to the
 """
 from decimal import Decimal  # noqa: F401
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
                         Column, Date, DateTime, Float,
@@ -78,7 +78,7 @@ class Customer(Base):
     _email_confirmed_utc_date_time = Column(
         'email_confirmed_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             customer_constants.
             email_confirmed_utc_date_time_calculatedIsDBColumnIndexed
@@ -98,7 +98,7 @@ class Customer(Base):
     _forgot_password_key_expiration_utc_date_time = Column(
         'forgot_password_key_expiration_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             customer_constants.
             forgot_password_key_expiration_utc_date_time_calculatedIsDBColumnIndexed
@@ -190,7 +190,7 @@ class Customer(Base):
     _last_login_utc_date_time = Column(
         'last_login_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             customer_constants.
             last_login_utc_date_time_calculatedIsDBColumnIndexed
@@ -243,7 +243,7 @@ class Customer(Base):
     _registration_utc_date_time = Column(
         'registration_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             customer_constants.
             registration_utc_date_time_calculatedIsDBColumnIndexed
@@ -307,11 +307,11 @@ class Customer(Base):
         self.email = kwargs.get(
             'email', "")
         self.email_confirmed_utc_date_time = kwargs.get(
-            'email_confirmed_utc_date_time', datetime(1753, 1, 1))
+            'email_confirmed_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.first_name = kwargs.get(
             'first_name', "")
         self.forgot_password_key_expiration_utc_date_time = kwargs.get(
-            'forgot_password_key_expiration_utc_date_time', datetime(1753, 1, 1))
+            'forgot_password_key_expiration_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.forgot_password_key_value = kwargs.get(
             'forgot_password_key_value', "")
         self.fs_user_code_value = kwargs.get(
@@ -331,7 +331,7 @@ class Customer(Base):
         self.is_verbose_logging_forced = kwargs.get(
             'is_verbose_logging_forced', False)
         self.last_login_utc_date_time = kwargs.get(
-            'last_login_utc_date_time', datetime(1753, 1, 1))
+            'last_login_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_name = kwargs.get(
             'last_name', "")
         self.password = kwargs.get(
@@ -341,7 +341,7 @@ class Customer(Base):
         self.province = kwargs.get(
             'province', "")
         self.registration_utc_date_time = kwargs.get(
-            'registration_utc_date_time', datetime(1753, 1, 1))
+            'registration_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.tac_id = kwargs.get(
             'tac_id', 0)
         self.utc_offset_in_minutes = kwargs.get(
@@ -349,9 +349,9 @@ class Customer(Base):
         self.zip = kwargs.get(
             'zip', "")
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1))
+            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1))
+            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.tac_code_peek = kwargs.get(  # TacID
             'tac_code_peek', uuid.UUID(int=0))
 
@@ -382,7 +382,7 @@ class Customer(Base):
             self._code = value
         else:
             self._code = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def customer_id(self) -> int:
@@ -439,7 +439,7 @@ class Customer(Base):
             self._insert_user_id = value
         else:
             self._insert_user_id = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def last_update_user_id(self):
@@ -458,7 +458,7 @@ class Customer(Base):
             self._last_update_user_id = value
         else:
             self._last_update_user_id = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def insert_utc_date_time(self) -> datetime:
@@ -470,17 +470,24 @@ class Customer(Base):
             datetime: The UTC date and time for the
                 customer.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_insert_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value: datetime) -> None:
         """
         Set the insert_utc_date_time.
         """
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
 
         self._insert_utc_date_time = value
 
@@ -493,17 +500,25 @@ class Customer(Base):
         :return: A datetime object representing the
             last update UTC date and time.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_last_update_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value: datetime) -> None:
         """
         Set the last_update_utc_date_time.
         """
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
 
         self._last_update_utc_date_time = value
     # activeOrganizationID,
@@ -554,18 +569,24 @@ class Customer(Base):
         Returns:
             datetime: The value of email_confirmed_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_email_confirmed_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @email_confirmed_utc_date_time.setter
     def email_confirmed_utc_date_time(self, value: datetime) -> None:
         """
         Set the email_confirmed_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._email_confirmed_utc_date_time = value
     # firstName,
 
@@ -598,18 +619,24 @@ class Customer(Base):
         Returns:
             datetime: The value of forgot_password_key_expiration_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_forgot_password_key_expiration_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @forgot_password_key_expiration_utc_date_time.setter
     def forgot_password_key_expiration_utc_date_time(self, value: datetime) -> None:
         """
         Set the forgot_password_key_expiration_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._forgot_password_key_expiration_utc_date_time = value
     # forgotPasswordKeyValue,
 
@@ -671,7 +698,7 @@ class Customer(Base):
                 self._fs_user_code_value = uuid.UUID(value)
             except ValueError as e:
                 raise ValueError(f"Invalid UUID value: {value}") from e
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
     # isActive,
 
     @property
@@ -822,18 +849,24 @@ class Customer(Base):
         Returns:
             datetime: The value of last_login_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_last_login_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @last_login_utc_date_time.setter
     def last_login_utc_date_time(self, value: datetime) -> None:
         """
         Set the last_login_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._last_login_utc_date_time = value
     # lastName,
 
@@ -927,18 +960,24 @@ class Customer(Base):
         Returns:
             datetime: The value of registration_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_registration_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @registration_utc_date_time.setter
     def registration_utc_date_time(self, value: datetime) -> None:
         """
         Set the registration_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._registration_utc_date_time = value
     # TacID
     # uTCOffsetInMinutes,
@@ -1060,8 +1099,8 @@ def set_created_on(
     Returns:
         None
     """
-    target.insert_utc_date_time = datetime.utcnow()
-    target.last_update_utc_date_time = datetime.utcnow()
+    target.insert_utc_date_time = datetime.now(timezone.utc)
+    target.last_update_utc_date_time = datetime.now(timezone.utc)
 
 
 @event.listens_for(Customer, 'before_update')
@@ -1078,4 +1117,4 @@ def set_updated_on(
     :param connection: The SQLAlchemy connection object.
     :param target: The target object to update.
     """
-    target.last_update_utc_date_time = datetime.utcnow()
+    target.last_update_utc_date_time = datetime.now(timezone.utc)

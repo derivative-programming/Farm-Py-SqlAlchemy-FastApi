@@ -9,9 +9,10 @@ that handle the addition of a
 dyna_flow_task in the flow process.
 """
 
+from typing import List
 import uuid  # noqa: F401
 import json
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from flows.base.dyna_flow_task_dyna_flow_cleanup import (
     BaseFlowDynaFlowTaskDynaFlowCleanup)
@@ -19,6 +20,7 @@ from flows.base import LogSeverity
 from business.dyna_flow_task import DynaFlowTaskBusObj
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
+import managers as managers_and_enums
 
 
 class FlowDynaFlowTaskDynaFlowCleanupResult():
@@ -97,8 +99,43 @@ class FlowDynaFlowTaskDynaFlowCleanup(
         )
         super()._throw_queued_validation_errors()
 
-        # TODO: add flow logic
+        dyna_flow = await dyna_flow_task_bus_obj.get_dyna_flow_id_bus_obj()
 
+        dyna_flow_task_list = await dyna_flow.get_all_dyna_flow_task()
+
+        dyna_flow_task_list = next(
+            (
+                x
+                for x in dyna_flow_task_list
+                if x.dyna_flow_task_id != (
+                    dyna_flow_task_bus_obj.dyna_flow_task_id)
+            ),
+            None
+        )
+
+        assert isinstance(dyna_flow_task_list, List)
+
+        dyna_flow.completed_utc_date_time = datetime.now(timezone.utc)
+        dyna_flow.is_completed = True
+        dyna_flow.is_successful = all(
+            task.is_successful for task in dyna_flow_task_list
+        )
+        await dyna_flow.save()
+
+        # dyna_flow_type = await dyna_flow.get_dyna_flow_type_id_bus_obj()
+
+        # if dyna_flow.is_successful is not True and \
+        #     dyna_flow_type.lookup_enum !=  \
+        #         managers_and_enums.DynaFlowTypeEnum.CustomerEmailRequestSendEmail:
+        #     await DR.Core.Flows.Emails.send_email_to_config_manager_async(
+        #         session_context,
+        #         "Data Flow Not completed Successfully",
+        #         "Data Flow Not completed Successfully",
+        #         "Data Flow Not completed Successfully",
+        #         "View",
+        #         "/Report/TacConfigDynaFlowList/" + DR.Core.CurrentRuntime.get_tac(session_context, TacManager.LookupEnum.Primary).code,
+        #         EmailTypeManager.LookupEnum.DynaFlow_Error_ToConfig,
+        #         dyna_flow.code
 
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

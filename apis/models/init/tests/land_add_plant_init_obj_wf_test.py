@@ -7,7 +7,7 @@ land_add_plant_init_obj_wf module.
 """
 import json
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
@@ -43,7 +43,7 @@ class MockFlowLandAddPlantInitObjWFResult:
         self.request_some_decimal_val = \
             Decimal('10.99')
         self.request_some_utc_date_time_val = \
-            datetime.utcnow()
+            datetime.now(timezone.utc)
         self.request_some_date_val = \
             date.today()
         self.request_some_money_val = \
@@ -141,7 +141,7 @@ def test_to_json():
         request_is_delete_allowed=True,
         request_some_float_val=1.23,
         request_some_decimal_val=Decimal('10.99'),
-        request_some_utc_date_time_val=datetime.utcnow(),
+        request_some_utc_date_time_val=datetime.now(timezone.utc),
         request_some_date_val=date.today(),
         request_some_money_val=Decimal('100.00'),
         request_some_n_var_char_val="Some N Var Char",

@@ -11,7 +11,7 @@ class.
 import uuid  # noqa: F401
 import math  # noqa: F401
 
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, patch, Mock
 
@@ -165,7 +165,7 @@ class MockReportItemPlantUserDetails:
         self.some_text_val = \
             "Some Text"
         self.some_uniqueidentifier_val = uuid.uuid4()
-        self.some_utc_date_time_val = datetime.utcnow()
+        self.some_utc_date_time_val = datetime.now(timezone.utc)
         self.some_var_char_val = \
             "Some Var Char"
         self.phone_num_conditional_on_is_editable = \

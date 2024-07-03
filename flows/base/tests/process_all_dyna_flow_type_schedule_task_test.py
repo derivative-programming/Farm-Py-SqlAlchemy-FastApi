@@ -6,7 +6,7 @@ This module contains the unit tests for the
 `BaseFlowProcessAllDynaFlowTypeScheduleTask` class.
 """
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 import pytest
 import flows.constants.process_all_dyna_flow_type_schedule_task \

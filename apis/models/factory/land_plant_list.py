@@ -6,7 +6,7 @@ instances of the LandPlantListGetModelRequest model.
 """
 
 import uuid  # noqa: F401
-from datetime import datetime  # noqa: F401
+from datetime import datetime, timezone  # noqa: F401
 
 import factory
 from factory import Faker  # noqa: F401
@@ -45,7 +45,7 @@ class LandPlantListGetModelRequestFactory(
         positive=True
     )
     some_min_utc_date_time_val = factory.LazyFunction(
-        datetime.utcnow
+        lambda: datetime.now(timezone.utc)
     )
     some_min_date_val = Faker('date_object')
     some_money_val = Faker(

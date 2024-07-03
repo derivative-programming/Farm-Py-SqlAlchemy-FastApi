@@ -16,7 +16,7 @@ Plant User Details API.
 import json
 import logging
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import List
 
@@ -44,18 +44,23 @@ class PlantUserDetailsGetModelRequest(CamelModel):
 
     page_number: int = Field(
         default=0,
+        alias="pageNumber",
         description="Page Number")
     item_count_per_page: int = Field(
         default=0,
+        alias="itemCountPerPage",
         description="Item Count Per Page")
     order_by_column_name: str = Field(
         default="",
+        alias="orderByColumnName",
         description="Order By Column Name")
     order_by_descending: bool = Field(
         default=False,
+        alias="orderByDescending",
         description="Order By Descending")
     force_error_message: str = Field(
         default="",
+        alias="forceErrorMessage",
         description="Force Error Message")
 
 
@@ -68,9 +73,10 @@ class PlantUserDetailsGetModelRequest(CamelModel):
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
         """
-        json_encoders = {
-            datetime: lambda v: v.isoformat()
-        }
+        populate_by_name = True
+        # json_encoders = {
+        #     datetime: lambda v: v.isoformat()
+        # }
 
     def to_dict_snake(self):
         """
@@ -91,16 +97,16 @@ class PlantUserDetailsGetModelRequest(CamelModel):
         """
         Convert the model to a dictionary with camelCase keys.
         """
-        data = self.model_dump()
-        return {snake_to_camel(k): v for k, v in data.items()}
+        data = self.model_dump(by_alias=True)
+        return data  # {snake_to_camel(k): v for k, v in data.items()}
 
     def to_dict_camel_serialized(self):
         """
         Convert the model to a dictionary with camelCase
         keys and serialized values.
         """
-        data = json.loads(self.model_dump_json())
-        return {snake_to_camel(k): v for k, v in data.items()}
+        data = json.loads(self.model_dump_json(by_alias=True))
+        return data  # {snake_to_camel(k): v for k, v in data.items()}
 
 
 class PlantUserDetailsGetModelResponseItem(CamelModel):
@@ -111,80 +117,103 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
     """
     flavor_name: str = Field(
         default="",
+        alias="flavorName",
         description="Flavor Name")
     is_delete_allowed: bool = Field(
         default=False,
+        alias="isDeleteAllowed",
         description="Is Delete Allowed")
     is_edit_allowed: bool = Field(
         default=False,
+        alias="isEditAllowed",
         description="Is Edit Allowed")
     other_flavor: str = Field(
         default="",
+        alias="otherFlavor",
         description="Other Flavor")
     some_big_int_val: int = Field(
         default=0,
+        alias="someBigIntVal",
         description="Some Big Int Val")
     some_bit_val: bool = Field(
         default=False,
+        alias="someBitVal",
         description="Some Bit Val")
     some_date_val: date = Field(
         default_factory=TypeConversion.get_default_date,
+        alias="someDateVal",
         description="Some Date Val")
     some_decimal_val: Decimal = Field(
         default=Decimal(0),
+        alias="someDecimalVal",
         description="Some Decimal Val")
     some_email_address: str = Field(
         default="",
+        alias="someEmailAddress",
         description="Some Email Address")
     some_float_val: float = Field(
         default=0,
+        alias="someFloatVal",
         description="Some Float Val")
     some_int_val: int = Field(
         default=0,
+        alias="someIntVal",
         description="Some Int Val")
     some_money_val: Decimal = Field(
         default=Decimal(0),
+        alias="someMoneyVal",
         description="Some Money Val")
     some_n_var_char_val: str = Field(
         default="",
+        alias="someNVarCharVal",
         description="Some N Var Char Val")
     some_phone_number: str = Field(
         default="",
+        alias="somePhoneNumber",
         description="Some Phone Number")
     some_text_val: str = Field(
         default="",
+        alias="someTextVal",
         description="Some Text Val")
     some_uniqueidentifier_val: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="someUniqueidentifierVal",
         description="Some Uniqueidentifier Val")
     some_utc_date_time_val: datetime = Field(
         default_factory=TypeConversion.get_default_date_time,
+        alias="someUTCDateTimeVal",
         description="Some UTC Date Time Val")
     some_var_char_val: str = Field(
         default="",
+        alias="someVarCharVal",
         description="Some Var Char Val")
     phone_num_conditional_on_is_editable: str = Field(
         default="",
+        alias="phoneNumConditionalOnIsEditable",
         description="Phone Num Conditional On Is Editable")
     n_var_char_as_url: str = Field(
         default="",
+        alias="nVarCharAsUrl",
         description="N Var Char As Url")
     update_button_text_link_plant_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="updateButtonTextLinkPlantCode",
         description="Update Button Text Link Plant Code")
     random_property_updates_link_plant_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="randomPropertyUpdatesLinkPlantCode",
         description="Random Property Updates Link Plant Code")
     back_to_dashboard_link_tac_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="backToDashboardLinkTacCode",
         description="Back To Dashboard Link Tac Code")
 
     def load_report_item(

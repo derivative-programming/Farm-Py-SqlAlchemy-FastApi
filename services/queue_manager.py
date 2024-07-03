@@ -19,6 +19,9 @@ class QueueManager:
         self._service_bus_client = None
         self._service_bus_client = ServiceBusClient.from_connection_string(
             AZURE_SERVICE_BUS_CONNECTION_STRING)
+        
+        if len(AZURE_SERVICE_BUS_CONNECTION_STRING) == 0:
+            raise ValueError("Azure Service Bus connection string is not set.")
 
     async def get_message_count_async(self, queue_name) -> int:
         """

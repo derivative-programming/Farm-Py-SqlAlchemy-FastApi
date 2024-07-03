@@ -7,7 +7,7 @@ various field values for testing.
 """
 
 import uuid  # noqa: F401
-from datetime import datetime  # noqa: F401
+from datetime import datetime, timezone  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 import factory
 from factory import Faker  # noqa: F401

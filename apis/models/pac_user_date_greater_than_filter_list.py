@@ -16,7 +16,7 @@ Pac User Date Greater Than Filter List API.
 import json
 import logging
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import List
 
@@ -44,18 +44,23 @@ class PacUserDateGreaterThanFilterListGetModelRequest(CamelModel):
 
     page_number: int = Field(
         default=0,
+        alias="pageNumber",
         description="Page Number")
     item_count_per_page: int = Field(
         default=0,
+        alias="itemCountPerPage",
         description="Item Count Per Page")
     order_by_column_name: str = Field(
         default="",
+        alias="orderByColumnName",
         description="Order By Column Name")
     order_by_descending: bool = Field(
         default=False,
+        alias="orderByDescending",
         description="Order By Descending")
     force_error_message: str = Field(
         default="",
+        alias="forceErrorMessage",
         description="Force Error Message")
 
 
@@ -68,9 +73,10 @@ class PacUserDateGreaterThanFilterListGetModelRequest(CamelModel):
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
         """
-        json_encoders = {
-            datetime: lambda v: v.isoformat()
-        }
+        populate_by_name = True
+        # json_encoders = {
+        #     datetime: lambda v: v.isoformat()
+        # }
 
     def to_dict_snake(self):
         """
@@ -91,16 +97,16 @@ class PacUserDateGreaterThanFilterListGetModelRequest(CamelModel):
         """
         Convert the model to a dictionary with camelCase keys.
         """
-        data = self.model_dump()
-        return {snake_to_camel(k): v for k, v in data.items()}
+        data = self.model_dump(by_alias=True)
+        return data  # {snake_to_camel(k): v for k, v in data.items()}
 
     def to_dict_camel_serialized(self):
         """
         Convert the model to a dictionary with camelCase
         keys and serialized values.
         """
-        data = json.loads(self.model_dump_json())
-        return {snake_to_camel(k): v for k, v in data.items()}
+        data = json.loads(self.model_dump_json(by_alias=True))
+        return data  # {snake_to_camel(k): v for k, v in data.items()}
 
 
 class PacUserDateGreaterThanFilterListGetModelResponseItem(CamelModel):
@@ -113,24 +119,31 @@ class PacUserDateGreaterThanFilterListGetModelResponseItem(CamelModel):
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="dateGreaterThanFilterCode",
         description="Date Greater Than Filter Code")
     date_greater_than_filter_day_count: int = Field(
         default=0,
+        alias="dateGreaterThanFilterDayCount",
         description="Date Greater Than Filter Day Count")
     date_greater_than_filter_description: str = Field(
         default="",
+        alias="dateGreaterThanFilterDescription",
         description="Date Greater Than Filter Description")
     date_greater_than_filter_display_order: int = Field(
         default=0,
+        alias="dateGreaterThanFilterDisplayOrder",
         description="Date Greater Than Filter Display Order")
     date_greater_than_filter_is_active: bool = Field(
         default=False,
+        alias="dateGreaterThanFilterIsActive",
         description="Date Greater Than Filter Is Active")
     date_greater_than_filter_lookup_enum_name: str = Field(
         default="",
+        alias="dateGreaterThanFilterLookupEnumName",
         description="Date Greater Than Filter Lookup Enum Name")
     date_greater_than_filter_name: str = Field(
         default="",
+        alias="dateGreaterThanFilterName",
         description="Date Greater Than Filter Name")
 
     def load_report_item(

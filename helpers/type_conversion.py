@@ -4,7 +4,7 @@
 This module provides helper functions and classes for type conversion.
 """
 
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 import uuid
 from marshmallow import fields
 
@@ -26,14 +26,14 @@ class TypeConversion:
         """
         Returns the default datetime (January 1, 1753, 00:00:00).
         """
-        return datetime(1753, 1, 1, 0, 0)
+        return datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
 
     @staticmethod
     def get_default_dt() -> datetime:
         """
         Returns the default datetime (January 1, 1753, 00:00:00).
         """
-        return datetime(1753, 1, 1, 0, 0)
+        return datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
 
     @staticmethod
     def get_default_uuid():

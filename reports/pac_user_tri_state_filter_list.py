@@ -10,7 +10,7 @@ import json
 import csv
 import uuid  # noqa: F401
 import logging
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import List
 from helpers import SessionContext, TypeConversion  # noqa: F401

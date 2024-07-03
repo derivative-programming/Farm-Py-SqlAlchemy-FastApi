@@ -7,7 +7,7 @@ land_plant_list_init_report module.
 """
 import json
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
@@ -39,7 +39,7 @@ class MockFlowLandPlantListInitReportResult:
         self.some_decimal_val = \
             Decimal('10.99')
         self.some_min_utc_date_time_val = \
-            datetime.utcnow()
+            datetime.now(timezone.utc)
         self.some_min_date_val = \
             date.today()
         self.some_money_val = \
@@ -131,7 +131,7 @@ def test_to_json():
         is_delete_allowed=True,
         some_float_val=1.23,
         some_decimal_val=Decimal('10.99'),
-        some_min_utc_date_time_val=datetime.utcnow(),
+        some_min_utc_date_time_val=datetime.now(timezone.utc),
         some_min_date_val=date.today(),
         some_money_val=Decimal('100.00'),
         some_n_var_char_val="Some N Var Char Val",

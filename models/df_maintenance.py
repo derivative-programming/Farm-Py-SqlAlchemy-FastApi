@@ -8,7 +8,7 @@ the Base model and is mapped to the
 """
 from decimal import Decimal  # noqa: F401
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
                         Column, Date, DateTime, Float,
@@ -85,7 +85,7 @@ class DFMaintenance(Base):
     _last_scheduled_df_process_request_utc_date_time = Column(
         'last_scheduled_df_process_request_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             df_maintenance_constants.
             last_scheduled_df_process_request_utc_date_time_calculatedIsDBColumnIndexed
@@ -94,7 +94,7 @@ class DFMaintenance(Base):
     _next_scheduled_df_process_request_utc_date_time = Column(
         'next_scheduled_df_process_request_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             df_maintenance_constants.
             next_scheduled_df_process_request_utc_date_time_calculatedIsDBColumnIndexed
@@ -123,7 +123,7 @@ class DFMaintenance(Base):
     _paused_utc_date_time = Column(
         'paused_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             df_maintenance_constants.
             paused_utc_date_time_calculatedIsDBColumnIndexed
@@ -171,21 +171,21 @@ class DFMaintenance(Base):
         self.is_scheduled_df_process_request_started = kwargs.get(
             'is_scheduled_df_process_request_started', False)
         self.last_scheduled_df_process_request_utc_date_time = kwargs.get(
-            'last_scheduled_df_process_request_utc_date_time', datetime(1753, 1, 1))
+            'last_scheduled_df_process_request_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.next_scheduled_df_process_request_utc_date_time = kwargs.get(
-            'next_scheduled_df_process_request_utc_date_time', datetime(1753, 1, 1))
+            'next_scheduled_df_process_request_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.pac_id = kwargs.get(
             'pac_id', 0)
         self.paused_by_username = kwargs.get(
             'paused_by_username', "")
         self.paused_utc_date_time = kwargs.get(
-            'paused_utc_date_time', datetime(1753, 1, 1))
+            'paused_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.scheduled_df_process_request_processor_identifier = kwargs.get(
             'scheduled_df_process_request_processor_identifier', "")
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1))
+            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1))
+            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.pac_code_peek = kwargs.get(  # PacID
             'pac_code_peek', uuid.UUID(int=0))
 
@@ -216,7 +216,7 @@ class DFMaintenance(Base):
             self._code = value
         else:
             self._code = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def df_maintenance_id(self) -> int:
@@ -273,7 +273,7 @@ class DFMaintenance(Base):
             self._insert_user_id = value
         else:
             self._insert_user_id = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def last_update_user_id(self):
@@ -292,7 +292,7 @@ class DFMaintenance(Base):
             self._last_update_user_id = value
         else:
             self._last_update_user_id = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def insert_utc_date_time(self) -> datetime:
@@ -304,17 +304,24 @@ class DFMaintenance(Base):
             datetime: The UTC date and time for the
                 df_maintenance.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_insert_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value: datetime) -> None:
         """
         Set the insert_utc_date_time.
         """
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
 
         self._insert_utc_date_time = value
 
@@ -327,17 +334,25 @@ class DFMaintenance(Base):
         :return: A datetime object representing the
             last update UTC date and time.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_last_update_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value: datetime) -> None:
         """
         Set the last_update_utc_date_time.
         """
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
 
         self._last_update_utc_date_time = value
     # isPaused,
@@ -410,18 +425,24 @@ class DFMaintenance(Base):
         Returns:
             datetime: The value of last_scheduled_df_process_request_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_last_scheduled_df_process_request_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @last_scheduled_df_process_request_utc_date_time.setter
     def last_scheduled_df_process_request_utc_date_time(self, value: datetime) -> None:
         """
         Set the last_scheduled_df_process_request_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._last_scheduled_df_process_request_utc_date_time = value
     # nextScheduledDFProcessRequestUTCDateTime
 
@@ -433,18 +454,24 @@ class DFMaintenance(Base):
         Returns:
             datetime: The value of next_scheduled_df_process_request_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_next_scheduled_df_process_request_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @next_scheduled_df_process_request_utc_date_time.setter
     def next_scheduled_df_process_request_utc_date_time(self, value: datetime) -> None:
         """
         Set the next_scheduled_df_process_request_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._next_scheduled_df_process_request_utc_date_time = value
     # PacID
     # pausedByUsername,
@@ -478,18 +505,24 @@ class DFMaintenance(Base):
         Returns:
             datetime: The value of paused_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_paused_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @paused_utc_date_time.setter
     def paused_utc_date_time(self, value: datetime) -> None:
         """
         Set the paused_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._paused_utc_date_time = value
     # scheduledDFProcessRequestProcessorIdentifier,
 
@@ -576,8 +609,8 @@ def set_created_on(
     Returns:
         None
     """
-    target.insert_utc_date_time = datetime.utcnow()
-    target.last_update_utc_date_time = datetime.utcnow()
+    target.insert_utc_date_time = datetime.now(timezone.utc)
+    target.last_update_utc_date_time = datetime.now(timezone.utc)
 
 
 @event.listens_for(DFMaintenance, 'before_update')
@@ -594,4 +627,4 @@ def set_updated_on(
     :param connection: The SQLAlchemy connection object.
     :param target: The target object to update.
     """
-    target.last_update_utc_date_time = datetime.utcnow()
+    target.last_update_utc_date_time = datetime.now(timezone.utc)

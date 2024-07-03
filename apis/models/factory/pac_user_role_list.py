@@ -6,7 +6,7 @@ instances of the PacUserRoleListGetModelRequest model.
 """
 
 import uuid  # noqa: F401
-from datetime import datetime  # noqa: F401
+from datetime import datetime, timezone  # noqa: F401
 
 import factory
 from factory import Faker  # noqa: F401

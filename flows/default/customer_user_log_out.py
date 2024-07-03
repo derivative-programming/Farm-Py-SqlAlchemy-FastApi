@@ -11,7 +11,7 @@ customer in the flow process.
 
 import uuid  # noqa: F401
 import json
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from flows.base.customer_user_log_out import (
     BaseFlowCustomerUserLogOut)

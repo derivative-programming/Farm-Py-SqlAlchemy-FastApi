@@ -12,6 +12,7 @@
         "prop.isEncrypted",
         "prop.calculatedIsCodeNotLookup",
         "prop.calculatedIsCodeAndLookup",
-        "prop.calculatedisLexiconEligible"
+        "prop.calculatedisLexiconEligible",
+        "objectWorkflow.isExposedInBusinessObject"
     ]
 } 

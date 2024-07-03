@@ -11,7 +11,7 @@ import asyncio
 import math  # noqa: F401
 import time
 import uuid  # noqa: F401
-from datetime import date, datetime, timedelta  # noqa: F401
+from datetime import date, datetime, timedelta, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
@@ -236,7 +236,7 @@ class TestDynaFlowTypeScheduleFactoryAsync:
         assert dyna_flow_type_schedule.insert_utc_date_time is not None
         assert isinstance(
             dyna_flow_type_schedule.insert_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         dyna_flow_type_schedule.code = uuid.uuid4()
         session.add(dyna_flow_type_schedule)
         await session.commit()
@@ -318,7 +318,7 @@ class TestDynaFlowTypeScheduleFactoryAsync:
         assert dyna_flow_type_schedule.last_update_utc_date_time is not None
         assert isinstance(
             dyna_flow_type_schedule.last_update_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         dyna_flow_type_schedule.code = uuid.uuid4()
         session.add(dyna_flow_type_schedule)
         await session.commit()
@@ -502,8 +502,8 @@ class TestDynaFlowTypeScheduleFactoryAsync:
         assert new_obj.dyna_flow_type_id == 0
         assert new_obj.frequency_in_hours == 0
         assert new_obj.is_active is False
-        assert new_obj.last_utc_date_time == datetime(1753, 1, 1)
-        assert new_obj.next_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.last_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.next_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.pac_id == 0
 
     @pytest.mark.asyncio

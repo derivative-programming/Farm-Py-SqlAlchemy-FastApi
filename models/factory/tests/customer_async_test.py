@@ -11,7 +11,7 @@ import asyncio
 import math  # noqa: F401
 import time
 import uuid  # noqa: F401
-from datetime import date, datetime, timedelta  # noqa: F401
+from datetime import date, datetime, timedelta, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
@@ -236,7 +236,7 @@ class TestCustomerFactoryAsync:
         assert customer.insert_utc_date_time is not None
         assert isinstance(
             customer.insert_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         customer.code = uuid.uuid4()
         session.add(customer)
         await session.commit()
@@ -318,7 +318,7 @@ class TestCustomerFactoryAsync:
         assert customer.last_update_utc_date_time is not None
         assert isinstance(
             customer.last_update_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         customer.code = uuid.uuid4()
         session.add(customer)
         await session.commit()
@@ -556,9 +556,9 @@ class TestCustomerFactoryAsync:
         # zip,
         assert new_obj.active_organization_id == 0
         assert new_obj.email == ""
-        assert new_obj.email_confirmed_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.email_confirmed_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.first_name == ""
-        assert new_obj.forgot_password_key_expiration_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.forgot_password_key_expiration_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.forgot_password_key_value == ""
         assert isinstance(new_obj.fs_user_code_value, uuid.UUID)
         assert new_obj.is_active is False
@@ -568,12 +568,12 @@ class TestCustomerFactoryAsync:
         assert new_obj.is_locked is False
         assert new_obj.is_multiple_organizations_allowed is False
         assert new_obj.is_verbose_logging_forced is False
-        assert new_obj.last_login_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.last_login_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.last_name == ""
         assert new_obj.password == ""
         assert new_obj.phone == ""
         assert new_obj.province == ""
-        assert new_obj.registration_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.registration_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.tac_id == 0
         assert new_obj.utc_offset_in_minutes == 0
         assert new_obj.zip == ""

@@ -16,14 +16,14 @@
 					CASE WHEN :order_by_descending = 1 and :order_by_column_name = 'placeholder' THEN ''  END DESC
 
 				) AS ROWNUMBER
-		  -- select *
-		from
-		 	farm_tac  tac  --owner obj
 
-			left join farm_pac pac on pac.pac_id = tac.pac_id  -- up obj tree
+		from
+		 	farm_tac  tac  /* owner obj */
+
+			left join farm_pac pac on pac.pac_id = tac.pac_id  /*  up obj tree*/
 
 		where
-			 (tac.code = :context_code
+			 (tac.code = REPLACE(:context_code, '-', '')
 			   )
 
 	) AS TBL

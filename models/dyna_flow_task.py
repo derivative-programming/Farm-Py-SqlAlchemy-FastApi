@@ -8,7 +8,7 @@ the Base model and is mapped to the
 """
 from decimal import Decimal  # noqa: F401
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
                         Column, Date, DateTime, Float,
@@ -58,7 +58,7 @@ class DynaFlowTask(Base):
     _completed_utc_date_time = Column(
         'completed_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             dyna_flow_task_constants.
             completed_utc_date_time_calculatedIsDBColumnIndexed
@@ -186,7 +186,7 @@ class DynaFlowTask(Base):
     _min_start_utc_date_time = Column(
         'min_start_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             dyna_flow_task_constants.
             min_start_utc_date_time_calculatedIsDBColumnIndexed
@@ -228,7 +228,7 @@ class DynaFlowTask(Base):
     _requested_utc_date_time = Column(
         'requested_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             dyna_flow_task_constants.
             requested_utc_date_time_calculatedIsDBColumnIndexed
@@ -257,7 +257,7 @@ class DynaFlowTask(Base):
     _started_utc_date_time = Column(
         'started_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             dyna_flow_task_constants.
             started_utc_date_time_calculatedIsDBColumnIndexed
@@ -289,7 +289,7 @@ class DynaFlowTask(Base):
         self.last_update_user_id = kwargs.get(
             'last_update_user_id', uuid.UUID(int=0))
         self.completed_utc_date_time = kwargs.get(
-            'completed_utc_date_time', datetime(1753, 1, 1))
+            'completed_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.dependency_dyna_flow_task_id = kwargs.get(
             'dependency_dyna_flow_task_id', 0)
         self.description = kwargs.get(
@@ -317,7 +317,7 @@ class DynaFlowTask(Base):
         self.max_retry_count = kwargs.get(
             'max_retry_count', 0)
         self.min_start_utc_date_time = kwargs.get(
-            'min_start_utc_date_time', datetime(1753, 1, 1))
+            'min_start_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.param_1 = kwargs.get(
             'param_1', "")
         self.param_2 = kwargs.get(
@@ -325,17 +325,17 @@ class DynaFlowTask(Base):
         self.processor_identifier = kwargs.get(
             'processor_identifier', "")
         self.requested_utc_date_time = kwargs.get(
-            'requested_utc_date_time', datetime(1753, 1, 1))
+            'requested_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.result_value = kwargs.get(
             'result_value', "")
         self.retry_count = kwargs.get(
             'retry_count', 0)
         self.started_utc_date_time = kwargs.get(
-            'started_utc_date_time', datetime(1753, 1, 1))
+            'started_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1))
+            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1))
+            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.dyna_flow_code_peek = kwargs.get(  # DynaFlowID
             'dyna_flow_code_peek', uuid.UUID(int=0))
         self.dyna_flow_task_type_code_peek = kwargs.get(  # DynaFlowTaskTypeID
@@ -368,7 +368,7 @@ class DynaFlowTask(Base):
             self._code = value
         else:
             self._code = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def dyna_flow_task_id(self) -> int:
@@ -425,7 +425,7 @@ class DynaFlowTask(Base):
             self._insert_user_id = value
         else:
             self._insert_user_id = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def last_update_user_id(self):
@@ -444,7 +444,7 @@ class DynaFlowTask(Base):
             self._last_update_user_id = value
         else:
             self._last_update_user_id = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def insert_utc_date_time(self) -> datetime:
@@ -456,17 +456,24 @@ class DynaFlowTask(Base):
             datetime: The UTC date and time for the
                 dyna_flow_task.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_insert_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value: datetime) -> None:
         """
         Set the insert_utc_date_time.
         """
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
 
         self._insert_utc_date_time = value
 
@@ -479,17 +486,25 @@ class DynaFlowTask(Base):
         :return: A datetime object representing the
             last update UTC date and time.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_last_update_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value: datetime) -> None:
         """
         Set the last_update_utc_date_time.
         """
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
 
         self._last_update_utc_date_time = value
     # completedUTCDateTime
@@ -502,18 +517,24 @@ class DynaFlowTask(Base):
         Returns:
             datetime: The value of completed_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_completed_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @completed_utc_date_time.setter
     def completed_utc_date_time(self, value: datetime) -> None:
         """
         Set the completed_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._completed_utc_date_time = value
     # dependencyDynaFlowTaskID,
 
@@ -596,7 +617,7 @@ class DynaFlowTask(Base):
                 self._dyna_flow_subject_code = uuid.UUID(value)
             except ValueError as e:
                 raise ValueError(f"Invalid UUID value: {value}") from e
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
     # dynaFlowTaskTypeID
     # isCanceled,
 
@@ -768,18 +789,24 @@ class DynaFlowTask(Base):
         Returns:
             datetime: The value of min_start_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_min_start_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @min_start_utc_date_time.setter
     def min_start_utc_date_time(self, value: datetime) -> None:
         """
         Set the min_start_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._min_start_utc_date_time = value
     # param1,
 
@@ -854,18 +881,24 @@ class DynaFlowTask(Base):
         Returns:
             datetime: The value of requested_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_requested_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @requested_utc_date_time.setter
     def requested_utc_date_time(self, value: datetime) -> None:
         """
         Set the requested_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._requested_utc_date_time = value
     # resultValue,
 
@@ -918,18 +951,24 @@ class DynaFlowTask(Base):
         Returns:
             datetime: The value of started_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_started_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @started_utc_date_time.setter
     def started_utc_date_time(self, value: datetime) -> None:
         """
         Set the started_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._started_utc_date_time = value
     # DynaFlowID
     # dynaFlowTaskTypeID
@@ -1029,8 +1068,8 @@ def set_created_on(
     Returns:
         None
     """
-    target.insert_utc_date_time = datetime.utcnow()
-    target.last_update_utc_date_time = datetime.utcnow()
+    target.insert_utc_date_time = datetime.now(timezone.utc)
+    target.last_update_utc_date_time = datetime.now(timezone.utc)
 
 
 @event.listens_for(DynaFlowTask, 'before_update')
@@ -1047,4 +1086,4 @@ def set_updated_on(
     :param connection: The SQLAlchemy connection object.
     :param target: The target object to update.
     """
-    target.last_update_utc_date_time = datetime.utcnow()
+    target.last_update_utc_date_time = datetime.now(timezone.utc)

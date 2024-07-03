@@ -6,7 +6,7 @@ This module contains the unit tests for the
 `BaseFlowPacUserTriStateFilterListInitReport` class.
 """
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 import pytest
 import flows.constants.pac_user_tri_state_filter_list_init_report \

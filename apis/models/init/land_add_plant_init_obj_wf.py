@@ -8,7 +8,7 @@ for the LandAddPlantInitObjWF workflow.
 
 import logging
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import List
 

@@ -16,7 +16,7 @@ Tac Farm Dashboard API.
 import json
 import logging
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import List
 
@@ -44,18 +44,23 @@ class TacFarmDashboardGetModelRequest(CamelModel):
 
     page_number: int = Field(
         default=0,
+        alias="pageNumber",
         description="Page Number")
     item_count_per_page: int = Field(
         default=0,
+        alias="itemCountPerPage",
         description="Item Count Per Page")
     order_by_column_name: str = Field(
         default="",
+        alias="orderByColumnName",
         description="Order By Column Name")
     order_by_descending: bool = Field(
         default=False,
+        alias="orderByDescending",
         description="Order By Descending")
     force_error_message: str = Field(
         default="",
+        alias="forceErrorMessage",
         description="Force Error Message")
 
 
@@ -68,9 +73,10 @@ class TacFarmDashboardGetModelRequest(CamelModel):
             json_encoders (dict): A dictionary mapping data
             types to custom JSON encoder functions.
         """
-        json_encoders = {
-            datetime: lambda v: v.isoformat()
-        }
+        populate_by_name = True
+        # json_encoders = {
+        #     datetime: lambda v: v.isoformat()
+        # }
 
     def to_dict_snake(self):
         """
@@ -91,16 +97,16 @@ class TacFarmDashboardGetModelRequest(CamelModel):
         """
         Convert the model to a dictionary with camelCase keys.
         """
-        data = self.model_dump()
-        return {snake_to_camel(k): v for k, v in data.items()}
+        data = self.model_dump(by_alias=True)
+        return data  # {snake_to_camel(k): v for k, v in data.items()}
 
     def to_dict_camel_serialized(self):
         """
         Convert the model to a dictionary with camelCase
         keys and serialized values.
         """
-        data = json.loads(self.model_dump_json())
-        return {snake_to_camel(k): v for k, v in data.items()}
+        data = json.loads(self.model_dump_json(by_alias=True))
+        return data  # {snake_to_camel(k): v for k, v in data.items()}
 
 
 class TacFarmDashboardGetModelResponseItem(CamelModel):
@@ -113,14 +119,17 @@ class TacFarmDashboardGetModelResponseItem(CamelModel):
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="fieldOnePlantListLinkLandCode",
         description="Field One Plant List Link Land Code")
     conditional_btn_example_link_land_code: UUID4 = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="conditionalBtnExampleLinkLandCode",
         description="Conditional Btn Example Link Land Code")
     is_conditional_btn_available: bool = Field(
         default=False,
+        alias="isConditionalBtnAvailable",
         description="Is Conditional Btn Available")
 
     def load_report_item(

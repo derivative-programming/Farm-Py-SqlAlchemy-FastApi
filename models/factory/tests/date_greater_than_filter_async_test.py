@@ -11,7 +11,7 @@ import asyncio
 import math  # noqa: F401
 import time
 import uuid  # noqa: F401
-from datetime import date, datetime, timedelta  # noqa: F401
+from datetime import date, datetime, timedelta, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
@@ -236,7 +236,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         assert date_greater_than_filter.insert_utc_date_time is not None
         assert isinstance(
             date_greater_than_filter.insert_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         date_greater_than_filter.code = uuid.uuid4()
         session.add(date_greater_than_filter)
         await session.commit()
@@ -318,7 +318,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         assert date_greater_than_filter.last_update_utc_date_time is not None
         assert isinstance(
             date_greater_than_filter.last_update_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         date_greater_than_filter.code = uuid.uuid4()
         session.add(date_greater_than_filter)
         await session.commit()

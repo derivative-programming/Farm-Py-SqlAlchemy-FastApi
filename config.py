@@ -6,6 +6,14 @@ This module provides configuration settings for the application.
 import os
 import configparser
 
+
+def str_to_bool(value) -> bool:
+    """
+    Convert a string to a boolean value.
+    """
+    return value.lower() in ('true', '1', 'yes')
+
+
 # Initialize the parser
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -22,22 +30,22 @@ ENCRYPTION_KEY_SECRET = os.getenv('ENCRYPTION_KEY_SECRET',
 
 
 IS_DYNAFLOW_TASK_QUEUE_USED = \
-    os.getenv(
+    str_to_bool(os.getenv(
         'IS_DYNAFLOW_TASK_QUEUE_USED',
         config['dyna_flow_processor']['IS_DYNAFLOW_TASK_QUEUE_USED']
-    )
+    ))
 
 IS_DYNAFLOW_TASK_MASTER = \
-    os.getenv(
+    str_to_bool(os.getenv(
         'IS_DYNAFLOW_TASK_MASTER',
         config['dyna_flow_processor']['IS_DYNAFLOW_TASK_MASTER']
-    )
+    ))
 
 IS_DYNAFLOW_TASK_PROCESSOR = \
-    os.getenv(
+    str_to_bool(os.getenv(
         'IS_DYNAFLOW_TASK_PROCESSOR',
         config['dyna_flow_processor']['IS_DYNAFLOW_TASK_PROCESSOR']
-    )
+    ))
 
 
 DYNAFLOW_TASK_RESULT_QUEUE_NAME = \

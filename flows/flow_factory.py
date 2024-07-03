@@ -1,10 +1,11 @@
 import importlib
 from helpers.formatting import pascal_to_snake_case
+from helpers.session_context import SessionContext
 
 
 class FlowFactory:
     @staticmethod
-    def create_instance(class_name: str):
+    def create_instance(class_name: str, session_context: SessionContext):
         try:
             working_class_name = class_name
 
@@ -15,6 +16,8 @@ class FlowFactory:
                 working_file_name = \
                     pascal_to_snake_case(working_file_name)
             else:
+                working_file_name = \
+                    pascal_to_snake_case(class_name)
                 working_class_name = f"Flow{class_name}"
 
             # Dynamically import the module
@@ -23,7 +26,7 @@ class FlowFactory:
             # Dynamically get the class from the module
             class_ = getattr(module, working_class_name)
             # Create an instance of the class
-            return class_()
+            return class_(session_context)
         except (ModuleNotFoundError, AttributeError) as e:
             raise ValueError(
                 f"Flow Class {class_name} not found: {e}")

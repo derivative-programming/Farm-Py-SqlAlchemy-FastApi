@@ -124,18 +124,18 @@
 					CASE WHEN :order_by_descending = 1 and :order_by_column_name = 'placeholder' THEN ''  END DESC
 
 				) AS ROWNUMBER
-		  -- select *
+
 		from
-		 	farm_land  land  --owner obj
+		 	farm_land  land  /* owner obj */
 
-			  join farm_plant plant on land.land_id = plant.land_id		 --child obj
+			  join farm_plant plant on land.land_id = plant.land_id		 /* child obj*/
 
-			left join farm_flavor plantflavor on plant.flvr_foreign_key_id = plantflavor.flavor_id --child obj lookup prop
+			left join farm_flavor plantflavor on plant.flvr_foreign_key_id = plantflavor.flavor_id /* child obj lookup prop*/
 
-			left join farm_pac pac on pac.pac_id = land.pac_id  -- up obj tree
+			left join farm_pac pac on pac.pac_id = land.pac_id  /*  up obj tree*/
 
 		where
-			 (land.code = :context_code
+			 (land.code = REPLACE(:context_code, '-', '')
 			   )
 
 			and (:some_n_var_char_val is null or :some_n_var_char_val = '' or  plant.some_n_var_char_val like :like_some_n_var_char_val)

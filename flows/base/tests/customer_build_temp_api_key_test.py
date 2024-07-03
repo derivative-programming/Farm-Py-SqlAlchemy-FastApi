@@ -6,7 +6,7 @@ This module contains the unit tests for the
 `BaseFlowCustomerBuildTempApiKey` class.
 """
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 import pytest
 import flows.constants.customer_build_temp_api_key \

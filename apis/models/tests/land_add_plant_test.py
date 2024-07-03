@@ -8,7 +8,7 @@ LandAddPlantPostModelResponse class.
 
 import uuid  # noqa: F401
 import math  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, patch
 
@@ -89,7 +89,7 @@ class TestLandAddPlantPostModelRequest:
             request_is_delete_allowed=True,
             request_some_float_val=3.14,
             request_some_decimal_val=Decimal('99.99'),
-            request_some_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0),
+            request_some_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
             request_some_date_val=date(2023, 1, 1),
             request_some_money_val=Decimal('100.00'),
             request_some_n_var_char_val="nvarchar",
@@ -117,7 +117,7 @@ class TestLandAddPlantPostModelRequest:
         assert snake_case_dict['request_some_decimal_val'] == \
             Decimal('99.99')
         assert snake_case_dict['request_some_utc_date_time_val'] == \
-            datetime(2023, 1, 1, 12, 0, 0)
+            datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
         assert snake_case_dict['request_some_date_val'] == \
             date(2023, 1, 1)
         assert snake_case_dict['request_some_money_val'] == \
@@ -153,7 +153,7 @@ class TestLandAddPlantPostModelRequest:
             request_is_delete_allowed=True,
             request_some_float_val=3.14,
             request_some_decimal_val=Decimal('99.99'),
-            request_some_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0),
+            request_some_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
             request_some_date_val=date(2023, 1, 1),
             request_some_money_val=Decimal('100.00'),
             request_some_n_var_char_val="nvarchar",
@@ -179,7 +179,7 @@ class TestLandAddPlantPostModelRequest:
         assert camel_case_dict['requestIsDeleteAllowed'] is True
         assert math.isclose(camel_case_dict['requestSomeFloatVal'], 3.14)
         assert camel_case_dict['requestSomeDecimalVal'] == Decimal('99.99')
-        # assert camel_case_dict['requestSomeUTCDateTimeVal'] == datetime(2023, 1, 1, 12, 0, 0).isoformat()
+        # assert camel_case_dict['requestSomeUTCDateTimeVal'] == datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc).isoformat()
         # assert camel_case_dict['requestSomeDateVal'] == date(2023, 1, 1).isoformat()
         assert camel_case_dict['requestSomeMoneyVal'] == Decimal('100.00')
         assert camel_case_dict['requestSomeNVarCharVal'] == \
@@ -215,7 +215,7 @@ class TestLandAddPlantPostModelRequest:
             request_is_delete_allowed=False,
             request_some_float_val=3.14,
             request_some_decimal_val=Decimal("10.5"),
-            request_some_utc_date_time_val=datetime.utcnow(),
+            request_some_utc_date_time_val=datetime.now(timezone.utc),
             request_some_date_val=datetime.now().date(),
             request_some_money_val=Decimal("100.50"),
             request_some_n_var_char_val="Test NVarChar",
@@ -277,7 +277,7 @@ class TestLandAddPlantPostModelRequest:
             request_is_delete_allowed=False,
             request_some_float_val=3.14,
             request_some_decimal_val=Decimal(2.5),
-            request_some_utc_date_time_val=datetime.utcnow(),
+            request_some_utc_date_time_val=datetime.now(timezone.utc),
             request_some_date_val=date.today(),
             request_some_money_val=Decimal(100.50),
             request_some_n_var_char_val="Test N Var Char",

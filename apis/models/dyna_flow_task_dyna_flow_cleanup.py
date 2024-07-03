@@ -9,7 +9,7 @@ Dyna Flow Task Dyna Flow Cleanup API.
 import json
 import logging
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 
 from pydantic import UUID4, Field  # noqa: F401
@@ -21,7 +21,7 @@ from flows.dyna_flow_task_dyna_flow_cleanup import (
     FlowDynaFlowTaskDynaFlowCleanup,
     FlowDynaFlowTaskDynaFlowCleanupResult)
 from helpers import SessionContext, TypeConversion  # noqa: F401
-from helpers.formatting import snake_to_camel
+from helpers.formatting import snake_to_camel, pascal_to_camel
 from helpers.pydantic_serialization import CamelModel
 
 from .post_reponse import PostResponse
@@ -35,6 +35,7 @@ class DynaFlowTaskDynaFlowCleanupPostModelRequest(CamelModel):
 
     force_error_message: str = Field(
         default="",
+        alias="forceErrorMessage",
         description="Force Error Message")
 
 
@@ -44,9 +45,10 @@ class DynaFlowTaskDynaFlowCleanupPostModelRequest(CamelModel):
         DynaFlowTaskDynaFlowCleanupPostModelRequest.
         """
 
-        json_encoders = {
-            datetime: lambda v: v.isoformat()
-        }
+        populate_by_name = True
+        # json_encoders = {
+        #     datetime: lambda v: v.isoformat()
+        # }
 
     def to_dict_snake(self):
         """
@@ -70,8 +72,8 @@ class DynaFlowTaskDynaFlowCleanupPostModelRequest(CamelModel):
         Convert the model to a dictionary with camelCase keys.
         """
 
-        data = self.model_dump()
-        return {snake_to_camel(k): v for k, v in data.items()}
+        data = self.model_dump(by_alias=True)
+        return data  # {pascal_to_camel(k): v for k, v in data.items()}
 
     def to_dict_camel_serialized(self):
         """
@@ -79,8 +81,8 @@ class DynaFlowTaskDynaFlowCleanupPostModelRequest(CamelModel):
         keys and serialized values.
         """
 
-        data = json.loads(self.model_dump_json())
-        return {snake_to_camel(k): v for k, v in data.items()}
+        data = json.loads(self.model_dump_json(by_alias=True))
+        return data  # {pascal_to_camel(k): v for k, v in data.items()}
 
 
 class DynaFlowTaskDynaFlowCleanupPostModelResponse(PostResponse):

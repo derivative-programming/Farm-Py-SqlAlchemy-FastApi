@@ -8,7 +8,7 @@ the Base model and is mapped to the
 """
 from decimal import Decimal  # noqa: F401
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from sqlalchemy_utils import UUIDType
 from sqlalchemy import (BigInteger, Boolean,   # noqa: F401
                         Column, Date, DateTime, Float,
@@ -76,7 +76,7 @@ class ErrorLog(Base):
     _created_utc_date_time = Column(
         'created_utc_date_time',
         DateTime,
-        default=datetime(1753, 1, 1),
+        default=datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc),
         index=(
             error_log_constants.
             created_utc_date_time_calculatedIsDBColumnIndexed
@@ -160,7 +160,7 @@ class ErrorLog(Base):
         self.context_code = kwargs.get(
             'context_code', uuid.uuid4())
         self.created_utc_date_time = kwargs.get(
-            'created_utc_date_time', datetime(1753, 1, 1))
+            'created_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.description = kwargs.get(
             'description', "")
         self.is_client_side_error = kwargs.get(
@@ -172,9 +172,9 @@ class ErrorLog(Base):
         self.url = kwargs.get(
             'url', "")
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1))
+            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1))
+            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.pac_code_peek = kwargs.get(  # PacID
             'pac_code_peek', uuid.UUID(int=0))
 
@@ -205,7 +205,7 @@ class ErrorLog(Base):
             self._code = value
         else:
             self._code = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def error_log_id(self) -> int:
@@ -262,7 +262,7 @@ class ErrorLog(Base):
             self._insert_user_id = value
         else:
             self._insert_user_id = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def last_update_user_id(self):
@@ -281,7 +281,7 @@ class ErrorLog(Base):
             self._last_update_user_id = value
         else:
             self._last_update_user_id = uuid.UUID(value)
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
 
     @property
     def insert_utc_date_time(self) -> datetime:
@@ -293,17 +293,24 @@ class ErrorLog(Base):
             datetime: The UTC date and time for the
                 error_log.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_insert_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @insert_utc_date_time.setter
     def insert_utc_date_time(self, value: datetime) -> None:
         """
         Set the insert_utc_date_time.
         """
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
 
         self._insert_utc_date_time = value
 
@@ -316,17 +323,25 @@ class ErrorLog(Base):
         :return: A datetime object representing the
             last update UTC date and time.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_last_update_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @last_update_utc_date_time.setter
     def last_update_utc_date_time(self, value: datetime) -> None:
         """
         Set the last_update_utc_date_time.
         """
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
 
         self._last_update_utc_date_time = value
     # browserCode,
@@ -368,7 +383,7 @@ class ErrorLog(Base):
                 self._browser_code = uuid.UUID(value)
             except ValueError as e:
                 raise ValueError(f"Invalid UUID value: {value}") from e
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
     # contextCode,
 
     @property
@@ -408,7 +423,7 @@ class ErrorLog(Base):
                 self._context_code = uuid.UUID(value)
             except ValueError as e:
                 raise ValueError(f"Invalid UUID value: {value}") from e
-        self.last_update_utc_date_time = datetime.utcnow()
+        self.last_update_utc_date_time = datetime.now(timezone.utc)
     # createdUTCDateTime
 
     @property
@@ -419,18 +434,24 @@ class ErrorLog(Base):
         Returns:
             datetime: The value of created_utc_date_time property.
         """
-        return getattr(
+        dt = getattr(
             self,
             '_created_utc_date_time',
-            datetime(1753, 1, 1)
-        ) or datetime(1753, 1, 1)
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        ) or datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        if dt is not None and dt.tzinfo is None:
+            # Make the datetime aware (UTC) if it is naive
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
     @created_utc_date_time.setter
     def created_utc_date_time(self, value: datetime) -> None:
         """
         Set the created_utc_date_time.
         """
-
+        if value is not None and value.tzinfo is None:
+            # If the datetime is naive, assume UTC
+            value = value.replace(tzinfo=timezone.utc)
         self._created_utc_date_time = value
     # description,
 
@@ -578,8 +599,8 @@ def set_created_on(
     Returns:
         None
     """
-    target.insert_utc_date_time = datetime.utcnow()
-    target.last_update_utc_date_time = datetime.utcnow()
+    target.insert_utc_date_time = datetime.now(timezone.utc)
+    target.last_update_utc_date_time = datetime.now(timezone.utc)
 
 
 @event.listens_for(ErrorLog, 'before_update')
@@ -596,4 +617,4 @@ def set_updated_on(
     :param connection: The SQLAlchemy connection object.
     :param target: The target object to update.
     """
-    target.last_update_utc_date_time = datetime.utcnow()
+    target.last_update_utc_date_time = datetime.now(timezone.utc)

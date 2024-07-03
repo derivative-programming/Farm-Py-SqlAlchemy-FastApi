@@ -11,7 +11,7 @@ import asyncio
 import math  # noqa: F401
 import time
 import uuid  # noqa: F401
-from datetime import date, datetime, timedelta  # noqa: F401
+from datetime import date, datetime, timedelta, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
@@ -236,7 +236,7 @@ class TestPlantFactoryAsync:
         assert plant.insert_utc_date_time is not None
         assert isinstance(
             plant.insert_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         plant.code = uuid.uuid4()
         session.add(plant)
         await session.commit()
@@ -318,7 +318,7 @@ class TestPlantFactoryAsync:
         assert plant.last_update_utc_date_time is not None
         assert isinstance(
             plant.last_update_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         plant.code = uuid.uuid4()
         session.add(plant)
         await session.commit()
@@ -567,7 +567,7 @@ class TestPlantFactoryAsync:
         assert new_obj.some_phone_number == ""
         assert new_obj.some_text_val == ""
         assert isinstance(new_obj.some_uniqueidentifier_val, uuid.UUID)
-        assert new_obj.some_utc_date_time_val == datetime(1753, 1, 1)
+        assert new_obj.some_utc_date_time_val == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.some_var_char_val == ""
 # endset
 

@@ -26,6 +26,7 @@
         "objectWorkflowOutputVar.isHeaderText",   
         "objectWorkflowOutputVar.isVisible" ,   
         "objectWorkflowOutputVar.isFKLookup" ,   
-        "objectWorkflowOutputVar.isFK" 
+        "objectWorkflowOutputVar.isFK",
+        "objectWorkflow.isExposedInBusinessObject"
     ]
 } 

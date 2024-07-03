@@ -10,7 +10,7 @@ import time
 import math  # noqa: F401
 import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta  # noqa: F401
+from datetime import datetime, date, timedelta, timezone  # noqa: F401
 import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -120,7 +120,7 @@ class TestErrorLogFactory:
         assert new_obj.insert_utc_date_time is not None
         assert isinstance(
             new_obj.insert_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         new_obj.code = uuid.uuid4()
         session.add(new_obj)
         session.commit()
@@ -164,7 +164,7 @@ class TestErrorLogFactory:
         assert new_obj.last_update_utc_date_time is not None
         assert isinstance(
             new_obj.last_update_utc_date_time, datetime)
-        initial_time = datetime.utcnow() + timedelta(days=-1)
+        initial_time = datetime.now(timezone.utc) + timedelta(days=-1)
         new_obj.code = uuid.uuid4()
         session.add(new_obj)
         session.commit()
@@ -294,7 +294,7 @@ class TestErrorLogFactory:
             new_obj.context_code,
             uuid.UUID
         )
-        assert new_obj.created_utc_date_time == datetime(1753, 1, 1)
+        assert new_obj.created_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.description == ""
         assert new_obj.is_client_side_error is False
         assert new_obj.is_resolved is False

@@ -281,8 +281,8 @@ async def test_get_success(
             )
         )
         request_dict = request.to_dict_camel_serialized()
-        logging.info("Test Request...")
-        logging.info(request_dict)
+        print("Test Request...")
+        print(request_dict)
         async with AsyncClient(
             app=app, base_url=test_constants.TEST_DOMAIN
         ) as ac:

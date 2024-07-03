@@ -11,7 +11,7 @@ class.
 import uuid  # noqa: F401
 import math  # noqa: F401
 
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, patch, Mock
 
@@ -95,7 +95,7 @@ class TestLandPlantListGetModelRequest():
             is_edit_allowed=True,
             is_delete_allowed=True,
             some_decimal_val=Decimal('99.99'),
-            some_min_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0),
+            some_min_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
             some_min_date_val=date(2023, 1, 1),
             some_money_val=Decimal('100.00'),
             some_n_var_char_val="nvarchar",
@@ -123,7 +123,7 @@ class TestLandPlantListGetModelRequest():
         assert snake_case_dict['some_decimal_val'] == \
             Decimal('99.99')
         assert snake_case_dict['some_min_utc_date_time_val'] == \
-            datetime(2023, 1, 1, 12, 0, 0)
+            datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
         assert snake_case_dict['some_min_date_val'] == \
             date(2023, 1, 1)
         assert snake_case_dict['some_money_val'] == \
@@ -155,7 +155,7 @@ class TestLandPlantListGetModelRequest():
             is_edit_allowed=True,
             is_delete_allowed=True,
             some_decimal_val=Decimal('99.99'),
-            some_min_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0),
+            some_min_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
             some_min_date_val=date(2023, 1, 1),
             some_money_val=Decimal('100.00'),
             some_n_var_char_val="nvarchar",
@@ -181,8 +181,8 @@ class TestLandPlantListGetModelRequest():
         assert camel_case_dict['isEditAllowed'] is True
         assert camel_case_dict['isDeleteAllowed'] is True
         assert camel_case_dict['someDecimalVal'] == Decimal('99.99')
-        # assert camel_case_dict['someMinUtcDateTimeVal'] == datetime(2023, 1, 1, 12, 0, 0).isoformat()  # Convert to ISO format
-        # assert camel_case_dict['someMinDateVal'] == date(2023, 1, 1).isoformat()  # Convert to ISO format
+        assert camel_case_dict['someMinUTCDateTimeVal'] == datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)  # .isoformat()  # Convert to ISO format
+        assert camel_case_dict['someMinDateVal'] == date(2023, 1, 1)  # .isoformat()  # Convert to ISO format
         assert camel_case_dict['someMoneyVal'] == Decimal('100.00')
         assert camel_case_dict['someNVarCharVal'] == "nvarchar"
         assert camel_case_dict['someVarCharVal'] == "varchar"
@@ -258,7 +258,7 @@ class MockReportItemLandPlantList:
         self.is_delete_allowed = True
         self.some_float_val = 1.23
         self.some_decimal_val = Decimal('10.99')
-        self.some_utc_date_time_val = datetime.utcnow()
+        self.some_utc_date_time_val = datetime.now(timezone.utc)
         self.some_date_val = date.today()
         self.some_money_val = Decimal('100.00')
         self.some_n_var_char_val = \

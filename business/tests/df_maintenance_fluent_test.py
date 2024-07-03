@@ -5,7 +5,7 @@ Unit tests for the
 DFMaintenanceFluentBusObj class.
 """
 import math  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
 
@@ -78,7 +78,7 @@ class TestDFMaintenanceFluentBusObj:
         """
         Test setting the last_scheduled_df_process_request_utc_date_time property.
         """
-        test_datetime = datetime(2023, 1, 1, 12, 0, 0)
+        test_datetime = datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
         result = new_fluent_bus_obj.set_prop_last_scheduled_df_process_request_utc_date_time(
             test_datetime)
         assert new_fluent_bus_obj.last_scheduled_df_process_request_utc_date_time == \
@@ -90,7 +90,7 @@ class TestDFMaintenanceFluentBusObj:
         """
         Test setting the next_scheduled_df_process_request_utc_date_time property.
         """
-        test_datetime = datetime(2023, 1, 1, 12, 0, 0)
+        test_datetime = datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
         result = new_fluent_bus_obj.set_prop_next_scheduled_df_process_request_utc_date_time(
             test_datetime)
         assert new_fluent_bus_obj.next_scheduled_df_process_request_utc_date_time == \
@@ -114,7 +114,7 @@ class TestDFMaintenanceFluentBusObj:
         """
         Test setting the paused_utc_date_time property.
         """
-        test_datetime = datetime(2023, 1, 1, 12, 0, 0)
+        test_datetime = datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
         result = new_fluent_bus_obj.set_prop_paused_utc_date_time(
             test_datetime)
         assert new_fluent_bus_obj.paused_utc_date_time == \

@@ -5,7 +5,7 @@ Unit tests for the
 PlantFluentBusObj class.
 """
 import math  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
 
@@ -220,7 +220,7 @@ class TestPlantFluentBusObj:
         """
         Test setting the some_utc_date_time_val property.
         """
-        test_datetime = datetime(2023, 1, 1, 12, 0, 0)
+        test_datetime = datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
         result = new_fluent_bus_obj.set_prop_some_utc_date_time_val(
             test_datetime)
         assert new_fluent_bus_obj.some_utc_date_time_val == \

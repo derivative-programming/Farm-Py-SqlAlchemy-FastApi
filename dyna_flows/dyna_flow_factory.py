@@ -14,6 +14,8 @@ class DynaFlowFactory:
                 working_file_name = \
                     pascal_to_snake_case(working_file_name)
             else:
+                working_file_name = \
+                    pascal_to_snake_case(working_class_name)
                 working_class_name = f"DynaFlow{class_name}"
             
             # Dynamically import the module

@@ -9,7 +9,7 @@ OrgCustomerBusObj class.
 
 import uuid  # noqa: F401
 import math  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
@@ -653,7 +653,7 @@ class TestOrgCustomerBaseBusObj:
         Test case for the
         insert_utc_date_time property.
         """
-        test_datetime = datetime.utcnow()
+        test_datetime = datetime.now(timezone.utc)
         org_customer.insert_utc_date_time = test_datetime
         assert mock_sess_base_bus_obj \
             .insert_utc_date_time == \
@@ -665,7 +665,7 @@ class TestOrgCustomerBaseBusObj:
         Test case for the
         insert_utc_date_time setter.
         """
-        test_datetime = datetime.utcnow()
+        test_datetime = datetime.now(timezone.utc)
         mock_sess_base_bus_obj.insert_utc_date_time = test_datetime
         assert mock_sess_base_bus_obj \
             .insert_utc_date_time == \
@@ -689,7 +689,7 @@ class TestOrgCustomerBaseBusObj:
         Test case for the
         last_update_utc_date_time property.
         """
-        test_datetime = datetime.utcnow()
+        test_datetime = datetime.now(timezone.utc)
         org_customer.last_update_utc_date_time = test_datetime
         assert mock_sess_base_bus_obj \
             .last_update_utc_date_time == \
@@ -701,7 +701,7 @@ class TestOrgCustomerBaseBusObj:
         Test case for the
         last_update_utc_date_time setter.
         """
-        test_datetime = datetime.utcnow()
+        test_datetime = datetime.now(timezone.utc)
         mock_sess_base_bus_obj.last_update_utc_date_time = test_datetime
         assert mock_sess_base_bus_obj \
             .last_update_utc_date_time == \

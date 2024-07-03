@@ -7,7 +7,7 @@ pac_user_date_greater_than_filter_list_init_report module.
 """
 import json
 import uuid  # noqa: F401
-from datetime import date, datetime  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
