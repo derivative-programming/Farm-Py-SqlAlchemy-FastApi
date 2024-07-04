@@ -35,21 +35,28 @@ class TacRegisterInitObjWFGetInitModelResponse(
 
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
-    validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
+    validation_errors: List[ValidationErrorItem] = Field(
+        default_factory=list,
+        alias="validationErrors",)
     email: str = Field(
         default="",
+        alias="email",
         description="Email")
     password: str = Field(
         default="",
+        alias="password",
         description="Password")
     confirm_password: str = Field(
         default="",
+        alias="confirmPassword",
         description="Confirm Password")
     first_name: str = Field(
         default="",
+        alias="firstName",
         description="First Name")
     last_name: str = Field(
         default="",
+        alias="lastName",
         description="Last Name")
 
     def load_flow_response(

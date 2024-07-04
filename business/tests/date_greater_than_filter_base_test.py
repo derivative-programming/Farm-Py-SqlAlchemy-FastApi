@@ -116,7 +116,7 @@ class TestDateGreaterThanFilterBaseBusObj:
 
         assert new_bus_obj.date_greater_than_filter_id == 0
 
-        # assert isinstance(new_bus_obj.date_greater_than_filter_id, int)
+        assert isinstance(new_bus_obj.date_greater_than_filter_id, int)
         assert isinstance(
             new_bus_obj.code, uuid.UUID)
 

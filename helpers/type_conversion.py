@@ -61,6 +61,19 @@ class TypeConversion:
         else:
             return uuid.UUID(val)
 
+    @staticmethod
+    def date_to_iso_format_z(val: datetime) -> str:
+        """
+        Converts the given date to an ISO 8601 string with 'Z' notation.
+        """
+        # Get the ISO 8601 string with +00:00 notation
+        iso_format_str = val.isoformat()
+
+        # Convert to 'Z' notation if the timezone is UTC
+        if iso_format_str.endswith('+00:00'):
+            return iso_format_str[:-6] + 'Z'
+        return iso_format_str
+
 
 class UUIDField(fields.Field):
     """

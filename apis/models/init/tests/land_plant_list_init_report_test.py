@@ -13,7 +13,7 @@ from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-from helpers import SessionContext
+from helpers import SessionContext, TypeConversion
 
 from ..land_plant_list_init_report import (
     LandPlantListInitReportGetInitModelRequest,
@@ -166,7 +166,8 @@ def test_to_json():
     assert json_data["some_decimal_val"] == \
         str(response.some_decimal_val)
     assert json_data["some_min_utc_date_time_val"] == \
-        response.some_min_utc_date_time_val.isoformat()
+        TypeConversion.date_to_iso_format_z(
+            response.some_min_utc_date_time_val)
     assert json_data["some_min_date_val"] == \
         response.some_min_date_val.isoformat()
     assert json_data["some_money_val"] == \

@@ -116,7 +116,7 @@ class TestCustomerRoleBaseBusObj:
 
         assert new_bus_obj.customer_role_id == 0
 
-        # assert isinstance(new_bus_obj.customer_role_id, int)
+        assert isinstance(new_bus_obj.customer_role_id, int)
         assert isinstance(
             new_bus_obj.code, uuid.UUID)
 

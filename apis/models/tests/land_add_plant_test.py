@@ -179,8 +179,8 @@ class TestLandAddPlantPostModelRequest:
         assert camel_case_dict['requestIsDeleteAllowed'] is True
         assert math.isclose(camel_case_dict['requestSomeFloatVal'], 3.14)
         assert camel_case_dict['requestSomeDecimalVal'] == Decimal('99.99')
-        # assert camel_case_dict['requestSomeUTCDateTimeVal'] == datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc).isoformat()
-        # assert camel_case_dict['requestSomeDateVal'] == date(2023, 1, 1).isoformat()
+        assert camel_case_dict['requestSomeUTCDateTimeVal'] == datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)  # .isoformat()
+        assert camel_case_dict['requestSomeDateVal'] == date(2023, 1, 1)  # .isoformat()
         assert camel_case_dict['requestSomeMoneyVal'] == Decimal('100.00')
         assert camel_case_dict['requestSomeNVarCharVal'] == \
             model.request_some_n_var_char_val
@@ -245,9 +245,10 @@ class TestLandAddPlantPostModelRequest:
             "request_some_float_val": 3.14,
             "request_some_decimal_val": "10.5",
             "request_some_utc_date_time_val":
-                request.request_some_utc_date_time_val.isoformat(),
+                TypeConversion.date_to_iso_format_z(
+                    request.request_some_utc_date_time_val),
             "request_some_date_val":
-                request.request_some_date_val.isoformat(),
+                str(request.request_some_date_val),
             "request_some_money_val": "100.50",
             "request_some_n_var_char_val": "Test NVarChar",
             "request_some_var_char_val": "Test VarChar",
@@ -300,7 +301,8 @@ class TestLandAddPlantPostModelRequest:
             "requestSomeFloatVal": 3.14,
             "requestSomeDecimalVal": "2.5",
             "requestSomeUTCDateTimeVal":
-                request.request_some_utc_date_time_val.isoformat(),
+                TypeConversion.date_to_iso_format_z(
+                    request.request_some_utc_date_time_val),
             "requestSomeDateVal":
                 str(request.request_some_date_val),
             "requestSomeMoneyVal": "100.5",

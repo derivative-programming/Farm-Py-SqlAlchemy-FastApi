@@ -116,7 +116,7 @@ class TestOrgApiKeyBaseBusObj:
 
         assert new_bus_obj.org_api_key_id == 0
 
-        # assert isinstance(new_bus_obj.org_api_key_id, int)
+        assert isinstance(new_bus_obj.org_api_key_id, int)
         assert isinstance(
             new_bus_obj.code, uuid.UUID)
 

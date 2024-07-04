@@ -42,6 +42,7 @@ test...
 pytest
 test and show all...
 pytest -v --alluredir=allure-results
+allure generate allure-results -o allure-report
 docker run -d -p 4040:4040 -v ${PWD}\allure-results:/app/allure-results -v ${PWD}\allure-report:/app/allure-report frankescobar/allure-docker-service
 http://localhost:4040
 
@@ -79,14 +80,6 @@ open adminer (simple open db ui)
 http://localhost:6060
 log in using db credentials. db name is not necessary
 
-prefect server ui...
-http://localhost:4200
-
-prefect server api docs...
-http://localhost:4200/docs
-
-prefect server api docs...
-http://localhost:4200/api
 
 ## api
 /openapi.json

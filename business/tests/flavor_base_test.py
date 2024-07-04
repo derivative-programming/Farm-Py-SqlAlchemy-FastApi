@@ -116,7 +116,7 @@ class TestFlavorBaseBusObj:
 
         assert new_bus_obj.flavor_id == 0
 
-        # assert isinstance(new_bus_obj.flavor_id, int)
+        assert isinstance(new_bus_obj.flavor_id, int)
         assert isinstance(
             new_bus_obj.code, uuid.UUID)
 

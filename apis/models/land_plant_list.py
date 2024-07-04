@@ -140,9 +140,6 @@ class LandPlantListGetModelRequest(CamelModel):
             types to custom JSON encoder functions.
         """
         populate_by_name = True
-        # json_encoders = {
-        #     datetime: lambda v: v.isoformat()
-        # }
 
     def to_dict_snake(self):
         """

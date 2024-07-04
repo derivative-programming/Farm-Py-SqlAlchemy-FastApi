@@ -116,7 +116,7 @@ class TestErrorLogBaseBusObj:
 
         assert new_bus_obj.error_log_id == 0
 
-        # assert isinstance(new_bus_obj.error_log_id, int)
+        assert isinstance(new_bus_obj.error_log_id, int)
         assert isinstance(
             new_bus_obj.code, uuid.UUID)
 

@@ -13,7 +13,7 @@ from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-from helpers import SessionContext
+from helpers import SessionContext, TypeConversion
 
 from ..customer_user_log_out_init_obj_wf import (
     CustomerUserLogOutInitObjWFGetInitModelRequest,

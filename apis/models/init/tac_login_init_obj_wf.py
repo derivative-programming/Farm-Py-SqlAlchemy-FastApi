@@ -35,12 +35,16 @@ class TacLoginInitObjWFGetInitModelResponse(
 
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
-    validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
+    validation_errors: List[ValidationErrorItem] = Field(
+        default_factory=list,
+        alias="validationErrors",)
     email: str = Field(
         default="",
+        alias="email",
         description="Email")
     password: str = Field(
         default="",
+        alias="password",
         description="Password")
 
     def load_flow_response(

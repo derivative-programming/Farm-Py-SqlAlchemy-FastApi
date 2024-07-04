@@ -13,7 +13,7 @@ from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-from helpers import SessionContext
+from helpers import SessionContext, TypeConversion
 
 from ..pac_user_tac_list_init_report import (
     PacUserTacListInitReportGetInitModelRequest,

@@ -116,7 +116,7 @@ class TestDFTDependencyBaseBusObj:
 
         assert new_bus_obj.dft_dependency_id == 0
 
-        # assert isinstance(new_bus_obj.dft_dependency_id, int)
+        assert isinstance(new_bus_obj.dft_dependency_id, int)
         assert isinstance(
             new_bus_obj.code, uuid.UUID)
 

@@ -116,7 +116,7 @@ class TestDynaFlowTaskTypeBaseBusObj:
 
         assert new_bus_obj.dyna_flow_task_type_id == 0
 
-        # assert isinstance(new_bus_obj.dyna_flow_task_type_id, int)
+        assert isinstance(new_bus_obj.dyna_flow_task_type_id, int)
         assert isinstance(
             new_bus_obj.code, uuid.UUID)
 

@@ -35,16 +35,20 @@ class PlantUserDetailsInitReportGetInitModelResponse(
 
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
-    validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
+    validation_errors: List[ValidationErrorItem] = Field(
+        default_factory=list,
+        alias="validationErrors",)
     land_code: uuid.UUID = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="landCode",
         description="Land Code")
     tac_code: uuid.UUID = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="tacCode",
         description="Tac Code")
 
     def load_flow_response(

@@ -116,7 +116,7 @@ class TestDFMaintenanceBaseBusObj:
 
         assert new_bus_obj.df_maintenance_id == 0
 
-        # assert isinstance(new_bus_obj.df_maintenance_id, int)
+        assert isinstance(new_bus_obj.df_maintenance_id, int)
         assert isinstance(
             new_bus_obj.code, uuid.UUID)
 

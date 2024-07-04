@@ -13,7 +13,7 @@ from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-from helpers import SessionContext
+from helpers import SessionContext, TypeConversion
 
 from ..plant_user_details_init_report import (
     PlantUserDetailsInitReportGetInitModelRequest,

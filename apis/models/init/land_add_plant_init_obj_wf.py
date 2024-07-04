@@ -35,67 +35,88 @@ class LandAddPlantInitObjWFGetInitModelResponse(
 
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
-    validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
+    validation_errors: List[ValidationErrorItem] = Field(
+        default_factory=list,
+        alias="validationErrors",)
     request_flavor_code: uuid.UUID = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="requestFlavorCode",
         description="Request Flavor Code")
     request_other_flavor: str = Field(
         default="",
+        alias="requestOtherFlavor",
         description="Request Other Flavor")
     request_some_int_val: int = Field(
         default=0,
+        alias="requestSomeIntVal",
         description="Request Some Int Val")
     request_some_big_int_val: int = Field(
         default=0,
+        alias="requestSomeBigIntVal",
         description="Request Some Big Int Val")
     request_some_bit_val: bool = Field(
         default=False,
+        alias="requestSomeBitVal",
         description="Request Some Bit Val")
     request_is_edit_allowed: bool = Field(
         default=False,
+        alias="requestIsEditAllowed",
         description="Request Is Edit Allowed")
     request_is_delete_allowed: bool = Field(
         default=False,
+        alias="requestIsDeleteAllowed",
         description="Request Is Delete Allowed")
     request_some_float_val: float = Field(
         default=0,
+        alias="requestSomeFloatVal",
         description="Request Some Float Val")
     request_some_decimal_val: Decimal = Field(
         default=Decimal(0),
+        alias="requestSomeDecimalVal",
         description="Request Some Decimal Val")
     request_some_utc_date_time_val: datetime = Field(
         default_factory=TypeConversion.get_default_date_time,
+        alias="requestSomeUTCDateTimeVal",
         description="Request Some UTC Date Time Val")
     request_some_date_val: date = Field(
         default_factory=TypeConversion.get_default_date,
+        alias="requestSomeDateVal",
         description="Request Some Date Val")
     request_some_money_val: Decimal = Field(
         default=Decimal(0),
+        alias="requestSomeMoneyVal",
         description="Request Some Money Val")
     request_some_n_var_char_val: str = Field(
         default="",
+        alias="requestSomeNVarCharVal",
         description="Request Some N Var Char Val")
     request_some_var_char_val: str = Field(
         default="",
+        alias="requestSomeVarCharVal",
         description="Request Some Var Char Val")
     request_some_text_val: str = Field(
         default="",
+        alias="requestSomeTextVal",
         description="Request Some Text Val")
     request_some_phone_number: str = Field(
         default="",
+        alias="requestSomePhoneNumber",
         description="Request Some Phone Number")
     request_some_email_address: str = Field(
         default="",
+        alias="requestSomeEmailAddress",
         description="Request Some Email Address")
     land_name: str = Field(
         default="",
+        alias="landName",
         description="Land Name")
     tac_code: uuid.UUID = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="tacCode",
         description="Tac Code")
 # endset
 

@@ -35,64 +35,84 @@ class LandPlantListInitReportGetInitModelResponse(
 
     success: bool = Field(default=False, description="Success")
     message: str = Field(default="", description="Message")
-    validation_errors: List[ValidationErrorItem] = Field(default_factory=list)
+    validation_errors: List[ValidationErrorItem] = Field(
+        default_factory=list,
+        alias="validationErrors",)
     some_int_val: int = Field(
         default=0,
+        alias="someIntVal",
         description="Some Int Val")
     some_big_int_val: int = Field(
         default=0,
+        alias="someBigIntVal",
         description="Some Big Int Val")
     some_bit_val: bool = Field(
         default=False,
+        alias="someBitVal",
         description="Some Bit Val")
     is_edit_allowed: bool = Field(
         default=False,
+        alias="isEditAllowed",
         description="Is Edit Allowed")
     is_delete_allowed: bool = Field(
         default=False,
+        alias="isDeleteAllowed",
         description="Is Delete Allowed")
     some_float_val: float = Field(
         default=0,
+        alias="someFloatVal",
         description="Some Float Val")
     some_decimal_val: Decimal = Field(
         default=Decimal(0),
+        alias="someDecimalVal",
         description="Some Decimal Val")
     some_min_utc_date_time_val: datetime = Field(
         default_factory=TypeConversion.get_default_date_time,
+        alias="someMinUTCDateTimeVal",
         description="Some Min UTC Date Time Val")
     some_min_date_val: date = Field(
         default_factory=TypeConversion.get_default_date,
+        alias="someMinDateVal",
         description="Some Min Date Val")
     some_money_val: Decimal = Field(
         default=Decimal(0),
+        alias="someMoneyVal",
         description="Some Money Val")
     some_n_var_char_val: str = Field(
         default="",
+        alias="someNVarCharVal",
         description="Some N Var Char Val")
     some_var_char_val: str = Field(
         default="",
+        alias="someVarCharVal",
         description="Some Var Char Val")
     some_text_val: str = Field(
         default="",
+        alias="someTextVal",
         description="Some Text Val")
     some_phone_number: str = Field(
         default="",
+        alias="somePhoneNumber",
         description="Some Phone Number")
     some_email_address: str = Field(
         default="",
+        alias="someEmailAddress",
         description="Some Email Address")
     land_code: uuid.UUID = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="landCode",
         description="Land Code")
     tac_code: uuid.UUID = Field(
         default_factory=lambda: uuid.UUID(
             '00000000-0000-0000-0000-000000000000'
         ),
+        alias="tacCode",
         description="Tac Code")
     land_name: str = Field(
         default="",
+        alias="landName",
         description="Land Name")
 
     def load_flow_response(
