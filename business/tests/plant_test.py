@@ -165,7 +165,7 @@ class TestPlantBusObj:
         """
         Test the get_land_id_bus_obj method.
         """
-        from ..land import (  # LandID
+        from business.land import (  # LandID
             LandBusObj)
         # Call the get_land_id_bus_obj method
         fk_bus_obj: LandBusObj = await \
@@ -213,7 +213,7 @@ class TestPlantBusObj:
         method.
         """
 
-        from ..flavor import (  # FlvrForeignKeyID
+        from business.flavor import (  # FlvrForeignKeyID
             FlavorBusObj)
         # Call the get_flvr_foreign_key_id_bus_obj method
         fk_bus_obj: FlavorBusObj = \

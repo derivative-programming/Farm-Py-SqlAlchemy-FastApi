@@ -87,7 +87,7 @@ class OrgCustomerBusObj(OrgCustomerDynaFlowsBusObj):
             business object.
 
         """
-        from .customer import CustomerBusObj  # pylint: disable=import-outside-toplevel
+        from business.customer import CustomerBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = CustomerBusObj(self._session_context)
         await bus_obj.load_from_id(self.customer_id)
         return bus_obj
@@ -122,7 +122,7 @@ class OrgCustomerBusObj(OrgCustomerDynaFlowsBusObj):
             representing the related organization.
 
         """
-        from .organization import OrganizationBusObj  # pylint: disable=import-outside-toplevel
+        from business.organization import OrganizationBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = OrganizationBusObj(self._session_context)
         await bus_obj.load_from_id(self.organization_id)
         return bus_obj

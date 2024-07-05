@@ -20,14 +20,20 @@ RUN apt-get update && \
     ln -s /opt/sonar-scanner/bin/sonar-scanner /usr/local/bin/sonar-scanner && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy the wait script into the container
-COPY wait-for-sonarqube.sh /usr/src/app/
-
-# Make the script executable
-RUN chmod +x /usr/src/app/wait-for-sonarqube.sh
-
-# Copy the rest of the application code into the container
+# Copy the application code into the container
 COPY . .
 
+# Copy the wait script into the container
+COPY dockerfile_sonarscanner_app_entrypoint.sh /usr/src/app/
+
+# Ensure the script has Unix line endings using sed as a fallback
+RUN apt-get update
+RUN apt-get install -y dos2unix
+# RUN sed -i 's/\r$//' /usr/src/app/dockerfile_sonarscanner_app_entrypoint.sh
+RUN dos2unix /usr/src/app/dockerfile_sonarscanner_app_entrypoint.sh
+
+# Make the script executable
+RUN chmod +x /usr/src/app/dockerfile_sonarscanner_app_entrypoint.sh
+
 # Define the entrypoint
-ENTRYPOINT ["/usr/src/app/wait-for-sonarqube.sh"]
+ENTRYPOINT ["/usr/src/app/dockerfile_sonarscanner_app_entrypoint.sh"]

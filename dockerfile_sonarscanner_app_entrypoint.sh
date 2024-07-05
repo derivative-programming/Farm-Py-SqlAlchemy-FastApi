@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "Waiting for 60 seconds to allow SonarQube to start..."
 sleep 60
 sonar-scanner \

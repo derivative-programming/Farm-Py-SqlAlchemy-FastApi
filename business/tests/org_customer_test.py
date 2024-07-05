@@ -153,7 +153,7 @@ class TestOrgCustomerBusObj:
         method.
         """
 
-        from ..customer import (  # CustomerID
+        from business.customer import (  # CustomerID
             CustomerBusObj)
         # Call the get_customer_id_bus_obj method
         fk_bus_obj: CustomerBusObj = \
@@ -200,7 +200,7 @@ class TestOrgCustomerBusObj:
         """
         Test the get_organization_id_bus_obj method.
         """
-        from ..organization import (  # OrganizationID
+        from business.organization import (  # OrganizationID
             OrganizationBusObj)
         # Call the get_organization_id_bus_obj method
         fk_bus_obj: OrganizationBusObj = await \

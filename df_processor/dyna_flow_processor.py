@@ -37,45 +37,34 @@ The `DynaFlowProcessor` class has the following methods:
 """
 import sys
 import uuid
+from datetime import datetime, timedelta, timezone
 from typing import List
 
-from config import (
-    IS_DYNAFLOW_TASK_QUEUE_USED,
-    IS_DYNAFLOW_TASK_MASTER,
-    IS_DYNAFLOW_TASK_PROCESSOR,
-    DYNAFLOW_TASK_RESULT_QUEUE_NAME,
-    DYNAFLOW_TASK_DEAD_QUEUE_NAME,
-    DYNAFLOW_TASK_PROCESSOR_QUEUE_NAME
-)
-from datetime import datetime, timedelta, timezone
-from database import get_db, engine
+import managers as managers_and_enums  # noqa: F401
+from business import (DFMaintenanceBusObj, DynaFlowBusObj, DynaFlowTaskBusObj,
+                      DynaFlowTaskTypeBusObj, DynaFlowTypeBusObj, PacBusObj,
+                      TriStateFilterBusObj)
+from config import (DYNAFLOW_TASK_DEAD_QUEUE_NAME,
+                    DYNAFLOW_TASK_PROCESSOR_QUEUE_NAME,
+                    DYNAFLOW_TASK_RESULT_QUEUE_NAME, IS_DYNAFLOW_TASK_MASTER,
+                    IS_DYNAFLOW_TASK_PROCESSOR, IS_DYNAFLOW_TASK_QUEUE_USED)
+from database import engine, get_db
+from dyna_flows.dyna_flow_factory import DynaFlowFactory  # noqa: F401
+from flows.flow_factory import FlowFactory  # noqa: F401
 from helpers.session_context import SessionContext
+from reports import (ReportItemPacConfigDynaFlowDFTBuildToDoList,
+                     ReportItemPacConfigDynaFlowRetryTaskBuildList,
+                     ReportItemPacConfigDynaFlowTaskRetryRunList,
+                     ReportItemPacConfigDynaFlowTaskRunToDoList,
+                     ReportItemPacConfigDynaFlowTaskSearch,
+                     ReportManagerPacConfigDynaFlowDFTBuildToDoList,
+                     ReportManagerPacConfigDynaFlowRetryTaskBuildList,
+                     ReportManagerPacConfigDynaFlowTaskRetryRunList,
+                     ReportManagerPacConfigDynaFlowTaskRunToDoList,
+                     ReportManagerPacConfigDynaFlowTaskSearch)
 from services.custom_temp_folder import CustomTempFolder
 from services.machine_identifier import MachineIdentifier
 from services.queue_manager import QueueManager
-from business import (
-    PacBusObj, DFMaintenanceBusObj,
-    DynaFlowBusObj, DynaFlowTaskBusObj,
-    TriStateFilterBusObj,
-    DynaFlowTypeBusObj,
-    DynaFlowTaskTypeBusObj
-)
-from reports import (
-    ReportItemPacConfigDynaFlowRetryTaskBuildList,
-    ReportManagerPacConfigDynaFlowRetryTaskBuildList,
-    ReportItemPacConfigDynaFlowTaskRetryRunList,
-    ReportManagerPacConfigDynaFlowTaskRetryRunList,
-    ReportItemPacConfigDynaFlowTaskSearch,
-    ReportManagerPacConfigDynaFlowTaskSearch,
-    ReportManagerPacConfigDynaFlowDFTBuildToDoList,
-    ReportItemPacConfigDynaFlowDFTBuildToDoList,
-    ReportItemPacConfigDynaFlowTaskRunToDoList,
-    ReportManagerPacConfigDynaFlowTaskRunToDoList
-    
-)
-import managers as managers_and_enums  # noqa: F401
-from flows.flow_factory import FlowFactory  # noqa: F401
-from dyna_flows.dyna_flow_factory import DynaFlowFactory  # noqa: F401
 
 
 class DynaFlowProcessor:
@@ -156,11 +145,11 @@ class DynaFlowProcessor:
         result_message_count = 0
         first_run = True
 
-        while (run_to_do_count > 0 or 
-                build_to_do_count > 0 or 
+        while (run_to_do_count > 0 or
+                build_to_do_count > 0 or
                 result_message_count > 0 or
                 first_run is True):
-            
+
             run_to_do_count = 0
             build_to_do_count = 0
             result_message_count = 0
@@ -276,7 +265,7 @@ class DynaFlowProcessor:
                 await pac.request_dyna_flow_pac_process_all_dyna_flow_type_schedule_flow(  # noqa: E501
                     description="Process all scheduled data flows"
                 )
-                
+
                 rebuild_items = await pac. \
                     generate_report_pac_config_dyna_flow_retry_task_build_list(
                         1,
@@ -307,7 +296,7 @@ class DynaFlowProcessor:
                         "",
                         False
                     )
-                
+
                 print("rerun_items: ", rerun_items)
 
                 for item in rerun_items:
@@ -477,7 +466,7 @@ class DynaFlowProcessor:
                         is_completed_tri_state_filter_code=tri_state_no.code,
                         is_successful_tri_state_filter_code=tri_state_no.code,
                         item_count_per_page=100)
-                
+
                 print("past_task_list: ", past_task_list)
 
                 for item in past_task_list:
@@ -516,12 +505,12 @@ class DynaFlowProcessor:
                 self._task_result_queue_name
             )
             if len(message) == 0:
-                break 
+                break
             message_count += 1
             print("Message found...")
             # not necessary. worker is saving it currently
             # try:
-            #     dyna_flow_task = 
+            #     dyna_flow_task =
             #   self.create_dyna_flow_task_from_message(message)
             #     await self.save_dyna_flow_task(dyna_flow_task)
             # except Exception as ex:
@@ -532,7 +521,7 @@ class DynaFlowProcessor:
             #     print(str(ex))
             await self._queue_manager.mark_message_as_completed(
                 self._task_result_queue_name, message)
-            
+
         print("DynaFlow queue task results processed")
 
         return message_count
@@ -723,7 +712,7 @@ class DynaFlowProcessor:
                         )
                         await build_task_processor.build_dyna_flow_tasks(
                             dyna_flow)
-                        
+
                         dyna_flow.is_tasks_created = True
                         await dyna_flow.save()
                     except Exception as e:
@@ -774,7 +763,7 @@ class DynaFlowProcessor:
 
                 dyna_flow.task_creation_processor_identifier = \
                     self.get_instance_id()
-                
+
                 dyna_flow_type = next(
                     (
                         x
@@ -785,7 +774,7 @@ class DynaFlowProcessor:
                 )
 
                 assert dyna_flow_type is not None
-                
+
                 dyna_flow.priority_level = \
                     dyna_flow_type.priority_level
 
@@ -871,7 +860,7 @@ class DynaFlowProcessor:
                 dyna_flow_task.is_started = True
                 dyna_flow_task.started_utc_date_time = datetime.now(timezone.utc)
                 dyna_flow_task.processor_identifier = self.get_instance_id()
-                
+
                 dyna_flow_task_type = next(
                     (
                         x
@@ -957,7 +946,7 @@ class DynaFlowProcessor:
             self._task_processor_queue_name,
             json)
         print("DynaFlow task served")
-        
+
     async def serve_dyna_flow_tasks(self):
         """
         Serve DynaFlow tasks
@@ -1002,7 +991,7 @@ class DynaFlowProcessor:
 
         print(f"Found {run_to_do_count} "
               "DynaFlowTasks that need to be run")
-        
+
         count = 0
 
         for item in run_to_do_list:
@@ -1015,8 +1004,8 @@ class DynaFlowProcessor:
                 dyna_flow_task_type_list)
         print("DynaFlow tasks run from the database")
         return run_to_do_count
-    
-    
+
+
     async def run_dyna_flow_db_task(
         self,
         dyna_flow_task_code: uuid.UUID,
@@ -1029,7 +1018,7 @@ class DynaFlowProcessor:
         print(f"Running DynaFlow task from the database {dyna_flow_task_code}")
         if self._is_dyna_flow_task_processor is not True:
             return
-        
+
         task_ownership = await self.claim_dyna_flow_task_for_task_run(
             dyna_flow_task_code,
             dyna_flow_task_type_list
@@ -1063,7 +1052,7 @@ class DynaFlowProcessor:
                 task_code = uuid.UUID(int=0)
 
                 success = False
-                
+
                 async for session in get_db():
 
                     session_context = self.build_session_context(session)
@@ -1077,7 +1066,7 @@ class DynaFlowProcessor:
 
                         dyna_flow_task.processor_identifier = \
                             self.get_instance_id()
-                        
+
                         await dyna_flow_task.save()
 
                         task_code = dyna_flow_task.code
@@ -1094,7 +1083,7 @@ class DynaFlowProcessor:
                             "error resetting processor id in task")
 
                     await self.run_dyna_flow_task(task_code)
-            
+
             except Exception as ex:
                 print("Error reading message...")
                 print(f'Error occurred: {e}')
@@ -1135,7 +1124,7 @@ class DynaFlowProcessor:
                 if dyna_flow.is_started is not True:
                     dyna_flow.is_started = True
                     dyna_flow.started_utc_date_time = datetime.now(timezone.utc)
-                    await dyna_flow.save()  
+                    await dyna_flow.save()
 
                 if dyna_flow.is_completed is True:
                     print("DynaFlowTask already completed.  Skipping Run.")
@@ -1228,7 +1217,7 @@ class DynaFlowProcessor:
                         dyna_flow_task.completed_utc_date_time = \
                             datetime.now(timezone.utc)
                     else:
-                        dyna_flow_task.retry_count +=1
+                        dyna_flow_task.retry_count += 1
                         dyna_flow_task.min_start_utc_date_time = \
                             datetime.now(timezone.utc) + timedelta(minutes=3)
                         dyna_flow_task.is_started = False

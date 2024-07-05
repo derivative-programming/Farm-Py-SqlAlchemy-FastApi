@@ -154,7 +154,7 @@ class TestDynaFlowTaskBusObj:
         """
         Test the get_dyna_flow_id_bus_obj method.
         """
-        from ..dyna_flow import (  # DynaFlowID
+        from business.dyna_flow import (  # DynaFlowID
             DynaFlowBusObj)
         # Call the get_dyna_flow_id_bus_obj method
         fk_bus_obj: DynaFlowBusObj = await \
@@ -203,7 +203,7 @@ class TestDynaFlowTaskBusObj:
         method.
         """
 
-        from ..dyna_flow_task_type import (  # DynaFlowTaskTypeID
+        from business.dyna_flow_task_type import (  # DynaFlowTaskTypeID
             DynaFlowTaskTypeBusObj)
         # Call the get_dyna_flow_task_type_id_bus_obj method
         fk_bus_obj: DynaFlowTaskTypeBusObj = \

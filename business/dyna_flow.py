@@ -93,7 +93,7 @@ class DynaFlowBusObj(DynaFlowDynaFlowsBusObj):
             business object.
 
         """
-        from .dyna_flow_type import DynaFlowTypeBusObj  # pylint: disable=import-outside-toplevel
+        from business.dyna_flow_type import DynaFlowTypeBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = DynaFlowTypeBusObj(self._session_context)
         await bus_obj.load_from_id(self.dyna_flow_type_id)
         return bus_obj
@@ -139,7 +139,7 @@ class DynaFlowBusObj(DynaFlowDynaFlowsBusObj):
             representing the related pac.
 
         """
-        from .pac import PacBusObj  # pylint: disable=import-outside-toplevel
+        from business.pac import PacBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = PacBusObj(self._session_context)
         await bus_obj.load_from_id(self.pac_id)
         return bus_obj

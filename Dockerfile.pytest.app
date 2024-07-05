@@ -26,6 +26,14 @@ ENV DATABASE_URL="sqlite+aiosqlite:///.//pytest/data/test.db"
 ENV API_KEY_SECRET="laisjdf;asdifj[fi9wejr'wekf]"
 ENV ENCRYPTION_KEY_SECRET="alsk;fj2 i3jeqealfjansdflkmadf"
 
-# Run pytest when the container launches
-CMD ["sh", "-c", "coverage run -m pytest --junitxml=pytest/reports/junit/junit-report.xml --alluredir=pytest/reports/allure-results && coverage html -d pytest/reports/coverage/htmlcov && coverage xml -o pytest/reports/coverage/coverage.xml && pylint . > pytest/reports/pylint/report.txt"]
-# CMD ["sh", "-c", "coverage run -m pytest --junitxml=pytest/reports/junit/junit-report.xml --alluredir=pytest/reports/allure-results && coverage html -d pytest/reports/coverage/htmlcov && coverage xml -o pytest/reports/coverage/coverage.xml"]
+# Copy the entrypoint script into the container
+COPY dockerfile_pytest_app_entrypoint.sh /usr/src/app/
+
+# Ensure the script has Unix line endings
+RUN apt-get update && apt-get install -y dos2unix && dos2unix /usr/src/app/dockerfile_pytest_app_entrypoint.sh
+
+# Make the entrypoint script executable
+RUN chmod +x /usr/src/app/dockerfile_pytest_app_entrypoint.sh
+
+# Run the entrypoint script when the container launches
+ENTRYPOINT ["/usr/src/app/dockerfile_pytest_app_entrypoint.sh"]

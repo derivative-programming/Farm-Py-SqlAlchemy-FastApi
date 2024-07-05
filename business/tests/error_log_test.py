@@ -157,7 +157,7 @@ class TestErrorLogBusObj:
         """
         Test the get_pac_id_bus_obj method.
         """
-        from ..pac import (  # PacID
+        from business.pac import (  # PacID
             PacBusObj)
         # Call the get_pac_id_bus_obj method
         fk_bus_obj: PacBusObj = await \

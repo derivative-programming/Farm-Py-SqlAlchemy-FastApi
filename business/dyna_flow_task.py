@@ -94,7 +94,7 @@ class DynaFlowTaskBusObj(DynaFlowTaskDynaFlowsBusObj):
             representing the related dyna_flow.
 
         """
-        from .dyna_flow import DynaFlowBusObj  # pylint: disable=import-outside-toplevel
+        from business.dyna_flow import DynaFlowBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = DynaFlowBusObj(self._session_context)
         await bus_obj.load_from_id(self.dyna_flow_id)
         return bus_obj
@@ -128,7 +128,7 @@ class DynaFlowTaskBusObj(DynaFlowTaskDynaFlowsBusObj):
             business object.
 
         """
-        from .dyna_flow_task_type import DynaFlowTaskTypeBusObj  # pylint: disable=import-outside-toplevel
+        from business.dyna_flow_task_type import DynaFlowTaskTypeBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = DynaFlowTaskTypeBusObj(self._session_context)
         await bus_obj.load_from_id(self.dyna_flow_task_type_id)
         return bus_obj

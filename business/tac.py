@@ -99,7 +99,7 @@ class TacBusObj(TacDynaFlowsBusObj):
             representing the related pac.
 
         """
-        from .pac import PacBusObj  # pylint: disable=import-outside-toplevel
+        from business.pac import PacBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = PacBusObj(self._session_context)
         await bus_obj.load_from_id(self.pac_id)
         return bus_obj

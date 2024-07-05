@@ -151,7 +151,7 @@ class TestCustomerRoleBusObj:
         """
         Test the get_customer_id_bus_obj method.
         """
-        from ..customer import (  # CustomerID
+        from business.customer import (  # CustomerID
             CustomerBusObj)
         # Call the get_customer_id_bus_obj method
         fk_bus_obj: CustomerBusObj = await \
@@ -201,7 +201,7 @@ class TestCustomerRoleBusObj:
         method.
         """
 
-        from ..role import (  # RoleID
+        from business.role import (  # RoleID
             RoleBusObj)
         # Call the get_role_id_bus_obj method
         fk_bus_obj: RoleBusObj = \

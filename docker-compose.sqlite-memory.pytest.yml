@@ -18,32 +18,6 @@ services:
     networks:
       - app-network
 
-  nginx:
-    image: nginx:alpine
-    volumes:
-      - ./pytest/reports/coverage/htmlcov:/usr/share/nginx/html:ro
-    ports:
-      - "8080:80"
-    depends_on:
-      - app
-    networks:
-      - app-network
-
-  allure:
-    image: frankescobar/allure-docker-service
-    ports:
-      - "4040:4040"
-    volumes:
-      - ./pytest/reports/allure-results:/app/allure-results
-      - ./pytest/reports/allure-report:/app/allure-report
-    environment:
-      CHECK_RESULTS_EVERY_SECONDS: 10
-      KEEP_HISTORY: 1
-    depends_on:
-      - app
-    networks:
-      - app-network
-
 networks:
   app-network:
     driver: bridge

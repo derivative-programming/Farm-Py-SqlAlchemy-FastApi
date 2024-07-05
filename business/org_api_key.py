@@ -95,7 +95,7 @@ class OrgApiKeyBusObj(OrgApiKeyDynaFlowsBusObj):
             representing the related organization.
 
         """
-        from .organization import OrganizationBusObj  # pylint: disable=import-outside-toplevel
+        from business.organization import OrganizationBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = OrganizationBusObj(self._session_context)
         await bus_obj.load_from_id(self.organization_id)
         return bus_obj
@@ -128,7 +128,7 @@ class OrgApiKeyBusObj(OrgApiKeyDynaFlowsBusObj):
             business object.
 
         """
-        from .org_customer import OrgCustomerBusObj  # pylint: disable=import-outside-toplevel
+        from business.org_customer import OrgCustomerBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = OrgCustomerBusObj(self._session_context)
         await bus_obj.load_from_id(self.org_customer_id)
         return bus_obj

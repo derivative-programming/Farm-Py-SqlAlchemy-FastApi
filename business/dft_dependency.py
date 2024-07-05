@@ -89,7 +89,7 @@ class DFTDependencyBusObj(DFTDependencyDynaFlowsBusObj):
             representing the related dyna_flow_task.
 
         """
-        from .dyna_flow_task import DynaFlowTaskBusObj  # pylint: disable=import-outside-toplevel
+        from business.dyna_flow_task import DynaFlowTaskBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = DynaFlowTaskBusObj(self._session_context)
         await bus_obj.load_from_id(self.dyna_flow_task_id)
         return bus_obj

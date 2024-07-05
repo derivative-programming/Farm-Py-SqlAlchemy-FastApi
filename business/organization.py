@@ -95,7 +95,7 @@ class OrganizationBusObj(OrganizationDynaFlowsBusObj):
             representing the related tac.
 
         """
-        from .tac import TacBusObj  # pylint: disable=import-outside-toplevel
+        from business.tac import TacBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = TacBusObj(self._session_context)
         await bus_obj.load_from_id(self.tac_id)
         return bus_obj

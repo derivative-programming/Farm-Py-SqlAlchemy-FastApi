@@ -152,7 +152,7 @@ class TestDFTDependencyBusObj:
         """
         Test the get_dyna_flow_task_id_bus_obj method.
         """
-        from ..dyna_flow_task import (  # DynaFlowTaskID
+        from business.dyna_flow_task import (  # DynaFlowTaskID
             DynaFlowTaskBusObj)
         # Call the get_dyna_flow_task_id_bus_obj method
         fk_bus_obj: DynaFlowTaskBusObj = await \

@@ -10,18 +10,18 @@ import json
 import uuid
 from unittest.mock import AsyncMock, patch
 
-import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import apis.fs_farm_api.v1_0.endpoints.tests.test_constants as test_constants
 import models.factory as model_factorys
+import pytest
 from apis import models as apis_models
 from database import get_db
 from main import app
 
-from ..land_add_plant import (
-    LandAddPlantRouterConfig)
+from ..land_add_plant import LandAddPlantRouterConfig
+
 # Test cases for the `submit` endpoint
 ##GENTrainingBlock[caseisPostWithIdAvailable]Start
 ##GENLearn[isPostWithIdAvailable=true,isGetInitAvailable=true]Start

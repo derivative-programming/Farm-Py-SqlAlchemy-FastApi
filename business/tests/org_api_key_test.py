@@ -158,7 +158,7 @@ class TestOrgApiKeyBusObj:
         """
         Test the get_organization_id_bus_obj method.
         """
-        from ..organization import (  # OrganizationID
+        from business.organization import (  # OrganizationID
             OrganizationBusObj)
         # Call the get_organization_id_bus_obj method
         fk_bus_obj: OrganizationBusObj = await \
@@ -206,7 +206,7 @@ class TestOrgApiKeyBusObj:
         method.
         """
 
-        from ..org_customer import (  # OrgCustomerID
+        from business.org_customer import (  # OrgCustomerID
             OrgCustomerBusObj)
         # Call the get_org_customer_id_bus_obj method
         fk_bus_obj: OrgCustomerBusObj = \

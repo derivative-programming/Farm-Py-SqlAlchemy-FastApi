@@ -102,7 +102,7 @@ class PlantBusObj(PlantDynaFlowsBusObj):
             representing the related land.
 
         """
-        from .land import LandBusObj  # pylint: disable=import-outside-toplevel
+        from business.land import LandBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = LandBusObj(self._session_context)
         await bus_obj.load_from_id(self.land_id)
         return bus_obj
@@ -135,7 +135,7 @@ class PlantBusObj(PlantDynaFlowsBusObj):
             business object.
 
         """
-        from .flavor import FlavorBusObj  # pylint: disable=import-outside-toplevel
+        from business.flavor import FlavorBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = FlavorBusObj(self._session_context)
         await bus_obj.load_from_id(self.flvr_foreign_key_id)
         return bus_obj

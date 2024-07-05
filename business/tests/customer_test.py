@@ -171,7 +171,7 @@ class TestCustomerBusObj:
         """
         Test the get_tac_id_bus_obj method.
         """
-        from ..tac import (  # TacID
+        from business.tac import (  # TacID
             TacBusObj)
         # Call the get_tac_id_bus_obj method
         fk_bus_obj: TacBusObj = await \
