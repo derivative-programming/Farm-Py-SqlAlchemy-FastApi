@@ -46,7 +46,7 @@ class FlavorBusObj(FlavorDynaFlowsBusObj):
                 list of converted FlavorBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for flavor in obj_list:
             flavor_bus_obj = FlavorBusObj(

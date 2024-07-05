@@ -39,7 +39,7 @@ class TestDynaFlowTypeScheduleFluentBusObj:
         Return a DynaFlowTypeScheduleFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return DynaFlowTypeScheduleFluentBusObj(
             session_context)
     # DynaFlowTypeID

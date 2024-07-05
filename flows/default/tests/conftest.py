@@ -20,8 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 from models import Base
-
-DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+from config import TEST_DATABASE_URL
 
 
 @pytest.fixture(scope="function")
@@ -51,7 +50,7 @@ def engine():
         sqlalchemy.engine.Engine: The SQLAlchemy engine object.
 
     """
-    engine = create_async_engine(DATABASE_URL, echo=False)
+    engine = create_async_engine(TEST_DATABASE_URL, echo=False)
     yield engine
     engine.sync_engine.dispose()
 

@@ -54,7 +54,7 @@ class TestPlantFluentBusObj:
         Return a PlantFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return PlantFluentBusObj(
             session_context)
     # FlvrForeignKeyID

@@ -46,7 +46,7 @@ class CustomerRoleBusObj(CustomerRoleDynaFlowsBusObj):
                 list of converted CustomerRoleBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for customer_role in obj_list:
             customer_role_bus_obj = CustomerRoleBusObj(

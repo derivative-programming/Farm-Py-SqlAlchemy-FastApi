@@ -167,7 +167,7 @@ class TestPlantSampleWorkflowPostModelResponse:
             )
             response_instance = \
                 PlantSampleWorkflowPostModelResponse()
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             plant = await PlantFactory.create_async(session)
 

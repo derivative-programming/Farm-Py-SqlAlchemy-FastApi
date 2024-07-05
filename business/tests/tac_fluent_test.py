@@ -39,7 +39,7 @@ class TestTacFluentBusObj:
         Return a TacFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return TacFluentBusObj(
             session_context)
     # description

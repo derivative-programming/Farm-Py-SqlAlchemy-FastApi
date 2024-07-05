@@ -41,7 +41,7 @@ class TestErrorLogFluentBusObj:
         Return a ErrorLogFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return ErrorLogFluentBusObj(
             session_context)
     # browserCode

@@ -27,7 +27,7 @@ class BaseFlow():
     def __init__(self, flow_name: str, session_context: SessionContext):
         self._session_context = session_context
         self.__flow_name = flow_name
-        self.queued_validation_errors = dict()
+        self.queued_validation_errors = {}
 
     def _add_validation_error(self, message: str):
         """

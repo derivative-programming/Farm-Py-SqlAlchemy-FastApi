@@ -81,7 +81,7 @@ class TestOrgCustomerBaseBusObj:
         Fixture that returns an instance of the
         OrgCustomerManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return OrgCustomerManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestOrgCustomerBaseBusObj:
         Fixture that returns an instance of the
         OrgCustomerBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return OrgCustomerBusObj(
             session_context)
 

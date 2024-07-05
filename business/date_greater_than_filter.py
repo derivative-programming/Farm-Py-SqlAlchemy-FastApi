@@ -42,7 +42,7 @@ class DateGreaterThanFilterBusObj(DateGreaterThanFilterFluentBusObj):
                 list of converted DateGreaterThanFilterBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for date_greater_than_filter in obj_list:
             date_greater_than_filter_bus_obj = DateGreaterThanFilterBusObj(

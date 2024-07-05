@@ -167,7 +167,7 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
             )
             response_instance = \
                 CustomerBuildTempApiKeyPostModelResponse()
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             customer = await CustomerFactory.create_async(session)
 

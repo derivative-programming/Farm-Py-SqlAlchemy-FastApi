@@ -26,7 +26,7 @@ from sqlalchemy.orm import sessionmaker
 from models import Base, DateGreaterThanFilter
 from models.factory import DateGreaterThanFilterFactory
 
-DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 
 class TestDateGreaterThanFilterFactoryAsync:
@@ -49,7 +49,7 @@ class TestDateGreaterThanFilterFactoryAsync:
         """
         Fixture that returns an async engine for the test functions.
         """
-        engine = create_async_engine(DATABASE_URL, echo=False)
+        engine = create_async_engine(TEST_DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
 

@@ -56,7 +56,7 @@ class TestCustomerFluentBusObj:
         Return a CustomerFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return CustomerFluentBusObj(
             session_context)
     # activeOrganizationID

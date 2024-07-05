@@ -29,8 +29,7 @@ from models import Base
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
-
-DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+from config import TEST_DATABASE_URL
 
 
 @pytest.fixture(scope="function")
@@ -60,7 +59,7 @@ def engine():
         sqlalchemy.ext.asyncio.AsyncEngine: The async engine for the database.
     """
 
-    engine = create_async_engine(DATABASE_URL, echo=False)
+    engine = create_async_engine(TEST_DATABASE_URL, echo=False)
     yield engine
     engine.sync_engine.dispose()
 

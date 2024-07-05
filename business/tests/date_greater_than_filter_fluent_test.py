@@ -40,7 +40,7 @@ class TestDateGreaterThanFilterFluentBusObj:
         Return a DateGreaterThanFilterFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return DateGreaterThanFilterFluentBusObj(
             session_context)
     # dayCount

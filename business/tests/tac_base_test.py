@@ -81,7 +81,7 @@ class TestTacBaseBusObj:
         Fixture that returns an instance of the
         TacManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return TacManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestTacBaseBusObj:
         Fixture that returns an instance of the
         TacBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return TacBusObj(
             session_context)
 
@@ -836,7 +836,7 @@ class TestTacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -864,7 +864,7 @@ class TestTacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -906,7 +906,7 @@ class TestTacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -934,7 +934,7 @@ class TestTacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 

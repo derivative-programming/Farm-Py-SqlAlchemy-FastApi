@@ -46,7 +46,7 @@ class PlantBusObj(PlantDynaFlowsBusObj):
                 list of converted PlantBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for plant in obj_list:
             plant_bus_obj = PlantBusObj(

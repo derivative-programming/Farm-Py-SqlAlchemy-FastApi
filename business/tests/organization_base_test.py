@@ -81,7 +81,7 @@ class TestOrganizationBaseBusObj:
         Fixture that returns an instance of the
         OrganizationManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return OrganizationManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestOrganizationBaseBusObj:
         Fixture that returns an instance of the
         OrganizationBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return OrganizationBusObj(
             session_context)
 

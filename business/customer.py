@@ -49,7 +49,7 @@ class CustomerBusObj(CustomerDynaFlowsBusObj):
                 list of converted CustomerBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for customer in obj_list:
             customer_bus_obj = CustomerBusObj(
@@ -147,7 +147,7 @@ class CustomerBusObj(CustomerDynaFlowsBusObj):
         """
         get all customer_role
         """
-        results = list()
+        results = []
         customer_role_manager = managers_and_enums.CustomerRoleManager(
             self._session_context)
         obj_list = await customer_role_manager.get_by_customer_id(

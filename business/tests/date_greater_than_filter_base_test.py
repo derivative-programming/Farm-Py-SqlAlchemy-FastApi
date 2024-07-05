@@ -81,7 +81,7 @@ class TestDateGreaterThanFilterBaseBusObj:
         Fixture that returns an instance of the
         DateGreaterThanFilterManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return DateGreaterThanFilterManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestDateGreaterThanFilterBaseBusObj:
         Fixture that returns an instance of the
         DateGreaterThanFilterBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return DateGreaterThanFilterBusObj(
             session_context)
 

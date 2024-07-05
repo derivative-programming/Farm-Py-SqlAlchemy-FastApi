@@ -43,7 +43,7 @@ class TestReportProviderPacConfigDynaFlowTaskSearch:
         checked for the expected format.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         await current_runtime.initialize(session_context)
         report_provider = ReportProviderPacConfigDynaFlowTaskSearch(
             session_context)

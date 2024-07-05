@@ -167,7 +167,7 @@ class TestProcessAllDynaFlowTypeScheduleTaskPostModelResponse:
             )
             response_instance = \
                 ProcessAllDynaFlowTypeScheduleTaskPostModelResponse()
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             dyna_flow_task = await DynaFlowTaskFactory.create_async(session)
 

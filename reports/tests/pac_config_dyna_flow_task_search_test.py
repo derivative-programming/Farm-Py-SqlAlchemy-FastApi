@@ -71,7 +71,7 @@ class TestReportManagerPacConfigDynaFlowTaskSearch:
             order_by_column_name: str,
             order_by_descending: bool,
         ):
-            result = list()
+            result = []
             return result
 
         with patch.object(
@@ -81,7 +81,7 @@ class TestReportManagerPacConfigDynaFlowTaskSearch:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
             report_generator = ReportManagerPacConfigDynaFlowTaskSearch(
                 session_context)
             pac = await PacFactory.create_async(
@@ -144,7 +144,7 @@ class TestReportManagerPacConfigDynaFlowTaskSearch:
             order_by_column_name: str,
             order_by_descending: bool,
         ):
-            result = list()
+            result = []
             return result
 
         with patch.object(
@@ -154,7 +154,7 @@ class TestReportManagerPacConfigDynaFlowTaskSearch:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
             report_generator = ReportManagerPacConfigDynaFlowTaskSearch(
                 session_context)
             pac = await PacFactory.create_async(
@@ -215,7 +215,7 @@ class TestReportManagerPacConfigDynaFlowTaskSearch:
             order_by_column_name: str,
             order_by_descending: bool,
         ):
-            result = list()
+            result = []
             return result
 
         with patch.object(
@@ -225,7 +225,7 @@ class TestReportManagerPacConfigDynaFlowTaskSearch:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
             report_generator = ReportManagerPacConfigDynaFlowTaskSearch(
                 session_context)
             pac = await PacFactory.create_async(
@@ -280,7 +280,7 @@ class TestReportManagerPacConfigDynaFlowTaskSearch:
         """
 
         session_context = SessionContext(
-            dict(), session)
+            {}, session)
         test_obj = ReportManagerPacConfigDynaFlowTaskSearch(
             session_context)
         test_data = [ReportItemPacConfigDynaFlowTaskSearch(),
@@ -309,7 +309,7 @@ class TestReportManagerPacConfigDynaFlowTaskSearch:
                     file is not as expected.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         test_obj = ReportManagerPacConfigDynaFlowTaskSearch(
             session_context)
 
@@ -347,7 +347,7 @@ class TestReportManagerPacConfigDynaFlowTaskSearch:
             None
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         test_obj = ReportManagerPacConfigDynaFlowTaskSearch(
             session_context)
 

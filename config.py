@@ -20,7 +20,10 @@ config.read('config.ini')
 
 # Access the DATABASE_URL
 DATABASE_URL = os.getenv('DATABASE_URL',
-                         config['database']['DATABASE_URL']) 
+                         config['database']['DATABASE_URL'])
+
+TEST_DATABASE_URL = os.getenv('TEST_DATABASE_URL',
+                              config['database']['TEST_DATABASE_URL'])
 
 API_KEY_SECRET = os.getenv('API_KEY_SECRET',
                            config['apis']['API_KEY_SECRET'])

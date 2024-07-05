@@ -55,7 +55,7 @@ class TestDynaFlowTaskFluentBusObj:
         Return a DynaFlowTaskFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return DynaFlowTaskFluentBusObj(
             session_context)
     # completedUTCDateTime

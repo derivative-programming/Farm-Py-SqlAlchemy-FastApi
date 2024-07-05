@@ -82,7 +82,7 @@ class TestReportManagerLandPlantList:
             order_by_column_name: str,
             order_by_descending: bool,
         ):
-            result = list()
+            result = []
             return result
 
         with patch.object(
@@ -92,7 +92,7 @@ class TestReportManagerLandPlantList:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
             report_generator = ReportManagerLandPlantList(
                 session_context)
             land = await LandFactory.create_async(
@@ -191,7 +191,7 @@ class TestReportManagerLandPlantList:
             order_by_column_name: str,
             order_by_descending: bool,
         ):
-            result = list()
+            result = []
             return result
 
         with patch.object(
@@ -201,7 +201,7 @@ class TestReportManagerLandPlantList:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
             report_generator = ReportManagerLandPlantList(
                 session_context)
             land = await LandFactory.create_async(
@@ -298,7 +298,7 @@ class TestReportManagerLandPlantList:
             order_by_column_name: str,
             order_by_descending: bool,
         ):
-            result = list()
+            result = []
             return result
 
         with patch.object(
@@ -308,7 +308,7 @@ class TestReportManagerLandPlantList:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
             report_generator = ReportManagerLandPlantList(
                 session_context)
             land = await LandFactory.create_async(
@@ -388,7 +388,7 @@ class TestReportManagerLandPlantList:
         """
 
         session_context = SessionContext(
-            dict(), session)
+            {}, session)
         test_obj = ReportManagerLandPlantList(
             session_context)
         test_data = [ReportItemLandPlantList(),
@@ -417,7 +417,7 @@ class TestReportManagerLandPlantList:
                     file is not as expected.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         test_obj = ReportManagerLandPlantList(
             session_context)
 
@@ -455,7 +455,7 @@ class TestReportManagerLandPlantList:
             None
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         test_obj = ReportManagerLandPlantList(
             session_context)
 

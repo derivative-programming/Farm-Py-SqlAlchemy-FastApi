@@ -28,10 +28,10 @@ class ReportRequestValidationError(Exception):
         """
 
         if field_name is not None and message is not None:
-            self.error_dict = dict()
+            self.error_dict = {}
             self.error_dict[field_name] = message
             super().__init__(message)
         elif message is not None:
-            self.error_dict = dict()
+            self.error_dict = {}
             self.error_dict[""] = message
             super().__init__(message)

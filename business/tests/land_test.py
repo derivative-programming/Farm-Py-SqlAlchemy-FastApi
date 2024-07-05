@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> LandBusObj:
     the Land class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     land_bus_obj = LandBusObj(session_context, new_obj)
 
     return land_bus_obj

@@ -81,7 +81,7 @@ class TestTriStateFilterBaseBusObj:
         Fixture that returns an instance of the
         TriStateFilterManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return TriStateFilterManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestTriStateFilterBaseBusObj:
         Fixture that returns an instance of the
         TriStateFilterBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return TriStateFilterBusObj(
             session_context)
 

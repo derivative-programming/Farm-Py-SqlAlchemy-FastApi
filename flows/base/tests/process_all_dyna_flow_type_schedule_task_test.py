@@ -40,7 +40,7 @@ class TestBaseFlowProcessAllDynaFlowTypeScheduleTask():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = BaseFlowProcessAllDynaFlowTypeScheduleTask(
             session_context)
         dyna_flow_task = await \
@@ -85,7 +85,7 @@ class TestBaseFlowProcessAllDynaFlowTypeScheduleTask():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         dyna_flow_task = await \
             DynaFlowTaskFactory.create_async(session)
         flow = BaseFlowProcessAllDynaFlowTypeScheduleTask(

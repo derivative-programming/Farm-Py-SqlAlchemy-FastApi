@@ -40,7 +40,7 @@ class TestTriStateFilterFluentBusObj:
         Return a TriStateFilterFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return TriStateFilterFluentBusObj(
             session_context)
     # description

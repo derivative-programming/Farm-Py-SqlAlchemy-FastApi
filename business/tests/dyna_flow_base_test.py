@@ -81,7 +81,7 @@ class TestDynaFlowBaseBusObj:
         Fixture that returns an instance of the
         DynaFlowManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return DynaFlowManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestDynaFlowBaseBusObj:
         Fixture that returns an instance of the
         DynaFlowBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return DynaFlowBusObj(
             session_context)
 
@@ -1559,7 +1559,7 @@ class TestDynaFlowBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1587,7 +1587,7 @@ class TestDynaFlowBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 

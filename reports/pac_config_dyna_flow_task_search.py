@@ -106,7 +106,7 @@ class ReportManagerPacConfigDynaFlowTaskSearch():
             order_by_descending,
         )
 
-        result = list()
+        result = []
 
         for data_item in data_list:
             report_item: ReportItemPacConfigDynaFlowTaskSearch = \

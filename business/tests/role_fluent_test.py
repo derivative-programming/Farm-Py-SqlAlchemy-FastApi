@@ -39,7 +39,7 @@ class TestRoleFluentBusObj:
         Return a RoleFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return RoleFluentBusObj(
             session_context)
     # description

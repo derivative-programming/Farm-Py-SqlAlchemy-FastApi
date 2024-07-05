@@ -373,7 +373,7 @@ class TestLandAddPlantPostModelResponse:
             )
             response_instance = \
                 LandAddPlantPostModelResponse()
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             land = await LandFactory.create_async(session)
 

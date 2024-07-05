@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> OrgApiKeyBusObj:
     the OrgApiKey class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     org_api_key_bus_obj = OrgApiKeyBusObj(session_context, new_obj)
 
     return org_api_key_bus_obj

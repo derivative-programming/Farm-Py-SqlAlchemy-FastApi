@@ -133,7 +133,7 @@ class PlantSampleWorkflowPostModelResponse(PostResponse):
                 "error..."
                 "PlantSampleWorkflowPostModelResponse")
             self.success = False
-            self.validation_errors = list()
+            self.validation_errors = []
             for key in ve.error_dict:
                 validation_error = ValidationErrorItem()
                 validation_error.property = snake_to_camel(key)

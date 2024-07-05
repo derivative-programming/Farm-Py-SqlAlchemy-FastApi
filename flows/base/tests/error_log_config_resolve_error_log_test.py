@@ -40,7 +40,7 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = BaseFlowErrorLogConfigResolveErrorLog(
             session_context)
         error_log = await \
@@ -85,7 +85,7 @@ class TestBaseFlowErrorLogConfigResolveErrorLog():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         error_log = await \
             ErrorLogFactory.create_async(session)
         flow = BaseFlowErrorLogConfigResolveErrorLog(

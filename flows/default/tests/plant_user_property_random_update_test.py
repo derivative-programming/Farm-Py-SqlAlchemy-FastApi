@@ -61,7 +61,7 @@ class TestPlantUserPropertyRandomUpdatePostModelResponse:
         `FlowPlantUserPropertyRandomUpdate` class.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = FlowPlantUserPropertyRandomUpdate(
             session_context)
 

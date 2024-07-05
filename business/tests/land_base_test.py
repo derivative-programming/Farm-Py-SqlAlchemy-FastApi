@@ -81,7 +81,7 @@ class TestLandBaseBusObj:
         Fixture that returns an instance of the
         LandManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return LandManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestLandBaseBusObj:
         Fixture that returns an instance of the
         LandBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return LandBusObj(
             session_context)
 
@@ -836,7 +836,7 @@ class TestLandBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -864,7 +864,7 @@ class TestLandBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 

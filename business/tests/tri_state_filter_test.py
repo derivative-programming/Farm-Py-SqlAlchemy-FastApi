@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> TriStateFilterBusObj:
     the TriStateFilter class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     tri_state_filter_bus_obj = TriStateFilterBusObj(session_context, new_obj)
 
     return tri_state_filter_bus_obj

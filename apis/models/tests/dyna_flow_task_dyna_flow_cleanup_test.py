@@ -167,7 +167,7 @@ class TestDynaFlowTaskDynaFlowCleanupPostModelResponse:
             )
             response_instance = \
                 DynaFlowTaskDynaFlowCleanupPostModelResponse()
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             dyna_flow_task = await DynaFlowTaskFactory.create_async(session)
 

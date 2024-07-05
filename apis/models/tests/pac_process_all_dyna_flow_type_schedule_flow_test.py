@@ -167,7 +167,7 @@ class TestPacProcessAllDynaFlowTypeScheduleFlowPostModelResponse:
             )
             response_instance = \
                 PacProcessAllDynaFlowTypeScheduleFlowPostModelResponse()
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             pac = await PacFactory.create_async(session)
 

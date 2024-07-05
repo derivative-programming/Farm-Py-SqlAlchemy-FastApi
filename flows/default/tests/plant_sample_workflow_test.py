@@ -61,7 +61,7 @@ class TestPlantSampleWorkflowPostModelResponse:
         `FlowPlantSampleWorkflow` class.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = FlowPlantSampleWorkflow(
             session_context)
 

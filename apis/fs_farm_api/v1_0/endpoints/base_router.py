@@ -62,7 +62,7 @@ class BaseRouter():
         - auth_dict (dict): Dictionary containing authorization information.
         """
         if is_public is True:
-            return dict()
+            return {}
         logging.info("Authorization Required...")
         auth_dict = ApiToken.validate_token(api_key)
         if auth_dict is None or len(auth_dict) == 0:

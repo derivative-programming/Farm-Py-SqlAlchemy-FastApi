@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> PlantBusObj:
     the Plant class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     plant_bus_obj = PlantBusObj(session_context, new_obj)
 
     return plant_bus_obj

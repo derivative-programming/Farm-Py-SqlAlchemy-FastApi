@@ -39,7 +39,7 @@ class TestFlavorFluentBusObj:
         Return a FlavorFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return FlavorFluentBusObj(
             session_context)
     # description

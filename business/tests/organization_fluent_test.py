@@ -35,7 +35,7 @@ class TestOrganizationFluentBusObj:
         Return a OrganizationFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return OrganizationFluentBusObj(
             session_context)
     # name

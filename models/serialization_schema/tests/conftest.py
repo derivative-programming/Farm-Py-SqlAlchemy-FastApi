@@ -10,10 +10,10 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from models import Base
 from services.logging_config import get_logger
+# from config import TEST_DATABASE_URL
 
+TEST_DATABASE_URL = "sqlite:///:memory:"
 logger = get_logger(__name__)
-
-DATABASE_URL = "sqlite:///:memory:"
 
 
 @pytest.fixture(scope="module")
@@ -33,7 +33,7 @@ def engine():
             # use the engine object for database operations
     """
 
-    engine = create_engine(DATABASE_URL, echo=False)
+    engine = create_engine(TEST_DATABASE_URL, echo=False)
     with engine.connect() as conn:
         conn.execute(text("PRAGMA foreign_keys=ON"))
     yield engine

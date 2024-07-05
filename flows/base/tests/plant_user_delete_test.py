@@ -40,7 +40,7 @@ class TestBaseFlowPlantUserDelete():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = BaseFlowPlantUserDelete(
             session_context)
         plant = await \
@@ -85,7 +85,7 @@ class TestBaseFlowPlantUserDelete():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         plant = await \
             PlantFactory.create_async(session)
         flow = BaseFlowPlantUserDelete(

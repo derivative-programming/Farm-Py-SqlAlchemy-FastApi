@@ -40,7 +40,7 @@ class TestBaseFlowCustomerUserLogOutInitObjWF():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = BaseFlowCustomerUserLogOutInitObjWF(
             session_context)
         customer = await \
@@ -85,7 +85,7 @@ class TestBaseFlowCustomerUserLogOutInitObjWF():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         customer = await \
             CustomerFactory.create_async(session)
         flow = BaseFlowCustomerUserLogOutInitObjWF(

@@ -81,7 +81,7 @@ class TestCustomerBaseBusObj:
         Fixture that returns an instance of the
         CustomerManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return CustomerManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestCustomerBaseBusObj:
         Fixture that returns an instance of the
         CustomerBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return CustomerBusObj(
             session_context)
 
@@ -1460,7 +1460,7 @@ class TestCustomerBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1488,7 +1488,7 @@ class TestCustomerBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 

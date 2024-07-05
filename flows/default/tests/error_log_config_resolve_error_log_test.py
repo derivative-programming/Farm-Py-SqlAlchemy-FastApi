@@ -61,7 +61,7 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
         `FlowErrorLogConfigResolveErrorLog` class.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = FlowErrorLogConfigResolveErrorLog(
             session_context)
 

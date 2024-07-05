@@ -81,7 +81,7 @@ class TestOrgApiKeyBaseBusObj:
         Fixture that returns an instance of the
         OrgApiKeyManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return OrgApiKeyManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestOrgApiKeyBaseBusObj:
         Fixture that returns an instance of the
         OrgApiKeyBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return OrgApiKeyBusObj(
             session_context)
 

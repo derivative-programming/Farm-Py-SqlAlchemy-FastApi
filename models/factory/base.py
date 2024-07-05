@@ -19,10 +19,8 @@ session: Session = SessionLocal()
 
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
+from config import TEST_DATABASE_URL
 
-# Access the DATABASE_URL
-DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-
-engine = create_async_engine(DATABASE_URL)
+engine = create_async_engine(TEST_DATABASE_URL)
 
 SessionLocal = sessionmaker(bind=engine, class_=AsyncSession)

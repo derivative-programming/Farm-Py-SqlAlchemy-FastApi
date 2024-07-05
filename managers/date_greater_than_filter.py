@@ -245,7 +245,7 @@ class DateGreaterThanFilterManager:
             query = date_greater_than_filter_query_all
         result_proxy = await self._session_context.session.execute(query)
         query_results = result_proxy.all()
-        result = list()
+        result = []
         for query_result_row in query_results:
             i = 0
             date_greater_than_filter = query_result_row[i]

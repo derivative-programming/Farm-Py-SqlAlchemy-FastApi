@@ -6,7 +6,7 @@
         return item
 
     async def get_all_pac(self) -> List[PacBusObj]:
-        results = list()
+        results = []
         pac_manager = PacManager(self.get_session_context())
         obj_list = pac_manager.get_by__id(self._id)
         for obj_item in obj_list:

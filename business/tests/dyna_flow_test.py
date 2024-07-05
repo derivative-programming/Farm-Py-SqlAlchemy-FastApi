@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> DynaFlowBusObj:
     the DynaFlow class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     dyna_flow_bus_obj = DynaFlowBusObj(session_context, new_obj)
 
     return dyna_flow_bus_obj

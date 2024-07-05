@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> DFMaintenanceBusObj:
     the DFMaintenance class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     df_maintenance_bus_obj = DFMaintenanceBusObj(session_context, new_obj)
 
     return df_maintenance_bus_obj

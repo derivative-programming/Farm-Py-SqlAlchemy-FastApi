@@ -46,7 +46,7 @@ class DynaFlowTypeBusObj(DynaFlowTypeDynaFlowsBusObj):
                 list of converted DynaFlowTypeBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for dyna_flow_type in obj_list:
             dyna_flow_type_bus_obj = DynaFlowTypeBusObj(

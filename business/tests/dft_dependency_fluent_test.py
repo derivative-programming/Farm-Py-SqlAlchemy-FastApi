@@ -36,7 +36,7 @@ class TestDFTDependencyFluentBusObj:
         Return a DFTDependencyFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return DFTDependencyFluentBusObj(
             session_context)
     # dependencyDFTaskID

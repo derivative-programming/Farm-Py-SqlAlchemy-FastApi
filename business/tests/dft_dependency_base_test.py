@@ -81,7 +81,7 @@ class TestDFTDependencyBaseBusObj:
         Fixture that returns an instance of the
         DFTDependencyManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return DFTDependencyManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestDFTDependencyBaseBusObj:
         Fixture that returns an instance of the
         DFTDependencyBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return DFTDependencyBusObj(
             session_context)
 

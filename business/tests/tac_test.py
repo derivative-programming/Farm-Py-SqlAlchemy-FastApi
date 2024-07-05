@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> TacBusObj:
     the Tac class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     tac_bus_obj = TacBusObj(session_context, new_obj)
 
     return tac_bus_obj

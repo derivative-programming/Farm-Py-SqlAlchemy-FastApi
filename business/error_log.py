@@ -46,7 +46,7 @@ class ErrorLogBusObj(ErrorLogDynaFlowsBusObj):
                 list of converted ErrorLogBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for error_log in obj_list:
             error_log_bus_obj = ErrorLogBusObj(

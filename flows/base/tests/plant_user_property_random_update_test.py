@@ -40,7 +40,7 @@ class TestBaseFlowPlantUserPropertyRandomUpdate():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = BaseFlowPlantUserPropertyRandomUpdate(
             session_context)
         plant = await \
@@ -85,7 +85,7 @@ class TestBaseFlowPlantUserPropertyRandomUpdate():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         plant = await \
             PlantFactory.create_async(session)
         flow = BaseFlowPlantUserPropertyRandomUpdate(

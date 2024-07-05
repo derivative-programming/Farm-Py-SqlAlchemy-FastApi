@@ -40,7 +40,7 @@ class TestBaseFlowLandAddPlant():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = BaseFlowLandAddPlant(
             session_context)
         land = await \
@@ -233,7 +233,7 @@ class TestBaseFlowLandAddPlant():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         land = await \
             LandFactory.create_async(session)
         flow = BaseFlowLandAddPlant(

@@ -16,7 +16,7 @@ async def init_db():
         await conn.run_sync(Base.metadata.create_all)
 
     async for session in get_db():
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         await current_runtime.initialize(session_context)
         await session.commit()
         break

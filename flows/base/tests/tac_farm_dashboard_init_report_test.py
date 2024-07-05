@@ -40,7 +40,7 @@ class TestBaseFlowTacFarmDashboardInitReport():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = BaseFlowTacFarmDashboardInitReport(
             session_context)
         tac = await \
@@ -85,7 +85,7 @@ class TestBaseFlowTacFarmDashboardInitReport():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         tac = await \
             TacFactory.create_async(session)
         flow = BaseFlowTacFarmDashboardInitReport(

@@ -62,7 +62,7 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
         `FlowCustomerBuildTempApiKey` class.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = FlowCustomerBuildTempApiKey(
             session_context)
 

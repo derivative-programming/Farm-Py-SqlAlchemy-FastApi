@@ -52,7 +52,7 @@ class OrganizationBusObj(OrganizationDynaFlowsBusObj):
                 list of converted OrganizationBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for organization in obj_list:
             organization_bus_obj = OrganizationBusObj(
@@ -124,7 +124,7 @@ class OrganizationBusObj(OrganizationDynaFlowsBusObj):
         """
         get all org_customer
         """
-        results = list()
+        results = []
         org_customer_manager = managers_and_enums.OrgCustomerManager(
             self._session_context)
         obj_list = await org_customer_manager.get_by_organization_id(
@@ -160,7 +160,7 @@ class OrganizationBusObj(OrganizationDynaFlowsBusObj):
         """
         get all org_api_key
         """
-        results = list()
+        results = []
         org_api_key_manager = managers_and_enums.OrgApiKeyManager(
             self._session_context)
         obj_list = await org_api_key_manager.get_by_organization_id(

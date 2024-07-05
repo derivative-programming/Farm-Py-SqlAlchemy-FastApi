@@ -6,26 +6,25 @@ This module contains unit tests for the
 `pac_user_flavor_list` endpoint.
 """
 
+import json  # noqa: F401
 import logging  # noqa: F401
 import uuid
-import json  # noqa: F401
 from unittest.mock import AsyncMock, patch
 
-import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import apis.fs_farm_api.v1_0.endpoints.tests.test_constants as test_constants
 import models.factory as model_factorys  # noqa: F401
-from helpers.api_token import ApiToken  # noqa: F401
+import pytest
 from apis import models as apis_models
 from database import get_db
+from helpers.api_token import ApiToken  # noqa: F401
 from main import app
 
-from .....models import (  # pylint: disable=reimported  # noqa: F401
-    factory as request_factory)
-from ..pac_user_flavor_list import (
-    PacUserFlavorListRouterConfig)
+from .....models import \
+    factory as request_factory  # pylint: disable=reimported  # noqa: F401
+from ..pac_user_flavor_list import PacUserFlavorListRouterConfig
 
 
 @pytest.mark.asyncio

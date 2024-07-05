@@ -82,7 +82,7 @@ class PacBusObj(PacDynaFlowsBusObj):
                 list of converted PacBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for pac in obj_list:
             pac_bus_obj = PacBusObj(
@@ -174,7 +174,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get all tri_state_filter
         """
-        results = list()
+        results = []
         tri_state_filter_manager = managers_and_enums.TriStateFilterManager(
             self._session_context)
         obj_list = await tri_state_filter_manager.get_by_pac_id(
@@ -210,7 +210,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get all tac
         """
-        results = list()
+        results = []
         tac_manager = managers_and_enums.TacManager(
             self._session_context)
         obj_list = await tac_manager.get_by_pac_id(
@@ -246,7 +246,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get all role
         """
-        results = list()
+        results = []
         role_manager = managers_and_enums.RoleManager(
             self._session_context)
         obj_list = await role_manager.get_by_pac_id(
@@ -282,7 +282,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get all land
         """
-        results = list()
+        results = []
         land_manager = managers_and_enums.LandManager(
             self._session_context)
         obj_list = await land_manager.get_by_pac_id(
@@ -318,7 +318,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get all flavor
         """
-        results = list()
+        results = []
         flavor_manager = managers_and_enums.FlavorManager(
             self._session_context)
         obj_list = await flavor_manager.get_by_pac_id(
@@ -354,7 +354,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get all error_log
         """
-        results = list()
+        results = []
         error_log_manager = managers_and_enums.ErrorLogManager(
             self._session_context)
         obj_list = await error_log_manager.get_by_pac_id(
@@ -395,7 +395,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get all dyna_flow_type_schedule
         """
-        results = list()
+        results = []
         dyna_flow_type_schedule_manager = managers_and_enums.DynaFlowTypeScheduleManager(
             self._session_context)
         obj_list = await dyna_flow_type_schedule_manager.get_by_pac_id(
@@ -431,7 +431,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get all dyna_flow_type
         """
-        results = list()
+        results = []
         dyna_flow_type_manager = managers_and_enums.DynaFlowTypeManager(
             self._session_context)
         obj_list = await dyna_flow_type_manager.get_by_pac_id(
@@ -467,7 +467,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get all dyna_flow_task_type
         """
-        results = list()
+        results = []
         dyna_flow_task_type_manager = managers_and_enums.DynaFlowTaskTypeManager(
             self._session_context)
         obj_list = await dyna_flow_task_type_manager.get_by_pac_id(
@@ -508,7 +508,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get all dyna_flow
         """
-        results = list()
+        results = []
         dyna_flow_manager = managers_and_enums.DynaFlowManager(
             self._session_context)
         obj_list = await dyna_flow_manager.get_by_pac_id(
@@ -525,7 +525,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get dyna_flow by dependency_dyna_flow_id
         """
-        results = list()
+        results = []
         dyna_flow_manager = managers_and_enums.DynaFlowManager(
             self._session_context)
         obj_list = await dyna_flow_manager.get_by_dependency_dyna_flow_id_prop(
@@ -542,7 +542,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get dyna_flow by is_completed
         """
-        results = list()
+        results = []
         dyna_flow_manager = managers_and_enums.DynaFlowManager(
             self._session_context)
         obj_list = await dyna_flow_manager.get_by_is_completed_prop(
@@ -559,7 +559,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get dyna_flow by root_dyna_flow_id
         """
-        results = list()
+        results = []
         dyna_flow_manager = managers_and_enums.DynaFlowManager(
             self._session_context)
         obj_list = await dyna_flow_manager.get_by_root_dyna_flow_id_prop(
@@ -576,7 +576,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get dyna_flow by subject_code
         """
-        results = list()
+        results = []
         dyna_flow_manager = managers_and_enums.DynaFlowManager(
             self._session_context)
         obj_list = await dyna_flow_manager.get_by_subject_code_prop(
@@ -612,7 +612,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get all df_maintenance
         """
-        results = list()
+        results = []
         df_maintenance_manager = managers_and_enums.DFMaintenanceManager(
             self._session_context)
         obj_list = await df_maintenance_manager.get_by_pac_id(
@@ -648,7 +648,7 @@ class PacBusObj(PacDynaFlowsBusObj):
         """
         get all date_greater_than_filter
         """
-        results = list()
+        results = []
         date_greater_than_filter_manager = managers_and_enums.DateGreaterThanFilterManager(
             self._session_context)
         obj_list = await date_greater_than_filter_manager.get_by_pac_id(

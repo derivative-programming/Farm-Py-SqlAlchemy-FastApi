@@ -49,7 +49,7 @@ class DynaFlowBusObj(DynaFlowDynaFlowsBusObj):
                 list of converted DynaFlowBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for dyna_flow in obj_list:
             dyna_flow_bus_obj = DynaFlowBusObj(
@@ -182,7 +182,7 @@ class DynaFlowBusObj(DynaFlowDynaFlowsBusObj):
         """
         get all dyna_flow_task
         """
-        results = list()
+        results = []
         dyna_flow_task_manager = managers_and_enums.DynaFlowTaskManager(
             self._session_context)
         obj_list = await dyna_flow_task_manager.get_by_dyna_flow_id(

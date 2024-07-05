@@ -52,7 +52,7 @@ class TacBusObj(TacDynaFlowsBusObj):
                 list of converted TacBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for tac in obj_list:
             tac_bus_obj = TacBusObj(
@@ -178,7 +178,7 @@ class TacBusObj(TacDynaFlowsBusObj):
         """
         get all organization
         """
-        results = list()
+        results = []
         organization_manager = managers_and_enums.OrganizationManager(
             self._session_context)
         obj_list = await organization_manager.get_by_tac_id(
@@ -214,7 +214,7 @@ class TacBusObj(TacDynaFlowsBusObj):
         """
         get all customer
         """
-        results = list()
+        results = []
         customer_manager = managers_and_enums.CustomerManager(
             self._session_context)
         obj_list = await customer_manager.get_by_tac_id(
@@ -231,7 +231,7 @@ class TacBusObj(TacDynaFlowsBusObj):
         """
         get customer by email
         """
-        results = list()
+        results = []
         customer_manager = managers_and_enums.CustomerManager(
             self._session_context)
         obj_list = await customer_manager.get_by_email_prop(
@@ -248,7 +248,7 @@ class TacBusObj(TacDynaFlowsBusObj):
         """
         get customer by fs_user_code_value
         """
-        results = list()
+        results = []
         customer_manager = managers_and_enums.CustomerManager(
             self._session_context)
         obj_list = await customer_manager.get_by_fs_user_code_value_prop(

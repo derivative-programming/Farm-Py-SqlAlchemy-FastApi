@@ -169,7 +169,7 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
             )
             response_instance = \
                 LandUserPlantMultiSelectToEditablePostModelResponse()
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             land = await LandFactory.create_async(session)
 

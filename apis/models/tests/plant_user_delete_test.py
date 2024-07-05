@@ -167,7 +167,7 @@ class TestPlantUserDeletePostModelResponse:
             )
             response_instance = \
                 PlantUserDeletePostModelResponse()
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             plant = await PlantFactory.create_async(session)
 

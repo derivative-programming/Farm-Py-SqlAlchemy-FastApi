@@ -9,10 +9,12 @@ services:
       - "8000:8000"
     container_name: app
     environment:
-      DATABASE_URL: sqlite+aiosqlite:///./pytest/data/test.db
+      TEST_DATABASE_URL: sqlite+aiosqlite:///./pytest/data/test.db
+      API_KEY_SECRET: laisjdf;asdifj[fi9wejr'wekf]
+      ENCRYPTION_KEY_SECRET: alsk;fj2 i3jeqealfjansdflkmadf
     volumes:
-      - ./reports:/app/pytest/reports
-      - ./data:/app/pytest/data  # Ensure the SQLite file is available in this directory
+      - ./pytest/reports:/usr/src/app/pytest/reports
+      - ./pytest/data:/usr/src/app/pytest/data
     networks:
       - app-network
 
@@ -22,32 +24,38 @@ services:
       - ./pytest/reports/htmlcov:/usr/share/nginx/html:ro
     ports:
       - "8080:80"
+    container_name: nginx
     depends_on:
       - app
+    networks:
+      - app-network
 
   adminer:
     image: adminer
     ports:
       - "8081:8080"
+    container_name: adminer
     volumes:
-      - ./pytest/data:/app/data  # Ensure the SQLite file is available in this directory
-  
+      - ./pytest/data:/var/www/html:ro
+    networks:
+      - app-network
 
   allure:
     image: frankescobar/allure-docker-service
     ports:
       - "4040:4040"
+    container_name: allure
     volumes:
       - ./pytest/reports/allure-results:/app/allure-results
+      - ./pytest/reports/allure-report:/app/allure-report
     environment:
       CHECK_RESULTS_EVERY_SECONDS: 10
       KEEP_HISTORY: 1
     depends_on:
       - app
+    networks:
+      - app-network
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  app_postgres_data:

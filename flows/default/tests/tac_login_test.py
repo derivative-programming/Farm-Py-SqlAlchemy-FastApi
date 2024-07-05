@@ -77,7 +77,7 @@ class TestTacLoginPostModelResponse:
         `FlowTacLogin` class.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = FlowTacLogin(
             session_context)
 

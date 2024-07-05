@@ -54,7 +54,7 @@ class CustomerUserLogOutInitObjWFGetInitModelResponse(
         FlowCustomerUserLogOutInitObjWFResult object.
         """
 
-        self.validation_errors = list()
+        self.validation_errors = []
         self.success = False
         self.message = ""
         self.tac_code = (
@@ -114,7 +114,7 @@ class CustomerUserLogOutInitObjWFGetInitModelRequest(
                 "CustomerUserLogOutInitObjWF"
                 "GetInitModelRequest")
             response.success = False
-            response.validation_errors = list()
+            response.validation_errors = []
             for key in ve.error_dict:
                 val_error = ValidationErrorItem()
                 val_error.property = snake_to_camel(key)

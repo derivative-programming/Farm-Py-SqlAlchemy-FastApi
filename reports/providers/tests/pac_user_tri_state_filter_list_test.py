@@ -43,7 +43,7 @@ class TestReportProviderPacUserTriStateFilterList:
         checked for the expected format.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         await current_runtime.initialize(session_context)
         report_provider = ReportProviderPacUserTriStateFilterList(
             session_context)

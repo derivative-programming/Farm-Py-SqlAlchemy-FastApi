@@ -61,7 +61,7 @@ class TestLandUserPlantMultiSelectToNotEditablePostModelResponse:
         `FlowLandUserPlantMultiSelectToNotEditable` class.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = FlowLandUserPlantMultiSelectToNotEditable(
             session_context)
 

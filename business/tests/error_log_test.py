@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> ErrorLogBusObj:
     the ErrorLog class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     error_log_bus_obj = ErrorLogBusObj(session_context, new_obj)
 
     return error_log_bus_obj

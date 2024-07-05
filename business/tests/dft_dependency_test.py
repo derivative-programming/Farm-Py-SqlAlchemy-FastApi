@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> DFTDependencyBusObj:
     the DFTDependency class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     dft_dependency_bus_obj = DFTDependencyBusObj(session_context, new_obj)
 
     return dft_dependency_bus_obj

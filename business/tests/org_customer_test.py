@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> OrgCustomerBusObj:
     the OrgCustomer class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     org_customer_bus_obj = OrgCustomerBusObj(session_context, new_obj)
 
     return org_customer_bus_obj

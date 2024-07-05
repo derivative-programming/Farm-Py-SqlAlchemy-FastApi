@@ -46,7 +46,7 @@ class RoleBusObj(RoleDynaFlowsBusObj):
                 list of converted RoleBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for role in obj_list:
             role_bus_obj = RoleBusObj(

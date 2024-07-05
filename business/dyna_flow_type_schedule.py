@@ -46,7 +46,7 @@ class DynaFlowTypeScheduleBusObj(DynaFlowTypeScheduleDynaFlowsBusObj):
                 list of converted DynaFlowTypeScheduleBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for dyna_flow_type_schedule in obj_list:
             dyna_flow_type_schedule_bus_obj = DynaFlowTypeScheduleBusObj(

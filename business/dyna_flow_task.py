@@ -49,7 +49,7 @@ class DynaFlowTaskBusObj(DynaFlowTaskDynaFlowsBusObj):
                 list of converted DynaFlowTaskBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for dyna_flow_task in obj_list:
             dyna_flow_task_bus_obj = DynaFlowTaskBusObj(
@@ -173,7 +173,7 @@ class DynaFlowTaskBusObj(DynaFlowTaskDynaFlowsBusObj):
         """
         get all dft_dependency
         """
-        results = list()
+        results = []
         dft_dependency_manager = managers_and_enums.DFTDependencyManager(
             self._session_context)
         obj_list = await dft_dependency_manager.get_by_dyna_flow_task_id(

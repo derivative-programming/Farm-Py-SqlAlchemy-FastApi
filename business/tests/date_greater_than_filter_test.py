@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> DateGreaterThanFilterBusObj:
     the DateGreaterThanFilter class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     date_greater_than_filter_bus_obj = DateGreaterThanFilterBusObj(session_context, new_obj)
 
     return date_greater_than_filter_bus_obj

@@ -81,7 +81,7 @@ class TestDynaFlowTypeScheduleBaseBusObj:
         Fixture that returns an instance of the
         DynaFlowTypeScheduleManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return DynaFlowTypeScheduleManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestDynaFlowTypeScheduleBaseBusObj:
         Fixture that returns an instance of the
         DynaFlowTypeScheduleBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return DynaFlowTypeScheduleBusObj(
             session_context)
 

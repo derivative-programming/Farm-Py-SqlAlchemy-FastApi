@@ -81,7 +81,7 @@ class TestFlavorBaseBusObj:
         Fixture that returns an instance of the
         FlavorManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return FlavorManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestFlavorBaseBusObj:
         Fixture that returns an instance of the
         FlavorBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return FlavorBusObj(
             session_context)
 

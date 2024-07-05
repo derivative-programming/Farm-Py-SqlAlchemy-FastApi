@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> FlavorBusObj:
     the Flavor class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     flavor_bus_obj = FlavorBusObj(session_context, new_obj)
 
     return flavor_bus_obj

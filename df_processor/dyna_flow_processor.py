@@ -127,7 +127,7 @@ class DynaFlowProcessor:
         Build a session context.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         session_context.role_name_csv = "Config"
         session_context.user_name = "System"
         session_context.session_code = uuid.uuid4()
@@ -577,7 +577,7 @@ class DynaFlowProcessor:
         Get the task build to-do list.
         """
         print("Getting task build to-do list")
-        build_to_do_list = list()
+        build_to_do_list = []
 
         async for session in get_db():
 
@@ -620,7 +620,7 @@ class DynaFlowProcessor:
         Get the DynaFlow type list.
         """
         print("Getting DynaFlow type list")
-        dyna_flow_type_list = list()
+        dyna_flow_type_list = []
 
         async for session in get_db():
 
@@ -651,7 +651,7 @@ class DynaFlowProcessor:
         Get the DynaFlow task type list.
         """
         print("Getting DynaFlow task type list")
-        dyna_flow_task_type_list = list()
+        dyna_flow_task_type_list = []
 
         async for session in get_db():
 
@@ -808,7 +808,7 @@ class DynaFlowProcessor:
         Get the task run to-do list
         """
         print("Getting task run to-do list")
-        run_to_do_list = list()
+        run_to_do_list = []
 
         async for session in get_db():
 

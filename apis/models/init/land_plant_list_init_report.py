@@ -124,7 +124,7 @@ class LandPlantListInitReportGetInitModelResponse(
         FlowLandPlantListInitReportResult object.
         """
 
-        self.validation_errors = list()
+        self.validation_errors = []
         self.success = False
         self.message = ""
         self.some_int_val = (
@@ -218,7 +218,7 @@ class LandPlantListInitReportGetInitModelRequest(
                 "LandPlantListInitReport"
                 "GetInitModelRequest")
             response.success = False
-            response.validation_errors = list()
+            response.validation_errors = []
             for key in ve.error_dict:
                 val_error = ValidationErrorItem()
                 val_error.property = snake_to_camel(key)

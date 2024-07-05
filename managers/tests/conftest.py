@@ -19,8 +19,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 import pytest
 import pytest_asyncio
 from models import Base
-
-DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+from config import TEST_DATABASE_URL
 
 
 @pytest.fixture(scope="function")
@@ -47,7 +46,7 @@ def engine():
     Returns a SQLAlchemy engine.
 
     This function creates and returns a SQLAlchemy
-    engine using the provided DATABASE_URL.
+    engine using the provided TEST_DATABASE_URL.
     The engine is created as an asynchronous engine
     and is yielded as a context manager.
     After the context manager is exited, the engine is disposed.
@@ -56,7 +55,7 @@ def engine():
         sqlalchemy.ext.asyncio.AsyncEngine: The SQLAlchemy engine.
 
     """
-    engine = create_async_engine(DATABASE_URL, echo=False)
+    engine = create_async_engine(TEST_DATABASE_URL, echo=False)
     yield engine
     engine.sync_engine.dispose()
 

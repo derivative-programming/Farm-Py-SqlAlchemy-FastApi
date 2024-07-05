@@ -40,7 +40,7 @@ class TestBaseFlowPacUserTacListInitReport():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = BaseFlowPacUserTacListInitReport(
             session_context)
         pac = await \
@@ -85,7 +85,7 @@ class TestBaseFlowPacUserTacListInitReport():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         pac = await \
             PacFactory.create_async(session)
         flow = BaseFlowPacUserTacListInitReport(

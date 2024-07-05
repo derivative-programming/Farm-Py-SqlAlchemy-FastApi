@@ -39,7 +39,7 @@ class TestLandFluentBusObj:
         Return a LandFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return LandFluentBusObj(
             session_context)
     # description

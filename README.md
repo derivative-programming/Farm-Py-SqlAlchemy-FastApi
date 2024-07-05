@@ -42,7 +42,6 @@ test...
 pytest
 test and show all...
 pytest -v --alluredir=allure-results
-allure generate allure-results -o allure-report
 docker run -d -p 4040:4040 -v ${PWD}\allure-results:/app/allure-results -v ${PWD}\allure-report:/app/allure-report frankescobar/allure-docker-service
 http://localhost:4040
 
@@ -51,14 +50,29 @@ coverage run -m pytest
 coverage report  # for a simple report
 coverage html # for a larger report
 
-run local with sqlite...
-uvicorn main:app --reload
-http://127.0.0.1:8000
+test with sqlite on docker...
+docker compose -f "docker-compose.sqlite-[db or memory].pytest.yml" up -d --build
+allure report: http://localhost:4040
+coverage report: http://localhost:8080
+view sqlite db: 
+
+SonarQube Analysis...
+docker compose -f "docker-compose.sonarqube.yml" up -d --build
+server: http://localhost:9000
+
 
 collect requirements...
 >pip freeze > requirements.txt
 copy requirements.txt requirements.windows.txt
 remvoe "pywin32==306" from requirements.txt (this is for windows, not the linux images)
+
+view dependency tree...
+pipdeptree > dependencies.txt
+
+
+run local with sqlite...
+uvicorn main:app --reload
+http://127.0.0.1:8000
 
 build and run in docker with default sqlite db...
 docker build -f Dockerfile.app -t demo_app-image .
@@ -105,4 +119,3 @@ Before you can contribute, you'll need to set up a local copy of the repository:
 * Select the branch you just pushed your changes to.
 * Give your pull request a meaningful title and description.
 * Submit the pull request and wait for a project maintainer to review your changes.
-

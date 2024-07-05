@@ -241,7 +241,7 @@ class TriStateFilterManager:
 
         query_results = result_proxy.all()
 
-        result = list()
+        result = []
 
         for query_result_row in query_results:
             i = 0

@@ -181,7 +181,7 @@ class TestTacLoginPostModelResponse:
             )
             response_instance = \
                 TacLoginPostModelResponse()
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             tac = await TacFactory.create_async(session)
 

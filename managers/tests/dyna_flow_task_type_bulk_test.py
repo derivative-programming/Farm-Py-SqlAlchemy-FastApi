@@ -35,7 +35,7 @@ class TestDynaFlowTaskTypeBulkManager:
         Fixture that returns an instance of
         `DynaFlowTaskTypeManager` for testing.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         session_context.customer_code = uuid.uuid4()
         return DynaFlowTaskTypeManager(session_context)
 

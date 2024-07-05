@@ -38,10 +38,10 @@ class FlowValidationError(Exception):
             self.error_dict = error_dict
             self.message = next(iter(error_dict.values()))
         elif field_name is not None and message is not None:
-            self.error_dict = dict()
+            self.error_dict = {}
             self.error_dict[field_name] = message
         elif message is not None:
-            self.error_dict = dict()
+            self.error_dict = {}
             self.error_dict[""] = message
         else:
             self.error_dict = {}

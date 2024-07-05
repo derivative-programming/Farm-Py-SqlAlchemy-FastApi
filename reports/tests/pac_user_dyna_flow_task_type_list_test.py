@@ -67,7 +67,7 @@ class TestReportManagerPacUserDynaFlowTaskTypeList:
             order_by_column_name: str,
             order_by_descending: bool,
         ):
-            result = list()
+            result = []
             return result
 
         with patch.object(
@@ -77,7 +77,7 @@ class TestReportManagerPacUserDynaFlowTaskTypeList:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
             report_generator = ReportManagerPacUserDynaFlowTaskTypeList(
                 session_context)
             pac = await PacFactory.create_async(
@@ -128,7 +128,7 @@ class TestReportManagerPacUserDynaFlowTaskTypeList:
             order_by_column_name: str,
             order_by_descending: bool,
         ):
-            result = list()
+            result = []
             return result
 
         with patch.object(
@@ -138,7 +138,7 @@ class TestReportManagerPacUserDynaFlowTaskTypeList:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
             report_generator = ReportManagerPacUserDynaFlowTaskTypeList(
                 session_context)
             pac = await PacFactory.create_async(
@@ -187,7 +187,7 @@ class TestReportManagerPacUserDynaFlowTaskTypeList:
             order_by_column_name: str,
             order_by_descending: bool,
         ):
-            result = list()
+            result = []
             return result
 
         with patch.object(
@@ -197,7 +197,7 @@ class TestReportManagerPacUserDynaFlowTaskTypeList:
         ) as mock_method:
             mock_method.side_effect = mock_generate_list
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
             report_generator = ReportManagerPacUserDynaFlowTaskTypeList(
                 session_context)
             pac = await PacFactory.create_async(
@@ -244,7 +244,7 @@ class TestReportManagerPacUserDynaFlowTaskTypeList:
         """
 
         session_context = SessionContext(
-            dict(), session)
+            {}, session)
         test_obj = ReportManagerPacUserDynaFlowTaskTypeList(
             session_context)
         test_data = [ReportItemPacUserDynaFlowTaskTypeList(),
@@ -273,7 +273,7 @@ class TestReportManagerPacUserDynaFlowTaskTypeList:
                     file is not as expected.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         test_obj = ReportManagerPacUserDynaFlowTaskTypeList(
             session_context)
 
@@ -311,7 +311,7 @@ class TestReportManagerPacUserDynaFlowTaskTypeList:
             None
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         test_obj = ReportManagerPacUserDynaFlowTaskTypeList(
             session_context)
 

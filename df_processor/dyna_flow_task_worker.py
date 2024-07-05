@@ -120,7 +120,7 @@ class DynaFlowTaskWorker:
         """
         async for session in get_db():
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             try:
 
@@ -187,11 +187,11 @@ class DynaFlowTaskWorker:
         """
         Get the DynaFlow task type list.
         """
-        dyna_flow_task_type_list = list()
+        dyna_flow_task_type_list = []
 
         async for session in get_db():
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             try:
 
@@ -218,11 +218,11 @@ class DynaFlowTaskWorker:
         """
         Get the task run to-do list
         """
-        run_to_do_list = list()
+        run_to_do_list = []
 
         async for session in get_db():
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             try:
 
@@ -266,7 +266,7 @@ class DynaFlowTaskWorker:
 
         async for session in get_db():
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             try:
 
@@ -378,7 +378,7 @@ class DynaFlowTaskWorker:
                 
                 async for session in get_db():
 
-                    session_context = SessionContext(dict(), session)
+                    session_context = SessionContext({}, session)
 
                     try:
 
@@ -425,7 +425,7 @@ class DynaFlowTaskWorker:
 
         async for session in get_db():
 
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             try:
 
@@ -518,7 +518,7 @@ class DynaFlowTaskWorker:
         if success is not True:
             async for session in get_db():
 
-                session_context = SessionContext(dict(), session)
+                session_context = SessionContext({}, session)
 
                 try:
 

@@ -167,7 +167,7 @@ class TestDynaFlowTaskPlantTaskOnePostModelResponse:
             )
             response_instance = \
                 DynaFlowTaskPlantTaskOnePostModelResponse()
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             dyna_flow_task = await DynaFlowTaskFactory.create_async(session)
 

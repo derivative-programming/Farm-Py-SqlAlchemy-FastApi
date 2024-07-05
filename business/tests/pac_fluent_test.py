@@ -38,7 +38,7 @@ class TestPacFluentBusObj:
         Return a PacFluentBusObj
         object.
         """
-        session_context = SessionContext(dict(), session=session)
+        session_context = SessionContext({}, session=session)
         return PacFluentBusObj(
             session_context)
     # description

@@ -46,7 +46,7 @@ class OrgCustomerBusObj(OrgCustomerDynaFlowsBusObj):
                 list of converted OrgCustomerBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for org_customer in obj_list:
             org_customer_bus_obj = OrgCustomerBusObj(

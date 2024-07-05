@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> RoleBusObj:
     the Role class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     role_bus_obj = RoleBusObj(session_context, new_obj)
 
     return role_bus_obj

@@ -46,7 +46,7 @@ class DFMaintenanceBusObj(DFMaintenanceDynaFlowsBusObj):
                 list of converted DFMaintenanceBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for df_maintenance in obj_list:
             df_maintenance_bus_obj = DFMaintenanceBusObj(

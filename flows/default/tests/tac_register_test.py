@@ -77,7 +77,7 @@ class TestTacRegisterPostModelResponse:
         `FlowTacRegister` class.
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = FlowTacRegister(
             session_context)
 

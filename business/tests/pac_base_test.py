@@ -81,7 +81,7 @@ class TestPacBaseBusObj:
         Fixture that returns an instance of the
         PacManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return PacManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestPacBaseBusObj:
         Fixture that returns an instance of the
         PacBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return PacBusObj(
             session_context)
 
@@ -804,7 +804,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -832,7 +832,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -874,7 +874,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -902,7 +902,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -944,7 +944,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -972,7 +972,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1014,7 +1014,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1042,7 +1042,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1084,7 +1084,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1112,7 +1112,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1154,7 +1154,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1182,7 +1182,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1224,7 +1224,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1252,7 +1252,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1294,7 +1294,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1322,7 +1322,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1364,7 +1364,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1392,7 +1392,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1434,7 +1434,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1462,7 +1462,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1504,7 +1504,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1532,7 +1532,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1574,7 +1574,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 
@@ -1602,7 +1602,7 @@ class TestPacBaseBusObj:
             #TODO add comment
         """
 
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
 
         await current_runtime.initialize(session_context)
 

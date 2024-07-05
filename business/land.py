@@ -49,7 +49,7 @@ class LandBusObj(LandDynaFlowsBusObj):
                 list of converted LandBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for land in obj_list:
             land_bus_obj = LandBusObj(
@@ -180,7 +180,7 @@ class LandBusObj(LandDynaFlowsBusObj):
         """
         get all plant
         """
-        results = list()
+        results = []
         plant_manager = managers_and_enums.PlantManager(
             self._session_context)
         obj_list = await plant_manager.get_by_land_id(

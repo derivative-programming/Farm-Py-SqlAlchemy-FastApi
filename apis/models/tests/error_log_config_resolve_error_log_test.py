@@ -167,7 +167,7 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
             )
             response_instance = \
                 ErrorLogConfigResolveErrorLogPostModelResponse()
-            session_context = SessionContext(dict(), session)
+            session_context = SessionContext({}, session)
 
             error_log = await ErrorLogFactory.create_async(session)
 

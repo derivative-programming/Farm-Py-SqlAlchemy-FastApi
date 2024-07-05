@@ -83,7 +83,7 @@ class ReportProviderPacUserDateGreaterThanFilterList():
         logging.info("%s Start", flow_name)
         logging.info("%s context_code: %s", flow_name, str(context_code))
         # offset = (page_number - 1) * item_count_per_page
-        query_dict = dict()
+        query_dict = {}
         query_dict["context_code"] = (
             str(context_code))
 

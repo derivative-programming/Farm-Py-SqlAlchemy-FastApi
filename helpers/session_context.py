@@ -36,7 +36,7 @@ class SessionContext:
     customer_code: uuid.UUID = uuid.UUID(int=0)
     tac_code: uuid.UUID = uuid.UUID(int=0)
     pac_code: uuid.UUID = uuid.UUID(int=0)
-    api_key_dict: dict = dict()
+    api_key_dict: dict = {}
     session_code: uuid.UUID = uuid.UUID(int=0)
     role_name_csv: str = ""
     session: AsyncSession = None  # type: ignore

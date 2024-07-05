@@ -46,7 +46,7 @@ class DFTDependencyBusObj(DFTDependencyDynaFlowsBusObj):
                 list of converted DFTDependencyBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for dft_dependency in obj_list:
             dft_dependency_bus_obj = DFTDependencyBusObj(

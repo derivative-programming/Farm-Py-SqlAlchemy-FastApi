@@ -35,7 +35,7 @@
         """
         get all GENVALSnakeName
         """
-        results = list()
+        results = []
         GENVALSnakeName_manager = managers_and_enums.GENVALPascalNameManager(
             self._session_context)
         obj_list = await GENVALSnakeName_manager.get_by_GENVALSnakeParentObjectName_id(
@@ -55,7 +55,7 @@
         """
         get GENVALSnakeObjectName by GENVALSnakeName
         """
-        results = list()
+        results = []
         GENVALSnakeObjectName_manager = managers_and_enums.GENVALPascalObjectNameManager(
             self._session_context)
         obj_list = await GENVALSnakeObjectName_manager.get_by_GENVALSnakeName_prop(

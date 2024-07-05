@@ -20,7 +20,7 @@ from models.factory import DynaFlowTaskTypeFactory
 from services.logging_config import get_logger
 logger = get_logger(__name__)
 
-DATABASE_URL = "sqlite:///:memory:"
+TEST_DATABASE_URL = "sqlite:///:memory:"
 
 
 class TestDynaFlowTaskTypeFactory:
@@ -33,7 +33,7 @@ class TestDynaFlowTaskTypeFactory:
         """
         Fixture for creating a database engine.
         """
-        engine = create_engine(DATABASE_URL, echo=False)
+        engine = create_engine(TEST_DATABASE_URL, echo=False)
         # FKs are not activated by default in sqllite
         with engine.connect() as conn:
             conn.execute(text("PRAGMA foreign_keys=ON"))

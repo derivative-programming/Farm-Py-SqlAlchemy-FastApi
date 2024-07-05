@@ -26,7 +26,7 @@ from sqlalchemy.orm import sessionmaker
 from models import Base, CustomerRole
 from models.factory import CustomerRoleFactory
 
-DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 
 class TestCustomerRoleFactoryAsync:
@@ -49,7 +49,7 @@ class TestCustomerRoleFactoryAsync:
         """
         Fixture that returns an async engine for the test functions.
         """
-        engine = create_async_engine(DATABASE_URL, echo=False)
+        engine = create_async_engine(TEST_DATABASE_URL, echo=False)
         yield engine
         engine.sync_engine.dispose()
 

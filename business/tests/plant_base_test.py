@@ -82,7 +82,7 @@ class TestPlantBaseBusObj:
         Fixture that returns an instance of the
         PlantManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return PlantManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -91,7 +91,7 @@ class TestPlantBaseBusObj:
         Fixture that returns an instance of the
         PlantBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return PlantBusObj(
             session_context)
 

@@ -40,7 +40,7 @@ class TestBaseFlowTacLogin():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = BaseFlowTacLogin(
             session_context)
         tac = await \
@@ -98,7 +98,7 @@ class TestBaseFlowTacLogin():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         tac = await \
             TacFactory.create_async(session)
         flow = BaseFlowTacLogin(

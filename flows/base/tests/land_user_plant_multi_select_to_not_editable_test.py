@@ -40,7 +40,7 @@ class TestBaseFlowLandUserPlantMultiSelectToNotEditable():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         flow = BaseFlowLandUserPlantMultiSelectToNotEditable(
             session_context)
         land = await \
@@ -90,7 +90,7 @@ class TestBaseFlowLandUserPlantMultiSelectToNotEditable():
         Returns:
             None
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         land = await \
             LandFactory.create_async(session)
         flow = BaseFlowLandUserPlantMultiSelectToNotEditable(

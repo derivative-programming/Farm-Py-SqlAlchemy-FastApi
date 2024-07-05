@@ -37,7 +37,7 @@ class TestOrgApiKeyManager:
         Fixture that returns an instance of
         `OrgApiKeyManager` for testing.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         session_context.customer_code = uuid.uuid4()
         return OrgApiKeyManager(session_context)
 

@@ -81,7 +81,7 @@ class TestDFMaintenanceBaseBusObj:
         Fixture that returns an instance of the
         DFMaintenanceManager class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return DFMaintenanceManager(session_context)
 
     @pytest_asyncio.fixture(scope="function")
@@ -90,7 +90,7 @@ class TestDFMaintenanceBaseBusObj:
         Fixture that returns an instance of the
         DFMaintenanceBusObj class.
         """
-        session_context = SessionContext(dict(), session)
+        session_context = SessionContext({}, session)
         return DFMaintenanceBusObj(
             session_context)
 

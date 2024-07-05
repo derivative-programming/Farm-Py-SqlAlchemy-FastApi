@@ -79,10 +79,10 @@ class ApiToken:
         """
         if token is None:
             logging.info("No auth token found")
-            return dict()
+            return {}
         if token == "":
             logging.info("Empty auth token found")
-            return dict()
+            return {}
         try:
             payload = ""
             # Decode the token and verify its validity
@@ -90,7 +90,7 @@ class ApiToken:
             return payload
         except jwt.ExpiredSignatureError:
             logging.info("Auth token expired")
-            return dict()  # The token has expired
+            return {}  # The token has expired
         except jwt.InvalidTokenError:
             logging.info("Auth token invalid")
-            return dict()  # The token is invalid
+            return {}  # The token is invalid

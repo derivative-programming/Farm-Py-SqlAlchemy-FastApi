@@ -46,7 +46,7 @@ class OrgApiKeyBusObj(OrgApiKeyDynaFlowsBusObj):
                 list of converted OrgApiKeyBusObj
                 objects.
         """
-        result = list()
+        result = []
 
         for org_api_key in obj_list:
             org_api_key_bus_obj = OrgApiKeyBusObj(

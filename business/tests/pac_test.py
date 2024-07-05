@@ -68,7 +68,7 @@ async def new_bus_obj(session, new_obj) -> PacBusObj:
     the Pac class.
     """
 
-    session_context = SessionContext(dict(), session)
+    session_context = SessionContext({}, session)
     pac_bus_obj = PacBusObj(session_context, new_obj)
 
     return pac_bus_obj

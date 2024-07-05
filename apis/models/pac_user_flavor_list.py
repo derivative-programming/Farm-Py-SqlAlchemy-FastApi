@@ -258,7 +258,7 @@ class PacUserFlavorListGetModelResponse(
                 request.order_by_column_name,
                 request.order_by_descending
             )
-            self.items = list()
+            self.items = []
             for item in items:
                 report_item = \
                     PacUserFlavorListGetModelResponseItem()
@@ -269,7 +269,7 @@ class PacUserFlavorListGetModelResponse(
         except ReportRequestValidationError as ve:
             self.success = False
             self.message = "Validation Error..."
-            self.validation_errors = list()
+            self.validation_errors = []
 
             error_messages = []
 

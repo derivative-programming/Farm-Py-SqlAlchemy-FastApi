@@ -17,9 +17,7 @@ import current_runtime
 from helpers.api_token import ApiToken
 from helpers.session_context import SessionContext
 from models import Base
-
-# Define your in-memory SQLite test database URL
-TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+from config import TEST_DATABASE_URL
 
 
 @pytest_asyncio.fixture(scope="function")
@@ -60,7 +58,7 @@ async def api_key_fixture(overridden_get_db: AsyncSession):
     Fixture that builds a test API key for unit testing.
     """
 
-    session_context = SessionContext(dict(), overridden_get_db)
+    session_context = SessionContext({}, overridden_get_db)
 
     await current_runtime.initialize(session_context)
 
