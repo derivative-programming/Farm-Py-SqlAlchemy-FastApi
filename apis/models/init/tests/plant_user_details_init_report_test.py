@@ -15,6 +15,7 @@ import pytest
 
 from helpers import SessionContext, TypeConversion
 
+from models.factory.plant import PlantFactory
 from ..plant_user_details_init_report import (
     PlantUserDetailsInitReportGetInitModelRequest,
     PlantUserDetailsInitReportGetInitModelResponse)
@@ -82,7 +83,7 @@ def test_to_json():
 
 
 @pytest.mark.asyncio
-async def test_process_request(flow_response):
+async def test_process_request(flow_response, session):
     """
     Test the process_request method.
     """
@@ -102,10 +103,11 @@ async def test_process_request(flow_response):
     request = PlantUserDetailsInitReportGetInitModelRequest()
     response = PlantUserDetailsInitReportGetInitModelResponse()
 
-    plant_code = uuid.uuid4()
+    plant = await PlantFactory.create_async(session)
+
     result = await request.process_request(
         mock_session_context,
-        plant_code,
+        plant.code,
         response)
 
     assert result.success is True

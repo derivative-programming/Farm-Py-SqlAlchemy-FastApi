@@ -1,6 +1,9 @@
 # business/customer_role_reports.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the CustomerRoleReportsBusObj class
+which provides methods to generate various reports
+related to CustomerRole objects.
 """
 import uuid
 from datetime import date, datetime, timezone  # noqa: F401
@@ -18,4 +21,7 @@ from .customer_role_fluent import CustomerRoleFluentBusObj
 
 class CustomerRoleReportsBusObj(CustomerRoleFluentBusObj):
     """
+    This class extends the CustomerRoleFluentBusObj class
+    and provides methods to generate various reports
+    related to CustomerRole objects.
     """

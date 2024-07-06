@@ -540,7 +540,7 @@ async def test_submit_endpoint_method_failure(
         assert response.status_code == 405
 
 
-def teardown_module(module):  # pylint: disable=unused-argument
+def teardown_module():
     """
     Teardown function for the module.
 

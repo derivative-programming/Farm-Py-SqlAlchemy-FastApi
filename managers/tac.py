@@ -130,7 +130,7 @@ class TacManager:
                 matching the enum value.
         """
         query_filter = (
-            Tac._lookup_enum_name == enum_val.value)
+            Tac._lookup_enum_name == enum_val.value)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 

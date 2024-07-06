@@ -1,6 +1,9 @@
 # business/tri_state_filter_reports.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the TriStateFilterReportsBusObj class
+which provides methods to generate various reports
+related to TriStateFilter objects.
 """
 import uuid
 from datetime import date, datetime, timezone  # noqa: F401
@@ -18,4 +21,7 @@ from .tri_state_filter_fluent import TriStateFilterFluentBusObj
 
 class TriStateFilterReportsBusObj(TriStateFilterFluentBusObj):
     """
+    This class extends the TriStateFilterFluentBusObj class
+    and provides methods to generate various reports
+    related to TriStateFilter objects.
     """

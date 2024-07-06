@@ -26,6 +26,7 @@ from ..land_plant_list import (
     LandPlantListGetModelRequest,
     LandPlantListGetModelResponse,
     LandPlantListGetModelResponseItem)
+from models.factory.land import LandFactory
 
 TEST_ERROR_TEXT = "Test Error"
 

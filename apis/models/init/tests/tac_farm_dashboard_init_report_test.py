@@ -15,6 +15,7 @@ import pytest
 
 from helpers import SessionContext, TypeConversion
 
+from models.factory.tac import TacFactory
 from ..tac_farm_dashboard_init_report import (
     TacFarmDashboardInitReportGetInitModelRequest,
     TacFarmDashboardInitReportGetInitModelResponse)
@@ -77,7 +78,7 @@ def test_to_json():
 
 
 @pytest.mark.asyncio
-async def test_process_request(flow_response):
+async def test_process_request(flow_response, session):
     """
     Test the process_request method.
     """
@@ -97,10 +98,11 @@ async def test_process_request(flow_response):
     request = TacFarmDashboardInitReportGetInitModelRequest()
     response = TacFarmDashboardInitReportGetInitModelResponse()
 
-    tac_code = uuid.uuid4()
+    tac = await TacFactory.create_async(session)
+
     result = await request.process_request(
         mock_session_context,
-        tac_code,
+        tac.code,
         response)
 
     assert result.success is True

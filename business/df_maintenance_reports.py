@@ -1,6 +1,9 @@
 # business/df_maintenance_reports.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the DFMaintenanceReportsBusObj class
+which provides methods to generate various reports
+related to DFMaintenance objects.
 """
 import uuid
 from datetime import date, datetime, timezone  # noqa: F401
@@ -18,4 +21,7 @@ from .df_maintenance_fluent import DFMaintenanceFluentBusObj
 
 class DFMaintenanceReportsBusObj(DFMaintenanceFluentBusObj):
     """
+    This class extends the DFMaintenanceFluentBusObj class
+    and provides methods to generate various reports
+    related to DFMaintenance objects.
     """

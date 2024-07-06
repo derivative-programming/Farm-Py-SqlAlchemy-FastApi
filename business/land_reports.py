@@ -1,6 +1,9 @@
 # business/land_reports.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the LandReportsBusObj class
+which provides methods to generate various reports
+related to Land objects.
 """
 import uuid
 from datetime import date, datetime, timezone  # noqa: F401
@@ -18,6 +21,9 @@ from .land_fluent import LandFluentBusObj
 
 class LandReportsBusObj(LandFluentBusObj):
     """
+    This class extends the LandFluentBusObj class
+    and provides methods to generate various reports
+    related to Land objects.
     """
 
 

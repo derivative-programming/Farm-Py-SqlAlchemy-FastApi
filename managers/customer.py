@@ -723,6 +723,10 @@ class CustomerManager:
         logging.info(
             "CustomerManager"
             ".get_by_email_prop")
+        """
+        Retrieve a list of Customer by
+        email.
+        """
         query_filter = (
             Customer._email == email)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
@@ -734,6 +738,10 @@ class CustomerManager:
         logging.info(
             "CustomerManager"
             ".get_by_fs_user_code_value_prop")
+        """
+        Retrieve a list of Customer by
+        fs_user_code_value.
+        """
         query_filter = (
             Customer._fs_user_code_value == fs_user_code_value)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)

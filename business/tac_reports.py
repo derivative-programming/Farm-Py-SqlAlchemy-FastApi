@@ -1,6 +1,9 @@
 # business/tac_reports.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the TacReportsBusObj class
+which provides methods to generate various reports
+related to Tac objects.
 """
 import uuid
 from datetime import date, datetime, timezone  # noqa: F401
@@ -18,6 +21,9 @@ from .tac_fluent import TacFluentBusObj
 
 class TacReportsBusObj(TacFluentBusObj):
     """
+    This class extends the TacFluentBusObj class
+    and provides methods to generate various reports
+    related to Tac objects.
     """
 
 

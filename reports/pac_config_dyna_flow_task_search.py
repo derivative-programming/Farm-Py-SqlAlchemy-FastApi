@@ -186,8 +186,8 @@ class ReportManagerPacConfigDynaFlowTaskSearch():
             return date.fromisoformat(value)
         elif attr_type == uuid.UUID:
             return uuid.UUID(value)
-        else:
-            return value
+
+        return value
 
     async def read_csv(
         self,

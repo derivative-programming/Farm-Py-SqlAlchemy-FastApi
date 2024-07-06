@@ -1,6 +1,9 @@
 # business/role_reports.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the RoleReportsBusObj class
+which provides methods to generate various reports
+related to Role objects.
 """
 import uuid
 from datetime import date, datetime, timezone  # noqa: F401
@@ -18,4 +21,7 @@ from .role_fluent import RoleFluentBusObj
 
 class RoleReportsBusObj(RoleFluentBusObj):
     """
+    This class extends the RoleFluentBusObj class
+    and provides methods to generate various reports
+    related to Role objects.
     """

@@ -1,6 +1,9 @@
 # business/pac_reports.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the PacReportsBusObj class
+which provides methods to generate various reports
+related to Pac objects.
 """
 import uuid
 from datetime import date, datetime, timezone  # noqa: F401
@@ -18,7 +21,11 @@ from .pac_fluent import PacFluentBusObj
 
 class PacReportsBusObj(PacFluentBusObj):
     """
+    This class extends the PacFluentBusObj class
+    and provides methods to generate various reports
+    related to Pac objects.
     """
+
 
     async def generate_report_pac_user_tri_state_filter_list(
         self,

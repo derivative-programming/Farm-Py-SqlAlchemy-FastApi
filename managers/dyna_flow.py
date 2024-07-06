@@ -770,6 +770,10 @@ class DynaFlowManager:
         logging.info(
             "DynaFlowManager"
             ".get_by_dependency_dyna_flow_id_prop")
+        """
+        Retrieve a list of DynaFlow by
+        dependency_dyna_flow_id.
+        """
         query_filter = (
             DynaFlow._dependency_dyna_flow_id == dependency_dyna_flow_id)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
@@ -781,6 +785,10 @@ class DynaFlowManager:
         logging.info(
             "DynaFlowManager"
             ".get_by_is_completed_prop")
+        """
+        Retrieve a list of DynaFlow by
+        is_completed.
+        """
         query_filter = (
             DynaFlow._is_completed == is_completed)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
@@ -792,6 +800,10 @@ class DynaFlowManager:
         logging.info(
             "DynaFlowManager"
             ".get_by_root_dyna_flow_id_prop")
+        """
+        Retrieve a list of DynaFlow by
+        root_dyna_flow_id.
+        """
         query_filter = (
             DynaFlow._root_dyna_flow_id == root_dyna_flow_id)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
@@ -803,6 +815,10 @@ class DynaFlowManager:
         logging.info(
             "DynaFlowManager"
             ".get_by_subject_code_prop")
+        """
+        Retrieve a list of DynaFlow by
+        subject_code.
+        """
         query_filter = (
             DynaFlow._subject_code == subject_code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)

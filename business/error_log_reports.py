@@ -1,6 +1,9 @@
 # business/error_log_reports.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the ErrorLogReportsBusObj class
+which provides methods to generate various reports
+related to ErrorLog objects.
 """
 import uuid
 from datetime import date, datetime, timezone  # noqa: F401
@@ -18,4 +21,7 @@ from .error_log_fluent import ErrorLogFluentBusObj
 
 class ErrorLogReportsBusObj(ErrorLogFluentBusObj):
     """
+    This class extends the ErrorLogFluentBusObj class
+    and provides methods to generate various reports
+    related to ErrorLog objects.
     """

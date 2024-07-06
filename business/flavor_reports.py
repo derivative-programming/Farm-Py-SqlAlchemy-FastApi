@@ -1,6 +1,9 @@
 # business/flavor_reports.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the FlavorReportsBusObj class
+which provides methods to generate various reports
+related to Flavor objects.
 """
 import uuid
 from datetime import date, datetime, timezone  # noqa: F401
@@ -18,4 +21,7 @@ from .flavor_fluent import FlavorFluentBusObj
 
 class FlavorReportsBusObj(FlavorFluentBusObj):
     """
+    This class extends the FlavorFluentBusObj class
+    and provides methods to generate various reports
+    related to Flavor objects.
     """

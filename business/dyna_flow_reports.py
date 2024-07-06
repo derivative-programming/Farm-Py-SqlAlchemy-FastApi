@@ -1,6 +1,9 @@
 # business/dyna_flow_reports.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the DynaFlowReportsBusObj class
+which provides methods to generate various reports
+related to DynaFlow objects.
 """
 import uuid
 from datetime import date, datetime, timezone  # noqa: F401
@@ -18,4 +21,7 @@ from .dyna_flow_fluent import DynaFlowFluentBusObj
 
 class DynaFlowReportsBusObj(DynaFlowFluentBusObj):
     """
+    This class extends the DynaFlowFluentBusObj class
+    and provides methods to generate various reports
+    related to DynaFlow objects.
     """

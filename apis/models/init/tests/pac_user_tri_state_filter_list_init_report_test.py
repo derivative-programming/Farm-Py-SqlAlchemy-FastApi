@@ -15,6 +15,7 @@ import pytest
 
 from helpers import SessionContext, TypeConversion
 
+from models.factory.pac import PacFactory
 from ..pac_user_tri_state_filter_list_init_report import (
     PacUserTriStateFilterListInitReportGetInitModelRequest,
     PacUserTriStateFilterListInitReportGetInitModelResponse)
@@ -72,7 +73,7 @@ def test_to_json():
 
 
 @pytest.mark.asyncio
-async def test_process_request(flow_response):
+async def test_process_request(flow_response, session):
     """
     Test the process_request method.
     """
@@ -92,10 +93,11 @@ async def test_process_request(flow_response):
     request = PacUserTriStateFilterListInitReportGetInitModelRequest()
     response = PacUserTriStateFilterListInitReportGetInitModelResponse()
 
-    pac_code = uuid.uuid4()
+    pac = await PacFactory.create_async(session)
+
     result = await request.process_request(
         mock_session_context,
-        pac_code,
+        pac.code,
         response)
 
     assert result.success is True

@@ -1,6 +1,9 @@
 # business/org_api_key_reports.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the OrgApiKeyReportsBusObj class
+which provides methods to generate various reports
+related to OrgApiKey objects.
 """
 import uuid
 from datetime import date, datetime, timezone  # noqa: F401
@@ -18,4 +21,7 @@ from .org_api_key_fluent import OrgApiKeyFluentBusObj
 
 class OrgApiKeyReportsBusObj(OrgApiKeyFluentBusObj):
     """
+    This class extends the OrgApiKeyFluentBusObj class
+    and provides methods to generate various reports
+    related to OrgApiKey objects.
     """
