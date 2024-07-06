@@ -1,4 +1,4 @@
-# reports/providers/pac_user_tac_list.py
+# reports/providers/pac_user_tac_list.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

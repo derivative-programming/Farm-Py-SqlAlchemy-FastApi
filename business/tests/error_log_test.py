@@ -1,5 +1,5 @@
-# business/tests/error_log_test.py
-# pylint: disable=redefined-outer-name
+# business/tests/error_log_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 Unit tests for the
@@ -8,17 +8,14 @@ ErrorLogBusObj class.
 
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 
 import models
-from models.factory import (
-    ErrorLogFactory)
-from business.error_log import (
-    ErrorLogBusObj)
+import pytest
+from business.error_log import ErrorLogBusObj
 from helpers.session_context import SessionContext
-from models import (
-    ErrorLog)
+from models import ErrorLog
+from models.factory import ErrorLogFactory
 
 
 @pytest.fixture
@@ -157,8 +154,8 @@ class TestErrorLogBusObj:
         """
         Test the get_pac_id_bus_obj method.
         """
-        from business.pac import (  # PacID
-            PacBusObj)
+        from business.pac import PacBusObj  # PacID
+
         # Call the get_pac_id_bus_obj method
         fk_bus_obj: PacBusObj = await \
             new_bus_obj.get_pac_id_bus_obj()

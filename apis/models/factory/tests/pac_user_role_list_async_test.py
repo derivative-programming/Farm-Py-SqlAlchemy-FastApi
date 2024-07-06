@@ -1,5 +1,5 @@
 # apis/models/factory/tests/pac_user_role_list_async_test.py
-# pylint: disable=unused-import
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains test cases for the
@@ -19,7 +19,7 @@ from ..pac_user_role_list import (
     PacUserRoleListGetModelRequestFactory)
 
 
-class TestPacUserRoleListGetModelRequestFactoryAsync:
+class TestPacUserRoleListGetModelRequestFactoryAsync:  # pylint: disable=too-few-public-methods
     """
     This class contains test cases for the
     PacUserRoleListGetModelRequestFactoryAsync

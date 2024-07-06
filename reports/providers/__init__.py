@@ -1,4 +1,4 @@
-# reports/providers/__init__.py
+# reports/providers/__init__.py  # pylint: disable=duplicate-code
 
 """
 This module contains the providers package.

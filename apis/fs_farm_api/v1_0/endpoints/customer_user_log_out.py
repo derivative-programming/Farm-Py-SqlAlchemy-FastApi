@@ -1,4 +1,4 @@
-# apis/fs_farm_api/v1_0/endpoints/customer_user_log_out.py
+# apis/fs_farm_api/v1_0/endpoints/customer_user_log_out.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -49,7 +49,7 @@ EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 API_LOG_ERROR_FORMAT = "response.message: %s"
 
 
-class CustomerUserLogOutRouterConfig():
+class CustomerUserLogOutRouterConfig():  # pylint: disable=too-few-public-methods
     """
     Configuration class for the
     CustomerUserLogOutRouter.

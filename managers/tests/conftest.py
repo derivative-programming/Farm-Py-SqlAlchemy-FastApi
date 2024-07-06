@@ -1,4 +1,4 @@
-# models/managers/tests/conftest.py
+# models/managers/tests/conftest.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-argument
 # pylint: disable=redefined-outer-name
 
@@ -13,13 +13,15 @@ and creating an asynchronous session object for interacting with the database.
 
 import asyncio
 from typing import Generator
-from sqlalchemy import event
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-import pytest
+
 import pytest_asyncio
-from models import Base
+from sqlalchemy import event
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
+
+import pytest
 from config import TEST_DATABASE_URL
+from models import Base
 
 
 @pytest.fixture(scope="function")

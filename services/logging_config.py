@@ -1,4 +1,4 @@
-# services/logging_config.py
+# services/logging_config.py  # pylint: disable=duplicate-code
 
 """
 This module provides configuration for logging in the application.

@@ -1,4 +1,4 @@
-# flows/base/flow_validation_error.py
+# flows/base/flow_validation_error.py  # pylint: disable=duplicate-code
 
 """
 This module contains the definition of the

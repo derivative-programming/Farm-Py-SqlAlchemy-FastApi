@@ -1,4 +1,4 @@
-# pac_user_tac_list.py
+# reports/pac_user_tac_list.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -173,8 +173,8 @@ class ReportManagerPacUserTacList():
             return date.fromisoformat(value)
         elif attr_type == uuid.UUID:
             return uuid.UUID(value)
-        else:
-            return value
+
+        return value
 
     async def read_csv(
         self,

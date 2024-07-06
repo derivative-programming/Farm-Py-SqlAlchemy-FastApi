@@ -1,4 +1,4 @@
-# business/factory.py
+# business/factory.py  # pylint: disable=duplicate-code
 
 """
 This module contains the BusObjFactory class which is

@@ -1,4 +1,4 @@
-# business/tri_state_filter_fluent.py
+# business/tri_state_filter_fluent.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

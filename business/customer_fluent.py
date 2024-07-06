@@ -1,4 +1,4 @@
-# business/customer_fluent.py
+# business/customer_fluent.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

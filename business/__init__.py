@@ -1,4 +1,4 @@
-# business/__init__.py
+# business/__init__.py  # pylint: disable=duplicate-code
 
 """
 This module contains the business objects for the application.

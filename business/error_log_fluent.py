@@ -1,4 +1,4 @@
-# business/error_log_fluent.py
+# business/error_log_fluent.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

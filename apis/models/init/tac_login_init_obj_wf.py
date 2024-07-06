@@ -1,4 +1,4 @@
-# apis/models/init/tac_login_init_obj_wf.py
+# apis/models/init/tac_login_init_obj_wf.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

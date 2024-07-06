@@ -1,4 +1,4 @@
-# flows/constants/plant_user_property_random_update.py
+# flows/constants/plant_user_property_random_update.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

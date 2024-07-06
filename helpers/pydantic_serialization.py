@@ -1,4 +1,4 @@
-# helpers/pydantic_serialization.py
+# helpers/pydantic_serialization.py  # pylint: disable=duplicate-code
 
 """
 This module provides helper functions and classes for Pydantic serialization.
@@ -49,7 +49,7 @@ class CamelModel(BaseModel):
 
     """
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for CamelModel.
 
@@ -68,7 +68,7 @@ class SnakeModel(BaseModel):
 
     """
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for SnakeModel.
 

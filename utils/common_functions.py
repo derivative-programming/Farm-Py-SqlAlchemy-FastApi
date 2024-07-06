@@ -1,4 +1,4 @@
-# utils/common_functions.py
+# utils/common_functions.py  # pylint: disable=duplicate-code
 
 """
     common utility functions

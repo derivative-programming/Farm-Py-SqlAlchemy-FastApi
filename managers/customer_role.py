@@ -1,4 +1,4 @@
-# models/managers/customer_role.py
+# models/managers/customer_role.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

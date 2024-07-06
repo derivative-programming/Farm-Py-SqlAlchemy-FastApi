@@ -1,5 +1,5 @@
-# apis/models/init/tests/land_add_plant_init_obj_wf_test.py
-# pylint: disable=redefined-outer-name
+# apis/models/init/tests/land_add_plant_init_obj_wf_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains the unit tests for the
@@ -15,12 +15,13 @@ import pytest
 
 from helpers import SessionContext, TypeConversion
 
+from models.factory.land import LandFactory
 from ..land_add_plant_init_obj_wf import (
     LandAddPlantInitObjWFGetInitModelRequest,
     LandAddPlantInitObjWFGetInitModelResponse)
 
 
-class MockFlowLandAddPlantInitObjWFResult:
+class MockFlowLandAddPlantInitObjWFResult:  # pylint: disable=too-few-public-methods
     """
     A mock object for the
     FlowLandAddPlantInitObjWFResult
@@ -202,7 +203,7 @@ def test_to_json():
 
 
 @pytest.mark.asyncio
-async def test_process_request(flow_response):
+async def test_process_request(flow_response, session):
     """
     Test the process_request method.
     """
@@ -222,10 +223,11 @@ async def test_process_request(flow_response):
     request = LandAddPlantInitObjWFGetInitModelRequest()
     response = LandAddPlantInitObjWFGetInitModelResponse()
 
-    land_code = uuid.uuid4()
+    land = await LandFactory.create_async(session)
+ 
     result = await request.process_request(
         mock_session_context,
-        land_code,
+        land.code,
         response)
 
     assert result.success is True
@@ -235,3 +237,4 @@ async def test_process_request(flow_response):
     mock_flow_instance.process.assert_called_once()
 
     patch.stopall()
+

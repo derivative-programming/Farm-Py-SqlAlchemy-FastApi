@@ -1,4 +1,4 @@
-# plant_user_details.py
+# reports/row_models/plant_user_details.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -13,7 +13,7 @@ from datetime import datetime, date  # noqa: F401
 from helpers.type_conversion import TypeConversion  # noqa: F401
 
 
-class ReportItemPlantUserDetails():
+class ReportItemPlantUserDetails():  # pylint: disable=too-few-public-methods
     """
     Represents a report item for a
     plant Plant Details.

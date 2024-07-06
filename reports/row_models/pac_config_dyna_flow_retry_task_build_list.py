@@ -1,4 +1,4 @@
-# pac_config_dyna_flow_retry_task_build_list.py
+# reports/row_models/pac_config_dyna_flow_retry_task_build_list.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -13,7 +13,7 @@ from datetime import datetime, date  # noqa: F401
 from helpers.type_conversion import TypeConversion  # noqa: F401
 
 
-class ReportItemPacConfigDynaFlowRetryTaskBuildList():
+class ReportItemPacConfigDynaFlowRetryTaskBuildList():  # pylint: disable=too-few-public-methods
     """
     Represents a report item for a
     pac Dyna Flow Retry Task Build List.

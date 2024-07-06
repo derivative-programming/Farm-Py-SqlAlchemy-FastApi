@@ -1,4 +1,4 @@
-# business/dft_dependency.py
+# business/dft_dependency.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,10 +9,12 @@ DFTDependency.
 """
 
 from typing import List
+
+import managers as managers_and_enums  # noqa: F401
+import models
 from helpers.session_context import SessionContext
 from models import DFTDependency
-import models
-import managers as managers_and_enums  # noqa: F401
+
 from .dft_dependency_dyna_flows import DFTDependencyDynaFlowsBusObj
 
 
@@ -89,7 +91,8 @@ class DFTDependencyBusObj(DFTDependencyDynaFlowsBusObj):
             representing the related dyna_flow_task.
 
         """
-        from business.dyna_flow_task import DynaFlowTaskBusObj  # pylint: disable=import-outside-toplevel
+        from business.dyna_flow_task import \
+            DynaFlowTaskBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = DynaFlowTaskBusObj(self._session_context)
         await bus_obj.load_from_id(self.dyna_flow_task_id)
         return bus_obj

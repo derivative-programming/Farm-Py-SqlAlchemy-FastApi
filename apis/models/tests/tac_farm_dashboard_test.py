@@ -1,5 +1,5 @@
-# apis/models/tests/tac_farm_dashboard_test.py
-# pylint: disable=redefined-outer-name
+# apis/models/tests/tac_farm_dashboard_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 
 """
@@ -32,6 +32,11 @@ TEST_ERROR_TEXT = "Test Error"
 TEST_EMAIL = "test@example.com"
 
 TEST_PHONE = "123-456-7890"
+
+PATCH_API_MODEL_LANT__LIST_REPORT_MANAGER = (
+    "apis.models.tac_farm_dashboard"
+    ".ReportManagerTacFarmDashboard"
+)
 
 
 class TestTacFarmDashboardGetModelRequest():
@@ -181,8 +186,7 @@ async def test_process_request(session_context, report_request, report_items):
     TacFarmDashboardGetModelResponse class.
     """
     with patch(
-        "apis.models.tac_farm_dashboard"
-        ".ReportManagerTacFarmDashboard",
+        PATCH_API_MODEL_LANT__LIST_REPORT_MANAGER,
         autospec=True
     ) as mock_report_manager:
         mock_report_manager_instance = \

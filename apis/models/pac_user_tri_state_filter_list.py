@@ -1,4 +1,4 @@
-# apis/models/pac_user_tri_state_filter_list.py
+# apis/models/pac_user_tri_state_filter_list.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -64,7 +64,7 @@ class PacUserTriStateFilterListGetModelRequest(CamelModel):
         description="Force Error Message")
 
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         PacUserTriStateFilterList model.

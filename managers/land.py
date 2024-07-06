@@ -1,4 +1,4 @@
-# models/managers/land.py
+# models/managers/land.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

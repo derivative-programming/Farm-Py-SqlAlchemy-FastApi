@@ -1,4 +1,4 @@
-# business/error_log.py
+# business/error_log.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,10 +9,12 @@ ErrorLog.
 """
 
 from typing import List
+
+import managers as managers_and_enums  # noqa: F401
+import models
 from helpers.session_context import SessionContext
 from models import ErrorLog
-import models
-import managers as managers_and_enums  # noqa: F401
+
 from .error_log_dyna_flows import ErrorLogDynaFlowsBusObj
 
 
@@ -94,7 +96,8 @@ class ErrorLogBusObj(ErrorLogDynaFlowsBusObj):
             representing the related pac.
 
         """
-        from business.pac import PacBusObj  # pylint: disable=import-outside-toplevel
+        from business.pac import \
+            PacBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = PacBusObj(self._session_context)
         await bus_obj.load_from_id(self.pac_id)
         return bus_obj

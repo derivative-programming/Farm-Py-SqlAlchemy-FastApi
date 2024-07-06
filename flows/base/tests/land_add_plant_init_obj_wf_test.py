@@ -1,5 +1,5 @@
-# flows/base/tests/land_add_plant_init_obj_wf_test.py
-# pylint: disable=protected-access
+# flows/base/tests/land_add_plant_init_obj_wf_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains the unit tests for the

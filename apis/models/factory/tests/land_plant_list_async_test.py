@@ -1,5 +1,5 @@
 # apis/models/factory/tests/land_plant_list_async_test.py
-# pylint: disable=unused-import
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains test cases for the
@@ -19,7 +19,7 @@ from ..land_plant_list import (
     LandPlantListGetModelRequestFactory)
 
 
-class TestLandPlantListGetModelRequestFactoryAsync:
+class TestLandPlantListGetModelRequestFactoryAsync:  # pylint: disable=too-few-public-methods
     """
     This class contains test cases for the
     LandPlantListGetModelRequestFactoryAsync

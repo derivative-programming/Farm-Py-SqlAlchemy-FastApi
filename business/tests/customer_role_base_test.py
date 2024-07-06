@@ -1,5 +1,5 @@
-# business/tests/customer_role_base_test.py
-# pylint: disable=unused-import
+# business/tests/customer_role_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 CustomerRoleBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.customer_role_base import (
-    CustomerRoleBaseBusObj)
+import pytest
+from business.customer_role_base import CustomerRoleBaseBusObj
 from helpers.session_context import SessionContext
-from managers.customer_role import (
-    CustomerRoleManager)
+from managers.customer_role import CustomerRoleManager
 from models import CustomerRole
-from models.factory import (
-    CustomerRoleFactory)
+from models.factory import CustomerRoleFactory
 from services.logging_config import get_logger
 
 from ..customer_role import CustomerRoleBusObj
 
+
+BUSINESS_CUSTOMER_ROLE_BASE_MANAGER_PATCH = (
+    "business.customer_role_base"
+    ".CustomerRoleManager"
+)
 
 logger = get_logger(__name__)
 
@@ -356,8 +358,7 @@ class TestCustomerRoleBaseBusObj:
         Test case for refreshing the customer_role data.
         """
         with patch(
-            "business.customer_role_base"
-            ".CustomerRoleManager",
+            BUSINESS_CUSTOMER_ROLE_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -389,8 +390,7 @@ class TestCustomerRoleBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.customer_role_base"
-            ".CustomerRoleManager",
+            BUSINESS_CUSTOMER_ROLE_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -409,8 +409,7 @@ class TestCustomerRoleBaseBusObj:
         Test case for converting the customer_role data to JSON.
         """
         with patch(
-            "business.customer_role_base"
-            ".CustomerRoleManager",
+            BUSINESS_CUSTOMER_ROLE_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

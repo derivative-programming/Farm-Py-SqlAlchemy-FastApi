@@ -1,5 +1,5 @@
-# land_plant_list_test.py
-# pylint: disable=unused-import
+# reports/providers/tests/land_plant_list_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains a test case for the
@@ -23,7 +23,7 @@ import current_runtime
 sqlite3.register_adapter(Decimal, str)
 
 
-class TestReportProviderLandPlantList:
+class TestReportProviderLandPlantList:  # pylint: disable=too-few-public-methods
     """
     This class contains test cases for the
     ReportProviderLandPlantList class.

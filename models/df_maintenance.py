@@ -1,4 +1,4 @@
-# models/df_maintenance.py
+# models/df_maintenance.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

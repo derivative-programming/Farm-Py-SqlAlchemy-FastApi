@@ -26,17 +26,16 @@ and 'sqlalchemy-aiosqlite' packages to be installed.
 """
 
 import asyncio
-from typing import AsyncGenerator
-from typing import Generator
+from typing import AsyncGenerator, Generator
 
-import pytest
 import pytest_asyncio
 from sqlalchemy import event
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-from models import Base
+import pytest
 from config import TEST_DATABASE_URL
+from models import Base
 
 
 @pytest.fixture(scope="function")

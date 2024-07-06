@@ -1,4 +1,4 @@
-# models/managers/role.py
+# models/managers/role.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

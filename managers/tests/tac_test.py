@@ -1,5 +1,5 @@
-# managers/tests/tac_test.py
-# pylint: disable=protected-access
+# managers/tests/tac_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
 """
@@ -7,22 +7,19 @@
     `TacManager` class.
 """
 
-from typing import List
 import uuid  # noqa: F401
+from typing import List
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
+import pytest
 from helpers.session_context import SessionContext
-from managers.tac import (
-    TacManager)
+from managers.tac import TacManager
 from models import Tac
-from models.factory import (
-    TacFactory)
-from models.serialization_schema.tac import (
-    TacSchema)
+from models.factory import TacFactory
+from models.serialization_schema.tac import TacSchema
 
 
 class TestTacManager:

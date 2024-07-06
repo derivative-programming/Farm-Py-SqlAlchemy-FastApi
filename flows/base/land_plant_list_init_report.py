@@ -1,4 +1,4 @@
-# flows/base/land_plant_list_init_report.py
+# flows/base/land_plant_list_init_report.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -24,7 +24,7 @@ from managers.org_customer import OrgCustomerManager  # noqa: F401
 from .base_flow import BaseFlow
 
 
-class BaseFlowLandPlantListInitReport(BaseFlow):
+class BaseFlowLandPlantListInitReport(BaseFlow):  # pylint: disable=too-few-public-methods
     """
     Base class for LandPlantListInitReport
     flow. Contains

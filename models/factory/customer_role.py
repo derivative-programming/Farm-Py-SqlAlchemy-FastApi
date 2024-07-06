@@ -1,4 +1,4 @@
-# models/factory/customer_role.py
+# models/factory/customer_role.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -26,7 +26,7 @@ class CustomerRoleFactory(factory.Factory):
     the CustomerRole model.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for the CustomerRoleFactory.
         """

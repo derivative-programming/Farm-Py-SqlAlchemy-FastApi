@@ -1,4 +1,4 @@
-# business/date_greater_than_filter_base.py
+# business/date_greater_than_filter_base.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

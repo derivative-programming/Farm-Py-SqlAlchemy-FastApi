@@ -1,5 +1,5 @@
-# business/tests/organization_base_test.py
-# pylint: disable=unused-import
+# business/tests/organization_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 OrganizationBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.organization_base import (
-    OrganizationBaseBusObj)
+import pytest
+from business.organization_base import OrganizationBaseBusObj
 from helpers.session_context import SessionContext
-from managers.organization import (
-    OrganizationManager)
+from managers.organization import OrganizationManager
 from models import Organization
-from models.factory import (
-    OrganizationFactory)
+from models.factory import OrganizationFactory
 from services.logging_config import get_logger
 
 from ..organization import OrganizationBusObj
 
+
+BUSINESS_ORGANIZATION_BASE_MANAGER_PATCH = (
+    "business.organization_base"
+    ".OrganizationManager"
+)
 
 logger = get_logger(__name__)
 
@@ -352,8 +354,7 @@ class TestOrganizationBaseBusObj:
         Test case for refreshing the organization data.
         """
         with patch(
-            "business.organization_base"
-            ".OrganizationManager",
+            BUSINESS_ORGANIZATION_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -385,8 +386,7 @@ class TestOrganizationBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.organization_base"
-            ".OrganizationManager",
+            BUSINESS_ORGANIZATION_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -405,8 +405,7 @@ class TestOrganizationBaseBusObj:
         Test case for converting the organization data to JSON.
         """
         with patch(
-            "business.organization_base"
-            ".OrganizationManager",
+            BUSINESS_ORGANIZATION_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

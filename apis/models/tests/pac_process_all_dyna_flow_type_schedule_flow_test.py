@@ -1,5 +1,5 @@
-# apis/models/tests/pac_process_all_dyna_flow_type_schedule_flow_test.py
-# pylint: disable=unused-argument
+# apis/models/tests/pac_process_all_dyna_flow_type_schedule_flow_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains unit tests for the
@@ -131,7 +131,7 @@ class TestPacProcessAllDynaFlowTypeScheduleFlowPostModelRequest:
         assert data == expected_data
 
 
-class TestPacProcessAllDynaFlowTypeScheduleFlowPostModelResponse:
+class TestPacProcessAllDynaFlowTypeScheduleFlowPostModelResponse:  # pylint: disable=too-few-public-methods
     """
     This class contains unit tests for the
     PacProcessAllDynaFlowTypeScheduleFlowPostModelResponse class.

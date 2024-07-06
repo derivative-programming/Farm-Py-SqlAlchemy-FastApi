@@ -1,4 +1,4 @@
-# business/land_base.py
+# business/land_base.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

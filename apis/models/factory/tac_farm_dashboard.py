@@ -1,4 +1,4 @@
-# apis/models/factory/tac_farm_dashboard.py
+# apis/models/factory/tac_farm_dashboard.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the factory class for creating
@@ -24,7 +24,7 @@ class TacFarmDashboardGetModelRequestFactory(
     TacFarmDashboardGetModelRequest model.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for the factory.
         """

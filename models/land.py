@@ -1,4 +1,4 @@
-# models/land.py
+# models/land.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

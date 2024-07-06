@@ -1,4 +1,4 @@
-# flows/base/tests/conftest.py
+# flows/base/tests/conftest.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-argument
 # pylint: disable=redefined-outer-name
 
@@ -16,14 +16,16 @@ Configurations:
 
 import asyncio
 from typing import Generator
-import pytest
+
 import pytest_asyncio
 from sqlalchemy import event
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from models import Base
-from database import AsyncSessionLocal
+
+import pytest
 from config import TEST_DATABASE_URL
+from database import AsyncSessionLocal
+from models import Base
 
 
 @pytest.fixture(scope="function")

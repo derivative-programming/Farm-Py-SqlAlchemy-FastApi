@@ -1,4 +1,4 @@
-# models/managers/flavor.py
+# models/managers/flavor.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

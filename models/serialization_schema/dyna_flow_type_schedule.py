@@ -1,4 +1,4 @@
-# models/serialization_schema/dyna_flow_type_schedule.py
+# models/serialization_schema/dyna_flow_type_schedule.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -11,6 +11,7 @@ DynaFlowTypeSchedule objects.
 
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
 from models import DynaFlowTypeSchedule
 
 
@@ -20,7 +21,7 @@ class DynaFlowTypeScheduleSchema(SQLAlchemyAutoSchema):
     DynaFlowTypeSchedule objects.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for defining the schema's metadata.
         """

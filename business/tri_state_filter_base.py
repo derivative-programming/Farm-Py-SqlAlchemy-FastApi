@@ -1,4 +1,4 @@
-# business/tri_state_filter_base.py
+# business/tri_state_filter_base.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

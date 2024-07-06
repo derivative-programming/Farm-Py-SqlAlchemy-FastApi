@@ -1,4 +1,4 @@
-# business/customer.py
+# business/customer.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,10 +9,12 @@ Customer.
 """
 
 from typing import List
+
+import managers as managers_and_enums  # noqa: F401
+import models
 from helpers.session_context import SessionContext
 from models import Customer
-import models
-import managers as managers_and_enums  # noqa: F401
+
 from .customer_dyna_flows import CustomerDynaFlowsBusObj
 
 
@@ -111,7 +113,8 @@ class CustomerBusObj(CustomerDynaFlowsBusObj):
             representing the related tac.
 
         """
-        from business.tac import TacBusObj  # pylint: disable=import-outside-toplevel
+        from business.tac import \
+            TacBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = TacBusObj(self._session_context)
         await bus_obj.load_from_id(self.tac_id)
         return bus_obj

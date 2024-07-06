@@ -1,5 +1,5 @@
-# business/tests/customer_test.py
-# pylint: disable=redefined-outer-name
+# business/tests/customer_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 Unit tests for the
@@ -8,17 +8,14 @@ CustomerBusObj class.
 
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 
 import models
-from models.factory import (
-    CustomerFactory)
-from business.customer import (
-    CustomerBusObj)
+import pytest
+from business.customer import CustomerBusObj
 from helpers.session_context import SessionContext
-from models import (
-    Customer)
+from models import Customer
+from models.factory import CustomerFactory
 
 
 @pytest.fixture
@@ -171,8 +168,8 @@ class TestCustomerBusObj:
         """
         Test the get_tac_id_bus_obj method.
         """
-        from business.tac import (  # TacID
-            TacBusObj)
+        from business.tac import TacBusObj  # TacID
+
         # Call the get_tac_id_bus_obj method
         fk_bus_obj: TacBusObj = await \
             new_bus_obj.get_tac_id_bus_obj()

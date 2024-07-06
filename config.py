@@ -1,4 +1,4 @@
-# config.py
+# config.py  # pylint: disable=duplicate-code
 
 """
 This module provides configuration settings for the application.

@@ -1,5 +1,5 @@
-# managers/tests/tri_state_filter_test.py
-# pylint: disable=protected-access
+# managers/tests/tri_state_filter_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
 """
@@ -7,22 +7,19 @@
     `TriStateFilterManager` class.
 """
 
-from typing import List
 import uuid  # noqa: F401
+from typing import List
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
+import pytest
 from helpers.session_context import SessionContext
-from managers.tri_state_filter import (
-    TriStateFilterManager)
+from managers.tri_state_filter import TriStateFilterManager
 from models import TriStateFilter
-from models.factory import (
-    TriStateFilterFactory)
-from models.serialization_schema.tri_state_filter import (
-    TriStateFilterSchema)
+from models.factory import TriStateFilterFactory
+from models.serialization_schema.tri_state_filter import TriStateFilterSchema
 
 
 class TestTriStateFilterManager:

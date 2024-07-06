@@ -1,4 +1,4 @@
-# models/factory/plant.py
+# models/factory/plant.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -27,7 +27,7 @@ class PlantFactory(factory.Factory):
     the Plant model.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for the PlantFactory.
         """

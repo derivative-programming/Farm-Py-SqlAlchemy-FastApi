@@ -1,5 +1,5 @@
-# managers/tests/date_greater_than_filter_test.py
-# pylint: disable=protected-access
+# managers/tests/date_greater_than_filter_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
 """
@@ -7,22 +7,19 @@
     `DateGreaterThanFilterManager` class.
 """
 
-from typing import List
 import uuid  # noqa: F401
+from typing import List
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
+import pytest
 from helpers.session_context import SessionContext
-from managers.date_greater_than_filter import (
-    DateGreaterThanFilterManager)
+from managers.date_greater_than_filter import DateGreaterThanFilterManager
 from models import DateGreaterThanFilter
-from models.factory import (
-    DateGreaterThanFilterFactory)
-from models.serialization_schema.date_greater_than_filter import (
-    DateGreaterThanFilterSchema)
+from models.factory import DateGreaterThanFilterFactory
+from models.serialization_schema.date_greater_than_filter import DateGreaterThanFilterSchema
 
 
 class TestDateGreaterThanFilterManager:

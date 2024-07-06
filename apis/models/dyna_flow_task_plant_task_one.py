@@ -1,4 +1,4 @@
-# apis/models/dyna_flow_task_plant_task_one.py
+# apis/models/dyna_flow_task_plant_task_one.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -39,7 +39,7 @@ class DynaFlowTaskPlantTaskOnePostModelRequest(CamelModel):
         description="Force Error Message")
 
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         DynaFlowTaskPlantTaskOnePostModelRequest.

@@ -1,4 +1,4 @@
-# apis/models/tac_farm_dashboard.py
+# apis/models/tac_farm_dashboard.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -64,7 +64,7 @@ class TacFarmDashboardGetModelRequest(CamelModel):
         description="Force Error Message")
 
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         TacFarmDashboard model.

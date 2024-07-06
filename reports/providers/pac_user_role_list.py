@@ -1,4 +1,4 @@
-# reports/providers/pac_user_role_list.py
+# reports/providers/pac_user_role_list.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

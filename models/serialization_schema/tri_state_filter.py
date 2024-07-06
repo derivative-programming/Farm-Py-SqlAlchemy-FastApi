@@ -1,4 +1,4 @@
-# models/serialization_schema/tri_state_filter.py
+# models/serialization_schema/tri_state_filter.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -11,6 +11,7 @@ TriStateFilter objects.
 
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
 from models import TriStateFilter
 
 
@@ -20,7 +21,7 @@ class TriStateFilterSchema(SQLAlchemyAutoSchema):
     TriStateFilter objects.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for defining the schema's metadata.
         """

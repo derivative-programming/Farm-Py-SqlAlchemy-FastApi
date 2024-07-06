@@ -1,4 +1,4 @@
-# flows/base/error_log_config_resolve_error_log.py
+# flows/base/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -24,7 +24,7 @@ from managers.org_customer import OrgCustomerManager  # noqa: F401
 from .base_flow import BaseFlow
 
 
-class BaseFlowErrorLogConfigResolveErrorLog(BaseFlow):
+class BaseFlowErrorLogConfigResolveErrorLog(BaseFlow):  # pylint: disable=too-few-public-methods
     """
     Base class for ErrorLogConfigResolveErrorLog
     flow. Contains

@@ -1,4 +1,4 @@
-# apis/models/validation_error.py
+# apis/models/validation_error.py  # pylint: disable=duplicate-code
 
 """
 This module contains the definition of the ValidationErrorItem class.

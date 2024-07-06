@@ -1,4 +1,4 @@
-# flows/constants/land_add_plant_init_obj_wf.py
+# flows/constants/land_add_plant_init_obj_wf.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

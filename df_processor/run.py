@@ -1,4 +1,7 @@
-
+# df_processor/run.py  # pylint: disable=duplicate-code
+"""
+This module contains the main function for the df processor.
+"""
 import asyncio
 
 from database import get_db, engine

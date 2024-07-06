@@ -1,23 +1,26 @@
-# models/factory/tests/role_test.py
-# pylint: disable=unused-import
+# models/factory/tests/role_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 """
 This module contains unit tests for the RoleFactory
 class in the models.factory package.
 """
 
-from decimal import Decimal  # noqa: F401
-import time
-import math  # noqa: F401
-import uuid  # noqa: F401
 import logging
-from datetime import datetime, date, timedelta, timezone  # noqa: F401
-import pytest
+import math  # noqa: F401
+import time
+import uuid  # noqa: F401
+from datetime import date, datetime, timedelta, timezone  # noqa: F401
+from decimal import Decimal  # noqa: F401
+
 from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import sessionmaker
+
+import pytest
 from models import Base, Role
 from models.factory import RoleFactory
 from services.logging_config import get_logger
+
 logger = get_logger(__name__)
 
 TEST_DATABASE_URL = "sqlite:///:memory:"

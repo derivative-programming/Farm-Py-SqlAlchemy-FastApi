@@ -1,5 +1,5 @@
-# business/tests/df_maintenance_base_test.py
-# pylint: disable=unused-import
+# business/tests/df_maintenance_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 DFMaintenanceBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.df_maintenance_base import (
-    DFMaintenanceBaseBusObj)
+import pytest
+from business.df_maintenance_base import DFMaintenanceBaseBusObj
 from helpers.session_context import SessionContext
-from managers.df_maintenance import (
-    DFMaintenanceManager)
+from managers.df_maintenance import DFMaintenanceManager
 from models import DFMaintenance
-from models.factory import (
-    DFMaintenanceFactory)
+from models.factory import DFMaintenanceFactory
 from services.logging_config import get_logger
 
 from ..df_maintenance import DFMaintenanceBusObj
 
+
+BUSINESS_DF_MAINTENANCE_BASE_MANAGER_PATCH = (
+    "business.df_maintenance_base"
+    ".DFMaintenanceManager"
+)
 
 logger = get_logger(__name__)
 
@@ -366,8 +368,7 @@ class TestDFMaintenanceBaseBusObj:
         Test case for refreshing the df_maintenance data.
         """
         with patch(
-            "business.df_maintenance_base"
-            ".DFMaintenanceManager",
+            BUSINESS_DF_MAINTENANCE_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -399,8 +400,7 @@ class TestDFMaintenanceBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.df_maintenance_base"
-            ".DFMaintenanceManager",
+            BUSINESS_DF_MAINTENANCE_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -419,8 +419,7 @@ class TestDFMaintenanceBaseBusObj:
         Test case for converting the df_maintenance data to JSON.
         """
         with patch(
-            "business.df_maintenance_base"
-            ".DFMaintenanceManager",
+            BUSINESS_DF_MAINTENANCE_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

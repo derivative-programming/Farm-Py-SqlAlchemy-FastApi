@@ -1,4 +1,4 @@
-# models/factory/df_maintenance.py
+# models/factory/df_maintenance.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -25,7 +25,7 @@ class DFMaintenanceFactory(factory.Factory):
     the DFMaintenance model.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for the DFMaintenanceFactory.
         """

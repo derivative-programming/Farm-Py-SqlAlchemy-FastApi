@@ -1,4 +1,4 @@
-# models/org_customer.py
+# models/org_customer.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

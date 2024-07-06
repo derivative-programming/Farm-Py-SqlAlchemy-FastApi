@@ -1,15 +1,17 @@
-# conftest.py
+# models/serialization_schema/tests/conftest.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name
 
 """
 This module contains fixtures for testing the serialization schema.
 """
 
-import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
+
+import pytest
 from models import Base
 from services.logging_config import get_logger
+
 # from config import TEST_DATABASE_URL
 
 TEST_DATABASE_URL = "sqlite:///:memory:"

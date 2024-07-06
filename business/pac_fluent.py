@@ -1,4 +1,4 @@
-# business/pac_fluent.py
+# business/pac_fluent.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

@@ -1,4 +1,4 @@
-# __init__.py
+# models/serialization_schema/__init__.py  # pylint: disable=duplicate-code
 """
 This module contains the serialization schemas for the
 models in the Farm-Py-SqlAlchemy-FastApi project.

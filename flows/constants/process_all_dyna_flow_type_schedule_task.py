@@ -1,4 +1,4 @@
-# flows/constants/process_all_dyna_flow_type_schedule_task.py
+# flows/constants/process_all_dyna_flow_type_schedule_task.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

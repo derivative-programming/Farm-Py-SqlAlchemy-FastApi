@@ -1,4 +1,4 @@
-# business/plant.py
+# business/plant.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,11 +9,14 @@ Plant.
 """
 
 from typing import List
+
+import managers as managers_and_enums  # noqa: F401
+import models
 from helpers.session_context import SessionContext
 from models import Plant
-import models
-import managers as managers_and_enums  # noqa: F401
+
 from .plant_dyna_flows import PlantDynaFlowsBusObj
+
 ##GENINCLUDEFILE[GENVALPascalName.top.include.*]
 
 NOT_INITIALIZED_ERROR_MESSAGE = (
@@ -102,7 +105,8 @@ class PlantBusObj(PlantDynaFlowsBusObj):
             representing the related land.
 
         """
-        from business.land import LandBusObj  # pylint: disable=import-outside-toplevel
+        from business.land import \
+            LandBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = LandBusObj(self._session_context)
         await bus_obj.load_from_id(self.land_id)
         return bus_obj
@@ -135,7 +139,8 @@ class PlantBusObj(PlantDynaFlowsBusObj):
             business object.
 
         """
-        from business.flavor import FlavorBusObj  # pylint: disable=import-outside-toplevel
+        from business.flavor import \
+            FlavorBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = FlavorBusObj(self._session_context)
         await bus_obj.load_from_id(self.flvr_foreign_key_id)
         return bus_obj

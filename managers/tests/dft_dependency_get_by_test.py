@@ -1,5 +1,5 @@
-# models/managers/tests/dft_dependency_test.py
-# pylint: disable=protected-access
+# models/managers/tests/dft_dependency_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
 """
@@ -9,18 +9,16 @@
 
 import uuid  # noqa: F401
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 import models
+import pytest
 from helpers.session_context import SessionContext
-from managers.dft_dependency import (
-    DFTDependencyManager)
+from managers.dft_dependency import DFTDependencyManager
 from models import DFTDependency
-from models.factory import (
-    DFTDependencyFactory)
+from models.factory import DFTDependencyFactory
 
 
 class TestDFTDependencyGetByManager:

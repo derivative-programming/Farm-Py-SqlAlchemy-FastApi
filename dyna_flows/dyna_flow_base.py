@@ -1,4 +1,4 @@
-# dyna_flows/dyna_flow_base.py
+# dyna_flows/dyna_flow_base.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the implementation of the

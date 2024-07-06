@@ -1,4 +1,4 @@
-# models/factory/error_log.py
+# models/factory/error_log.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -25,7 +25,7 @@ class ErrorLogFactory(factory.Factory):
     the ErrorLog model.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for the ErrorLogFactory.
         """

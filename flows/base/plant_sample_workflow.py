@@ -1,4 +1,4 @@
-# flows/base/plant_sample_workflow.py
+# flows/base/plant_sample_workflow.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -24,7 +24,7 @@ from managers.org_customer import OrgCustomerManager  # noqa: F401
 from .base_flow import BaseFlow
 
 
-class BaseFlowPlantSampleWorkflow(BaseFlow):
+class BaseFlowPlantSampleWorkflow(BaseFlow):  # pylint: disable=too-few-public-methods
     """
     Base class for PlantSampleWorkflow
     flow. Contains

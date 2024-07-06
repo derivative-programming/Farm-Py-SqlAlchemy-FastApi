@@ -1,4 +1,4 @@
-# apis/fs_farm_api/v1_0/endpoints/tests/test_constants.py
+# apis/fs_farm_api/v1_0/endpoints/tests/test_constants.py  # pylint: disable=duplicate-code
 
 """
 This module contains constants used for testing

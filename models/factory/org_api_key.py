@@ -1,4 +1,4 @@
-# models/factory/org_api_key.py
+# models/factory/org_api_key.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -26,7 +26,7 @@ class OrgApiKeyFactory(factory.Factory):
     the OrgApiKey model.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for the OrgApiKeyFactory.
         """

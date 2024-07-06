@@ -1,4 +1,4 @@
-# flows/constants/customer_build_temp_api_key.py
+# flows/constants/customer_build_temp_api_key.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

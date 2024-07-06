@@ -1,4 +1,4 @@
-# apis/models/process_all_dyna_flow_type_schedule_task.py
+# apis/models/process_all_dyna_flow_type_schedule_task.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -39,7 +39,7 @@ class ProcessAllDynaFlowTypeScheduleTaskPostModelRequest(CamelModel):
         description="Force Error Message")
 
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         ProcessAllDynaFlowTypeScheduleTaskPostModelRequest.

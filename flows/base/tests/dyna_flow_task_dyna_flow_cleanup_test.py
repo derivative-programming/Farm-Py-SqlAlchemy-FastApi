@@ -1,5 +1,5 @@
-# flows/base/tests/dyna_flow_task_dyna_flow_cleanup_test.py
-# pylint: disable=protected-access
+# flows/base/tests/dyna_flow_task_dyna_flow_cleanup_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains the unit tests for the

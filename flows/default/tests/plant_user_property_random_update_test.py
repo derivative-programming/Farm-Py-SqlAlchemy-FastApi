@@ -1,5 +1,5 @@
-# flows/default/tests/plant_user_property_random_update_test.py
-# pylint: disable=unused-import
+# flows/default/tests/plant_user_property_random_update_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains unit tests for the

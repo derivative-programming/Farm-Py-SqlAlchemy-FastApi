@@ -1,4 +1,4 @@
-# flows/base/dyna_flow_task_plant_task_two.py
+# flows/base/dyna_flow_task_plant_task_two.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -24,7 +24,7 @@ from managers.org_customer import OrgCustomerManager  # noqa: F401
 from .base_flow import BaseFlow
 
 
-class BaseFlowDynaFlowTaskPlantTaskTwo(BaseFlow):
+class BaseFlowDynaFlowTaskPlantTaskTwo(BaseFlow):  # pylint: disable=too-few-public-methods
     """
     Base class for DynaFlowTaskPlantTaskTwo
     flow. Contains

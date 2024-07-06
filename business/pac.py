@@ -1,4 +1,4 @@
-# business/pac.py
+# business/pac.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,10 +9,12 @@ Pac.
 """
 
 from typing import List
+
+import managers as managers_and_enums  # noqa: F401
+import models
 from helpers.session_context import SessionContext
 from models import Pac
-import models
-import managers as managers_and_enums  # noqa: F401
+
 from .pac_dyna_flows import PacDynaFlowsBusObj
 
 

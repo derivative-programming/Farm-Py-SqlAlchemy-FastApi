@@ -1,4 +1,4 @@
-# apis/models/customer_user_log_out.py
+# apis/models/customer_user_log_out.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -39,7 +39,7 @@ class CustomerUserLogOutPostModelRequest(CamelModel):
         description="Force Error Message")
 
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         CustomerUserLogOutPostModelRequest.

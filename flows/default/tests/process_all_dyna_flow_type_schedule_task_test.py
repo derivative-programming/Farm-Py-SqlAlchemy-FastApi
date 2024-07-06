@@ -1,5 +1,5 @@
-# flows/default/tests/process_all_dyna_flow_type_schedule_task_test.py
-# pylint: disable=unused-import
+# flows/default/tests/process_all_dyna_flow_type_schedule_task_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains unit tests for the

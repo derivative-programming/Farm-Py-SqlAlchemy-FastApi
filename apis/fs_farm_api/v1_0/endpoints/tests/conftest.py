@@ -1,4 +1,4 @@
-# apis/fs_farm_api/v1_0/endpoints/tests/conftest.py
+# apis/fs_farm_api/v1_0/endpoints/tests/conftest.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name
 """
 This module contains fixtures for unit testing the endpoints in the API.
@@ -14,10 +14,10 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 import current_runtime
+from config import TEST_DATABASE_URL
 from helpers.api_token import ApiToken
 from helpers.session_context import SessionContext
 from models import Base
-from config import TEST_DATABASE_URL
 
 
 @pytest_asyncio.fixture(scope="function")

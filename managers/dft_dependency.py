@@ -1,4 +1,4 @@
-# models/managers/dft_dependency.py
+# models/managers/dft_dependency.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

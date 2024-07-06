@@ -1,4 +1,4 @@
-# land_plant_list.py
+# reports/land_plant_list.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -219,8 +219,8 @@ class ReportManagerLandPlantList():
             return date.fromisoformat(value)
         elif attr_type == uuid.UUID:
             return uuid.UUID(value)
-        else:
-            return value
+
+        return value
 
     async def read_csv(
         self,

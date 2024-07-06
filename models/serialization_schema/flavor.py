@@ -1,4 +1,4 @@
-# models/serialization_schema/flavor.py
+# models/serialization_schema/flavor.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -11,6 +11,7 @@ Flavor objects.
 
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
 from models import Flavor
 
 
@@ -20,7 +21,7 @@ class FlavorSchema(SQLAlchemyAutoSchema):
     Flavor objects.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for defining the schema's metadata.
         """

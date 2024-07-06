@@ -1,4 +1,4 @@
-# apis/models/land_add_plant.py
+# apis/models/land_add_plant.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -113,7 +113,7 @@ class LandAddPlantPostModelRequest(CamelModel):
         description="Request Sample Image Upload File")
 # endset
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         LandAddPlantPostModelRequest.

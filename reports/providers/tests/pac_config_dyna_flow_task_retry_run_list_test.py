@@ -1,5 +1,5 @@
-# pac_config_dyna_flow_task_retry_run_list_test.py
-# pylint: disable=unused-import
+# reports/providers/tests/pac_config_dyna_flow_task_retry_run_list_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains a test case for the
@@ -23,7 +23,7 @@ import current_runtime
 sqlite3.register_adapter(Decimal, str)
 
 
-class TestReportProviderPacConfigDynaFlowTaskRetryRunList:
+class TestReportProviderPacConfigDynaFlowTaskRetryRunList:  # pylint: disable=too-few-public-methods
     """
     This class contains test cases for the
     ReportProviderPacConfigDynaFlowTaskRetryRunList class.

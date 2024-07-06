@@ -1,4 +1,4 @@
-# flows/base/base_flow.py
+# flows/base/base_flow.py  # pylint: disable=duplicate-code
 
 """
 This module contains the BaseFlow class which serves

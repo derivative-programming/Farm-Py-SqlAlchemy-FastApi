@@ -1,4 +1,4 @@
-# apis/fs_farm_api/v1_0/endpoints/tests/plant_user_delete_test.py
+# apis/fs_farm_api/v1_0/endpoints/tests/plant_user_delete_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

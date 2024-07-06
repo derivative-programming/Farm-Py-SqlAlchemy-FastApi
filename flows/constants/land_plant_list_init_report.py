@@ -1,4 +1,4 @@
-# flows/constants/land_plant_list_init_report.py
+# flows/constants/land_plant_list_init_report.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

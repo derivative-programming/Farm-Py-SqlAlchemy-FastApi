@@ -1,4 +1,4 @@
-# models/date_greater_than_filter.py
+# models/date_greater_than_filter.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

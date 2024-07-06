@@ -1,5 +1,5 @@
 # apis/models/factory/tests/dyna_flow_task_plant_task_two_async_test.py
-# pylint: disable=unused-import
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains test cases for the
@@ -19,7 +19,7 @@ from ..dyna_flow_task_plant_task_two import (
     DynaFlowTaskPlantTaskTwoPostModelRequestFactory)
 
 
-class TestDynaFlowTaskPlantTaskTwoPostModelRequestFactoryAsync:
+class TestDynaFlowTaskPlantTaskTwoPostModelRequestFactoryAsync:  # pylint: disable=too-few-public-methods
     """
     This class contains test cases for the
     DynaFlowTaskPlantTaskTwoPostModelRequestFactoryAsync

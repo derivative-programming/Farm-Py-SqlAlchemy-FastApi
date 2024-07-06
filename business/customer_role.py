@@ -1,4 +1,4 @@
-# business/customer_role.py
+# business/customer_role.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,10 +9,12 @@ CustomerRole.
 """
 
 from typing import List
+
+import managers as managers_and_enums  # noqa: F401
+import models
 from helpers.session_context import SessionContext
 from models import CustomerRole
-import models
-import managers as managers_and_enums  # noqa: F401
+
 from .customer_role_dyna_flows import CustomerRoleDynaFlowsBusObj
 
 
@@ -88,7 +90,8 @@ class CustomerRoleBusObj(CustomerRoleDynaFlowsBusObj):
             representing the related customer.
 
         """
-        from business.customer import CustomerBusObj  # pylint: disable=import-outside-toplevel
+        from business.customer import \
+            CustomerBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = CustomerBusObj(self._session_context)
         await bus_obj.load_from_id(self.customer_id)
         return bus_obj
@@ -123,7 +126,8 @@ class CustomerRoleBusObj(CustomerRoleDynaFlowsBusObj):
             business object.
 
         """
-        from business.role import RoleBusObj  # pylint: disable=import-outside-toplevel
+        from business.role import \
+            RoleBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = RoleBusObj(self._session_context)
         await bus_obj.load_from_id(self.role_id)
         return bus_obj

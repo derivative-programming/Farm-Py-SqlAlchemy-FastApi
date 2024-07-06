@@ -1,4 +1,4 @@
-# flows/constants/tac_register.py
+# flows/constants/tac_register.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

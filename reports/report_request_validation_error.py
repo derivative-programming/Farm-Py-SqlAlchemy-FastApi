@@ -1,4 +1,4 @@
-# reports/report_request_validation_error.py
+# reports/report_request_validation_error.py  # pylint: disable=duplicate-code
 
 """
 This module contains the definition of the ReportRequestValidationError class.

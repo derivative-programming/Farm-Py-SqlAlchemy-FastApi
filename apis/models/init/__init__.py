@@ -1,4 +1,4 @@
-# apis/models/init/__init__.py
+# apis/models/init/__init__.py  # pylint: disable=duplicate-code
 
 """
 This module contains the initialization code for the models used in the APIs.

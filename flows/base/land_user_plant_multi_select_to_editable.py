@@ -1,4 +1,4 @@
-# flows/base/land_user_plant_multi_select_to_editable.py
+# flows/base/land_user_plant_multi_select_to_editable.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -24,7 +24,7 @@ from managers.org_customer import OrgCustomerManager  # noqa: F401
 from .base_flow import BaseFlow
 
 
-class BaseFlowLandUserPlantMultiSelectToEditable(BaseFlow):
+class BaseFlowLandUserPlantMultiSelectToEditable(BaseFlow):  # pylint: disable=too-few-public-methods
     """
     Base class for LandUserPlantMultiSelectToEditable
     flow. Contains

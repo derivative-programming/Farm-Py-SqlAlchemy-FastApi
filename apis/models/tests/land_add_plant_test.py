@@ -1,5 +1,5 @@
-# apis/models/tests/land_add_plant_test.py
-# pylint: disable=unused-argument
+# apis/models/tests/land_add_plant_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains unit tests for the
@@ -89,7 +89,8 @@ class TestLandAddPlantPostModelRequest:
             request_is_delete_allowed=True,
             request_some_float_val=3.14,
             request_some_decimal_val=Decimal('99.99'),
-            request_some_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
+            request_some_utc_date_time_val=datetime(
+                2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
             request_some_date_val=date(2023, 1, 1),
             request_some_money_val=Decimal('100.00'),
             request_some_n_var_char_val="nvarchar",
@@ -153,7 +154,8 @@ class TestLandAddPlantPostModelRequest:
             request_is_delete_allowed=True,
             request_some_float_val=3.14,
             request_some_decimal_val=Decimal('99.99'),
-            request_some_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
+            request_some_utc_date_time_val=datetime(
+                2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
             request_some_date_val=date(2023, 1, 1),
             request_some_money_val=Decimal('100.00'),
             request_some_n_var_char_val="nvarchar",
@@ -179,8 +181,9 @@ class TestLandAddPlantPostModelRequest:
         assert camel_case_dict['requestIsDeleteAllowed'] is True
         assert math.isclose(camel_case_dict['requestSomeFloatVal'], 3.14)
         assert camel_case_dict['requestSomeDecimalVal'] == Decimal('99.99')
-        assert camel_case_dict['requestSomeUTCDateTimeVal'] == datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)  # .isoformat()
-        assert camel_case_dict['requestSomeDateVal'] == date(2023, 1, 1)  # .isoformat()
+        assert camel_case_dict['requestSomeUTCDateTimeVal'] == datetime(
+            2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc) 
+        assert camel_case_dict['requestSomeDateVal'] == date(2023, 1, 1)
         assert camel_case_dict['requestSomeMoneyVal'] == Decimal('100.00')
         assert camel_case_dict['requestSomeNVarCharVal'] == \
             model.request_some_n_var_char_val
@@ -319,7 +322,7 @@ class TestLandAddPlantPostModelRequest:
         assert data == expected_data
 
 
-class TestLandAddPlantPostModelResponse:
+class TestLandAddPlantPostModelResponse:  # pylint: disable=too-few-public-methods
     """
     This class contains unit tests for the
     LandAddPlantPostModelResponse class.

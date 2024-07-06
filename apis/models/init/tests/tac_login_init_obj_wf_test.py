@@ -1,5 +1,5 @@
-# apis/models/init/tests/tac_login_init_obj_wf_test.py
-# pylint: disable=redefined-outer-name
+# apis/models/init/tests/tac_login_init_obj_wf_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains the unit tests for the
@@ -20,7 +20,7 @@ from ..tac_login_init_obj_wf import (
     TacLoginInitObjWFGetInitModelResponse)
 
 
-class MockFlowTacLoginInitObjWFResult:
+class MockFlowTacLoginInitObjWFResult:  # pylint: disable=too-few-public-methods
     """
     A mock object for the
     FlowTacLoginInitObjWFResult

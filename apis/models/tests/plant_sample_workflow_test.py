@@ -1,5 +1,5 @@
-# apis/models/tests/plant_sample_workflow_test.py
-# pylint: disable=unused-argument
+# apis/models/tests/plant_sample_workflow_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains unit tests for the
@@ -131,7 +131,7 @@ class TestPlantSampleWorkflowPostModelRequest:
         assert data == expected_data
 
 
-class TestPlantSampleWorkflowPostModelResponse:
+class TestPlantSampleWorkflowPostModelResponse:  # pylint: disable=too-few-public-methods
     """
     This class contains unit tests for the
     PlantSampleWorkflowPostModelResponse class.

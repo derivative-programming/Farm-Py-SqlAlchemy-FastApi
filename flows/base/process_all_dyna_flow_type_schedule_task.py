@@ -1,4 +1,4 @@
-# flows/base/process_all_dyna_flow_type_schedule_task.py
+# flows/base/process_all_dyna_flow_type_schedule_task.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -24,7 +24,7 @@ from managers.org_customer import OrgCustomerManager  # noqa: F401
 from .base_flow import BaseFlow
 
 
-class BaseFlowProcessAllDynaFlowTypeScheduleTask(BaseFlow):
+class BaseFlowProcessAllDynaFlowTypeScheduleTask(BaseFlow):  # pylint: disable=too-few-public-methods
     """
     Base class for ProcessAllDynaFlowTypeScheduleTask
     flow. Contains

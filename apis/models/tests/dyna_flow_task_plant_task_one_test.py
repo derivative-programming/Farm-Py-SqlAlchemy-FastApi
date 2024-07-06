@@ -1,5 +1,5 @@
-# apis/models/tests/dyna_flow_task_plant_task_one_test.py
-# pylint: disable=unused-argument
+# apis/models/tests/dyna_flow_task_plant_task_one_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains unit tests for the
@@ -131,7 +131,7 @@ class TestDynaFlowTaskPlantTaskOnePostModelRequest:
         assert data == expected_data
 
 
-class TestDynaFlowTaskPlantTaskOnePostModelResponse:
+class TestDynaFlowTaskPlantTaskOnePostModelResponse:  # pylint: disable=too-few-public-methods
     """
     This class contains unit tests for the
     DynaFlowTaskPlantTaskOnePostModelResponse class.

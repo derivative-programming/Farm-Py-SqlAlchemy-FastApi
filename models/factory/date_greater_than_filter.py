@@ -1,4 +1,4 @@
-# models/factory/date_greater_than_filter.py
+# models/factory/date_greater_than_filter.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -25,7 +25,7 @@ class DateGreaterThanFilterFactory(factory.Factory):
     the DateGreaterThanFilter model.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for the DateGreaterThanFilterFactory.
         """

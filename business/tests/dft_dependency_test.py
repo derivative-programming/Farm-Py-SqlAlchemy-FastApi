@@ -1,5 +1,5 @@
-# business/tests/dft_dependency_test.py
-# pylint: disable=redefined-outer-name
+# business/tests/dft_dependency_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 Unit tests for the
@@ -8,17 +8,14 @@ DFTDependencyBusObj class.
 
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 
 import models
-from models.factory import (
-    DFTDependencyFactory)
-from business.dft_dependency import (
-    DFTDependencyBusObj)
+import pytest
+from business.dft_dependency import DFTDependencyBusObj
 from helpers.session_context import SessionContext
-from models import (
-    DFTDependency)
+from models import DFTDependency
+from models.factory import DFTDependencyFactory
 
 
 @pytest.fixture
@@ -152,8 +149,8 @@ class TestDFTDependencyBusObj:
         """
         Test the get_dyna_flow_task_id_bus_obj method.
         """
-        from business.dyna_flow_task import (  # DynaFlowTaskID
-            DynaFlowTaskBusObj)
+        from business.dyna_flow_task import DynaFlowTaskBusObj  # DynaFlowTaskID
+
         # Call the get_dyna_flow_task_id_bus_obj method
         fk_bus_obj: DynaFlowTaskBusObj = await \
             new_bus_obj.get_dyna_flow_task_id_bus_obj()

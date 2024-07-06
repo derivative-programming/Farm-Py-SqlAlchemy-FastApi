@@ -1,4 +1,4 @@
-# apis/models/land_user_plant_multi_select_to_editable.py
+# apis/models/land_user_plant_multi_select_to_editable.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -42,7 +42,7 @@ class LandUserPlantMultiSelectToEditablePostModelRequest(CamelModel):
         alias="plantCodeListCsv",
         description="plant Code List Csv")
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         LandUserPlantMultiSelectToEditablePostModelRequest.

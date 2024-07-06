@@ -1,4 +1,4 @@
-# database.py
+# database.py  # pylint: disable=duplicate-code
 """
 This module provides functions for interacting with the database.
 """

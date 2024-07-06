@@ -1,4 +1,4 @@
-# flows/default/error_log_config_resolve_error_log.py
+# flows/default/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,14 +9,14 @@ that handle the addition of a
 error_log in the flow process.
 """
 
-import uuid  # noqa: F401
 import json
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from flows.base.error_log_config_resolve_error_log import (
-    BaseFlowErrorLogConfigResolveErrorLog)
-from flows.base import LogSeverity
+
 from business.error_log import ErrorLogBusObj
+from flows.base import LogSeverity
+from flows.base.error_log_config_resolve_error_log import BaseFlowErrorLogConfigResolveErrorLog
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

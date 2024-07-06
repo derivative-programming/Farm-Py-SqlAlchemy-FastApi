@@ -1,4 +1,4 @@
-# apis/fs_farm_api/v1_0/endpoints/land_add_plant.py
+# apis/fs_farm_api/v1_0/endpoints/land_add_plant.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -24,7 +24,7 @@ from .base_router import BaseRouter
 API_LOG_ERROR_FORMAT = "response.message: %s"
 
 
-class LandAddPlantRouterConfig():
+class LandAddPlantRouterConfig():  # pylint: disable=too-few-public-methods  # pylint: disable=too-few-public-methods
     """
     Configuration class for the
     LandAddPlantRouter.

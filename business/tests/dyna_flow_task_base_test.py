@@ -1,5 +1,5 @@
-# business/tests/dyna_flow_task_base_test.py
-# pylint: disable=unused-import
+# business/tests/dyna_flow_task_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 DynaFlowTaskBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.dyna_flow_task_base import (
-    DynaFlowTaskBaseBusObj)
+import pytest
+from business.dyna_flow_task_base import DynaFlowTaskBaseBusObj
 from helpers.session_context import SessionContext
-from managers.dyna_flow_task import (
-    DynaFlowTaskManager)
+from managers.dyna_flow_task import DynaFlowTaskManager
 from models import DynaFlowTask
-from models.factory import (
-    DynaFlowTaskFactory)
+from models.factory import DynaFlowTaskFactory
 from services.logging_config import get_logger
 
 from ..dyna_flow_task import DynaFlowTaskBusObj
 
+
+BUSINESS_DYNA_FLOW_TASK_BASE_MANAGER_PATCH = (
+    "business.dyna_flow_task_base"
+    ".DynaFlowTaskManager"
+)
 
 logger = get_logger(__name__)
 
@@ -393,8 +395,7 @@ class TestDynaFlowTaskBaseBusObj:
         Test case for refreshing the dyna_flow_task data.
         """
         with patch(
-            "business.dyna_flow_task_base"
-            ".DynaFlowTaskManager",
+            BUSINESS_DYNA_FLOW_TASK_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -426,8 +427,7 @@ class TestDynaFlowTaskBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.dyna_flow_task_base"
-            ".DynaFlowTaskManager",
+            BUSINESS_DYNA_FLOW_TASK_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -446,8 +446,7 @@ class TestDynaFlowTaskBaseBusObj:
         Test case for converting the dyna_flow_task data to JSON.
         """
         with patch(
-            "business.dyna_flow_task_base"
-            ".DynaFlowTaskManager",
+            BUSINESS_DYNA_FLOW_TASK_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

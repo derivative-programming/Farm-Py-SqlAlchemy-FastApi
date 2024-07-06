@@ -1,5 +1,5 @@
-# reports/row_models/tests/tac_farm_dashboard_test.py
-# pylint: disable=unused-import
+# reports/row_models/tests/tac_farm_dashboard_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains unit tests for the

@@ -1,4 +1,4 @@
-# apis/models/factory/pac_user_tri_state_filter_list.py
+# apis/models/factory/pac_user_tri_state_filter_list.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the factory class for creating
@@ -24,7 +24,7 @@ class PacUserTriStateFilterListGetModelRequestFactory(
     PacUserTriStateFilterListGetModelRequest model.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for the factory.
         """

@@ -1,4 +1,4 @@
-# business/org_customer.py
+# business/org_customer.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,10 +9,12 @@ OrgCustomer.
 """
 
 from typing import List
+
+import managers as managers_and_enums  # noqa: F401
+import models
 from helpers.session_context import SessionContext
 from models import OrgCustomer
-import models
-import managers as managers_and_enums  # noqa: F401
+
 from .org_customer_dyna_flows import OrgCustomerDynaFlowsBusObj
 
 
@@ -87,7 +89,8 @@ class OrgCustomerBusObj(OrgCustomerDynaFlowsBusObj):
             business object.
 
         """
-        from business.customer import CustomerBusObj  # pylint: disable=import-outside-toplevel
+        from business.customer import \
+            CustomerBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = CustomerBusObj(self._session_context)
         await bus_obj.load_from_id(self.customer_id)
         return bus_obj
@@ -122,7 +125,8 @@ class OrgCustomerBusObj(OrgCustomerDynaFlowsBusObj):
             representing the related organization.
 
         """
-        from business.organization import OrganizationBusObj  # pylint: disable=import-outside-toplevel
+        from business.organization import \
+            OrganizationBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = OrganizationBusObj(self._session_context)
         await bus_obj.load_from_id(self.organization_id)
         return bus_obj

@@ -1,4 +1,4 @@
-# business/date_greater_than_filter.py
+# business/date_greater_than_filter.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the DateGreaterThanFilterBusObj class,

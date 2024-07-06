@@ -1,5 +1,5 @@
-# business/tests/date_greater_than_filter_fluent_test.py
-# pylint: disable=unused-import
+# business/tests/date_greater_than_filter_fluent_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 """
 Unit tests for the
 DateGreaterThanFilterFluentBusObj class.
@@ -10,9 +10,7 @@ from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
 
 import pytest
-
-from business.date_greater_than_filter_fluent import (
-    DateGreaterThanFilterFluentBusObj)
+from business.date_greater_than_filter_fluent import DateGreaterThanFilterFluentBusObj
 from helpers.session_context import SessionContext
 
 

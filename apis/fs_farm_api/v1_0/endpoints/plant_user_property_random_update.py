@@ -1,4 +1,4 @@
-# apis/fs_farm_api/v1_0/endpoints/plant_user_property_random_update.py
+# apis/fs_farm_api/v1_0/endpoints/plant_user_property_random_update.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -49,7 +49,7 @@ EXCEPTION_OCCURRED = "Exception occurred: %s - %s"
 API_LOG_ERROR_FORMAT = "response.message: %s"
 
 
-class PlantUserPropertyRandomUpdateRouterConfig():
+class PlantUserPropertyRandomUpdateRouterConfig():  # pylint: disable=too-few-public-methods
     """
     Configuration class for the
     PlantUserPropertyRandomUpdateRouter.

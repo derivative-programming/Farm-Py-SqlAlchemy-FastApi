@@ -1,4 +1,4 @@
-# models/serialization_schema/org_api_key.py
+# models/serialization_schema/org_api_key.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -11,6 +11,7 @@ OrgApiKey objects.
 
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
 from models import OrgApiKey
 
 
@@ -20,7 +21,7 @@ class OrgApiKeySchema(SQLAlchemyAutoSchema):
     OrgApiKey objects.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for defining the schema's metadata.
         """

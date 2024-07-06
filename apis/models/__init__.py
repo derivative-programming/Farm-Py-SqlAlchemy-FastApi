@@ -1,4 +1,4 @@
-# apis/models/__init__.py
+# apis/models/__init__.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 

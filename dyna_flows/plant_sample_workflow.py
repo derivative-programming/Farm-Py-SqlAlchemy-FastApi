@@ -1,4 +1,4 @@
-# dyna_flows/plant_sample_workflow.py
+# dyna_flows/plant_sample_workflow.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the implementation of the
@@ -12,7 +12,7 @@ from managers import DynaFlowTaskTypeEnum
 from dyna_flows.dyna_flow_base import DynaFlowBase
 
 
-class DynaFlowPlantSampleWorkflow(DynaFlowBase):
+class DynaFlowPlantSampleWorkflow(DynaFlowBase):  # pylint: disable=too-few-public-methods
     """
     The DynaFlowPlantSampleWorkflow class is responsible
     for building dynamic flow tasks

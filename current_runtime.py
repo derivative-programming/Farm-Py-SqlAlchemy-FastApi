@@ -1,4 +1,4 @@
-# current_runtime.py
+# current_runtime.py  # pylint: disable=duplicate-code
 
 """
 This module contains the code for initializing various

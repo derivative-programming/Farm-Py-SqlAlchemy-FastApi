@@ -1,5 +1,5 @@
 # apis/models/factory/tests/tac_farm_dashboard_async_test.py
-# pylint: disable=unused-import
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains test cases for the
@@ -19,7 +19,7 @@ from ..tac_farm_dashboard import (
     TacFarmDashboardGetModelRequestFactory)
 
 
-class TestTacFarmDashboardGetModelRequestFactoryAsync:
+class TestTacFarmDashboardGetModelRequestFactoryAsync:  # pylint: disable=too-few-public-methods
     """
     This class contains test cases for the
     TacFarmDashboardGetModelRequestFactoryAsync

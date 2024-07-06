@@ -1,4 +1,4 @@
-# models/managers/plant.py
+# models/managers/plant.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -789,6 +789,10 @@ class PlantManager:
     ##GENREMOVECOMMENT    logging.info(
     ##GENREMOVECOMMENT        "GENVALPascalObjectNameManager"
     ##GENREMOVECOMMENT        ".get_by_GENVALSnakeName_prop")
+    ##GENREMOVECOMMENT    """
+    ##GENREMOVECOMMENT    Retrieve a list of GENVALPascalObjectName by
+    ##GENREMOVECOMMENT    GENVALSnakeName.
+    ##GENREMOVECOMMENT    """
     ##GENREMOVECOMMENT    query_filter = (
     ##GENREMOVECOMMENT        GENVALPascalObjectName._GENVALSnakeName == GENVALSnakeName)  # pylint: disable=protected-access  # noqa: E501
     ##GENREMOVECOMMENT    query_results = await self._run_query(query_filter)

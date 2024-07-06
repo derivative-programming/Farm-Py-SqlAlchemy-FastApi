@@ -1,4 +1,4 @@
-# apis/models/init/pac_user_flavor_list_init_report.py
+# apis/models/init/pac_user_flavor_list_init_report.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

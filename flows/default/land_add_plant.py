@@ -1,4 +1,4 @@
-# flows/default/land_add_plant.py
+# flows/default/land_add_plant.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,14 +9,14 @@ plant to a specific
 land in the flow process.
 """
 
-import uuid  # noqa: F401
 import json
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from flows.base.land_add_plant import (
-    BaseFlowLandAddPlant)
-from flows.base import LogSeverity
+
 from business.land import LandBusObj
+from flows.base import LogSeverity
+from flows.base.land_add_plant import BaseFlowLandAddPlant
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

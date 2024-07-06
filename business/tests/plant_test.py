@@ -1,5 +1,5 @@
-# business/tests/plant_test.py
-# pylint: disable=redefined-outer-name
+# business/tests/plant_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 Unit tests for the
@@ -8,17 +8,14 @@ PlantBusObj class.
 
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 
 import models
-from models.factory import (
-    PlantFactory)
-from business.plant import (
-    PlantBusObj)
+import pytest
+from business.plant import PlantBusObj
 from helpers.session_context import SessionContext
-from models import (
-    Plant)
+from models import Plant
+from models.factory import PlantFactory
 
 
 @pytest.fixture
@@ -165,8 +162,8 @@ class TestPlantBusObj:
         """
         Test the get_land_id_bus_obj method.
         """
-        from business.land import (  # LandID
-            LandBusObj)
+        from business.land import LandBusObj  # LandID
+
         # Call the get_land_id_bus_obj method
         fk_bus_obj: LandBusObj = await \
             new_bus_obj.get_land_id_bus_obj()
@@ -213,8 +210,8 @@ class TestPlantBusObj:
         method.
         """
 
-        from business.flavor import (  # FlvrForeignKeyID
-            FlavorBusObj)
+        from business.flavor import FlavorBusObj  # FlvrForeignKeyID
+
         # Call the get_flvr_foreign_key_id_bus_obj method
         fk_bus_obj: FlavorBusObj = \
             await new_bus_obj.get_flvr_foreign_key_id_bus_obj()

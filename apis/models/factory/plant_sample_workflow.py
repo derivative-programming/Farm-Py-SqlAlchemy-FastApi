@@ -1,4 +1,4 @@
-# apis/models/factory/plant_sample_workflow.py
+# apis/models/factory/plant_sample_workflow.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 Factory module for creating instances of
@@ -26,7 +26,7 @@ class PlantSampleWorkflowPostModelRequestFactory(
     field values for testing.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Metadata for the factory class. Specifies the model to be used.
         """

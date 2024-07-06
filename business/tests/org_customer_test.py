@@ -1,5 +1,5 @@
-# business/tests/org_customer_test.py
-# pylint: disable=redefined-outer-name
+# business/tests/org_customer_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 Unit tests for the
@@ -8,17 +8,14 @@ OrgCustomerBusObj class.
 
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 
 import models
-from models.factory import (
-    OrgCustomerFactory)
-from business.org_customer import (
-    OrgCustomerBusObj)
+import pytest
+from business.org_customer import OrgCustomerBusObj
 from helpers.session_context import SessionContext
-from models import (
-    OrgCustomer)
+from models import OrgCustomer
+from models.factory import OrgCustomerFactory
 
 
 @pytest.fixture
@@ -153,8 +150,8 @@ class TestOrgCustomerBusObj:
         method.
         """
 
-        from business.customer import (  # CustomerID
-            CustomerBusObj)
+        from business.customer import CustomerBusObj  # CustomerID
+
         # Call the get_customer_id_bus_obj method
         fk_bus_obj: CustomerBusObj = \
             await new_bus_obj.get_customer_id_bus_obj()
@@ -200,8 +197,8 @@ class TestOrgCustomerBusObj:
         """
         Test the get_organization_id_bus_obj method.
         """
-        from business.organization import (  # OrganizationID
-            OrganizationBusObj)
+        from business.organization import OrganizationBusObj  # OrganizationID
+
         # Call the get_organization_id_bus_obj method
         fk_bus_obj: OrganizationBusObj = await \
             new_bus_obj.get_organization_id_bus_obj()

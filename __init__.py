@@ -1,4 +1,4 @@
-# __init__.py
+# __init__.py  # pylint: disable=duplicate-code
 
 """
 This is the main module of the Farm-Py-SqlAlchemy-FastApi package.

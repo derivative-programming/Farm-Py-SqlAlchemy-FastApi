@@ -1,5 +1,5 @@
-# business/tests/dyna_flow_task_test.py
-# pylint: disable=redefined-outer-name
+# business/tests/dyna_flow_task_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 Unit tests for the
@@ -8,17 +8,14 @@ DynaFlowTaskBusObj class.
 
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 
 import models
-from models.factory import (
-    DynaFlowTaskFactory)
-from business.dyna_flow_task import (
-    DynaFlowTaskBusObj)
+import pytest
+from business.dyna_flow_task import DynaFlowTaskBusObj
 from helpers.session_context import SessionContext
-from models import (
-    DynaFlowTask)
+from models import DynaFlowTask
+from models.factory import DynaFlowTaskFactory
 
 
 @pytest.fixture
@@ -154,8 +151,8 @@ class TestDynaFlowTaskBusObj:
         """
         Test the get_dyna_flow_id_bus_obj method.
         """
-        from business.dyna_flow import (  # DynaFlowID
-            DynaFlowBusObj)
+        from business.dyna_flow import DynaFlowBusObj  # DynaFlowID
+
         # Call the get_dyna_flow_id_bus_obj method
         fk_bus_obj: DynaFlowBusObj = await \
             new_bus_obj.get_dyna_flow_id_bus_obj()
@@ -203,8 +200,8 @@ class TestDynaFlowTaskBusObj:
         method.
         """
 
-        from business.dyna_flow_task_type import (  # DynaFlowTaskTypeID
-            DynaFlowTaskTypeBusObj)
+        from business.dyna_flow_task_type import DynaFlowTaskTypeBusObj  # DynaFlowTaskTypeID
+
         # Call the get_dyna_flow_task_type_id_bus_obj method
         fk_bus_obj: DynaFlowTaskTypeBusObj = \
             await new_bus_obj.get_dyna_flow_task_type_id_bus_obj()

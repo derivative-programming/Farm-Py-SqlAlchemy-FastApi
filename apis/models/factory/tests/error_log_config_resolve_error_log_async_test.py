@@ -1,5 +1,5 @@
 # apis/models/factory/tests/error_log_config_resolve_error_log_async_test.py
-# pylint: disable=unused-import
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains test cases for the
@@ -19,7 +19,7 @@ from ..error_log_config_resolve_error_log import (
     ErrorLogConfigResolveErrorLogPostModelRequestFactory)
 
 
-class TestErrorLogConfigResolveErrorLogPostModelRequestFactoryAsync:
+class TestErrorLogConfigResolveErrorLogPostModelRequestFactoryAsync:  # pylint: disable=too-few-public-methods
     """
     This class contains test cases for the
     ErrorLogConfigResolveErrorLogPostModelRequestFactoryAsync

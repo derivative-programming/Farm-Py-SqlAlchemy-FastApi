@@ -3,7 +3,7 @@ from helpers.formatting import pascal_to_snake_case
 from helpers.session_context import SessionContext
 
 
-class FlowFactory:
+class FlowFactory:  # pylint: disable=too-few-public-methods
     @staticmethod
     def create_instance(class_name: str, session_context: SessionContext):
         try:

@@ -1,4 +1,4 @@
-# apis/models/pac_user_land_list.py
+# apis/models/pac_user_land_list.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -64,7 +64,7 @@ class PacUserLandListGetModelRequest(CamelModel):
         description="Force Error Message")
 
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         PacUserLandList model.

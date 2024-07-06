@@ -1,21 +1,29 @@
-# business/plant.py
+# business/plant_reports.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the PlantReportsBusObj class
+which provides methods to generate various reports
+related to Plant objects.
 """
 import uuid
-from decimal import Decimal  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
+from decimal import Decimal  # noqa: F401
 from typing import List
+
+import managers as managers_and_enums  # noqa: F401
+import models
+import reports as reports_managers  # noqa: F401
 from helpers import SessionContext, TypeConversion  # noqa: F401
 from models import Plant
-import models
-import managers as managers_and_enums  # noqa: F401
+
 from .plant_fluent import PlantFluentBusObj
-import reports as reports_managers  # noqa: F401
 
 
 class PlantReportsBusObj(PlantFluentBusObj):
     """
+    This class extends the PlantFluentBusObj class
+    and provides methods to generate various reports
+    related to Plant objects.
     """
 
     ##GENINCLUDEFILE[GENVALName.report.include.*]

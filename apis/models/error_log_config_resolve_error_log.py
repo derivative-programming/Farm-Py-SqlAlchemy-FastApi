@@ -1,4 +1,4 @@
-# apis/models/error_log_config_resolve_error_log.py
+# apis/models/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -39,7 +39,7 @@ class ErrorLogConfigResolveErrorLogPostModelRequest(CamelModel):
         description="Force Error Message")
 
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         ErrorLogConfigResolveErrorLogPostModelRequest.

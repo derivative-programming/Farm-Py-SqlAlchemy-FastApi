@@ -1,4 +1,4 @@
-# tac_farm_dashboard.py
+# reports/row_models/tac_farm_dashboard.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -13,7 +13,7 @@ from datetime import datetime, date  # noqa: F401
 from helpers.type_conversion import TypeConversion  # noqa: F401
 
 
-class ReportItemTacFarmDashboard():
+class ReportItemTacFarmDashboard():  # pylint: disable=too-few-public-methods
     """
     Represents a report item for a
     tac Farm Dashboard.

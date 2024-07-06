@@ -1,5 +1,5 @@
 # apis/models/factory/tests/plant_sample_workflow_async_test.py
-# pylint: disable=unused-import
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains test cases for the
@@ -19,7 +19,7 @@ from ..plant_sample_workflow import (
     PlantSampleWorkflowPostModelRequestFactory)
 
 
-class TestPlantSampleWorkflowPostModelRequestFactoryAsync:
+class TestPlantSampleWorkflowPostModelRequestFactoryAsync:  # pylint: disable=too-few-public-methods
     """
     This class contains test cases for the
     PlantSampleWorkflowPostModelRequestFactoryAsync

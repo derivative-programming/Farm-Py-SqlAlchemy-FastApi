@@ -1,4 +1,4 @@
-# models/factory/flavor.py
+# models/factory/flavor.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -25,7 +25,7 @@ class FlavorFactory(factory.Factory):
     the Flavor model.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for the FlavorFactory.
         """

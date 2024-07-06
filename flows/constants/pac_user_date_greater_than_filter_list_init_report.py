@@ -1,4 +1,4 @@
-# flows/constants/pac_user_date_greater_than_filter_list_init_report.py
+# flows/constants/pac_user_date_greater_than_filter_list_init_report.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

@@ -1,5 +1,5 @@
-# managers/tests/dyna_flow_type_schedule_test.py
-# pylint: disable=protected-access
+# managers/tests/dyna_flow_type_schedule_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
 """
@@ -7,22 +7,19 @@
     `DynaFlowTypeScheduleManager` class.
 """
 
-from typing import List
 import uuid  # noqa: F401
+from typing import List
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
+import pytest
 from helpers.session_context import SessionContext
-from managers.dyna_flow_type_schedule import (
-    DynaFlowTypeScheduleManager)
+from managers.dyna_flow_type_schedule import DynaFlowTypeScheduleManager
 from models import DynaFlowTypeSchedule
-from models.factory import (
-    DynaFlowTypeScheduleFactory)
-from models.serialization_schema.dyna_flow_type_schedule import (
-    DynaFlowTypeScheduleSchema)
+from models.factory import DynaFlowTypeScheduleFactory
+from models.serialization_schema.dyna_flow_type_schedule import DynaFlowTypeScheduleSchema
 
 
 class TestDynaFlowTypeScheduleManager:

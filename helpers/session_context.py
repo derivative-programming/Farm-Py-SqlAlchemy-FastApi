@@ -1,4 +1,4 @@
-# helpers/session_context.py
+# helpers/session_context.py  # pylint: disable=duplicate-code
 
 """
 This module contains the SessionContext class which is used to

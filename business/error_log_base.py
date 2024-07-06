@@ -1,4 +1,4 @@
-# business/error_log_base.py
+# business/error_log_base.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

@@ -1,4 +1,4 @@
-# models/plant.py
+# models/plant.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

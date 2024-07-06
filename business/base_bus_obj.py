@@ -1,4 +1,4 @@
-# business/base_bus_obj.py
+# business/base_bus_obj.py  # pylint: disable=duplicate-code
 
 """
     This module contains the base business object class.

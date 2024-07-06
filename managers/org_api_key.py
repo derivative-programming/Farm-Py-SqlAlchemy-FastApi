@@ -1,4 +1,4 @@
-# models/managers/org_api_key.py
+# models/managers/org_api_key.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

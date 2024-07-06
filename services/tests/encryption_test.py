@@ -1,4 +1,4 @@
-# services/tests/encryption_test.py
+# services/tests/encryption_test.py  # pylint: disable=duplicate-code
 
 """
 This module contains unit tests for the encryption module.

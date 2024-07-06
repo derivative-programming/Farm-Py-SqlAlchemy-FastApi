@@ -1,4 +1,4 @@
-# apis/models/tac_register.py
+# apis/models/tac_register.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -58,7 +58,7 @@ class TacRegisterPostModelRequest(CamelModel):
         alias="lastName",
         description="Last Name")
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         TacRegisterPostModelRequest.

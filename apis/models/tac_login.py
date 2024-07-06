@@ -1,4 +1,4 @@
-# apis/models/tac_login.py
+# apis/models/tac_login.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -46,7 +46,7 @@ class TacLoginPostModelRequest(CamelModel):
         alias="password",
         description="Password")
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         TacLoginPostModelRequest.

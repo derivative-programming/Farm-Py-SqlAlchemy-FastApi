@@ -1,5 +1,5 @@
-# business/tests/flavor_base_test.py
-# pylint: disable=unused-import
+# business/tests/flavor_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 FlavorBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.flavor_base import (
-    FlavorBaseBusObj)
+import pytest
+from business.flavor_base import FlavorBaseBusObj
 from helpers.session_context import SessionContext
-from managers.flavor import (
-    FlavorManager)
+from managers.flavor import FlavorManager
 from models import Flavor
-from models.factory import (
-    FlavorFactory)
+from models.factory import FlavorFactory
 from services.logging_config import get_logger
 
 from ..flavor import FlavorBusObj
 
+
+BUSINESS_FLAVOR_BASE_MANAGER_PATCH = (
+    "business.flavor_base"
+    ".FlavorManager"
+)
 
 logger = get_logger(__name__)
 
@@ -360,8 +362,7 @@ class TestFlavorBaseBusObj:
         Test case for refreshing the flavor data.
         """
         with patch(
-            "business.flavor_base"
-            ".FlavorManager",
+            BUSINESS_FLAVOR_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -393,8 +394,7 @@ class TestFlavorBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.flavor_base"
-            ".FlavorManager",
+            BUSINESS_FLAVOR_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -413,8 +413,7 @@ class TestFlavorBaseBusObj:
         Test case for converting the flavor data to JSON.
         """
         with patch(
-            "business.flavor_base"
-            ".FlavorManager",
+            BUSINESS_FLAVOR_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

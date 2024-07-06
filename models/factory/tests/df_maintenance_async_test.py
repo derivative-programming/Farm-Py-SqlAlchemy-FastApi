@@ -1,5 +1,5 @@
-# models/factory/tests/df_maintenance_async_test.py
-# pylint: disable=unused-argument
+# models/factory/tests/df_maintenance_async_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
 
 """
@@ -15,7 +15,6 @@ from datetime import date, datetime, timedelta, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from typing import AsyncGenerator, Generator
 
-import pytest
 import pytest_asyncio
 from sqlalchemy import event
 from sqlalchemy.exc import IntegrityError
@@ -23,6 +22,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.future import select
 from sqlalchemy.orm import sessionmaker
 
+import pytest
 from models import Base, DFMaintenance
 from models.factory import DFMaintenanceFactory
 

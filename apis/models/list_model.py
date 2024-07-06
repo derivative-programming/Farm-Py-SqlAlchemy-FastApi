@@ -1,4 +1,4 @@
-# apis/models/list_model.py
+# apis/models/list_model.py  # pylint: disable=duplicate-code
 
 """
 This module contains the ListModel class, which represents a

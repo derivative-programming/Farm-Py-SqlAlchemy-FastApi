@@ -1,4 +1,4 @@
-# __init__.py
+# reports/row_models/__init__.py  # pylint: disable=duplicate-code
 
 """
 This module contains the row models for the reports package.

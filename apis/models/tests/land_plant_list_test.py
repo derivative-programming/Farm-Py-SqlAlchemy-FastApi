@@ -1,5 +1,5 @@
-# apis/models/tests/land_plant_list_test.py
-# pylint: disable=redefined-outer-name
+# apis/models/tests/land_plant_list_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 
 """
@@ -32,6 +32,11 @@ TEST_ERROR_TEXT = "Test Error"
 TEST_EMAIL = "test@example.com"
 
 TEST_PHONE = "123-456-7890"
+
+PATCH_API_MODEL_LANT_PLANT_LIST_REPORT_MANAGER = (
+    "apis.models.land_plant_list"
+    ".ReportManagerLandPlantList"
+)
 
 
 class TestLandPlantListGetModelRequest():
@@ -95,7 +100,8 @@ class TestLandPlantListGetModelRequest():
             is_edit_allowed=True,
             is_delete_allowed=True,
             some_decimal_val=Decimal('99.99'),
-            some_min_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
+            some_min_utc_date_time_val=datetime(
+                2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
             some_min_date_val=date(2023, 1, 1),
             some_money_val=Decimal('100.00'),
             some_n_var_char_val="nvarchar",
@@ -155,7 +161,8 @@ class TestLandPlantListGetModelRequest():
             is_edit_allowed=True,
             is_delete_allowed=True,
             some_decimal_val=Decimal('99.99'),
-            some_min_utc_date_time_val=datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
+            some_min_utc_date_time_val=datetime(
+                2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
             some_min_date_val=date(2023, 1, 1),
             some_money_val=Decimal('100.00'),
             some_n_var_char_val="nvarchar",
@@ -181,8 +188,9 @@ class TestLandPlantListGetModelRequest():
         assert camel_case_dict['isEditAllowed'] is True
         assert camel_case_dict['isDeleteAllowed'] is True
         assert camel_case_dict['someDecimalVal'] == Decimal('99.99')
-        assert camel_case_dict['someMinUTCDateTimeVal'] == datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)  # .isoformat()  # Convert to ISO format
-        assert camel_case_dict['someMinDateVal'] == date(2023, 1, 1)  # .isoformat()  # Convert to ISO format
+        assert camel_case_dict['someMinUTCDateTimeVal'] == datetime(
+            2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
+        assert camel_case_dict['someMinDateVal'] == date(2023, 1, 1)
         assert camel_case_dict['someMoneyVal'] == Decimal('100.00')
         assert camel_case_dict['someNVarCharVal'] == "nvarchar"
         assert camel_case_dict['someVarCharVal'] == "varchar"
@@ -312,8 +320,7 @@ async def test_process_request(session_context, report_request, report_items):
     LandPlantListGetModelResponse class.
     """
     with patch(
-        "apis.models.land_plant_list"
-        ".ReportManagerLandPlantList",
+        PATCH_API_MODEL_LANT_PLANT_LIST_REPORT_MANAGER,
         autospec=True
     ) as mock_report_manager:
         mock_report_manager_instance = \

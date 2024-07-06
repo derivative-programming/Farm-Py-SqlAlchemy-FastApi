@@ -1,4 +1,4 @@
-# models/managers/error_log.py
+# models/managers/error_log.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

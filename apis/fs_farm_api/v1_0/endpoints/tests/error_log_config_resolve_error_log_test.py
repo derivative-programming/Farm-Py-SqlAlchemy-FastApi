@@ -1,5 +1,5 @@
-# apis/fs_farm_api/v1_0/endpoints/tests/error_log_config_resolve_error_log_test.py
-# pylint: disable=unused-import
+# apis/fs_farm_api/v1_0/endpoints/tests/error_log_config_resolve_error_log_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains unit tests for the
@@ -14,10 +14,10 @@ from unittest.mock import AsyncMock, patch
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
-import apis.fs_farm_api.v1_0.endpoints.tests.test_constants as test_constants
 import models.factory as model_factorys  # noqa: F401
 import pytest
 from apis import models as apis_models
+from apis.fs_farm_api.v1_0.endpoints.tests import test_constants
 from database import get_db
 from helpers.api_token import ApiToken  # noqa: F401
 from main import app

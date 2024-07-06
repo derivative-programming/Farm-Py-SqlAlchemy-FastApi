@@ -1,5 +1,5 @@
-# business/tests/org_api_key_test.py
-# pylint: disable=redefined-outer-name
+# business/tests/org_api_key_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 Unit tests for the
@@ -8,17 +8,14 @@ OrgApiKeyBusObj class.
 
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 
 import models
-from models.factory import (
-    OrgApiKeyFactory)
-from business.org_api_key import (
-    OrgApiKeyBusObj)
+import pytest
+from business.org_api_key import OrgApiKeyBusObj
 from helpers.session_context import SessionContext
-from models import (
-    OrgApiKey)
+from models import OrgApiKey
+from models.factory import OrgApiKeyFactory
 
 
 @pytest.fixture
@@ -158,8 +155,8 @@ class TestOrgApiKeyBusObj:
         """
         Test the get_organization_id_bus_obj method.
         """
-        from business.organization import (  # OrganizationID
-            OrganizationBusObj)
+        from business.organization import OrganizationBusObj  # OrganizationID
+
         # Call the get_organization_id_bus_obj method
         fk_bus_obj: OrganizationBusObj = await \
             new_bus_obj.get_organization_id_bus_obj()
@@ -206,8 +203,8 @@ class TestOrgApiKeyBusObj:
         method.
         """
 
-        from business.org_customer import (  # OrgCustomerID
-            OrgCustomerBusObj)
+        from business.org_customer import OrgCustomerBusObj  # OrgCustomerID
+
         # Call the get_org_customer_id_bus_obj method
         fk_bus_obj: OrgCustomerBusObj = \
             await new_bus_obj.get_org_customer_id_bus_obj()

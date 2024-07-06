@@ -1,4 +1,4 @@
-# __init__.py
+# reports/__init__.py  # pylint: disable=duplicate-code
 
 """
 This module contains the reports package.

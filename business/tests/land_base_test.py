@@ -1,5 +1,5 @@
-# business/tests/land_base_test.py
-# pylint: disable=unused-import
+# business/tests/land_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 LandBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.land_base import (
-    LandBaseBusObj)
+import pytest
+from business.land_base import LandBaseBusObj
 from helpers.session_context import SessionContext
-from managers.land import (
-    LandManager)
+from managers.land import LandManager
 from models import Land
-from models.factory import (
-    LandFactory)
+from models.factory import LandFactory
 from services.logging_config import get_logger
 
 from ..land import LandBusObj
 
+
+BUSINESS_LAND_BASE_MANAGER_PATCH = (
+    "business.land_base"
+    ".LandManager"
+)
 
 logger = get_logger(__name__)
 
@@ -360,8 +362,7 @@ class TestLandBaseBusObj:
         Test case for refreshing the land data.
         """
         with patch(
-            "business.land_base"
-            ".LandManager",
+            BUSINESS_LAND_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -393,8 +394,7 @@ class TestLandBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.land_base"
-            ".LandManager",
+            BUSINESS_LAND_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -413,8 +413,7 @@ class TestLandBaseBusObj:
         Test case for converting the land data to JSON.
         """
         with patch(
-            "business.land_base"
-            ".LandManager",
+            BUSINESS_LAND_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

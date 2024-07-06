@@ -1,4 +1,4 @@
-# helpers/type_conversion.py
+# helpers/type_conversion.py  # pylint: disable=duplicate-code
 
 """
 This module provides helper functions and classes for type conversion.

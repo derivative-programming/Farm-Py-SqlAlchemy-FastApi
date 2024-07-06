@@ -1,20 +1,24 @@
-# business/plant.py
+# business/plant_dyna_flows.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
+This module contains the business logic related to plant dynamic flows.
 """
-import uuid
-from decimal import Decimal  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
-from typing import List
-from helpers import SessionContext, TypeConversion  # noqa: F401
-from models import Plant, DynaFlow
-from models import pac
+from decimal import Decimal  # noqa: F401
+from typing import List  # noqa: F401
+
 import managers as managers_and_enums  # noqa: F401
+from helpers import SessionContext, TypeConversion  # noqa: F401
+from models import DynaFlow, Plant, pac  # noqa: F401
+
 from .plant_reports import PlantReportsBusObj
 
 
 class PlantDynaFlowsBusObj(PlantReportsBusObj):
     """
+    Represents the business object for plant dynamic flows.
+    Inherits from PlantReportsBusObj.
     """
 # PlantSampleWorkflow
     async def request_dyna_flow_plant_sample_workflow(
@@ -59,11 +63,15 @@ class PlantDynaFlowsBusObj(PlantReportsBusObj):
         dyna_flow.dyna_flow_type_id = dyna_flow_type.dyna_flow_type_id
 
         dyna_flow = await dyna_flow_manager.add(dyna_flow)
+        
+        assert isinstance(dyna_flow, DynaFlow)
 
         if dyna_flow.parent_dyna_flow_id > 0:
 
             parent_dyna_flow = await dyna_flow_manager.get_by_id(
                 dyna_flow.parent_dyna_flow_id)
+            
+            assert isinstance(parent_dyna_flow, DynaFlow)
 
             dyna_flow.root_dyna_flow_id = parent_dyna_flow.root_dyna_flow_id
 

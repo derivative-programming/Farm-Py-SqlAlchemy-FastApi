@@ -1,5 +1,5 @@
-# business/tests/error_log_base_test.py
-# pylint: disable=unused-import
+# business/tests/error_log_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 ErrorLogBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.error_log_base import (
-    ErrorLogBaseBusObj)
+import pytest
+from business.error_log_base import ErrorLogBaseBusObj
 from helpers.session_context import SessionContext
-from managers.error_log import (
-    ErrorLogManager)
+from managers.error_log import ErrorLogManager
 from models import ErrorLog
-from models.factory import (
-    ErrorLogFactory)
+from models.factory import ErrorLogFactory
 from services.logging_config import get_logger
 
 from ..error_log import ErrorLogBusObj
 
+
+BUSINESS_ERROR_LOG_BASE_MANAGER_PATCH = (
+    "business.error_log_base"
+    ".ErrorLogManager"
+)
 
 logger = get_logger(__name__)
 
@@ -366,8 +368,7 @@ class TestErrorLogBaseBusObj:
         Test case for refreshing the error_log data.
         """
         with patch(
-            "business.error_log_base"
-            ".ErrorLogManager",
+            BUSINESS_ERROR_LOG_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -399,8 +400,7 @@ class TestErrorLogBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.error_log_base"
-            ".ErrorLogManager",
+            BUSINESS_ERROR_LOG_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -419,8 +419,7 @@ class TestErrorLogBaseBusObj:
         Test case for converting the error_log data to JSON.
         """
         with patch(
-            "business.error_log_base"
-            ".ErrorLogManager",
+            BUSINESS_ERROR_LOG_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

@@ -1,4 +1,4 @@
-# models/organization.py
+# models/organization.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

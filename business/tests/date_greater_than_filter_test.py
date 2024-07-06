@@ -1,5 +1,5 @@
-# business/tests/date_greater_than_filter_test.py
-# pylint: disable=redefined-outer-name
+# business/tests/date_greater_than_filter_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 Unit tests for the
@@ -8,17 +8,14 @@ DateGreaterThanFilterBusObj class.
 
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 
 import models
-from models.factory import (
-    DateGreaterThanFilterFactory)
-from business.date_greater_than_filter import (
-    DateGreaterThanFilterBusObj)
+import pytest
+from business.date_greater_than_filter import DateGreaterThanFilterBusObj
 from helpers.session_context import SessionContext
-from models import (
-    DateGreaterThanFilter)
+from models import DateGreaterThanFilter
+from models.factory import DateGreaterThanFilterFactory
 
 
 @pytest.fixture
@@ -157,8 +154,8 @@ class TestDateGreaterThanFilterBusObj:
         """
         Test the get_pac_id_bus_obj method.
         """
-        from business.pac import (  # PacID
-            PacBusObj)
+        from business.pac import PacBusObj  # PacID
+
         # Call the get_pac_id_bus_obj method
         fk_bus_obj: PacBusObj = await \
             new_bus_obj.get_pac_id_bus_obj()

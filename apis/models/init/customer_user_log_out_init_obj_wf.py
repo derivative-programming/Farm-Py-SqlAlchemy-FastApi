@@ -1,4 +1,4 @@
-# apis/models/init/customer_user_log_out_init_obj_wf.py
+# apis/models/init/customer_user_log_out_init_obj_wf.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

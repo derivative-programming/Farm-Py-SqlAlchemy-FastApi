@@ -1,4 +1,4 @@
-# flows/constants/plant_sample_workflow.py
+# flows/constants/plant_sample_workflow.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

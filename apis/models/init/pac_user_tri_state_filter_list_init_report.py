@@ -1,4 +1,4 @@
-# apis/models/init/pac_user_tri_state_filter_list_init_report.py
+# apis/models/init/pac_user_tri_state_filter_list_init_report.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

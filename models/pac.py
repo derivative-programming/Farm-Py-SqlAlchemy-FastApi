@@ -1,4 +1,4 @@
-# models/pac.py
+# models/pac.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

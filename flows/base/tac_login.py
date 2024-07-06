@@ -1,4 +1,4 @@
-# flows/base/tac_login.py
+# flows/base/tac_login.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -24,7 +24,7 @@ from managers.org_customer import OrgCustomerManager  # noqa: F401
 from .base_flow import BaseFlow
 
 
-class BaseFlowTacLogin(BaseFlow):
+class BaseFlowTacLogin(BaseFlow):  # pylint: disable=too-few-public-methods
     """
     Base class for TacLogin
     flow. Contains

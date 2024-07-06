@@ -1,4 +1,4 @@
-# apis/models/plant_user_property_random_update.py
+# apis/models/plant_user_property_random_update.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -39,7 +39,7 @@ class PlantUserPropertyRandomUpdatePostModelRequest(CamelModel):
         description="Force Error Message")
 
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         PlantUserPropertyRandomUpdatePostModelRequest.

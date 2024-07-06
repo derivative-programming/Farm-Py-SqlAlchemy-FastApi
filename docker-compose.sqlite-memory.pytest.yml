@@ -11,7 +11,7 @@ services:
     environment:
       TEST_DATABASE_URL: 'sqlite+aiosqlite:///:memory:'
       API_KEY_SECRET: laisjdf;asdifj[fi9wejr'wekf]
-      ENCRYPTION_KEY_SECRET: alsk;fj2 i3jeqealfjansdflkmadf
+      ENCRYPTION_KEY_SECRET: alsk;fj2i3jeqealfjansdflkmadf
     volumes:
       - ./pytest/reports:/usr/src/app/pytest/reports
       - ./pytest/data:/usr/src/app/pytest/data

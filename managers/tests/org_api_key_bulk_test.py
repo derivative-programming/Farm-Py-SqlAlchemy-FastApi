@@ -1,5 +1,5 @@
-# models/managers/tests/org_api_key_test.py
-# pylint: disable=protected-access
+# models/managers/tests/org_api_key_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
 """
@@ -10,17 +10,15 @@
 import logging
 import uuid  # noqa: F401
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
+import pytest
 from helpers.session_context import SessionContext
-from managers.org_api_key import (
-    OrgApiKeyManager)
+from managers.org_api_key import OrgApiKeyManager
 from models import OrgApiKey
-from models.factory import (
-    OrgApiKeyFactory)
+from models.factory import OrgApiKeyFactory
 
 
 class TestOrgApiKeyBulkManager:

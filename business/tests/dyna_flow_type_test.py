@@ -1,5 +1,5 @@
-# business/tests/dyna_flow_type_test.py
-# pylint: disable=redefined-outer-name
+# business/tests/dyna_flow_type_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 Unit tests for the
@@ -8,17 +8,14 @@ DynaFlowTypeBusObj class.
 
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 
 import models
-from models.factory import (
-    DynaFlowTypeFactory)
-from business.dyna_flow_type import (
-    DynaFlowTypeBusObj)
+import pytest
+from business.dyna_flow_type import DynaFlowTypeBusObj
 from helpers.session_context import SessionContext
-from models import (
-    DynaFlowType)
+from models import DynaFlowType
+from models.factory import DynaFlowTypeFactory
 
 
 @pytest.fixture
@@ -156,8 +153,8 @@ class TestDynaFlowTypeBusObj:
         """
         Test the get_pac_id_bus_obj method.
         """
-        from business.pac import (  # PacID
-            PacBusObj)
+        from business.pac import PacBusObj  # PacID
+
         # Call the get_pac_id_bus_obj method
         fk_bus_obj: PacBusObj = await \
             new_bus_obj.get_pac_id_bus_obj()

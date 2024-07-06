@@ -1,4 +1,4 @@
-# business/dyna_flow_task.py
+# business/dyna_flow_task.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,10 +9,12 @@ DynaFlowTask.
 """
 
 from typing import List
+
+import managers as managers_and_enums  # noqa: F401
+import models
 from helpers.session_context import SessionContext
 from models import DynaFlowTask
-import models
-import managers as managers_and_enums  # noqa: F401
+
 from .dyna_flow_task_dyna_flows import DynaFlowTaskDynaFlowsBusObj
 
 
@@ -94,7 +96,8 @@ class DynaFlowTaskBusObj(DynaFlowTaskDynaFlowsBusObj):
             representing the related dyna_flow.
 
         """
-        from business.dyna_flow import DynaFlowBusObj  # pylint: disable=import-outside-toplevel
+        from business.dyna_flow import \
+            DynaFlowBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = DynaFlowBusObj(self._session_context)
         await bus_obj.load_from_id(self.dyna_flow_id)
         return bus_obj
@@ -128,7 +131,8 @@ class DynaFlowTaskBusObj(DynaFlowTaskDynaFlowsBusObj):
             business object.
 
         """
-        from business.dyna_flow_task_type import DynaFlowTaskTypeBusObj  # pylint: disable=import-outside-toplevel
+        from business.dyna_flow_task_type import \
+            DynaFlowTaskTypeBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = DynaFlowTaskTypeBusObj(self._session_context)
         await bus_obj.load_from_id(self.dyna_flow_task_type_id)
         return bus_obj

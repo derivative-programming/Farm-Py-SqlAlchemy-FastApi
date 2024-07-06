@@ -1,5 +1,5 @@
-# business/tests/dft_dependency_base_test.py
-# pylint: disable=unused-import
+# business/tests/dft_dependency_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 DFTDependencyBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.dft_dependency_base import (
-    DFTDependencyBaseBusObj)
+import pytest
+from business.dft_dependency_base import DFTDependencyBaseBusObj
 from helpers.session_context import SessionContext
-from managers.dft_dependency import (
-    DFTDependencyManager)
+from managers.dft_dependency import DFTDependencyManager
 from models import DFTDependency
-from models.factory import (
-    DFTDependencyFactory)
+from models.factory import DFTDependencyFactory
 from services.logging_config import get_logger
 
 from ..dft_dependency import DFTDependencyBusObj
 
+
+BUSINESS_DFT_DEPENDENCY_BASE_MANAGER_PATCH = (
+    "business.dft_dependency_base"
+    ".DFTDependencyManager"
+)
 
 logger = get_logger(__name__)
 
@@ -354,8 +356,7 @@ class TestDFTDependencyBaseBusObj:
         Test case for refreshing the dft_dependency data.
         """
         with patch(
-            "business.dft_dependency_base"
-            ".DFTDependencyManager",
+            BUSINESS_DFT_DEPENDENCY_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -387,8 +388,7 @@ class TestDFTDependencyBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.dft_dependency_base"
-            ".DFTDependencyManager",
+            BUSINESS_DFT_DEPENDENCY_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -407,8 +407,7 @@ class TestDFTDependencyBaseBusObj:
         Test case for converting the dft_dependency data to JSON.
         """
         with patch(
-            "business.dft_dependency_base"
-            ".DFTDependencyManager",
+            BUSINESS_DFT_DEPENDENCY_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

@@ -1,5 +1,5 @@
-# apis/models/tests/pac_user_flavor_list_test.py
-# pylint: disable=redefined-outer-name
+# apis/models/tests/pac_user_flavor_list_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 
 """
@@ -32,6 +32,11 @@ TEST_ERROR_TEXT = "Test Error"
 TEST_EMAIL = "test@example.com"
 
 TEST_PHONE = "123-456-7890"
+
+PATCH_API_MODEL_LANT_FLAVOR_LIST_REPORT_MANAGER = (
+    "apis.models.pac_user_flavor_list"
+    ".ReportManagerPacUserFlavorList"
+)
 
 
 class TestPacUserFlavorListGetModelRequest():
@@ -189,8 +194,7 @@ async def test_process_request(session_context, report_request, report_items):
     PacUserFlavorListGetModelResponse class.
     """
     with patch(
-        "apis.models.pac_user_flavor_list"
-        ".ReportManagerPacUserFlavorList",
+        PATCH_API_MODEL_LANT_FLAVOR_LIST_REPORT_MANAGER,
         autospec=True
     ) as mock_report_manager:
         mock_report_manager_instance = \

@@ -1,5 +1,5 @@
-# flows/base/tests/tac_login_test.py
-# pylint: disable=protected-access
+# flows/base/tests/tac_login_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains the unit tests for the

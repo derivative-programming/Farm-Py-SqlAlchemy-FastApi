@@ -1,5 +1,5 @@
-# apis/models/init/tests/land_plant_list_init_report_test.py
-# pylint: disable=redefined-outer-name
+# apis/models/init/tests/land_plant_list_init_report_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains the unit tests for the
@@ -20,7 +20,7 @@ from ..land_plant_list_init_report import (
     LandPlantListInitReportGetInitModelResponse)
 
 
-class MockFlowLandPlantListInitReportResult:
+class MockFlowLandPlantListInitReportResult:  # pylint: disable=too-few-public-methods
     """
     A mock object for the
     FlowLandPlantListInitReportResult

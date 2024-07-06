@@ -1,4 +1,4 @@
-# models/tac.py
+# models/tac.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

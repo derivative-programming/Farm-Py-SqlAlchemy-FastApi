@@ -1,4 +1,4 @@
-# apis/models/init/land_plant_list_init_report.py
+# apis/models/init/land_plant_list_init_report.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

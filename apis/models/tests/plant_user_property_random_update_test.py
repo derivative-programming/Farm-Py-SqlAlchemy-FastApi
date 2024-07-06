@@ -1,5 +1,5 @@
-# apis/models/tests/plant_user_property_random_update_test.py
-# pylint: disable=unused-argument
+# apis/models/tests/plant_user_property_random_update_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains unit tests for the
@@ -131,7 +131,7 @@ class TestPlantUserPropertyRandomUpdatePostModelRequest:
         assert data == expected_data
 
 
-class TestPlantUserPropertyRandomUpdatePostModelResponse:
+class TestPlantUserPropertyRandomUpdatePostModelResponse:  # pylint: disable=too-few-public-methods
     """
     This class contains unit tests for the
     PlantUserPropertyRandomUpdatePostModelResponse class.

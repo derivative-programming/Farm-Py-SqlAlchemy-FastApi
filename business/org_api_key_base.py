@@ -1,4 +1,4 @@
-# business/org_api_key_base.py
+# business/org_api_key_base.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

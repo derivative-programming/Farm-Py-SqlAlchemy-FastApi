@@ -1,3 +1,9 @@
+# services/custom_temp_folder.py  # pylint: disable=duplicate-code
+"""
+A class that creates a custom temporary folder and
+provides methods to create temporary files and clear
+the folder.
+"""
 import tempfile
 import os
 import shutil

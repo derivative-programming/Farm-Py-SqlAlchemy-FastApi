@@ -1,4 +1,4 @@
-# pac_user_date_greater_than_filter_list.py
+# reports/row_models/pac_user_date_greater_than_filter_list.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -13,7 +13,7 @@ from datetime import datetime, date  # noqa: F401
 from helpers.type_conversion import TypeConversion  # noqa: F401
 
 
-class ReportItemPacUserDateGreaterThanFilterList():
+class ReportItemPacUserDateGreaterThanFilterList():  # pylint: disable=too-few-public-methods
     """
     Represents a report item for a
     pac Pac User Date Greater Than Filter List Report.

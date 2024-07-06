@@ -1,4 +1,4 @@
-# business/organization_base.py
+# business/organization_base.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

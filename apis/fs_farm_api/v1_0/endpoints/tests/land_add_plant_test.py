@@ -1,5 +1,5 @@
-# apis/fs_farm_api/v1_0/endpoints/tests/land_add_plant_test.py
-# pylint: disable=unused-import
+# apis/fs_farm_api/v1_0/endpoints/tests/land_add_plant_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains unit tests for the
@@ -13,10 +13,10 @@ from unittest.mock import AsyncMock, patch
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
-import apis.fs_farm_api.v1_0.endpoints.tests.test_constants as test_constants
 import models.factory as model_factorys
 import pytest
 from apis import models as apis_models
+from apis.fs_farm_api.v1_0.endpoints.tests import test_constants
 from database import get_db
 from main import app
 
@@ -603,7 +603,7 @@ async def test_init_endpoint_method_failure(
         assert response.status_code == 405
 
 
-def teardown_module(module):  # pylint: disable=unused-argument
+def teardown_module():
     """
     Teardown function called after all tests in the module have been run.
     It clears the dependency overrides in the app.

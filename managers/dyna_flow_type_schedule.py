@@ -1,4 +1,4 @@
-# models/managers/dyna_flow_type_schedule.py
+# models/managers/dyna_flow_type_schedule.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

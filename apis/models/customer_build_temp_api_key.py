@@ -1,4 +1,4 @@
-# apis/models/customer_build_temp_api_key.py
+# apis/models/customer_build_temp_api_key.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -39,7 +39,7 @@ class CustomerBuildTempApiKeyPostModelRequest(CamelModel):
         description="Force Error Message")
 
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         CustomerBuildTempApiKeyPostModelRequest.

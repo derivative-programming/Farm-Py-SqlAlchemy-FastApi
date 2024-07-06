@@ -1,4 +1,4 @@
-# business/plant_fluent.py
+# business/plant_fluent.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

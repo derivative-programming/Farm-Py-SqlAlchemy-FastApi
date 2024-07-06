@@ -1,5 +1,5 @@
 # apis/models/factory/tests/process_all_dyna_flow_type_schedule_task_async_test.py
-# pylint: disable=unused-import
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains test cases for the
@@ -19,7 +19,7 @@ from ..process_all_dyna_flow_type_schedule_task import (
     ProcessAllDynaFlowTypeScheduleTaskPostModelRequestFactory)
 
 
-class TestProcessAllDynaFlowTypeScheduleTaskPostModelRequestFactoryAsync:
+class TestProcessAllDynaFlowTypeScheduleTaskPostModelRequestFactoryAsync:  # pylint: disable=too-few-public-methods
     """
     This class contains test cases for the
     ProcessAllDynaFlowTypeScheduleTaskPostModelRequestFactoryAsync

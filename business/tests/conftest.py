@@ -1,4 +1,4 @@
-# business/tests/conftest.py
+# business/tests/conftest.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-argument
 # pylint: disable=redefined-outer-name
 
@@ -19,12 +19,12 @@ Configurations:
 import asyncio
 from typing import Generator
 
-import pytest
 import pytest_asyncio
 from sqlalchemy import event
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
+import pytest
 from models import Base
 from services.logging_config import get_logger
 

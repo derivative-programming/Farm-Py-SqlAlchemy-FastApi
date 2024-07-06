@@ -1,4 +1,4 @@
-# flows/constants/tac_register_init_obj_wf.py
+# flows/constants/tac_register_init_obj_wf.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

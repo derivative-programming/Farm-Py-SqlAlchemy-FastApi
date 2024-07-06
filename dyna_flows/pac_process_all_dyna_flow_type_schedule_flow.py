@@ -1,4 +1,4 @@
-# dyna_flows/pac_process_all_dyna_flow_type_schedule_flow.py
+# dyna_flows/pac_process_all_dyna_flow_type_schedule_flow.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the implementation of the
@@ -12,7 +12,7 @@ from managers import DynaFlowTaskTypeEnum
 from dyna_flows.dyna_flow_base import DynaFlowBase
 
 
-class DynaFlowPacProcessAllDynaFlowTypeScheduleFlow(DynaFlowBase):
+class DynaFlowPacProcessAllDynaFlowTypeScheduleFlow(DynaFlowBase):  # pylint: disable=too-few-public-methods
     """
     The DynaFlowPacProcessAllDynaFlowTypeScheduleFlow class is responsible
     for building dynamic flow tasks

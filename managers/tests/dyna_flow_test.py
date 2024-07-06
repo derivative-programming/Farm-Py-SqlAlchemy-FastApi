@@ -1,5 +1,5 @@
-# managers/tests/dyna_flow_test.py
-# pylint: disable=protected-access
+# managers/tests/dyna_flow_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
 """
@@ -7,22 +7,19 @@
     `DynaFlowManager` class.
 """
 
-from typing import List
 import uuid  # noqa: F401
+from typing import List
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
+import pytest
 from helpers.session_context import SessionContext
-from managers.dyna_flow import (
-    DynaFlowManager)
+from managers.dyna_flow import DynaFlowManager
 from models import DynaFlow
-from models.factory import (
-    DynaFlowFactory)
-from models.serialization_schema.dyna_flow import (
-    DynaFlowSchema)
+from models.factory import DynaFlowFactory
+from models.serialization_schema.dyna_flow import DynaFlowSchema
 
 
 class TestDynaFlowManager:

@@ -1,4 +1,4 @@
-# apis/models/init/plant_user_details_init_report.py
+# apis/models/init/plant_user_details_init_report.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

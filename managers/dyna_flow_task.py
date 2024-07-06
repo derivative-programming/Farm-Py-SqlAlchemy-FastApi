@@ -1,4 +1,4 @@
-# models/managers/dyna_flow_task.py
+# models/managers/dyna_flow_task.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

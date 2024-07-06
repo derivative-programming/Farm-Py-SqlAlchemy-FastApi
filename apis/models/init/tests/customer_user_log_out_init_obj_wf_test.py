@@ -1,5 +1,5 @@
-# apis/models/init/tests/customer_user_log_out_init_obj_wf_test.py
-# pylint: disable=redefined-outer-name
+# apis/models/init/tests/customer_user_log_out_init_obj_wf_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains the unit tests for the
@@ -20,7 +20,7 @@ from ..customer_user_log_out_init_obj_wf import (
     CustomerUserLogOutInitObjWFGetInitModelResponse)
 
 
-class MockFlowCustomerUserLogOutInitObjWFResult:
+class MockFlowCustomerUserLogOutInitObjWFResult:  # pylint: disable=too-few-public-methods
     """
     A mock object for the
     FlowCustomerUserLogOutInitObjWFResult

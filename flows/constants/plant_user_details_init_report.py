@@ -1,4 +1,4 @@
-# flows/constants/plant_user_details_init_report.py
+# flows/constants/plant_user_details_init_report.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

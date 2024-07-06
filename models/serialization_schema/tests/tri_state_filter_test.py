@@ -1,5 +1,5 @@
-# models/serialization_schema/tests/tri_state_filter_test.py
-# pylint: disable=redefined-outer-name
+# models/serialization_schema/tests/tri_state_filter_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 
 """
@@ -46,9 +46,9 @@ import logging
 from datetime import datetime  # noqa: F401
 from decimal import Decimal  # noqa: F401
 
-import pytest
 import pytz
 
+import pytest
 from models import TriStateFilter
 from models.factory import TriStateFilterFactory
 from models.serialization_schema import TriStateFilterSchema

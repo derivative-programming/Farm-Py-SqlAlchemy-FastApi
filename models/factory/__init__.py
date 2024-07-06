@@ -1,4 +1,4 @@
-# models/factory/__init__.py
+# models/factory/__init__.py  # pylint: disable=duplicate-code
 """
 This module contains factory classes for creating
 instances of various models.

@@ -1,5 +1,5 @@
-# models/managers/tests/org_customer_test.py
-# pylint: disable=protected-access
+# models/managers/tests/org_customer_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
 """
@@ -9,18 +9,16 @@
 
 import uuid  # noqa: F401
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 import models
+import pytest
 from helpers.session_context import SessionContext
-from managers.org_customer import (
-    OrgCustomerManager)
+from managers.org_customer import OrgCustomerManager
 from models import OrgCustomer
-from models.factory import (
-    OrgCustomerFactory)
+from models.factory import OrgCustomerFactory
 
 
 class TestOrgCustomerGetByManager:

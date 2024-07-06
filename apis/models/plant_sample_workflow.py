@@ -1,4 +1,4 @@
-# apis/models/plant_sample_workflow.py
+# apis/models/plant_sample_workflow.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -39,7 +39,7 @@ class PlantSampleWorkflowPostModelRequest(CamelModel):
         description="Force Error Message")
 
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         PlantSampleWorkflowPostModelRequest.

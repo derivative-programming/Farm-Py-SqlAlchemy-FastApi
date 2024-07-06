@@ -1,5 +1,5 @@
 # apis/models/factory/tests/dyna_flow_task_dyna_flow_cleanup_async_test.py
-# pylint: disable=unused-import
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains test cases for the
@@ -19,7 +19,7 @@ from ..dyna_flow_task_dyna_flow_cleanup import (
     DynaFlowTaskDynaFlowCleanupPostModelRequestFactory)
 
 
-class TestDynaFlowTaskDynaFlowCleanupPostModelRequestFactoryAsync:
+class TestDynaFlowTaskDynaFlowCleanupPostModelRequestFactoryAsync:  # pylint: disable=too-few-public-methods
     """
     This class contains test cases for the
     DynaFlowTaskDynaFlowCleanupPostModelRequestFactoryAsync

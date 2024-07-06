@@ -1,4 +1,4 @@
-# apis/models/pac_user_flavor_list.py
+# apis/models/pac_user_flavor_list.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -64,7 +64,7 @@ class PacUserFlavorListGetModelRequest(CamelModel):
         description="Force Error Message")
 
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         PacUserFlavorList model.

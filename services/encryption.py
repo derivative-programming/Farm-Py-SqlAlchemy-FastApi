@@ -1,4 +1,4 @@
-# services/encryption.py
+# services/encryption.py  # pylint: disable=duplicate-code
 
 """
 This module provides functions for encrypting and decrypting

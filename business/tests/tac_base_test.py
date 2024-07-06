@@ -1,5 +1,5 @@
-# business/tests/tac_base_test.py
-# pylint: disable=unused-import
+# business/tests/tac_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 TacBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.tac_base import (
-    TacBaseBusObj)
+import pytest
+from business.tac_base import TacBaseBusObj
 from helpers.session_context import SessionContext
-from managers.tac import (
-    TacManager)
+from managers.tac import TacManager
 from models import Tac
-from models.factory import (
-    TacFactory)
+from models.factory import TacFactory
 from services.logging_config import get_logger
 
 from ..tac import TacBusObj
 
+
+BUSINESS_TAC_BASE_MANAGER_PATCH = (
+    "business.tac_base"
+    ".TacManager"
+)
 
 logger = get_logger(__name__)
 
@@ -360,8 +362,7 @@ class TestTacBaseBusObj:
         Test case for refreshing the tac data.
         """
         with patch(
-            "business.tac_base"
-            ".TacManager",
+            BUSINESS_TAC_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -393,8 +394,7 @@ class TestTacBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.tac_base"
-            ".TacManager",
+            BUSINESS_TAC_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -413,8 +413,7 @@ class TestTacBaseBusObj:
         Test case for converting the tac data to JSON.
         """
         with patch(
-            "business.tac_base"
-            ".TacManager",
+            BUSINESS_TAC_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

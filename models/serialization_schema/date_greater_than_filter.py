@@ -1,4 +1,4 @@
-# models/serialization_schema/date_greater_than_filter.py
+# models/serialization_schema/date_greater_than_filter.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -11,6 +11,7 @@ DateGreaterThanFilter objects.
 
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
 from models import DateGreaterThanFilter
 
 
@@ -20,7 +21,7 @@ class DateGreaterThanFilterSchema(SQLAlchemyAutoSchema):
     DateGreaterThanFilter objects.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for defining the schema's metadata.
         """

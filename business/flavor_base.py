@@ -1,4 +1,4 @@
-# business/flavor_base.py
+# business/flavor_base.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

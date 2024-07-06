@@ -1,5 +1,5 @@
-# business/tests/org_api_key_base_test.py
-# pylint: disable=unused-import
+# business/tests/org_api_key_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 OrgApiKeyBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.org_api_key_base import (
-    OrgApiKeyBaseBusObj)
+import pytest
+from business.org_api_key_base import OrgApiKeyBaseBusObj
 from helpers.session_context import SessionContext
-from managers.org_api_key import (
-    OrgApiKeyManager)
+from managers.org_api_key import OrgApiKeyManager
 from models import OrgApiKey
-from models.factory import (
-    OrgApiKeyFactory)
+from models.factory import OrgApiKeyFactory
 from services.logging_config import get_logger
 
 from ..org_api_key import OrgApiKeyBusObj
 
+
+BUSINESS_ORG_API_KEY_BASE_MANAGER_PATCH = (
+    "business.org_api_key_base"
+    ".OrgApiKeyManager"
+)
 
 logger = get_logger(__name__)
 
@@ -366,8 +368,7 @@ class TestOrgApiKeyBaseBusObj:
         Test case for refreshing the org_api_key data.
         """
         with patch(
-            "business.org_api_key_base"
-            ".OrgApiKeyManager",
+            BUSINESS_ORG_API_KEY_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -399,8 +400,7 @@ class TestOrgApiKeyBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.org_api_key_base"
-            ".OrgApiKeyManager",
+            BUSINESS_ORG_API_KEY_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -419,8 +419,7 @@ class TestOrgApiKeyBaseBusObj:
         Test case for converting the org_api_key data to JSON.
         """
         with patch(
-            "business.org_api_key_base"
-            ".OrgApiKeyManager",
+            BUSINESS_ORG_API_KEY_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

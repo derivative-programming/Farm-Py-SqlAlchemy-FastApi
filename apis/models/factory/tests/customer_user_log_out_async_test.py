@@ -1,5 +1,5 @@
 # apis/models/factory/tests/customer_user_log_out_async_test.py
-# pylint: disable=unused-import
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains test cases for the
@@ -19,7 +19,7 @@ from ..customer_user_log_out import (
     CustomerUserLogOutPostModelRequestFactory)
 
 
-class TestCustomerUserLogOutPostModelRequestFactoryAsync:
+class TestCustomerUserLogOutPostModelRequestFactoryAsync:  # pylint: disable=too-few-public-methods
     """
     This class contains test cases for the
     CustomerUserLogOutPostModelRequestFactoryAsync

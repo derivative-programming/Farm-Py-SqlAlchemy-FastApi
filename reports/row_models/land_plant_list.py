@@ -1,4 +1,4 @@
-# land_plant_list.py
+# reports/row_models/land_plant_list.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -13,7 +13,7 @@ from datetime import datetime, date  # noqa: F401
 from helpers.type_conversion import TypeConversion  # noqa: F401
 
 
-class ReportItemLandPlantList():
+class ReportItemLandPlantList():  # pylint: disable=too-few-public-methods
     """
     Represents a report item for a
     land plant list.

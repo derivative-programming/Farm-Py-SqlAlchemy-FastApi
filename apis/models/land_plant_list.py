@@ -1,4 +1,4 @@
-# apis/models/land_plant_list.py
+# apis/models/land_plant_list.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -130,7 +130,7 @@ class LandPlantListGetModelRequest(CamelModel):
         description="Some Email Address")
 # endset
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         LandPlantList model.

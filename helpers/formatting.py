@@ -1,4 +1,4 @@
-# helpers/formatting.py
+# helpers/formatting.py  # pylint: disable=duplicate-code
 
 """
     This module provides helper functions for formatting strings.
@@ -40,9 +40,12 @@ def pascal_to_snake_case(pascal_str):
 
 
 def pascal_to_camel(pascal_str):
+    """
+    Convert a PascalCase string to camelCase.
+    """
     if not pascal_str:
         return ""
-    
+
     # Convert the first character to lowercase and append
     # the rest of the string
     camel_str = pascal_str[0].lower() + pascal_str[1:]

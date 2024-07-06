@@ -1,5 +1,5 @@
-# business/tests/pac_test.py
-# pylint: disable=redefined-outer-name
+# business/tests/pac_test.py  # pylint: disable=duplicate-code
+# pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 """
 Unit tests for the
@@ -8,17 +8,14 @@ PacBusObj class.
 
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 
 import models
-from models.factory import (
-    PacFactory)
-from business.pac import (
-    PacBusObj)
+import pytest
+from business.pac import PacBusObj
 from helpers.session_context import SessionContext
-from models import (
-    Pac)
+from models import Pac
+from models.factory import PacFactory
 
 
 @pytest.fixture

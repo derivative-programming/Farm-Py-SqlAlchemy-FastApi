@@ -1,4 +1,4 @@
-# reports/providers/plant_user_details.py
+# reports/providers/plant_user_details.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

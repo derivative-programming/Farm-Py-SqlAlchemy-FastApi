@@ -1,4 +1,4 @@
-# models/factory/dyna_flow_type.py
+# models/factory/dyna_flow_type.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -25,7 +25,7 @@ class DynaFlowTypeFactory(factory.Factory):
     the DynaFlowType model.
     """
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Meta class for the DynaFlowTypeFactory.
         """

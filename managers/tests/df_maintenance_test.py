@@ -1,5 +1,5 @@
-# managers/tests/df_maintenance_test.py
-# pylint: disable=protected-access
+# managers/tests/df_maintenance_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
 """
@@ -7,22 +7,19 @@
     `DFMaintenanceManager` class.
 """
 
-from typing import List
 import uuid  # noqa: F401
+from typing import List
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
+import pytest
 from helpers.session_context import SessionContext
-from managers.df_maintenance import (
-    DFMaintenanceManager)
+from managers.df_maintenance import DFMaintenanceManager
 from models import DFMaintenance
-from models.factory import (
-    DFMaintenanceFactory)
-from models.serialization_schema.df_maintenance import (
-    DFMaintenanceSchema)
+from models.factory import DFMaintenanceFactory
+from models.serialization_schema.df_maintenance import DFMaintenanceSchema
 
 
 class TestDFMaintenanceManager:

@@ -1,4 +1,4 @@
-# business/organization.py
+# business/organization.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,10 +9,12 @@ Organization.
 """
 
 from typing import List
+
+import managers as managers_and_enums  # noqa: F401
+import models
 from helpers.session_context import SessionContext
 from models import Organization
-import models
-import managers as managers_and_enums  # noqa: F401
+
 from .organization_dyna_flows import OrganizationDynaFlowsBusObj
 
 
@@ -95,7 +97,8 @@ class OrganizationBusObj(OrganizationDynaFlowsBusObj):
             representing the related tac.
 
         """
-        from business.tac import TacBusObj  # pylint: disable=import-outside-toplevel
+        from business.tac import \
+            TacBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = TacBusObj(self._session_context)
         await bus_obj.load_from_id(self.tac_id)
         return bus_obj

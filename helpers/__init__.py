@@ -1,4 +1,4 @@
-# helpers/__init__.py
+# helpers/__init__.py  # pylint: disable=duplicate-code
 
 """
 This module contains helper functions and classes for the application.

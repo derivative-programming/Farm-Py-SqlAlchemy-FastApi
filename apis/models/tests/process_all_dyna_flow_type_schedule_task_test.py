@@ -1,5 +1,5 @@
-# apis/models/tests/process_all_dyna_flow_type_schedule_task_test.py
-# pylint: disable=unused-argument
+# apis/models/tests/process_all_dyna_flow_type_schedule_task_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
 """
 This module contains unit tests for the
@@ -131,7 +131,7 @@ class TestProcessAllDynaFlowTypeScheduleTaskPostModelRequest:
         assert data == expected_data
 
 
-class TestProcessAllDynaFlowTypeScheduleTaskPostModelResponse:
+class TestProcessAllDynaFlowTypeScheduleTaskPostModelResponse:  # pylint: disable=too-few-public-methods
     """
     This class contains unit tests for the
     ProcessAllDynaFlowTypeScheduleTaskPostModelResponse class.

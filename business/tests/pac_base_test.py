@@ -1,5 +1,5 @@
-# business/tests/pac_base_test.py
-# pylint: disable=unused-import
+# business/tests/pac_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 PacBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.pac_base import (
-    PacBaseBusObj)
+import pytest
+from business.pac_base import PacBaseBusObj
 from helpers.session_context import SessionContext
-from managers.pac import (
-    PacManager)
+from managers.pac import PacManager
 from models import Pac
-from models.factory import (
-    PacFactory)
+from models.factory import PacFactory
 from services.logging_config import get_logger
 
 from ..pac import PacBusObj
 
+
+BUSINESS_PAC_BASE_MANAGER_PATCH = (
+    "business.pac_base"
+    ".PacManager"
+)
 
 logger = get_logger(__name__)
 
@@ -358,8 +360,7 @@ class TestPacBaseBusObj:
         Test case for refreshing the pac data.
         """
         with patch(
-            "business.pac_base"
-            ".PacManager",
+            BUSINESS_PAC_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -391,8 +392,7 @@ class TestPacBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.pac_base"
-            ".PacManager",
+            BUSINESS_PAC_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -411,8 +411,7 @@ class TestPacBaseBusObj:
         Test case for converting the pac data to JSON.
         """
         with patch(
-            "business.pac_base"
-            ".PacManager",
+            BUSINESS_PAC_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

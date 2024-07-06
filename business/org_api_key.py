@@ -1,4 +1,4 @@
-# business/org_api_key.py
+# business/org_api_key.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,10 +9,12 @@ OrgApiKey.
 """
 
 from typing import List
+
+import managers as managers_and_enums  # noqa: F401
+import models
 from helpers.session_context import SessionContext
 from models import OrgApiKey
-import models
-import managers as managers_and_enums  # noqa: F401
+
 from .org_api_key_dyna_flows import OrgApiKeyDynaFlowsBusObj
 
 
@@ -95,7 +97,8 @@ class OrgApiKeyBusObj(OrgApiKeyDynaFlowsBusObj):
             representing the related organization.
 
         """
-        from business.organization import OrganizationBusObj  # pylint: disable=import-outside-toplevel
+        from business.organization import \
+            OrganizationBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = OrganizationBusObj(self._session_context)
         await bus_obj.load_from_id(self.organization_id)
         return bus_obj
@@ -128,7 +131,8 @@ class OrgApiKeyBusObj(OrgApiKeyDynaFlowsBusObj):
             business object.
 
         """
-        from business.org_customer import OrgCustomerBusObj  # pylint: disable=import-outside-toplevel
+        from business.org_customer import \
+            OrgCustomerBusObj  # pylint: disable=import-outside-toplevel
         bus_obj = OrgCustomerBusObj(self._session_context)
         await bus_obj.load_from_id(self.org_customer_id)
         return bus_obj

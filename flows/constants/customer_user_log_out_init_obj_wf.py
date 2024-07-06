@@ -1,4 +1,4 @@
-# flows/constants/customer_user_log_out_init_obj_wf.py
+# flows/constants/customer_user_log_out_init_obj_wf.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

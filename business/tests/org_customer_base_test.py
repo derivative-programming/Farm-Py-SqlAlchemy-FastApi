@@ -1,5 +1,5 @@
-# business/tests/org_customer_base_test.py
-# pylint: disable=unused-import
+# business/tests/org_customer_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 OrgCustomerBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.org_customer_base import (
-    OrgCustomerBaseBusObj)
+import pytest
+from business.org_customer_base import OrgCustomerBaseBusObj
 from helpers.session_context import SessionContext
-from managers.org_customer import (
-    OrgCustomerManager)
+from managers.org_customer import OrgCustomerManager
 from models import OrgCustomer
-from models.factory import (
-    OrgCustomerFactory)
+from models.factory import OrgCustomerFactory
 from services.logging_config import get_logger
 
 from ..org_customer import OrgCustomerBusObj
 
+
+BUSINESS_ORG_CUSTOMER_BASE_MANAGER_PATCH = (
+    "business.org_customer_base"
+    ".OrgCustomerManager"
+)
 
 logger = get_logger(__name__)
 
@@ -354,8 +356,7 @@ class TestOrgCustomerBaseBusObj:
         Test case for refreshing the org_customer data.
         """
         with patch(
-            "business.org_customer_base"
-            ".OrgCustomerManager",
+            BUSINESS_ORG_CUSTOMER_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -387,8 +388,7 @@ class TestOrgCustomerBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.org_customer_base"
-            ".OrgCustomerManager",
+            BUSINESS_ORG_CUSTOMER_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -407,8 +407,7 @@ class TestOrgCustomerBaseBusObj:
         Test case for converting the org_customer data to JSON.
         """
         with patch(
-            "business.org_customer_base"
-            ".OrgCustomerManager",
+            BUSINESS_ORG_CUSTOMER_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

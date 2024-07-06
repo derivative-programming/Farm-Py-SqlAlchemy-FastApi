@@ -1,4 +1,4 @@
-# flows/default/customer_user_log_out.py
+# flows/default/customer_user_log_out.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,14 +9,14 @@ that handle the addition of a
 customer in the flow process.
 """
 
-import uuid  # noqa: F401
 import json
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from flows.base.customer_user_log_out import (
-    BaseFlowCustomerUserLogOut)
-from flows.base import LogSeverity
+
 from business.customer import CustomerBusObj
+from flows.base import LogSeverity
+from flows.base.customer_user_log_out import BaseFlowCustomerUserLogOut
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

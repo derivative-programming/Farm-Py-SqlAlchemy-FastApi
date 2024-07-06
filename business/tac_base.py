@@ -1,4 +1,4 @@
-# business/tac_base.py
+# business/tac_base.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

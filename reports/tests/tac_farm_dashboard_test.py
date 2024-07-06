@@ -1,5 +1,5 @@
-# tac_farm_dashboard_test.py
-# pylint: disable=unused-argument
+# reports/tests/tac_farm_dashboard_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=protected-access
 # pylint: disable=unused-import
 """

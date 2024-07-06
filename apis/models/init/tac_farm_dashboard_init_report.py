@@ -1,4 +1,4 @@
-# apis/models/init/tac_farm_dashboard_init_report.py
+# apis/models/init/tac_farm_dashboard_init_report.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

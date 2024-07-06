@@ -1,5 +1,5 @@
-# business/tests/date_greater_than_filter_base_test.py
-# pylint: disable=unused-import
+# business/tests/date_greater_than_filter_base_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 
 """
@@ -7,29 +7,31 @@ This module contains unit tests for the
 DateGreaterThanFilterBusObj class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import current_runtime  # noqa: F401
-from business.date_greater_than_filter_base import (
-    DateGreaterThanFilterBaseBusObj)
+import pytest
+from business.date_greater_than_filter_base import DateGreaterThanFilterBaseBusObj
 from helpers.session_context import SessionContext
-from managers.date_greater_than_filter import (
-    DateGreaterThanFilterManager)
+from managers.date_greater_than_filter import DateGreaterThanFilterManager
 from models import DateGreaterThanFilter
-from models.factory import (
-    DateGreaterThanFilterFactory)
+from models.factory import DateGreaterThanFilterFactory
 from services.logging_config import get_logger
 
 from ..date_greater_than_filter import DateGreaterThanFilterBusObj
 
+
+BUSINESS_DATE_GREATER_THAN_FILTER_BASE_MANAGER_PATCH = (
+    "business.date_greater_than_filter_base"
+    ".DateGreaterThanFilterManager"
+)
 
 logger = get_logger(__name__)
 
@@ -362,8 +364,7 @@ class TestDateGreaterThanFilterBaseBusObj:
         Test case for refreshing the date_greater_than_filter data.
         """
         with patch(
-            "business.date_greater_than_filter_base"
-            ".DateGreaterThanFilterManager",
+            BUSINESS_DATE_GREATER_THAN_FILTER_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -395,8 +396,7 @@ class TestDateGreaterThanFilterBaseBusObj:
         data to a dictionary.
         """
         with patch(
-            "business.date_greater_than_filter_base"
-            ".DateGreaterThanFilterManager",
+            BUSINESS_DATE_GREATER_THAN_FILTER_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \
@@ -415,8 +415,7 @@ class TestDateGreaterThanFilterBaseBusObj:
         Test case for converting the date_greater_than_filter data to JSON.
         """
         with patch(
-            "business.date_greater_than_filter_base"
-            ".DateGreaterThanFilterManager",
+            BUSINESS_DATE_GREATER_THAN_FILTER_BASE_MANAGER_PATCH,
             autospec=True
         ) as mock_obj_manager:
             mock_obj_manager_instance = \

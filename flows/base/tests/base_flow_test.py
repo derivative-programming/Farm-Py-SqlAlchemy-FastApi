@@ -1,4 +1,4 @@
-# flows/base/tests/base_flow_test.py
+# flows/base/tests/base_flow_test.py  # pylint: disable=duplicate-code
 # pylint: disable=protected-access
 
 """
@@ -27,7 +27,7 @@ class TestBaseFlow():
         Fixture that returns an instance of BaseFlow for testing.
         """
 
-        session_context = SessionContext(dict())
+        session_context = SessionContext({})
         return BaseFlow("TestFlow", session_context=session_context)
 
     def test_init(self, base_flow):

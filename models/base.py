@@ -1,4 +1,4 @@
-# base.py
+# models/base.py  # pylint: disable=duplicate-code
 
 """
 This module contains the base classes and types for the SQLAlchemy models.

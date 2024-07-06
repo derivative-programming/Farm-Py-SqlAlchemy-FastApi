@@ -1,4 +1,4 @@
-# reports/providers/tac_farm_dashboard.py
+# reports/providers/tac_farm_dashboard.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

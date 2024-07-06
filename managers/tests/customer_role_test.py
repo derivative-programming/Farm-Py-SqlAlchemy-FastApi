@@ -1,5 +1,5 @@
-# managers/tests/customer_role_test.py
-# pylint: disable=protected-access
+# managers/tests/customer_role_test.py  # pylint: disable=duplicate-code
+# pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-argument
 # pylint: disable=unused-import
 """
@@ -7,22 +7,19 @@
     `CustomerRoleManager` class.
 """
 
-from typing import List
 import uuid  # noqa: F401
+from typing import List
 
-import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
+import pytest
 from helpers.session_context import SessionContext
-from managers.customer_role import (
-    CustomerRoleManager)
+from managers.customer_role import CustomerRoleManager
 from models import CustomerRole
-from models.factory import (
-    CustomerRoleFactory)
-from models.serialization_schema.customer_role import (
-    CustomerRoleSchema)
+from models.factory import CustomerRoleFactory
+from models.serialization_schema.customer_role import CustomerRoleSchema
 
 
 class TestCustomerRoleManager:

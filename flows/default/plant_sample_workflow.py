@@ -1,4 +1,4 @@
-# flows/default/plant_sample_workflow.py
+# flows/default/plant_sample_workflow.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,14 +9,14 @@ that handle the addition of a
 plant in the flow process.
 """
 
-import uuid  # noqa: F401
 import json
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from flows.base.plant_sample_workflow import (
-    BaseFlowPlantSampleWorkflow)
-from flows.base import LogSeverity
+
 from business.plant import PlantBusObj
+from flows.base import LogSeverity
+from flows.base.plant_sample_workflow import BaseFlowPlantSampleWorkflow
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

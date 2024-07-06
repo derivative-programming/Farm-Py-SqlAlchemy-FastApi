@@ -1,4 +1,4 @@
-# helpers/api_token.py
+# helpers/api_token.py  # pylint: disable=duplicate-code
 
 """
 This module contains functions and classes related to API token handling.

@@ -1,4 +1,4 @@
-# models/managers/date_greater_than_filter.py
+# models/managers/date_greater_than_filter.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the DateGreaterThanFilterManager class, which is
@@ -178,7 +178,7 @@ class DateGreaterThanFilterManager:
                 matching the enum value.
         """
         query_filter = (
-            DateGreaterThanFilter._lookup_enum_name == enum_val.value)
+            DateGreaterThanFilter._lookup_enum_name == enum_val.value)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
         return self._first_or_none(query_results)
 ##GENLearn[isLookup=true]End

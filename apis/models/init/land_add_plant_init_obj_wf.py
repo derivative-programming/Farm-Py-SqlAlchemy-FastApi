@@ -1,4 +1,4 @@
-# apis/models/init/land_add_plant_init_obj_wf.py
+# apis/models/init/land_add_plant_init_obj_wf.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """

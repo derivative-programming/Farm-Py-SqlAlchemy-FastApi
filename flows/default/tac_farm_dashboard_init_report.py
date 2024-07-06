@@ -1,4 +1,4 @@
-# flows/default/tac_farm_dashboard_init_report.py
+# flows/default/tac_farm_dashboard_init_report.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,14 +9,14 @@ that handle the addition of a
 tac in the flow process.
 """
 
-import uuid  # noqa: F401
 import json
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from flows.base.tac_farm_dashboard_init_report import (
-    BaseFlowTacFarmDashboardInitReport)
-from flows.base import LogSeverity
+
 from business.tac import TacBusObj
+from flows.base import LogSeverity
+from flows.base.tac_farm_dashboard_init_report import BaseFlowTacFarmDashboardInitReport
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

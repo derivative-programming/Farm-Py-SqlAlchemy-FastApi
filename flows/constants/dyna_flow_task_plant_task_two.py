@@ -1,4 +1,4 @@
-# flows/constants/dyna_flow_task_plant_task_two.py
+# flows/constants/dyna_flow_task_plant_task_two.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

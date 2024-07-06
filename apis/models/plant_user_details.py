@@ -1,4 +1,4 @@
-# apis/models/plant_user_details.py
+# apis/models/plant_user_details.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -64,7 +64,7 @@ class PlantUserDetailsGetModelRequest(CamelModel):
         description="Force Error Message")
 
 
-    class Config:
+    class Config:  # pylint: disable=too-few-public-methods
         """
         Configuration class for the
         PlantUserDetails model.

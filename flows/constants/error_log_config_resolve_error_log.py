@@ -1,4 +1,4 @@
-# flows/constants/error_log_config_resolve_error_log.py
+# flows/constants/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

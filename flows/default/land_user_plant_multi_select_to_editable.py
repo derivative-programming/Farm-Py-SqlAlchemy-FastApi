@@ -1,4 +1,4 @@
-# flows/default/land_user_plant_multi_select_to_editable.py
+# flows/default/land_user_plant_multi_select_to_editable.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,14 +9,14 @@ that handle the addition of a
 land in the flow process.
 """
 
-import uuid  # noqa: F401
 import json
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from flows.base.land_user_plant_multi_select_to_editable import (
-    BaseFlowLandUserPlantMultiSelectToEditable)
-from flows.base import LogSeverity
+
 from business.land import LandBusObj
+from flows.base import LogSeverity
+from flows.base.land_user_plant_multi_select_to_editable import BaseFlowLandUserPlantMultiSelectToEditable
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

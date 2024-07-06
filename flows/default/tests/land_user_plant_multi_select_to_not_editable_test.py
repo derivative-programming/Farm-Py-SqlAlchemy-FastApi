@@ -1,5 +1,5 @@
-# flows/default/tests/land_user_plant_multi_select_to_not_editable_test.py
-# pylint: disable=unused-import
+# flows/default/tests/land_user_plant_multi_select_to_not_editable_test.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import, too-many-public-methods
 
 """
 This module contains unit tests for the

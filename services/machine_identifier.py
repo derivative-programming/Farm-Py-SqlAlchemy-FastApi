@@ -1,4 +1,4 @@
-# services/machine_identifier.py
+# services/machine_identifier.py  # pylint: disable=duplicate-code
 """
 This module is used to generate a unique identifier
 for the machine that the application is running on.

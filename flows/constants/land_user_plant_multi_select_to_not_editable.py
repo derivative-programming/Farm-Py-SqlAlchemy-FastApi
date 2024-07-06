@@ -1,4 +1,4 @@
-# flows/constants/land_user_plant_multi_select_to_not_editable.py
+# flows/constants/land_user_plant_multi_select_to_not_editable.py  # pylint: disable=duplicate-code
 
 """
     This module contains configuration constants

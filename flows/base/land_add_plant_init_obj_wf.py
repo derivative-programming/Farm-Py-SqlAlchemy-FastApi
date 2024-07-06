@@ -1,4 +1,4 @@
-# flows/base/land_add_plant_init_obj_wf.py
+# flows/base/land_add_plant_init_obj_wf.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 
 """
@@ -24,7 +24,7 @@ from managers.org_customer import OrgCustomerManager  # noqa: F401
 from .base_flow import BaseFlow
 
 
-class BaseFlowLandAddPlantInitObjWF(BaseFlow):
+class BaseFlowLandAddPlantInitObjWF(BaseFlow):  # pylint: disable=too-few-public-methods
     """
     Base class for LandAddPlantInitObjWF
     flow. Contains

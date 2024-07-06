@@ -1,4 +1,4 @@
-# models/__init__.py
+# models/__init__.py  # pylint: disable=duplicate-code
 """
 This module contains the models for the Farm-Py-SqlAlchemy-FastApi project.
 The models define the database tables and their relationships.

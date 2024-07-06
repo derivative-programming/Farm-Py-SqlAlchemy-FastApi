@@ -21,7 +21,7 @@ services:
     depends_on:
       - db
     networks:
-      - app-network
+      - sonarqube-network
 
   sonarscanner:
     build:
@@ -37,7 +37,7 @@ services:
     volumes:
       - .:/usr/src/app
     networks:
-      - app-network
+      - sonarqube-network
 
   db:
     image: postgres:latest
@@ -48,10 +48,10 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - app-network
+      - sonarqube-network
 
 networks:
-  app-network:
+  sonarqube-network:
     driver: bridge
 
 volumes:
