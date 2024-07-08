@@ -322,7 +322,7 @@ class DynaFlowTypeSchedule(Base):
 
         self._last_update_utc_date_time = value
     # dynaFlowTypeID
-    # frequencyInHours,
+    # frequencyInHours
 
     @property
     def frequency_in_hours(self) -> int:
@@ -342,7 +342,7 @@ class DynaFlowTypeSchedule(Base):
         """
 
         self._frequency_in_hours = value
-    # isActive,
+    # isActive
 
     @property
     def is_active(self) -> bool:

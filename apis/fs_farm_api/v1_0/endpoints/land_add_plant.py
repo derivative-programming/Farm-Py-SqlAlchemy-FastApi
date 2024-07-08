@@ -97,27 +97,37 @@ class LandAddPlantRouter(BaseRouter):
 
         async with session:
             try:
-                logging.info("Start session...")
+                logging.info(
+                    "LandAddPlantRouter.request_get_init"
+                    " Start session...")
 
                 session_context = SessionContext(auth_dict, session)
 
                 land_code = session_context.check_context_code(
                     "LandCode", land_code)
 
+                logging.info(
+                    "LandAddPlantRouter."
+                    "request_post_with_id "
+                    "process_request...")
                 response = await init_request.process_request(
                     session_context,
                     land_code,
                     response
                 )
             except TypeError as te:
-                logging.info("TypeError Exception occurred")
+                logging.info(
+                    "LandAddPlantRouter.request_get_init"
+                    " TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
                 response.message = f"{te} traceback: {traceback_string}"
                 logging.info(API_LOG_ERROR_FORMAT, response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
-                logging.info("Exception occurred")
+                logging.info(
+                    "LandAddPlantRouter.request_get_init"
+                    " Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
@@ -131,8 +141,8 @@ class LandAddPlantRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "LandAddPlantRouter"
-            ".init get result:%s",
+            "LandAddPlantRouter.request_get_init"
+            " get result:%s",
             response_data)
         return response
 ##GENTrainingBlock[caseisPostWithIdAvailable]Start
@@ -186,13 +196,19 @@ class LandAddPlantRouter(BaseRouter):
         # Start a transaction
         async with session:
             try:
-                logging.info("Start session...")
+                logging.info(
+                    "LandAddPlantRouter."
+                    "request_post_with_id "
+                    "Start session...")
                 session_context = SessionContext(auth_dict, session)
                 land_code = session_context.check_context_code(
                     "LandCode",
                     land_code)
 
-                logging.info("Request...")
+                logging.info(
+                    "LandAddPlantRouter."
+                    "request_post_with_id "
+                    "Request...")
                 logging.info(request_model.__dict__)
                 await response.process_request(
                     session_context,
@@ -200,7 +216,10 @@ class LandAddPlantRouter(BaseRouter):
                     request_model
                 )
             except TypeError as te:
-                logging.info("TypeError Exception occurred")
+                logging.info(
+                    "LandAddPlantRouter."
+                    "request_post_with_id "
+                    "TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
@@ -208,7 +227,10 @@ class LandAddPlantRouter(BaseRouter):
                 response.message = f"{te} traceback: {traceback_string}"
                 logging.info(API_LOG_ERROR_FORMAT, response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
-                logging.info("Exception occurred")
+                logging.info(
+                    "LandAddPlantRouter."
+                    "request_post_with_id "
+                    "Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
@@ -222,8 +244,9 @@ class LandAddPlantRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "LandAddPlantRouter"
-            ".submit get result:%s",
+            "LandAddPlantRouter."
+            "request_post_with_id "
+            "get result:%s",
             response_data)
         return response
 ##GENLearn[isPostWithIdAvailable=true]End

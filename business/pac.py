@@ -96,11 +96,11 @@ class PacBusObj(PacDynaFlowsBusObj):
             result.append(pac_bus_obj)
 
         return result
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
 
 
     @property
@@ -379,12 +379,16 @@ class PacBusObj(PacDynaFlowsBusObj):
         item = DynaFlowTypeScheduleBusObj(self._session_context)
 
         assert item.dyna_flow_type_schedule is not None
-        dyna_flow_type_manager = managers_and_enums.DynaFlowTypeManager(
-            self._session_context)
-        dyna_flow_type_id_dyna_flow_type = await dyna_flow_type_manager.from_enum(
-            managers_and_enums.DynaFlowTypeEnum.UNKNOWN)
-        item.dyna_flow_type_id = dyna_flow_type_id_dyna_flow_type.dyna_flow_type_id
-        item.dyna_flow_type_schedule.dyna_flow_type_id_code_peek = dyna_flow_type_id_dyna_flow_type.code
+        dyna_flow_type_manager = \
+            managers_and_enums.DynaFlowTypeManager(
+                self._session_context)
+        dyna_flow_type_id_dyna_flow_type = await \
+            dyna_flow_type_manager.from_enum(
+                managers_and_enums.DynaFlowTypeEnum.UNKNOWN)
+        item.dyna_flow_type_id = \
+            dyna_flow_type_id_dyna_flow_type.dyna_flow_type_id
+        item.dyna_flow_type_schedule.dyna_flow_type_id_code_peek = \
+            dyna_flow_type_id_dyna_flow_type.code
 
         item.pac_id = self.pac_id
         item.dyna_flow_type_schedule.pac_code_peek = self.code
@@ -492,12 +496,16 @@ class PacBusObj(PacDynaFlowsBusObj):
         item = DynaFlowBusObj(self._session_context)
 
         assert item.dyna_flow is not None
-        dyna_flow_type_manager = managers_and_enums.DynaFlowTypeManager(
-            self._session_context)
-        dyna_flow_type_id_dyna_flow_type = await dyna_flow_type_manager.from_enum(
-            managers_and_enums.DynaFlowTypeEnum.UNKNOWN)
-        item.dyna_flow_type_id = dyna_flow_type_id_dyna_flow_type.dyna_flow_type_id
-        item.dyna_flow.dyna_flow_type_id_code_peek = dyna_flow_type_id_dyna_flow_type.code
+        dyna_flow_type_manager = \
+            managers_and_enums.DynaFlowTypeManager(
+                self._session_context)
+        dyna_flow_type_id_dyna_flow_type = await \
+            dyna_flow_type_manager.from_enum(
+                managers_and_enums.DynaFlowTypeEnum.UNKNOWN)
+        item.dyna_flow_type_id = \
+            dyna_flow_type_id_dyna_flow_type.dyna_flow_type_id
+        item.dyna_flow.dyna_flow_type_id_code_peek = \
+            dyna_flow_type_id_dyna_flow_type.code
 
         item.pac_id = self.pac_id
         item.dyna_flow.pac_code_peek = self.code
@@ -525,7 +533,8 @@ class PacBusObj(PacDynaFlowsBusObj):
         self, dependency_dyna_flow_id
     ) -> List[DynaFlowBusObj]:
         """
-        get dyna_flow by dependency_dyna_flow_id
+        get dyna_flow by
+        dependency_dyna_flow_id
         """
         results = []
         dyna_flow_manager = managers_and_enums.DynaFlowManager(
@@ -542,7 +551,8 @@ class PacBusObj(PacDynaFlowsBusObj):
         self, is_completed
     ) -> List[DynaFlowBusObj]:
         """
-        get dyna_flow by is_completed
+        get dyna_flow by
+        is_completed
         """
         results = []
         dyna_flow_manager = managers_and_enums.DynaFlowManager(
@@ -559,7 +569,8 @@ class PacBusObj(PacDynaFlowsBusObj):
         self, root_dyna_flow_id
     ) -> List[DynaFlowBusObj]:
         """
-        get dyna_flow by root_dyna_flow_id
+        get dyna_flow by
+        root_dyna_flow_id
         """
         results = []
         dyna_flow_manager = managers_and_enums.DynaFlowManager(
@@ -576,7 +587,8 @@ class PacBusObj(PacDynaFlowsBusObj):
         self, subject_code
     ) -> List[DynaFlowBusObj]:
         """
-        get dyna_flow by subject_code
+        get dyna_flow by
+        subject_code
         """
         results = []
         dyna_flow_manager = managers_and_enums.DynaFlowManager(

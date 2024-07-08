@@ -1,6 +1,7 @@
 # apis/models/tests/tac_register_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains unit tests for the
 TacRegisterPostModelResponse class.
@@ -177,7 +178,7 @@ class TestTacRegisterPostModelRequest:
         assert data == expected_data
 
 
-class TestTacRegisterPostModelResponse:  # pylint: disable=too-few-public-methods
+class TestTacRegisterPostModelResponse:
     """
     This class contains unit tests for the
     TacRegisterPostModelResponse class.

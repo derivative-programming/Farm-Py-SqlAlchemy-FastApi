@@ -375,7 +375,9 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
         :param value: The Description value.
         :raises AttributeError: If the
             DynaFlowTask object is not initialized.
-        :raises AssertionError: If the Description is not a string.
+        :raises AssertionError: If the
+            Description
+            is not a string.
         """
 
         if not self.dyna_flow_task:
@@ -383,7 +385,8 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "description must be a string"
+        assert isinstance(value, str), \
+            "description must be a string"
         self.dyna_flow_task.description = value
     # DynaFlowID
     # dynaFlowSubjectCode
@@ -859,7 +862,9 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
         :param value: The Param 1 value.
         :raises AttributeError: If the
             DynaFlowTask object is not initialized.
-        :raises AssertionError: If the Param 1 is not a string.
+        :raises AssertionError: If the
+            Param 1
+            is not a string.
         """
 
         if not self.dyna_flow_task:
@@ -867,7 +872,8 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "param_1 must be a string"
+        assert isinstance(value, str), \
+            "param_1 must be a string"
         self.dyna_flow_task.param_1 = value
     # param2
 
@@ -901,7 +907,9 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
         :param value: The Param 2 value.
         :raises AttributeError: If the
             DynaFlowTask object is not initialized.
-        :raises AssertionError: If the Param 2 is not a string.
+        :raises AssertionError: If the
+            Param 2
+            is not a string.
         """
 
         if not self.dyna_flow_task:
@@ -909,7 +917,8 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "param_2 must be a string"
+        assert isinstance(value, str), \
+            "param_2 must be a string"
         self.dyna_flow_task.param_2 = value
     # processorIdentifier
 
@@ -943,7 +952,9 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
         :param value: The Processor Identifier value.
         :raises AttributeError: If the
             DynaFlowTask object is not initialized.
-        :raises AssertionError: If the Processor Identifier is not a string.
+        :raises AssertionError: If the
+            Processor Identifier
+            is not a string.
         """
 
         if not self.dyna_flow_task:
@@ -951,7 +962,8 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "processor_identifier must be a string"
+        assert isinstance(value, str), \
+            "processor_identifier must be a string"
         self.dyna_flow_task.processor_identifier = value
     # requestedUTCDateTime
 
@@ -1034,7 +1046,9 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
         :param value: The ResultValue value.
         :raises AttributeError: If the
             DynaFlowTask object is not initialized.
-        :raises AssertionError: If the ResultValue is not a string.
+        :raises AssertionError: If the
+            ResultValue
+            is not a string.
         """
 
         if not self.dyna_flow_task:
@@ -1042,7 +1056,8 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "result_value must be a string"
+        assert isinstance(value, str), \
+            "result_value must be a string"
         self.dyna_flow_task.result_value = value
     # retryCount
 
@@ -1142,8 +1157,8 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
             "must be a datetime object")
         self.dyna_flow_task.started_utc_date_time = value
     # completedUTCDateTime
-    # dependencyDynaFlowTaskID,
-    # description,
+    # dependencyDynaFlowTaskID
+    # description
     # DynaFlowID
 
     @property
@@ -1213,7 +1228,7 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow_task.dyna_flow_code_peek
-    # dynaFlowSubjectCode,
+    # dynaFlowSubjectCode
     # DynaFlowTaskTypeID
 
     @property
@@ -1284,21 +1299,21 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow_task.dyna_flow_task_type_code_peek
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isParallelRunAllowed,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # maxRetryCount,
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isParallelRunAllowed
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # maxRetryCount
     # minStartUTCDateTime
-    # param1,
-    # param2,
-    # processorIdentifier,
+    # param1
+    # param2
+    # processorIdentifier
     # requestedUTCDateTime
-    # resultValue,
-    # retryCount,
+    # resultValue
+    # retryCount
     # startedUTCDateTime
     # insert_utc_date_time
 
@@ -1690,7 +1705,7 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
             random.randint(0, 100))
         self.dyna_flow_task.description = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        # self.dyna_flow_task.dyna_flow_id = random.randint(0, 100)
+        # dyna_flow_id
         self.dyna_flow_task.dyna_flow_subject_code = uuid.uuid4()
         self.dyna_flow_task.dyna_flow_task_type_id = random.choice(
             await managers_and_enums.DynaFlowTaskTypeManager(
@@ -1806,8 +1821,8 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
         """
         return self.dyna_flow_task_id
     # completedUTCDateTime
-    # dependencyDynaFlowTaskID,
-    # description,
+    # dependencyDynaFlowTaskID
+    # description
     # DynaFlowID
 
     async def get_parent_name(self) -> str:
@@ -1845,21 +1860,21 @@ class DynaFlowTaskBaseBusObj(BaseBusObj):
         dyna_flow_obj = await dyna_flow_manager.get_by_id(
             self.dyna_flow_id)
         return dyna_flow_obj
-    # dynaFlowSubjectCode,
+    # dynaFlowSubjectCode
     # DynaFlowTaskTypeID
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isParallelRunAllowed,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # maxRetryCount,
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isParallelRunAllowed
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # maxRetryCount
     # minStartUTCDateTime
-    # param1,
-    # param2,
-    # processorIdentifier,
+    # param1
+    # param2
+    # processorIdentifier
     # requestedUTCDateTime
-    # resultValue,
-    # retryCount,
+    # resultValue
+    # retryCount
     # startedUTCDateTime

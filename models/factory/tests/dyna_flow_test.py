@@ -49,9 +49,9 @@ class TestDynaFlowFactory:
         Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        session_local = sessionmaker(  # pylint: disable=invalid-name
             bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
+        session_instance = session_local()
         yield session_instance
         session_instance.close()
 
@@ -256,37 +256,37 @@ class TestDynaFlowFactory:
         assert obj.task_creation_processor_identifier == "" or isinstance(
             obj.task_creation_processor_identifier, str)
         # completedUTCDateTime
-        # dependencyDynaFlowID,
-        # description,
+        # dependencyDynaFlowID
+        # description
         # dynaFlowTypeID
 
         assert isinstance(
             obj.dyna_flow_type_code_peek, uuid.UUID)
-        # isBuildTaskDebugRequired,
-        # isCanceled,
-        # isCancelRequested,
-        # isCompleted,
-        # isPaused,
-        # isResubmitted,
-        # isRunTaskDebugRequired,
-        # isStarted,
-        # isSuccessful,
-        # isTaskCreationStarted,
-        # isTasksCreated,
+        # isBuildTaskDebugRequired
+        # isCanceled
+        # isCancelRequested
+        # isCompleted
+        # isPaused
+        # isResubmitted
+        # isRunTaskDebugRequired
+        # isStarted
+        # isSuccessful
+        # isTaskCreationStarted
+        # isTasksCreated
         # minStartUTCDateTime
         # pacID
 
         assert isinstance(
             obj.pac_code_peek, uuid.UUID)
-        # param1,
-        # parentDynaFlowID,
-        # priorityLevel,
+        # param1
+        # parentDynaFlowID
+        # priorityLevel
         # requestedUTCDateTime
-        # resultValue,
-        # rootDynaFlowID,
+        # resultValue
+        # rootDynaFlowID
         # startedUTCDateTime
-        # subjectCode,
-        # taskCreationProcessorIdentifier,
+        # subjectCode
+        # taskCreationProcessorIdentifier
         assert isinstance(obj.insert_utc_date_time, datetime)
         assert isinstance(obj.last_update_utc_date_time, datetime)
 
@@ -318,37 +318,37 @@ class TestDynaFlowFactory:
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
         # completedUTCDateTime
-        # dependencyDynaFlowID,
-        # description,
+        # dependencyDynaFlowID
+        # description
         # DynaFlowTypeID
 
         assert isinstance(
             new_obj.dyna_flow_type_code_peek, uuid.UUID)
-        # isBuildTaskDebugRequired,
-        # isCanceled,
-        # isCancelRequested,
-        # isCompleted,
-        # isPaused,
-        # isResubmitted,
-        # isRunTaskDebugRequired,
-        # isStarted,
-        # isSuccessful,
-        # isTaskCreationStarted,
-        # isTasksCreated,
+        # isBuildTaskDebugRequired
+        # isCanceled
+        # isCancelRequested
+        # isCompleted
+        # isPaused
+        # isResubmitted
+        # isRunTaskDebugRequired
+        # isStarted
+        # isSuccessful
+        # isTaskCreationStarted
+        # isTasksCreated
         # minStartUTCDateTime
         # PacID
 
         assert isinstance(
             new_obj.pac_code_peek, uuid.UUID)
-        # param1,
-        # parentDynaFlowID,
-        # priorityLevel,
+        # param1
+        # parentDynaFlowID
+        # priorityLevel
         # requestedUTCDateTime
-        # resultValue,
-        # rootDynaFlowID,
+        # resultValue
+        # rootDynaFlowID
         # startedUTCDateTime
-        # subjectCode,
-        # taskCreationProcessorIdentifier,
+        # subjectCode
+        # taskCreationProcessorIdentifier
         assert new_obj is not None
         assert new_obj.completed_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.dependency_dyna_flow_id == 0
@@ -426,8 +426,8 @@ class TestDynaFlowFactory:
         assert dyna_flow_2.last_change_code != \
             original_last_change_code
     # completedUTCDateTime
-    # dependencyDynaFlowID,
-    # description,
+    # dependencyDynaFlowID
+    # description
     # DynaFlowTypeID
 
     def test_invalid_dyna_flow_type_id(self, session):
@@ -455,17 +455,17 @@ class TestDynaFlowFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-    # isBuildTaskDebugRequired,
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isPaused,
-    # isResubmitted,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # isTaskCreationStarted,
-    # isTasksCreated,
+    # isBuildTaskDebugRequired
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isPaused
+    # isResubmitted
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # isTaskCreationStarted
+    # isTasksCreated
     # minStartUTCDateTime
     # PacID
 
@@ -494,12 +494,12 @@ class TestDynaFlowFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-    # param1,
-    # parentDynaFlowID,
-    # priorityLevel,
+    # param1
+    # parentDynaFlowID
+    # priorityLevel
     # requestedUTCDateTime
-    # resultValue,
-    # rootDynaFlowID,
+    # resultValue
+    # rootDynaFlowID
     # startedUTCDateTime
-    # subjectCode,
-    # taskCreationProcessorIdentifier,
+    # subjectCode
+    # taskCreationProcessorIdentifier

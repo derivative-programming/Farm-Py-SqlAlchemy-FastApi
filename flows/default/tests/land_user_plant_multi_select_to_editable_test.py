@@ -42,7 +42,6 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
         result = FlowLandUserPlantMultiSelectToEditableResult()
         result.context_object_code = uuid.uuid4()
 
-
         # Call to_json method
         json_output = result.to_json()
 
@@ -74,7 +73,6 @@ class TestLandUserPlantMultiSelectToEditablePostModelResponse:
 
         role_required = "User"
         plant_code_list_csv: str = ""
-
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
                 await flow.process(

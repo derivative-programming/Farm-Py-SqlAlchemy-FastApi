@@ -1,4 +1,4 @@
-# flows/default/dyna_flow_task_plant_task_one.py
+# flows/default/dyna_flow_task_plant_task_one.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,14 +9,15 @@ that handle the addition of a
 dyna_flow_task in the flow process.
 """
 
-import uuid  # noqa: F401
 import json
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from flows.base.dyna_flow_task_plant_task_one import (
-    BaseFlowDynaFlowTaskPlantTaskOne)
-from flows.base import LogSeverity
+
 from business.dyna_flow_task import DynaFlowTaskBusObj
+from flows.base import LogSeverity
+from flows.base.dyna_flow_task_plant_task_one import \
+    BaseFlowDynaFlowTaskPlantTaskOne
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

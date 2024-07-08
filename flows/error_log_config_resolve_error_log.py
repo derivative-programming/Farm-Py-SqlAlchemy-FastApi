@@ -1,84 +1,122 @@
-# flows/default/error_log_config_resolve_error_log.py
+# flows/default/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the
+FlowErrorLogConfigResolveErrorLog class
+and related classes
+that handle the addition of a
+ to a specific
+error_log in the flow process.
 """
-import uuid
+
 import json
-from flows.base.error_log_config_resolve_error_log import BaseFlowErrorLogConfigResolveErrorLog
-from flows.base import LogSeverity
+import uuid  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
+from decimal import Decimal  # noqa: F401
+
 from business.error_log import ErrorLogBusObj
-from helpers import SessionContext
+from flows.base import LogSeverity
+from flows.base.error_log_config_resolve_error_log import \
+    BaseFlowErrorLogConfigResolveErrorLog
+from helpers import SessionContext  # noqa: F401
+from helpers import TypeConversion  # noqa: F401
 
 
 class FlowErrorLogConfigResolveErrorLogResult():
     """
-    #TODO add comment
+    Represents the result of the
+    FlowErrorLogConfigResolveErrorLog process.
     """
+
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
-# endset
     def __init__(self):
         """
-            #TODO add comment
+        Initializes a new instance of the
+        FlowErrorLogConfigResolveErrorLogResult class.
         """
 
     def to_json(self):
         """
-            #TODO add comment
-        """
+        Converts the FlowErrorLogConfigResolveErrorLogResult
+        instance to a JSON string.
 
+        Returns:
+            str: The JSON representation of the instance.
+        """
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
+            'context_object_code':
+                str(self.context_object_code),
 
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
 
 
-class FlowErrorLogConfigResolveErrorLog(BaseFlowErrorLogConfigResolveErrorLog):
+class FlowErrorLogConfigResolveErrorLog(
+    BaseFlowErrorLogConfigResolveErrorLog
+):
     """
-    #TODO add comment
-    """
-    def __init__(self, session_context: SessionContext):
-        """
-        #TODO add comment
-        """
+    FlowErrorLogConfigResolveErrorLog handles the addition of
+    a  to
+    a specific error_log in the flow process.
 
-        super(FlowErrorLogConfigResolveErrorLog, self).__init__(session_context)
+    This class extends the
+    BaseFlowErrorLogConfigResolveErrorLogclass and
+    initializes it with the provided session context.
+    """
 
     async def process(
         self,
         error_log_bus_obj: ErrorLogBusObj,
 
-# endset
-        ) -> FlowErrorLogConfigResolveErrorLogResult:
+# endset  # noqa: E122
+    ) -> FlowErrorLogConfigResolveErrorLogResult:
         """
-            #TODO add comment
-        """
+        Processes the addition of a
+         to a specific error_log.
 
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Start")
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Code::" + str(error_log_bus_obj.code))
+        Returns:
+            FlowErrorLogConfigResolveErrorLogResult:
+                The result of the
+                FlowErrorLogConfigResolveErrorLog process.
+        """
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Start"
+        )
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Code::" + str(error_log_bus_obj.code)
+        )
         await super()._process_validation_rules(
             error_log_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
 
-# endset
         error_log_bus_obj = (
             error_log_bus_obj
             .set_prop_is_resolved(True)
             .set_prop_last_update_user_id(self._session_context.customer_code)
         )
         await error_log_bus_obj.save()
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Building result")
+
+
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Building result")
         result = FlowErrorLogConfigResolveErrorLogResult()
         result.context_object_code = error_log_bus_obj.code
 
-# endset
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "End")
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Result:" + result.to_json())
+
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "End")
         return result

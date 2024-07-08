@@ -1,67 +1,103 @@
-# flows/default/land_user_plant_multi_select_to_not_editable.py
+# flows/default/land_user_plant_multi_select_to_not_editable.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the
+FlowLandUserPlantMultiSelectToNotEditable class
+and related classes
+that handle the addition of a
+ to a specific
+land in the flow process.
 """
-import uuid
+
 import json
-from datetime import date, datetime
-from sqlalchemy import String
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from decimal import Decimal
-from flows.base.land_user_plant_multi_select_to_not_editable import BaseFlowLandUserPlantMultiSelectToNotEditable
-from models import Land
-from flows.base import LogSeverity
+import uuid  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
+from decimal import Decimal  # noqa: F401
+
 from business.land import LandBusObj
-from helpers import SessionContext
-from helpers import ApiToken
-from helpers import TypeConversion
-import models as farm_models
-import managers as farm_managers
-import business
+from flows.base import LogSeverity
+from flows.base.land_user_plant_multi_select_to_not_editable import \
+    BaseFlowLandUserPlantMultiSelectToNotEditable
+from helpers import SessionContext  # noqa: F401
+from helpers import TypeConversion  # noqa: F401
+
+
 class FlowLandUserPlantMultiSelectToNotEditableResult():
     """
-    #TODO add comment
+    Represents the result of the
+    FlowLandUserPlantMultiSelectToNotEditable process.
     """
+
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
-# endset
     def __init__(self):
-        pass
+        """
+        Initializes a new instance of the
+        FlowLandUserPlantMultiSelectToNotEditableResult class.
+        """
+
     def to_json(self):
+        """
+        Converts the FlowLandUserPlantMultiSelectToNotEditableResult
+        instance to a JSON string.
+
+        Returns:
+            str: The JSON representation of the instance.
+        """
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
+            'context_object_code':
+                str(self.context_object_code),
 
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelectToNotEditable):
+
+
+class FlowLandUserPlantMultiSelectToNotEditable(
+    BaseFlowLandUserPlantMultiSelectToNotEditable
+):
     """
-    #TODO add comment
+    FlowLandUserPlantMultiSelectToNotEditable handles the addition of
+    a  to
+    a specific land in the flow process.
+
+    This class extends the
+    BaseFlowLandUserPlantMultiSelectToNotEditableclass and
+    initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        #TODO add comment
-        """
-        super(FlowLandUserPlantMultiSelectToNotEditable, self).__init__(session_context)
+
     async def process(
         self,
         land_bus_obj: LandBusObj,
         plant_code_list_csv: str = "",
-# endset
-        ) -> FlowLandUserPlantMultiSelectToNotEditableResult:
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Start")
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Code::" + str(land_bus_obj.code))
+# endset  # noqa: E122
+    ) -> FlowLandUserPlantMultiSelectToNotEditableResult:
+        """
+        Processes the addition of a
+         to a specific land.
+
+        Returns:
+            FlowLandUserPlantMultiSelectToNotEditableResult:
+                The result of the
+                FlowLandUserPlantMultiSelectToNotEditable process.
+        """
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Start"
+        )
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Code::" + str(land_bus_obj.code)
+        )
         await super()._process_validation_rules(
             land_bus_obj,
             plant_code_list_csv,
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
 
-# endset
         code_list = self._parse_csv_string_to_guids(plant_code_list_csv)
 
         for code in code_list:
@@ -70,13 +106,20 @@ class FlowLandUserPlantMultiSelectToNotEditable(BaseFlowLandUserPlantMultiSelect
             plant_bus_obj.is_edit_allowed = False
             await plant_bus_obj.save()
 
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Building result")
+
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Building result")
         result = FlowLandUserPlantMultiSelectToNotEditableResult()
         result.context_object_code = land_bus_obj.code
 
-# endset
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "End")
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Result:" + result.to_json())
+
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "End")
         return result
  
     def _is_valid_guid(self,guid):

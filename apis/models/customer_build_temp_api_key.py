@@ -104,7 +104,7 @@ class CustomerBuildTempApiKeyPostModelResponse(PostResponse):
         session_context: SessionContext,
         customer_code: uuid.UUID,
         request: CustomerBuildTempApiKeyPostModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the request and generates the response.
         """

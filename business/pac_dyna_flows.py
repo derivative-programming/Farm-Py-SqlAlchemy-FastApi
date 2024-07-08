@@ -80,4 +80,6 @@ class PacDynaFlowsBusObj(PacReportsBusObj):
 
         dyna_flow = await dyna_flow_manager.update(dyna_flow)
 
+        assert isinstance(dyna_flow, DynaFlow)
+
         return dyna_flow.dyna_flow_id

@@ -64,7 +64,8 @@
         Get the GENVALSpacedReportName report.
 
         Returns:
-            List[ReportItemGENVALPascalReportName]: The GENVALSpacedReportName report.
+            List[ReportItemGENVALPascalReportName]:
+                The GENVALSpacedReportName report.
         """
         report_manager = reports_managers. \
             ReportManagerGENVALPascalReportName(

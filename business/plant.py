@@ -62,17 +62,17 @@ class PlantBusObj(PlantDynaFlowsBusObj):
 
         return result
 # endset
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
+    # isDeleteAllowed
+    # isEditAllowed
+    # otherFlavor
+    # someBigIntVal
+    # someBitVal
+    # someDecimalVal
+    # someEmailAddress
+    # someFloatVal
+    # someIntVal
+    # someMoneyVal
+    # someNVarCharVal
     # someDateVal
     # someUTCDateTimeVal
     # LandID
@@ -144,10 +144,10 @@ class PlantBusObj(PlantDynaFlowsBusObj):
         bus_obj = FlavorBusObj(self._session_context)
         await bus_obj.load_from_id(self.flvr_foreign_key_id)
         return bus_obj
-    # somePhoneNumber,
-    # someTextVal,
-    # someUniqueidentifierVal,
-    # someVarCharVal,
+    # somePhoneNumber
+    # someTextVal
+    # someUniqueidentifierVal
+    # someVarCharVal
 # endset
 
 ##GENTrainingBlock[caseLookupEnums]Start

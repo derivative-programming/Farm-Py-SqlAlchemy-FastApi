@@ -60,12 +60,12 @@ class DynaFlowTaskTypeBusObj(DynaFlowTaskTypeDynaFlowsBusObj):
             result.append(dyna_flow_task_type_bus_obj)
 
         return result
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # maxRetryCount,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # maxRetryCount
+    # name
     # PacID
 
     async def get_pac_id_obj(self) -> models.Pac:

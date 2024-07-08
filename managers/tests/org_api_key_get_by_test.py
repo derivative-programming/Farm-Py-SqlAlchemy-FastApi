@@ -161,13 +161,13 @@ class TestOrgApiKeyGetByManager:
 
         assert org_api_key is None
 
-    # apiKeyValue,
-    # createdBy,
+    # apiKeyValue
+    # createdBy
     # createdUTCDateTime
     # expirationUTCDateTime
-    # isActive,
-    # isTempUserKey,
-    # name,
+    # isActive
+    # isTempUserKey
+    # name
     # OrganizationID
 
     @pytest.mark.asyncio

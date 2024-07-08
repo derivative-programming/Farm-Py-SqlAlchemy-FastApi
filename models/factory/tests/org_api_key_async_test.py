@@ -68,12 +68,12 @@ class TestOrgApiKeyFactoryAsync:
             await connection.begin_nested()
             await connection.run_sync(Base.metadata.drop_all)
             await connection.run_sync(Base.metadata.create_all)
-            TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+            testing_session_local = sessionmaker(  # pylint: disable=invalid-name
                 expire_on_commit=False,
                 class_=AsyncSession,
                 bind=engine,
             )
-            async with TestingSessionLocal(bind=connection) as session:  # type: ignore # noqa: E501
+            async with testing_session_local(bind=connection) as session:  # type: ignore # noqa: E501
                 @event.listens_for(
                     session.sync_session, "after_transaction_end"
                 )
@@ -426,13 +426,13 @@ class TestOrgApiKeyFactoryAsync:
         assert isinstance(obj.organization_id, int)
         assert isinstance(obj.org_customer_id, int)
         # Check for the peek values
-        # apiKeyValue,
-        # createdBy,
+        # apiKeyValue
+        # createdBy
         # createdUTCDateTime
         # expirationUTCDateTime
-        # isActive,
-        # isTempUserKey,
-        # name,
+        # isActive
+        # isTempUserKey
+        # name
         # organizationID
 
         assert isinstance(obj.organization_code_peek, uuid.UUID)
@@ -498,13 +498,13 @@ class TestOrgApiKeyFactoryAsync:
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
 
-        # apiKeyValue,
-        # createdBy,
+        # apiKeyValue
+        # createdBy
         # createdUTCDateTime
         # expirationUTCDateTime
-        # isActive,
-        # isTempUserKey,
-        # name,
+        # isActive
+        # isTempUserKey
+        # name
         # OrganizationID
 
         assert isinstance(new_obj.organization_code_peek, uuid.UUID)
@@ -569,8 +569,6 @@ class TestOrgApiKeyFactoryAsync:
         result = await session.execute(stmt)
         obj_1 = result.scalars().first()
 
-        # obj_1 = await session.query(OrgApiKey).filter_by(
-        # org_api_key_id=org_api_key.org_api_key_id).first()
         obj_1.code = uuid.uuid4()
         await session.commit()
 
@@ -580,18 +578,16 @@ class TestOrgApiKeyFactoryAsync:
         result = await session.execute(stmt)
         obj_2 = result.scalars().first()
 
-        # obj_2 = await session.query(OrgApiKey).filter_by(
-        # org_api_key_id=org_api_key.org_api_key_id).first()
         obj_2.code = uuid.uuid4()
         await session.commit()
         assert obj_2.last_change_code != original_last_change_code
-    # apiKeyValue,
-    # createdBy,
+    # apiKeyValue
+    # createdBy
     # createdUTCDateTime
     # expirationUTCDateTime
-    # isActive,
-    # isTempUserKey,
-    # name,
+    # isActive
+    # isTempUserKey
+    # name
     # OrganizationID
 
     @pytest.mark.asyncio

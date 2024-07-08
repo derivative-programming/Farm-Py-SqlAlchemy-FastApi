@@ -326,7 +326,9 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
         :param value: The Description value.
         :raises AttributeError: If the
             DateGreaterThanFilter object is not initialized.
-        :raises AssertionError: If the Description is not a string.
+        :raises AssertionError: If the
+            Description
+            is not a string.
         """
 
         if not self.date_greater_than_filter:
@@ -334,7 +336,8 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "description must be a string"
+        assert isinstance(value, str), \
+            "description must be a string"
         self.date_greater_than_filter.description = value
     # displayOrder
 
@@ -458,7 +461,9 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
         :param value: The Lookup Enum Name value.
         :raises AttributeError: If the
             DateGreaterThanFilter object is not initialized.
-        :raises AssertionError: If the Lookup Enum Name is not a string.
+        :raises AssertionError: If the
+            Lookup Enum Name
+            is not a string.
         """
 
         if not self.date_greater_than_filter:
@@ -466,7 +471,8 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "lookup_enum_name must be a string"
+        assert isinstance(value, str), \
+            "lookup_enum_name must be a string"
         self.date_greater_than_filter.lookup_enum_name = value
     # name
 
@@ -500,7 +506,9 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
         :param value: The Name value.
         :raises AttributeError: If the
             DateGreaterThanFilter object is not initialized.
-        :raises AssertionError: If the Name is not a string.
+        :raises AssertionError: If the
+            Name
+            is not a string.
         """
 
         if not self.date_greater_than_filter:
@@ -508,15 +516,16 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "name must be a string"
+        assert isinstance(value, str), \
+            "name must be a string"
         self.date_greater_than_filter.name = value
     # PacID
-    # dayCount,
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # dayCount
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     @property
@@ -980,7 +989,7 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.date_greater_than_filter.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        # self.date_greater_than_filter.pac_id = random.randint(0, 100)
+        # pac_id
 
         return self
 
@@ -1053,12 +1062,12 @@ class DateGreaterThanFilterBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.date_greater_than_filter_id
-    # dayCount,
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # dayCount
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     async def get_parent_name(self) -> str:

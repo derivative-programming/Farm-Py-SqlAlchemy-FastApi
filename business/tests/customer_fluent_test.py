@@ -1,5 +1,6 @@
 # business/tests/customer_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 CustomerFluentBusObj class.
@@ -287,25 +288,25 @@ class TestCustomerFluentBusObj:
         assert new_fluent_bus_obj.zip == \
             "Vanilla"
         assert result is new_fluent_bus_obj
-    # activeOrganizationID,
-    # email,
+    # activeOrganizationID
+    # email
     # emailConfirmedUTCDateTime
-    # firstName,
+    # firstName
     # forgotPasswordKeyExpirationUTCDateTime
-    # forgotPasswordKeyValue,
-    # fSUserCodeValue,
-    # isActive,
-    # isEmailAllowed,
-    # isEmailConfirmed,
-    # isEmailMarketingAllowed,
-    # isLocked,
-    # isMultipleOrganizationsAllowed,
-    # isVerboseLoggingForced,
+    # forgotPasswordKeyValue
+    # fSUserCodeValue
+    # isActive
+    # isEmailAllowed
+    # isEmailConfirmed
+    # isEmailMarketingAllowed
+    # isLocked
+    # isMultipleOrganizationsAllowed
+    # isVerboseLoggingForced
     # lastLoginUTCDateTime
-    # lastName,
-    # password,
-    # phone,
-    # province,
+    # lastName
+    # password
+    # phone
+    # province
     # registrationUTCDateTime
     # TacID
 
@@ -316,5 +317,5 @@ class TestCustomerFluentBusObj:
         result = new_fluent_bus_obj.set_prop_tac_id(1)
         assert new_fluent_bus_obj.tac_id == 1
         assert result is new_fluent_bus_obj
-    # uTCOffsetInMinutes,
-    # zip,
+    # uTCOffsetInMinutes
+    # zip

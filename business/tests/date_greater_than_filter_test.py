@@ -1,6 +1,9 @@
 # business/tests/date_greater_than_filter_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 """
 Unit tests for the
 DateGreaterThanFilterBusObj class.
@@ -117,12 +120,12 @@ class TestDateGreaterThanFilterBusObj:
                 empty_obj_list)
 
         assert len(bus_obj_list) == 0
-    # dayCount,
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # dayCount
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     @pytest.mark.asyncio

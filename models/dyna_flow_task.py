@@ -536,7 +536,7 @@ class DynaFlowTask(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._completed_utc_date_time = value
-    # dependencyDynaFlowTaskID,
+    # dependencyDynaFlowTaskID
 
     @property
     def dependency_dyna_flow_task_id(self) -> int:
@@ -556,7 +556,7 @@ class DynaFlowTask(Base):
         """
 
         self._dependency_dyna_flow_task_id = value
-    # description,
+    # description
 
     @property
     def description(self) -> str:
@@ -578,7 +578,7 @@ class DynaFlowTask(Base):
 
         self._description = value
     # DynaFlowID
-    # dynaFlowSubjectCode,
+    # dynaFlowSubjectCode
 
     @property
     def dyna_flow_subject_code(self):
@@ -619,7 +619,7 @@ class DynaFlowTask(Base):
                 raise ValueError(f"Invalid UUID value: {value}") from e
         self.last_update_utc_date_time = datetime.now(timezone.utc)
     # dynaFlowTaskTypeID
-    # isCanceled,
+    # isCanceled
 
     @property
     def is_canceled(self) -> bool:
@@ -639,7 +639,7 @@ class DynaFlowTask(Base):
         """
 
         self._is_canceled = value
-    # isCancelRequested,
+    # isCancelRequested
 
     @property
     def is_cancel_requested(self) -> bool:
@@ -659,7 +659,7 @@ class DynaFlowTask(Base):
         """
 
         self._is_cancel_requested = value
-    # isCompleted,
+    # isCompleted
 
     @property
     def is_completed(self) -> bool:
@@ -679,7 +679,7 @@ class DynaFlowTask(Base):
         """
 
         self._is_completed = value
-    # isParallelRunAllowed,
+    # isParallelRunAllowed
 
     @property
     def is_parallel_run_allowed(self) -> bool:
@@ -699,7 +699,7 @@ class DynaFlowTask(Base):
         """
 
         self._is_parallel_run_allowed = value
-    # isRunTaskDebugRequired,
+    # isRunTaskDebugRequired
 
     @property
     def is_run_task_debug_required(self) -> bool:
@@ -719,7 +719,7 @@ class DynaFlowTask(Base):
         """
 
         self._is_run_task_debug_required = value
-    # isStarted,
+    # isStarted
 
     @property
     def is_started(self) -> bool:
@@ -739,7 +739,7 @@ class DynaFlowTask(Base):
         """
 
         self._is_started = value
-    # isSuccessful,
+    # isSuccessful
 
     @property
     def is_successful(self) -> bool:
@@ -759,7 +759,7 @@ class DynaFlowTask(Base):
         """
 
         self._is_successful = value
-    # maxRetryCount,
+    # maxRetryCount
 
     @property
     def max_retry_count(self) -> int:
@@ -808,7 +808,7 @@ class DynaFlowTask(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._min_start_utc_date_time = value
-    # param1,
+    # param1
 
     @property
     def param_1(self) -> str:
@@ -829,7 +829,7 @@ class DynaFlowTask(Base):
         """
 
         self._param_1 = value
-    # param2,
+    # param2
 
     @property
     def param_2(self) -> str:
@@ -850,7 +850,7 @@ class DynaFlowTask(Base):
         """
 
         self._param_2 = value
-    # processorIdentifier,
+    # processorIdentifier
 
     @property
     def processor_identifier(self) -> str:
@@ -900,7 +900,7 @@ class DynaFlowTask(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._requested_utc_date_time = value
-    # resultValue,
+    # resultValue
 
     @property
     def result_value(self) -> str:
@@ -921,7 +921,7 @@ class DynaFlowTask(Base):
         """
 
         self._result_value = value
-    # retryCount,
+    # retryCount
 
     @property
     def retry_count(self) -> int:

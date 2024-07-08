@@ -129,19 +129,29 @@ class TacFarmDashboardRouter(BaseRouter):
         # Start a transaction
         async with session:
             try:
-                logging.info("Start session...")
+                logging.info(
+                    "TacFarmDashboardRouter"
+                    ".request_get_init "
+                    "Start session...")
                 session_context = SessionContext(auth_dict, session)
                 tac_code = session_context.check_context_code(
                     "TacCode",
                     tac_code
                 )
 
+                logging.info(
+                    "TacFarmDashboardRouter."
+                    "request_get_init "
+                    "process_request...")
                 response = await init_request.process_request(
                     session_context,
                     tac_code,
                     response
                 )
             except TypeError as te:
+                logging.info(
+                    "TacFarmDashboardRouter.request_get_init"
+                    " TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
@@ -163,8 +173,9 @@ class TacFarmDashboardRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "TacFarmDashboardRouter"
-            ".init get result:%s",
+            "TacFarmDashboardRouter."
+            "request_get_init "
+            "result:%s",
             response_data)
         return response
 
@@ -230,17 +241,25 @@ class TacFarmDashboardRouter(BaseRouter):
                     "TacCode",
                     tac_code
                 )
-                logging.info("Request...")
+                logging.info(
+                    "TacFarmDashboardRouter"
+                    ".request_get_with_id "
+                    "Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model
-                logging.info("process request...")
+                logging.info(
+                    "TacFarmDashboardRouter"
+                    ".request_get_with_id "
+                    "process request...")
                 await response.process_request(
                     session_context,
                     tac_code,
                     request_model
                 )
                 logging.info(
-                    'TacFarmDashboardRouter success')
+                    "TacFarmDashboardRouter"
+                    ".request_get_with_id "
+                    "success")
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info(
                     EXCEPTION_OCCURRED,
@@ -259,7 +278,9 @@ class TacFarmDashboardRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "TacFarmDashboardRouter.submit get result:%s",
+            "TacFarmDashboardRouter"
+            ".request_get_with_id "
+            "result:%s",
             response_data
         )
         return response
@@ -297,8 +318,9 @@ class TacFarmDashboardRouter(BaseRouter):
         """
 
         logging.info(
-            "TacFarmDashboardRouter.request_get_with_id_to_csv"
-            " start. tacCode:%s",
+            "TacFarmDashboardRouter."
+            "request_get_with_id_to_csv "
+            "start. tacCode:%s",
             tac_code
         )
         auth_dict = BaseRouter.implementation_check(
@@ -330,10 +352,16 @@ class TacFarmDashboardRouter(BaseRouter):
                     "TacCode",
                     tac_code
                 )
-                logging.info("Request...")
+                logging.info(
+                    "TacFarmDashboardRouter."
+                    "request_get_with_id_to_csv "
+                    "Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model
-                logging.info("process request...")
+                logging.info(
+                    "TacFarmDashboardRouter."
+                    "request_get_with_id_to_csv "
+                    "process request...")
                 await response.process_request(
                     session_context,
                     tac_code,
@@ -366,16 +394,15 @@ class TacFarmDashboardRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "TacFarmDashboardRouter"
-            ".submit get result:%s",
+            "TacFarmDashboardRouter."
+            "request_get_with_id_to_csv "
+            "get result:%s",
             response_data
         )
 
-        uuid_value = uuid.uuid4()
-
         output_file_name = (
             "tac_farm_dashboard_"
-            f"{str(tac_code)}_{str(uuid_value)}.csv"
+            f"{str(tac_code)}_{str(uuid.uuid4())}.csv"
         )
         return FileResponse(
             tmp_file_path,

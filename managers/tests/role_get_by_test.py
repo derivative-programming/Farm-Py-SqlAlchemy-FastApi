@@ -161,11 +161,11 @@ class TestRoleGetByManager:
 
         assert role is None
 
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     @pytest.mark.asyncio

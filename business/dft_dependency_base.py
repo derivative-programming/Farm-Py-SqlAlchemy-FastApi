@@ -337,7 +337,7 @@ class DFTDependencyBaseBusObj(BaseBusObj):
                 "is_placeholder must be a boolean.")
 
         self.dft_dependency.is_placeholder = value
-    # dependencyDFTaskID,
+    # dependencyDFTaskID
     # DynaFlowTaskID
 
     @property
@@ -407,7 +407,7 @@ class DFTDependencyBaseBusObj(BaseBusObj):
             )
 
         return self.dft_dependency.dyna_flow_task_code_peek
-    # isPlaceholder,
+    # isPlaceholder
     # insert_utc_date_time
 
     @property
@@ -792,7 +792,7 @@ class DFTDependencyBaseBusObj(BaseBusObj):
             )
         self.dft_dependency.dependency_df_task_id = (
             random.randint(0, 100))
-        # self.dft_dependency.dyna_flow_task_id = random.randint(0, 100)
+        # dyna_flow_task_id
         self.dft_dependency.is_placeholder = (
             random.choice([True, False]))
 
@@ -867,7 +867,7 @@ class DFTDependencyBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.dft_dependency_id
-    # dependencyDFTaskID,
+    # dependencyDFTaskID
     # DynaFlowTaskID
 
     async def get_parent_name(self) -> str:
@@ -905,4 +905,4 @@ class DFTDependencyBaseBusObj(BaseBusObj):
         dyna_flow_task_obj = await dyna_flow_task_manager.get_by_id(
             self.dyna_flow_task_id)
         return dyna_flow_task_obj
-    # isPlaceholder,
+    # isPlaceholder

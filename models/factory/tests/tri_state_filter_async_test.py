@@ -68,12 +68,12 @@ class TestTriStateFilterFactoryAsync:
             await connection.begin_nested()
             await connection.run_sync(Base.metadata.drop_all)
             await connection.run_sync(Base.metadata.create_all)
-            TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+            testing_session_local = sessionmaker(  # pylint: disable=invalid-name
                 expire_on_commit=False,
                 class_=AsyncSession,
                 bind=engine,
             )
-            async with TestingSessionLocal(bind=connection) as session:  # type: ignore # noqa: E501
+            async with testing_session_local(bind=connection) as session:  # type: ignore # noqa: E501
                 @event.listens_for(
                     session.sync_session, "after_transaction_end"
                 )
@@ -424,15 +424,15 @@ class TestTriStateFilterFactoryAsync:
         assert isinstance(obj.pac_id, int)
         assert isinstance(obj.state_int_value, int)
         # Check for the peek values
-        # description,
-        # displayOrder,
-        # isActive,
-        # lookupEnumName,
-        # name,
+        # description
+        # displayOrder
+        # isActive
+        # lookupEnumName
+        # name
         # pacID
 
         assert isinstance(obj.pac_code_peek, uuid.UUID)
-        # stateIntValue,
+        # stateIntValue
 
         assert isinstance(obj.insert_utc_date_time, datetime)
         assert isinstance(obj.last_update_utc_date_time, datetime)
@@ -492,15 +492,15 @@ class TestTriStateFilterFactoryAsync:
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
 
-        # description,
-        # displayOrder,
-        # isActive,
-        # lookupEnumName,
-        # name,
+        # description
+        # displayOrder
+        # isActive
+        # lookupEnumName
+        # name
         # PacID
 
         assert isinstance(new_obj.pac_code_peek, uuid.UUID)
-        # stateIntValue,
+        # stateIntValue
         assert new_obj.description == ""
         assert new_obj.display_order == 0
         assert new_obj.is_active is False
@@ -557,8 +557,6 @@ class TestTriStateFilterFactoryAsync:
         result = await session.execute(stmt)
         obj_1 = result.scalars().first()
 
-        # obj_1 = await session.query(TriStateFilter).filter_by(
-        # tri_state_filter_id=tri_state_filter.tri_state_filter_id).first()
         obj_1.code = uuid.uuid4()
         await session.commit()
 
@@ -568,16 +566,14 @@ class TestTriStateFilterFactoryAsync:
         result = await session.execute(stmt)
         obj_2 = result.scalars().first()
 
-        # obj_2 = await session.query(TriStateFilter).filter_by(
-        # tri_state_filter_id=tri_state_filter.tri_state_filter_id).first()
         obj_2.code = uuid.uuid4()
         await session.commit()
         assert obj_2.last_change_code != original_last_change_code
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     @pytest.mark.asyncio
@@ -604,4 +600,4 @@ class TestTriStateFilterFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-    # stateIntValue,
+    # stateIntValue

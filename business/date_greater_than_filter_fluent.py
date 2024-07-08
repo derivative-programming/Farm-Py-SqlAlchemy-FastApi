@@ -115,12 +115,12 @@ class DateGreaterThanFilterFluentBusObj(DateGreaterThanFilterBaseBusObj):
         self.name = value
         return self
     # PacID
-    # dayCount,
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # dayCount
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     def set_prop_pac_id(self, value: int):

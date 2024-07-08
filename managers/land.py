@@ -468,10 +468,8 @@ class LandManager:
         data = json.loads(json_str)
         land_dict = schema.load(data)
 
-        #we need to load the obj form db and into session first.
+        # we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
-
-        # new_land = Land(**land_dict)
 
         # load or create
         new_land = await self.get_by_id(

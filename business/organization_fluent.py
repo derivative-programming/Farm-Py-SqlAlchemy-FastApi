@@ -39,7 +39,7 @@ class OrganizationFluentBusObj(OrganizationBaseBusObj):
         self.name = value
         return self
     # TacID
-    # name,
+    # name
     # TacID
 
     def set_prop_tac_id(self, value: int):

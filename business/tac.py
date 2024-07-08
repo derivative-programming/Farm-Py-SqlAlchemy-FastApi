@@ -66,11 +66,11 @@ class TacBusObj(TacDynaFlowsBusObj):
             result.append(tac_bus_obj)
 
         return result
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     async def get_pac_id_obj(self) -> models.Pac:
@@ -232,7 +232,8 @@ class TacBusObj(TacDynaFlowsBusObj):
         self, email
     ) -> List[CustomerBusObj]:
         """
-        get customer by email
+        get customer by
+        email
         """
         results = []
         customer_manager = managers_and_enums.CustomerManager(
@@ -249,7 +250,8 @@ class TacBusObj(TacDynaFlowsBusObj):
         self, fs_user_code_value
     ) -> List[CustomerBusObj]:
         """
-        get customer by fs_user_code_value
+        get customer by
+        fs_user_code_value
         """
         results = []
         customer_manager = managers_and_enums.CustomerManager(

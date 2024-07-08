@@ -1,6 +1,9 @@
 # business/tests/dyna_flow_type_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 """
 Unit tests for the
 DynaFlowTypeBusObj class.
@@ -117,11 +120,11 @@ class TestDynaFlowTypeBusObj:
                 empty_obj_list)
 
         assert len(bus_obj_list) == 0
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     @pytest.mark.asyncio
@@ -168,4 +171,4 @@ class TestDynaFlowTypeBusObj:
 
         assert fk_bus_obj.code == \
             new_bus_obj.pac_code_peek
-    # priorityLevel,
+    # priorityLevel

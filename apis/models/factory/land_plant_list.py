@@ -71,7 +71,7 @@ class LandPlantListGetModelRequestFactory(
         cls,
         model_class,
         *args,
-        session=None,
+        session=None,  # pylint: disable=unused-argument
         **kwargs
     ) -> LandPlantListGetModelRequest:
         """
@@ -105,7 +105,7 @@ class LandPlantListGetModelRequestFactory(
         cls,
         model_class,
         *args,
-        session=None,
+        session=None,  # pylint: disable=unused-argument
         **kwargs
     ) -> LandPlantListGetModelRequest:
         """
@@ -136,7 +136,7 @@ class LandPlantListGetModelRequestFactory(
     @classmethod
     async def create_async(
         cls,
-        session: AsyncSession,
+        session: AsyncSession,  # pylint: disable=unused-argument
         *args, **kwargs
     ) -> LandPlantListGetModelRequest:
         """

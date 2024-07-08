@@ -1,5 +1,6 @@
 # business/tests/dft_dependency_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 DFTDependencyFluentBusObj class.
@@ -56,7 +57,7 @@ class TestDFTDependencyFluentBusObj:
         result = new_fluent_bus_obj.set_prop_is_placeholder(True)
         assert new_fluent_bus_obj.is_placeholder is True
         assert result is new_fluent_bus_obj
-    # dependencyDFTaskID,
+    # dependencyDFTaskID
     # DynaFlowTaskID
 
     def test_set_prop_dyna_flow_task_id(self, new_fluent_bus_obj):
@@ -66,4 +67,4 @@ class TestDFTDependencyFluentBusObj:
         result = new_fluent_bus_obj.set_prop_dyna_flow_task_id(1)
         assert new_fluent_bus_obj.dyna_flow_task_id == 1
         assert result is new_fluent_bus_obj
-    # isPlaceholder,
+    # isPlaceholder

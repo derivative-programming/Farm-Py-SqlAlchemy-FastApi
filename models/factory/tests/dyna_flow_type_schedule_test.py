@@ -49,9 +49,9 @@ class TestDynaFlowTypeScheduleFactory:
         Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        session_local = sessionmaker(  # pylint: disable=invalid-name
             bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
+        session_instance = session_local()
         yield session_instance
         session_instance.close()
 
@@ -231,8 +231,8 @@ class TestDynaFlowTypeScheduleFactory:
 
         assert isinstance(
             obj.dyna_flow_type_code_peek, uuid.UUID)
-        # frequencyInHours,
-        # isActive,
+        # frequencyInHours
+        # isActive
         # lastUTCDateTime
         # nextUTCDateTime
         # pacID
@@ -273,8 +273,8 @@ class TestDynaFlowTypeScheduleFactory:
 
         assert isinstance(
             new_obj.dyna_flow_type_code_peek, uuid.UUID)
-        # frequencyInHours,
-        # isActive,
+        # frequencyInHours
+        # isActive
         # lastUTCDateTime
         # nextUTCDateTime
         # PacID
@@ -360,8 +360,8 @@ class TestDynaFlowTypeScheduleFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-    # frequencyInHours,
-    # isActive,
+    # frequencyInHours
+    # isActive
     # lastUTCDateTime
     # nextUTCDateTime
     # PacID

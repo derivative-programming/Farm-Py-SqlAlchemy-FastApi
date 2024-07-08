@@ -161,8 +161,8 @@ class TestPacGetByManager:
 
         assert pac is None
 
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name

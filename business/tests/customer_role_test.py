@@ -1,6 +1,9 @@
 # business/tests/customer_role_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 """
 Unit tests for the
 CustomerRoleBusObj class.
@@ -163,8 +166,8 @@ class TestCustomerRoleBusObj:
 
         assert fk_bus_obj.code == \
             new_bus_obj.customer_code_peek
-    # isPlaceholder,
-    # placeholder,
+    # isPlaceholder
+    # placeholder
     # RoleID
 
     @pytest.mark.asyncio

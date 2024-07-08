@@ -1,6 +1,7 @@
 # business/tests/org_customer_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -613,7 +614,7 @@ class TestOrgCustomerBaseBusObj:
         with pytest.raises(ValueError):
             mock_sess_base_bus_obj.customer_id = \
                 "not-an-int"
-    # email,
+    # email
     # OrganizationID
 
     def test_organization_id(

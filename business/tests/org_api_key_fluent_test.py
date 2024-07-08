@@ -1,5 +1,6 @@
 # business/tests/org_api_key_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 OrgApiKeyFluentBusObj class.
@@ -120,13 +121,13 @@ class TestOrgApiKeyFluentBusObj:
         assert result is new_fluent_bus_obj
     # OrganizationID
     # OrgCustomerID
-    # apiKeyValue,
-    # createdBy,
+    # apiKeyValue
+    # createdBy
     # createdUTCDateTime
     # expirationUTCDateTime
-    # isActive,
-    # isTempUserKey,
-    # name,
+    # isActive
+    # isTempUserKey
+    # name
     # OrganizationID
 
     def test_set_prop_organization_id(self, new_fluent_bus_obj):

@@ -278,7 +278,9 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
         :param value: The Description value.
         :raises AttributeError: If the
             DynaFlowType object is not initialized.
-        :raises AssertionError: If the Description is not a string.
+        :raises AssertionError: If the
+            Description
+            is not a string.
         """
 
         if not self.dyna_flow_type:
@@ -286,7 +288,8 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "description must be a string"
+        assert isinstance(value, str), \
+            "description must be a string"
         self.dyna_flow_type.description = value
     # displayOrder
 
@@ -410,7 +413,9 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
         :param value: The Lookup Enum Name value.
         :raises AttributeError: If the
             DynaFlowType object is not initialized.
-        :raises AssertionError: If the Lookup Enum Name is not a string.
+        :raises AssertionError: If the
+            Lookup Enum Name
+            is not a string.
         """
 
         if not self.dyna_flow_type:
@@ -418,7 +423,8 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "lookup_enum_name must be a string"
+        assert isinstance(value, str), \
+            "lookup_enum_name must be a string"
         self.dyna_flow_type.lookup_enum_name = value
     # name
 
@@ -452,7 +458,9 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
         :param value: The Name value.
         :raises AttributeError: If the
             DynaFlowType object is not initialized.
-        :raises AssertionError: If the Name is not a string.
+        :raises AssertionError: If the
+            Name
+            is not a string.
         """
 
         if not self.dyna_flow_type:
@@ -460,7 +468,8 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "name must be a string"
+        assert isinstance(value, str), \
+            "name must be a string"
         self.dyna_flow_type.name = value
     # PacID
     # priorityLevel
@@ -511,11 +520,11 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
         assert isinstance(value, int), (
             "priority_level must be an integer")
         self.dyna_flow_type.priority_level = value
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     @property
@@ -585,7 +594,7 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow_type.pac_code_peek
-    # priorityLevel,
+    # priorityLevel
     # insert_utc_date_time
 
     @property
@@ -978,7 +987,7 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.dyna_flow_type.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        # self.dyna_flow_type.pac_id = random.randint(0, 100)
+        # pac_id
         self.dyna_flow_type.priority_level = (
             random.randint(0, 100))
 
@@ -1053,11 +1062,11 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.dyna_flow_type_id
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     async def get_parent_name(self) -> str:
@@ -1095,4 +1104,4 @@ class DynaFlowTypeBaseBusObj(BaseBusObj):
         pac_obj = await pac_manager.get_by_id(
             self.pac_id)
         return pac_obj
-    # priorityLevel,
+    # priorityLevel

@@ -468,10 +468,8 @@ class TacManager:
         data = json.loads(json_str)
         tac_dict = schema.load(data)
 
-        #we need to load the obj form db and into session first.
+        # we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
-
-        # new_tac = Tac(**tac_dict)
 
         # load or create
         new_tac = await self.get_by_id(

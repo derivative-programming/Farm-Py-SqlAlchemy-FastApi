@@ -367,7 +367,6 @@ class TestErrorLogSchema:
         # Convert the JSON strings back to dictionaries
         dict_from_json = json.loads(
             error_log_json)
-        # sample_dict_from_json = json.loads(self.sample_data)
 
         logging.info(
             "dict_from_json.keys() %s",

@@ -49,9 +49,9 @@ class TestPlantFactory:
         Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        session_local = sessionmaker(  # pylint: disable=invalid-name
             bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
+        session_instance = session_local()
         yield session_instance
         session_instance.close()
 
@@ -250,17 +250,17 @@ class TestPlantFactory:
         # Check for the peek values,
         # assuming they are UUIDs based on your model
 # endset
-        # isDeleteAllowed,
-        # isEditAllowed,
-        # otherFlavor,
-        # someBigIntVal,
-        # someBitVal,
-        # someDecimalVal,
-        # someEmailAddress,
-        # someFloatVal,
-        # someIntVal,
-        # someMoneyVal,
-        # someVarCharVal,
+        # isDeleteAllowed
+        # isEditAllowed
+        # otherFlavor
+        # someBigIntVal
+        # someBitVal
+        # someDecimalVal
+        # someEmailAddress
+        # someFloatVal
+        # someIntVal
+        # someMoneyVal
+        # someVarCharVal
         # someDateVal
         # someUTCDateTimeVal
         # flvrForeignKeyID
@@ -271,10 +271,10 @@ class TestPlantFactory:
 
         assert isinstance(
             obj.land_code_peek, uuid.UUID)
-        # someNVarCharVal,
-        # somePhoneNumber,
-        # someTextVal,
-        # someUniqueidentifierVal,
+        # someNVarCharVal
+        # somePhoneNumber
+        # someTextVal
+        # someUniqueidentifierVal
 # endset
         assert isinstance(obj.insert_utc_date_time, datetime)
         assert isinstance(obj.last_update_utc_date_time, datetime)
@@ -307,17 +307,17 @@ class TestPlantFactory:
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
 # endset
-        # isDeleteAllowed,
-        # isEditAllowed,
-        # otherFlavor,
-        # someBigIntVal,
-        # someBitVal,
-        # someDecimalVal,
-        # someEmailAddress,
-        # someFloatVal,
-        # someIntVal,
-        # someMoneyVal,
-        # someNVarCharVal,
+        # isDeleteAllowed
+        # isEditAllowed
+        # otherFlavor
+        # someBigIntVal
+        # someBitVal
+        # someDecimalVal
+        # someEmailAddress
+        # someFloatVal
+        # someIntVal
+        # someMoneyVal
+        # someNVarCharVal
         # someDateVal
         # someUTCDateTimeVal
         # LandID
@@ -329,10 +329,10 @@ class TestPlantFactory:
         assert isinstance(
             new_obj.flvr_foreign_key_code_peek,
             uuid.UUID)
-        # somePhoneNumber,
-        # someTextVal,
-        # someUniqueidentifierVal,
-        # someVarCharVal,
+        # somePhoneNumber
+        # someTextVal
+        # someUniqueidentifierVal
+        # someVarCharVal
 # endset
         assert new_obj is not None
         assert new_obj.flvr_foreign_key_id == 0
@@ -406,17 +406,17 @@ class TestPlantFactory:
         assert plant_2.last_change_code != \
             original_last_change_code
 # endset
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
+    # isDeleteAllowed
+    # isEditAllowed
+    # otherFlavor
+    # someBigIntVal
+    # someBitVal
+    # someDecimalVal
+    # someEmailAddress
+    # someFloatVal
+    # someIntVal
+    # someMoneyVal
+    # someNVarCharVal
     # someDateVal
     # someUTCDateTimeVal
     # LandID
@@ -479,8 +479,8 @@ class TestPlantFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-    # somePhoneNumber,
-    # someTextVal,
-    # someUniqueidentifierVal,
-    # someVarCharVal,
+    # somePhoneNumber
+    # someTextVal
+    # someUniqueidentifierVal
+    # someVarCharVal
 # endset

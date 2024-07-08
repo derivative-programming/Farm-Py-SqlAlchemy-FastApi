@@ -278,7 +278,9 @@ class OrganizationBaseBusObj(BaseBusObj):
         :param value: The Name value.
         :raises AttributeError: If the
             Organization object is not initialized.
-        :raises AssertionError: If the Name is not a string.
+        :raises AssertionError: If the
+            Name
+            is not a string.
         """
 
         if not self.organization:
@@ -286,10 +288,11 @@ class OrganizationBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "name must be a string"
+        assert isinstance(value, str), \
+            "name must be a string"
         self.organization.name = value
     # TacID
-    # name,
+    # name
     # TacID
 
     @property
@@ -743,7 +746,7 @@ class OrganizationBaseBusObj(BaseBusObj):
             )
         self.organization.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        # self.organization.tac_id = random.randint(0, 100)
+        # tac_id
 
         return self
 
@@ -816,7 +819,7 @@ class OrganizationBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.organization_id
-    # name,
+    # name
     # TacID
 
     async def get_parent_name(self) -> str:

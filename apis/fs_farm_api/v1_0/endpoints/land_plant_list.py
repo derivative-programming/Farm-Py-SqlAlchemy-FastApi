@@ -130,19 +130,29 @@ class LandPlantListRouter(BaseRouter):
         # Start a transaction
         async with session:
             try:
-                logging.info("Start session...")
+                logging.info(
+                    "LandPlantListRouter"
+                    ".request_get_init "
+                    "Start session...")
                 session_context = SessionContext(auth_dict, session)
                 land_code = session_context.check_context_code(
                     "LandCode",
                     land_code
                 )
 
+                logging.info(
+                    "LandPlantListRouter."
+                    "request_get_init "
+                    "process_request...")
                 response = await init_request.process_request(
                     session_context,
                     land_code,
                     response
                 )
             except TypeError as te:
+                logging.info(
+                    "LandPlantListRouter.request_get_init"
+                    " TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
@@ -164,8 +174,9 @@ class LandPlantListRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "LandPlantListRouter"
-            ".init get result:%s",
+            "LandPlantListRouter."
+            "request_get_init "
+            "result:%s",
             response_data)
         return response
 ##GENLearn[isGetInitAvailable=true]End
@@ -238,17 +249,25 @@ class LandPlantListRouter(BaseRouter):
                     "LandCode",
                     land_code
                 )
-                logging.info("Request...")
+                logging.info(
+                    "LandPlantListRouter"
+                    ".request_get_with_id "
+                    "Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model
-                logging.info("process request...")
+                logging.info(
+                    "LandPlantListRouter"
+                    ".request_get_with_id "
+                    "process request...")
                 await response.process_request(
                     session_context,
                     land_code,
                     request_model
                 )
                 logging.info(
-                    'LandPlantListRouter success')
+                    "LandPlantListRouter"
+                    ".request_get_with_id "
+                    "success")
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info(
                     EXCEPTION_OCCURRED,
@@ -267,7 +286,9 @@ class LandPlantListRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "LandPlantListRouter.submit get result:%s",
+            "LandPlantListRouter"
+            ".request_get_with_id "
+            "result:%s",
             response_data
         )
         return response
@@ -308,8 +329,9 @@ class LandPlantListRouter(BaseRouter):
         """
 
         logging.info(
-            "LandPlantListRouter.request_get_with_id_to_csv"
-            " start. landCode:%s",
+            "LandPlantListRouter."
+            "request_get_with_id_to_csv "
+            "start. landCode:%s",
             land_code
         )
         auth_dict = BaseRouter.implementation_check(
@@ -341,10 +363,16 @@ class LandPlantListRouter(BaseRouter):
                     "LandCode",
                     land_code
                 )
-                logging.info("Request...")
+                logging.info(
+                    "LandPlantListRouter."
+                    "request_get_with_id_to_csv "
+                    "Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model
-                logging.info("process request...")
+                logging.info(
+                    "LandPlantListRouter."
+                    "request_get_with_id_to_csv "
+                    "process request...")
                 await response.process_request(
                     session_context,
                     land_code,
@@ -377,16 +405,15 @@ class LandPlantListRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "LandPlantListRouter"
-            ".submit get result:%s",
+            "LandPlantListRouter."
+            "request_get_with_id_to_csv "
+            "get result:%s",
             response_data
         )
 
-        uuid_value = uuid.uuid4()
-
         output_file_name = (
             "land_plant_list_"
-            f"{str(land_code)}_{str(uuid_value)}.csv"
+            f"{str(land_code)}_{str(uuid.uuid4())}.csv"
         )
         return FileResponse(
             tmp_file_path,

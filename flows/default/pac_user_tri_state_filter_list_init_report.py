@@ -16,7 +16,8 @@ from decimal import Decimal  # noqa: F401
 
 from business.pac import PacBusObj
 from flows.base import LogSeverity
-from flows.base.pac_user_tri_state_filter_list_init_report import BaseFlowPacUserTriStateFilterListInitReport
+from flows.base.pac_user_tri_state_filter_list_init_report import (
+    BaseFlowPacUserTriStateFilterListInitReport)
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

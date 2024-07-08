@@ -101,7 +101,7 @@ class PlantSampleWorkflowPostModelResponse(PostResponse):
         session_context: SessionContext,
         plant_code: uuid.UUID,
         request: PlantSampleWorkflowPostModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the request and generates the response.
         """

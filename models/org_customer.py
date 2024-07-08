@@ -291,7 +291,7 @@ class OrgCustomer(Base):
 
         self._last_update_utc_date_time = value
     # customerID
-    # email,
+    # email
 
     @property
     def email(self) -> str:

@@ -16,7 +16,8 @@ from decimal import Decimal  # noqa: F401
 
 from business.land import LandBusObj
 from flows.base import LogSeverity
-from flows.base.land_add_plant_init_obj_wf import BaseFlowLandAddPlantInitObjWF
+from flows.base.land_add_plant_init_obj_wf import (
+    BaseFlowLandAddPlantInitObjWF)
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

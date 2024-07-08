@@ -380,8 +380,8 @@ class DynaFlowFluentBusObj(DynaFlowBaseBusObj):
         self.task_creation_processor_identifier = value
         return self
     # completedUTCDateTime
-    # dependencyDynaFlowID,
-    # description,
+    # dependencyDynaFlowID
+    # description
     # DynaFlowTypeID
 
     def set_prop_dyna_flow_type_id(self, value: int):
@@ -399,41 +399,17 @@ class DynaFlowFluentBusObj(DynaFlowBaseBusObj):
         """
         self.dyna_flow_type_id = value
         return self
-
-    # async def set_prop_dyna_flow_type_id_by_enum(
-    #     self,
-    #     dyna_flow_type_enum: managers_and_enums.DynaFlowTypeEnum
-    # ):
-    #     """
-    #     """
-    #     if not isinstance(
-    #         dyna_flow_type_enum,
-    #         managers_and_enums.DynaFlowTypeEnum
-    #     ):
-    #         raise ValueError("dyna_flow_type_enum must be a DynaFlowTypeEnum")
-
-    #     dyna_flow_type_manager =  \
-    #         managers_and_enums.DynaFlowTypeManager(
-    #             self._session_context
-    #         )
-    #     dyna_flow_type_obj = await (
-    #         dyna_flow_type_manager.
-    #         from_enum(dyna_flow_type_enum)
-    #     )
-
-    #     self.dyna_flow_type_id = dyna_flow_type_obj.dyna_flow_type_id
-    #     return self
-    # isBuildTaskDebugRequired,
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isPaused,
-    # isResubmitted,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # isTaskCreationStarted,
-    # isTasksCreated,
+    # isBuildTaskDebugRequired
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isPaused
+    # isResubmitted
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # isTaskCreationStarted
+    # isTasksCreated
     # minStartUTCDateTime
     # PacID
 
@@ -452,12 +428,12 @@ class DynaFlowFluentBusObj(DynaFlowBaseBusObj):
 
         self.pac_id = value
         return self
-    # param1,
-    # parentDynaFlowID,
-    # priorityLevel,
+    # param1
+    # parentDynaFlowID
+    # priorityLevel
     # requestedUTCDateTime
-    # resultValue,
-    # rootDynaFlowID,
+    # resultValue
+    # rootDynaFlowID
     # startedUTCDateTime
-    # subjectCode,
-    # taskCreationProcessorIdentifier,
+    # subjectCode
+    # taskCreationProcessorIdentifier

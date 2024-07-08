@@ -404,10 +404,8 @@ class DFMaintenanceManager:
         data = json.loads(json_str)
         df_maintenance_dict = schema.load(data)
 
-        #we need to load the obj form db and into session first.
+        # we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
-
-        # new_df_maintenance = DFMaintenance(**df_maintenance_dict)
 
         # load or create
         new_df_maintenance = await self.get_by_id(

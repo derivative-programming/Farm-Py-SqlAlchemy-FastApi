@@ -56,7 +56,7 @@ class DFTDependencyFluentBusObj(DFTDependencyBaseBusObj):
 
         self.is_placeholder = value
         return self
-    # dependencyDFTaskID,
+    # dependencyDFTaskID
     # DynaFlowTaskID
 
     def set_prop_dyna_flow_task_id(self, value: int):
@@ -74,4 +74,4 @@ class DFTDependencyFluentBusObj(DFTDependencyBaseBusObj):
 
         self.dyna_flow_task_id = value
         return self
-    # isPlaceholder,
+    # isPlaceholder

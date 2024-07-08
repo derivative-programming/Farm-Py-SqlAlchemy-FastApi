@@ -33,15 +33,14 @@ class CustomerRoleFactory(factory.Factory):
 
         model = CustomerRole
 
-    # customer_role_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
     last_update_user_id = factory.LazyFunction(uuid.uuid4)
-    # customer_id = 0
+    # customer_id
     is_placeholder = Faker('boolean')
     placeholder = Faker('boolean')
-    # role_id = 0
+    # role_id
     customer_code_peek = factory.LazyFunction(  # CustomerID
         uuid.uuid4
     )
@@ -52,7 +51,7 @@ class CustomerRoleFactory(factory.Factory):
     @classmethod
     def _build(
         cls, model_class, *args, session=None, **kwargs
-    ) -> CustomerRole:
+    ) -> CustomerRole:  # pylint: disable=unused-argument
         """
             Builds and returns an instance
             of the CustomerRole model.
@@ -92,14 +91,12 @@ class CustomerRoleFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.role_code_peek = (  # RoleID
             role_id_role_instance.code)
-        # session.add(obj)
-        # session.commit()
         return obj
 
     @classmethod
     def _create(
         cls, model_class, *args, session=None, **kwargs
-    ) -> CustomerRole:
+    ) -> CustomerRole:  # pylint: disable=unused-argument
         """
         Create a new
         CustomerRole object
@@ -147,7 +144,7 @@ class CustomerRoleFactory(factory.Factory):
     @classmethod
     async def create_async(
         cls, session, *args, **kwargs
-    ) -> CustomerRole:
+    ) -> CustomerRole:  # pylint: disable=unused-argument
         """
         Create a new
         CustomerRole object
@@ -189,7 +186,7 @@ class CustomerRoleFactory(factory.Factory):
     @classmethod
     async def build_async(
         cls, session, *args, **kwargs
-    ) -> CustomerRole:
+    ) -> CustomerRole:  # pylint: disable=unused-argument
         """
         Build a new CustomerRole object
         asynchronously.
@@ -223,6 +220,4 @@ class CustomerRoleFactory(factory.Factory):
         obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
         obj.role_code_peek = (  # RoleID
             role_id_role_instance.code)
-        # session.add(obj)
-        # await session.flush()
         return obj

@@ -1,5 +1,6 @@
 # business/tests/org_customer_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 OrgCustomerFluentBusObj class.
@@ -59,7 +60,7 @@ class TestOrgCustomerFluentBusObj:
         result = new_fluent_bus_obj.set_prop_customer_id(1)
         assert new_fluent_bus_obj.customer_id == 1
         assert result is new_fluent_bus_obj
-    # email,
+    # email
     # OrganizationID
 
     def test_set_prop_organization_id(self, new_fluent_bus_obj):

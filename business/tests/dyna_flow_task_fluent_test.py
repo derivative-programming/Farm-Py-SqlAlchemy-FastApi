@@ -1,5 +1,6 @@
 # business/tests/dyna_flow_task_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 DynaFlowTaskFluentBusObj class.
@@ -264,8 +265,8 @@ class TestDynaFlowTaskFluentBusObj:
             test_datetime
         assert result is new_fluent_bus_obj
     # completedUTCDateTime
-    # dependencyDynaFlowTaskID,
-    # description,
+    # dependencyDynaFlowTaskID
+    # description
     # DynaFlowID
 
     def test_set_prop_dyna_flow_id(self, new_fluent_bus_obj):
@@ -275,7 +276,7 @@ class TestDynaFlowTaskFluentBusObj:
         result = new_fluent_bus_obj.set_prop_dyna_flow_id(1)
         assert new_fluent_bus_obj.dyna_flow_id == 1
         assert result is new_fluent_bus_obj
-    # dynaFlowSubjectCode,
+    # dynaFlowSubjectCode
     # DynaFlowTaskTypeID
 
     def test_set_prop_dyna_flow_task_type_id(self, new_fluent_bus_obj):
@@ -285,19 +286,19 @@ class TestDynaFlowTaskFluentBusObj:
         result = new_fluent_bus_obj.set_prop_dyna_flow_task_type_id(1)
         assert new_fluent_bus_obj.dyna_flow_task_type_id == 1
         assert result is new_fluent_bus_obj
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isParallelRunAllowed,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # maxRetryCount,
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isParallelRunAllowed
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # maxRetryCount
     # minStartUTCDateTime
-    # param1,
-    # param2,
-    # processorIdentifier,
+    # param1
+    # param2
+    # processorIdentifier
     # requestedUTCDateTime
-    # resultValue,
-    # retryCount,
+    # resultValue
+    # retryCount
     # startedUTCDateTime

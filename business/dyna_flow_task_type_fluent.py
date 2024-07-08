@@ -115,12 +115,12 @@ class DynaFlowTaskTypeFluentBusObj(DynaFlowTaskTypeBaseBusObj):
         self.name = value
         return self
     # PacID
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # maxRetryCount,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # maxRetryCount
+    # name
     # PacID
 
     def set_prop_pac_id(self, value: int):

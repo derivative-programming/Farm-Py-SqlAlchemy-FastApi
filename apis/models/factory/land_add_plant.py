@@ -77,7 +77,7 @@ class LandAddPlantPostModelRequestFactory(
 
     @classmethod
     def _build(
-        cls, model_class, *args, session=None, **kwargs
+        cls, model_class, *args, session=None, **kwargs  # pylint: disable=unused-argument
     ) -> LandAddPlantPostModelRequest:
         """
         Build method for the factory. If a session is provided,
@@ -111,7 +111,7 @@ class LandAddPlantPostModelRequestFactory(
 
     @classmethod
     def _create(
-        cls, model_class, *args, session=None, **kwargs
+        cls, model_class, *args, session=None, **kwargs  # pylint: disable=unused-argument
     ) -> LandAddPlantPostModelRequest:
         """
         Create method for the factory. Uses the session to
@@ -142,7 +142,7 @@ class LandAddPlantPostModelRequestFactory(
 
     @classmethod
     async def create_async(
-        cls, session: AsyncSession, *args, **kwargs
+        cls, session: AsyncSession, *args, **kwargs  # pylint: disable=unused-argument
     ) -> LandAddPlantPostModelRequest:
         """
         Asynchronous create method for the factory. Uses the

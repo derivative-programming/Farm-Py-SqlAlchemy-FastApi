@@ -578,7 +578,7 @@ class DynaFlow(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._completed_utc_date_time = value
-    # dependencyDynaFlowID,
+    # dependencyDynaFlowID
 
     @property
     def dependency_dyna_flow_id(self) -> int:
@@ -598,7 +598,7 @@ class DynaFlow(Base):
         """
 
         self._dependency_dyna_flow_id = value
-    # description,
+    # description
 
     @property
     def description(self) -> str:
@@ -620,7 +620,7 @@ class DynaFlow(Base):
 
         self._description = value
     # dynaFlowTypeID
-    # isBuildTaskDebugRequired,
+    # isBuildTaskDebugRequired
 
     @property
     def is_build_task_debug_required(self) -> bool:
@@ -640,7 +640,7 @@ class DynaFlow(Base):
         """
 
         self._is_build_task_debug_required = value
-    # isCanceled,
+    # isCanceled
 
     @property
     def is_canceled(self) -> bool:
@@ -660,7 +660,7 @@ class DynaFlow(Base):
         """
 
         self._is_canceled = value
-    # isCancelRequested,
+    # isCancelRequested
 
     @property
     def is_cancel_requested(self) -> bool:
@@ -680,7 +680,7 @@ class DynaFlow(Base):
         """
 
         self._is_cancel_requested = value
-    # isCompleted,
+    # isCompleted
 
     @property
     def is_completed(self) -> bool:
@@ -700,7 +700,7 @@ class DynaFlow(Base):
         """
 
         self._is_completed = value
-    # isPaused,
+    # isPaused
 
     @property
     def is_paused(self) -> bool:
@@ -720,7 +720,7 @@ class DynaFlow(Base):
         """
 
         self._is_paused = value
-    # isResubmitted,
+    # isResubmitted
 
     @property
     def is_resubmitted(self) -> bool:
@@ -740,7 +740,7 @@ class DynaFlow(Base):
         """
 
         self._is_resubmitted = value
-    # isRunTaskDebugRequired,
+    # isRunTaskDebugRequired
 
     @property
     def is_run_task_debug_required(self) -> bool:
@@ -760,7 +760,7 @@ class DynaFlow(Base):
         """
 
         self._is_run_task_debug_required = value
-    # isStarted,
+    # isStarted
 
     @property
     def is_started(self) -> bool:
@@ -780,7 +780,7 @@ class DynaFlow(Base):
         """
 
         self._is_started = value
-    # isSuccessful,
+    # isSuccessful
 
     @property
     def is_successful(self) -> bool:
@@ -800,7 +800,7 @@ class DynaFlow(Base):
         """
 
         self._is_successful = value
-    # isTaskCreationStarted,
+    # isTaskCreationStarted
 
     @property
     def is_task_creation_started(self) -> bool:
@@ -820,7 +820,7 @@ class DynaFlow(Base):
         """
 
         self._is_task_creation_started = value
-    # isTasksCreated,
+    # isTasksCreated
 
     @property
     def is_tasks_created(self) -> bool:
@@ -870,7 +870,7 @@ class DynaFlow(Base):
             value = value.replace(tzinfo=timezone.utc)
         self._min_start_utc_date_time = value
     # PacID
-    # param1,
+    # param1
 
     @property
     def param_1(self) -> str:
@@ -891,7 +891,7 @@ class DynaFlow(Base):
         """
 
         self._param_1 = value
-    # parentDynaFlowID,
+    # parentDynaFlowID
 
     @property
     def parent_dyna_flow_id(self) -> int:
@@ -911,7 +911,7 @@ class DynaFlow(Base):
         """
 
         self._parent_dyna_flow_id = value
-    # priorityLevel,
+    # priorityLevel
 
     @property
     def priority_level(self) -> int:
@@ -960,7 +960,7 @@ class DynaFlow(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._requested_utc_date_time = value
-    # resultValue,
+    # resultValue
 
     @property
     def result_value(self) -> str:
@@ -981,7 +981,7 @@ class DynaFlow(Base):
         """
 
         self._result_value = value
-    # rootDynaFlowID,
+    # rootDynaFlowID
 
     @property
     def root_dyna_flow_id(self) -> int:
@@ -1030,7 +1030,7 @@ class DynaFlow(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._started_utc_date_time = value
-    # subjectCode,
+    # subjectCode
 
     @property
     def subject_code(self):
@@ -1070,7 +1070,7 @@ class DynaFlow(Base):
             except ValueError as e:
                 raise ValueError(f"Invalid UUID value: {value}") from e
         self.last_update_utc_date_time = datetime.now(timezone.utc)
-    # taskCreationProcessorIdentifier,
+    # taskCreationProcessorIdentifier
 
     @property
     def task_creation_processor_identifier(self) -> str:

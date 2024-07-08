@@ -48,7 +48,7 @@ class TacFarmDashboardInitReportGetInitModelResponse(
     def load_flow_response(
         self,
         data: FlowTacFarmDashboardInitReportResult
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Loads the response data from the
         FlowTacFarmDashboardInitReportResult object.

@@ -49,9 +49,9 @@ class TestDynaFlowTaskFactory:
         Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        session_local = sessionmaker(  # pylint: disable=invalid-name
             bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
+        session_instance = session_local()
         yield session_instance
         session_instance.close()
 
@@ -253,32 +253,32 @@ class TestDynaFlowTaskFactory:
         assert isinstance(obj.started_utc_date_time,
                           datetime)
         # completedUTCDateTime
-        # dependencyDynaFlowTaskID,
-        # description,
+        # dependencyDynaFlowTaskID
+        # description
         # dynaFlowID
 
         assert isinstance(
             obj.dyna_flow_code_peek, uuid.UUID)
-        # dynaFlowSubjectCode,
+        # dynaFlowSubjectCode
         # dynaFlowTaskTypeID
 
         assert isinstance(
             obj.dyna_flow_task_type_code_peek, uuid.UUID)
-        # isCanceled,
-        # isCancelRequested,
-        # isCompleted,
-        # isParallelRunAllowed,
-        # isRunTaskDebugRequired,
-        # isStarted,
-        # isSuccessful,
-        # maxRetryCount,
+        # isCanceled
+        # isCancelRequested
+        # isCompleted
+        # isParallelRunAllowed
+        # isRunTaskDebugRequired
+        # isStarted
+        # isSuccessful
+        # maxRetryCount
         # minStartUTCDateTime
-        # param1,
-        # param2,
-        # processorIdentifier,
+        # param1
+        # param2
+        # processorIdentifier
         # requestedUTCDateTime
-        # resultValue,
-        # retryCount,
+        # resultValue
+        # retryCount
         # startedUTCDateTime
         assert isinstance(obj.insert_utc_date_time, datetime)
         assert isinstance(obj.last_update_utc_date_time, datetime)
@@ -311,32 +311,32 @@ class TestDynaFlowTaskFactory:
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
         # completedUTCDateTime
-        # dependencyDynaFlowTaskID,
-        # description,
+        # dependencyDynaFlowTaskID
+        # description
         # DynaFlowID
 
         assert isinstance(
             new_obj.dyna_flow_code_peek, uuid.UUID)
-        # dynaFlowSubjectCode,
+        # dynaFlowSubjectCode
         # DynaFlowTaskTypeID
 
         assert isinstance(
             new_obj.dyna_flow_task_type_code_peek, uuid.UUID)
-        # isCanceled,
-        # isCancelRequested,
-        # isCompleted,
-        # isParallelRunAllowed,
-        # isRunTaskDebugRequired,
-        # isStarted,
-        # isSuccessful,
-        # maxRetryCount,
+        # isCanceled
+        # isCancelRequested
+        # isCompleted
+        # isParallelRunAllowed
+        # isRunTaskDebugRequired
+        # isStarted
+        # isSuccessful
+        # maxRetryCount
         # minStartUTCDateTime
-        # param1,
-        # param2,
-        # processorIdentifier,
+        # param1
+        # param2
+        # processorIdentifier
         # requestedUTCDateTime
-        # resultValue,
-        # retryCount,
+        # resultValue
+        # retryCount
         # startedUTCDateTime
         assert new_obj is not None
         assert new_obj.completed_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
@@ -411,8 +411,8 @@ class TestDynaFlowTaskFactory:
         assert dyna_flow_task_2.last_change_code != \
             original_last_change_code
     # completedUTCDateTime
-    # dependencyDynaFlowTaskID,
-    # description,
+    # dependencyDynaFlowTaskID
+    # description
     # DynaFlowID
 
     def test_invalid_dyna_flow_id(self, session):
@@ -440,7 +440,7 @@ class TestDynaFlowTaskFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-    # dynaFlowSubjectCode,
+    # dynaFlowSubjectCode
     # DynaFlowTaskTypeID
 
     def test_invalid_dyna_flow_task_type_id(self, session):
@@ -468,19 +468,19 @@ class TestDynaFlowTaskFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isParallelRunAllowed,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # maxRetryCount,
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isParallelRunAllowed
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # maxRetryCount
     # minStartUTCDateTime
-    # param1,
-    # param2,
-    # processorIdentifier,
+    # param1
+    # param2
+    # processorIdentifier
     # requestedUTCDateTime
-    # resultValue,
-    # retryCount,
+    # resultValue
+    # retryCount
     # startedUTCDateTime

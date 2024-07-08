@@ -1,6 +1,7 @@
 # apis/models/tests/plant_user_details_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -8,17 +9,16 @@ PlantUserDetailsGetModelRequestFactoryAsync
 class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
-
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from unittest.mock import AsyncMock, patch, Mock
+from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
-
-from helpers.type_conversion import TypeConversion  # noqa: F401
 from helpers.session_context import SessionContext
+from helpers.type_conversion import TypeConversion  # noqa: F401
+from models.factory.plant import PlantFactory
 
 from ..factory.plant_user_details import (
     PlantUserDetailsGetModelRequestFactory)
@@ -141,7 +141,7 @@ class PlantUserDetailsGetModelRequestFactoryAsync:
         assert isinstance(model_instance.item_count_per_page, int)
 
 
-class MockReportItemPlantUserDetails:
+class MockReportItemPlantUserDetails:  # pylint: disable=too-few-public-methods
     """
     This class contains mock report items for the
     PlantUserDetailsGetModelResponse class.
@@ -176,7 +176,7 @@ class MockReportItemPlantUserDetails:
         self.phone_num_conditional_on_is_editable = \
             "Some Var Char"
         self.n_var_char_as_url = \
-            "http://example.com"
+            "https://example.com"
         self.update_button_text_link_plant_code = uuid.uuid4()
         self.random_property_updates_link_plant_code = uuid.uuid4()
         self.back_to_dashboard_link_tac_code = uuid.uuid4()

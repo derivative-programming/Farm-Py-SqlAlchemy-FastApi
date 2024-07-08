@@ -60,7 +60,7 @@ class DFTDependencyBusObj(DFTDependencyDynaFlowsBusObj):
             result.append(dft_dependency_bus_obj)
 
         return result
-    # dependencyDFTaskID,
+    # dependencyDFTaskID
     # DynaFlowTaskID
 
     async def get_dyna_flow_task_id_obj(self) -> models.DynaFlowTask:
@@ -96,4 +96,4 @@ class DFTDependencyBusObj(DFTDependencyDynaFlowsBusObj):
         bus_obj = DynaFlowTaskBusObj(self._session_context)
         await bus_obj.load_from_id(self.dyna_flow_task_id)
         return bus_obj
-    # isPlaceholder,
+    # isPlaceholder

@@ -276,7 +276,7 @@ class Organization(Base):
             value = value.replace(tzinfo=timezone.utc)
 
         self._last_update_utc_date_time = value
-    # name,
+    # name
 
     @property
     def name(self) -> str:

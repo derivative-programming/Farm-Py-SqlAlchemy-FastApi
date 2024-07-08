@@ -1,5 +1,6 @@
 # business/tests/organization_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 OrganizationFluentBusObj class.
@@ -48,7 +49,7 @@ class TestOrganizationFluentBusObj:
             "Vanilla"
         assert result is new_fluent_bus_obj
     # TacID
-    # name,
+    # name
     # TacID
 
     def test_set_prop_tac_id(self, new_fluent_bus_obj):

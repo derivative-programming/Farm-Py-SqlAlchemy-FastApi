@@ -68,12 +68,12 @@ class TestOrgCustomerFactoryAsync:
             await connection.begin_nested()
             await connection.run_sync(Base.metadata.drop_all)
             await connection.run_sync(Base.metadata.create_all)
-            TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+            testing_session_local = sessionmaker(  # pylint: disable=invalid-name
                 expire_on_commit=False,
                 class_=AsyncSession,
                 bind=engine,
             )
-            async with TestingSessionLocal(bind=connection) as session:  # type: ignore # noqa: E501
+            async with testing_session_local(bind=connection) as session:  # type: ignore # noqa: E501
                 @event.listens_for(
                     session.sync_session, "after_transaction_end"
                 )
@@ -421,7 +421,7 @@ class TestOrgCustomerFactoryAsync:
         # customerID
 
         assert isinstance(obj.customer_code_peek, uuid.UUID)
-        # email,
+        # email
         # organizationID
 
         assert isinstance(obj.organization_code_peek, uuid.UUID)
@@ -487,7 +487,7 @@ class TestOrgCustomerFactoryAsync:
         # CustomerID
 
         assert isinstance(new_obj.customer_code_peek, uuid.UUID)
-        # email,
+        # email
         # OrganizationID
 
         assert isinstance(new_obj.organization_code_peek, uuid.UUID)
@@ -543,8 +543,6 @@ class TestOrgCustomerFactoryAsync:
         result = await session.execute(stmt)
         obj_1 = result.scalars().first()
 
-        # obj_1 = await session.query(OrgCustomer).filter_by(
-        # org_customer_id=org_customer.org_customer_id).first()
         obj_1.code = uuid.uuid4()
         await session.commit()
 
@@ -554,8 +552,6 @@ class TestOrgCustomerFactoryAsync:
         result = await session.execute(stmt)
         obj_2 = result.scalars().first()
 
-        # obj_2 = await session.query(OrgCustomer).filter_by(
-        # org_customer_id=org_customer.org_customer_id).first()
         obj_2.code = uuid.uuid4()
         await session.commit()
         assert obj_2.last_change_code != original_last_change_code
@@ -585,7 +581,7 @@ class TestOrgCustomerFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-    # email,
+    # email
     # OrganizationID
 
     @pytest.mark.asyncio

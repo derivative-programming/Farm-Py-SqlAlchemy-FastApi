@@ -1,6 +1,9 @@
 # business/tests/org_api_key_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 """
 Unit tests for the
 OrgApiKeyBusObj class.
@@ -117,13 +120,13 @@ class TestOrgApiKeyBusObj:
                 empty_obj_list)
 
         assert len(bus_obj_list) == 0
-    # apiKeyValue,
-    # createdBy,
+    # apiKeyValue
+    # createdBy
     # createdUTCDateTime
     # expirationUTCDateTime
-    # isActive,
-    # isTempUserKey,
-    # name,
+    # isActive
+    # isTempUserKey
+    # name
     # OrganizationID
 
     @pytest.mark.asyncio

@@ -284,7 +284,7 @@ class TestOrgCustomerGetByManager:
                 invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-    # email,
+    # email
     # OrganizationID
 
     @pytest.mark.asyncio

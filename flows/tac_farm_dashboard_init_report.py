@@ -1,74 +1,120 @@
-# flows/default/tac_farm_dashboard_init_report.py
+# flows/default/tac_farm_dashboard_init_report.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the
+FlowTacFarmDashboardInitReport class
+and related classes
+that handle the addition of a
+ to a specific
+tac in the flow process.
 """
-import uuid
+
 import json
-from datetime import date, datetime
-from sqlalchemy import String
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from decimal import Decimal
-from flows.base.tac_farm_dashboard_init_report import BaseFlowTacFarmDashboardInitReport
-from models import Tac
-from flows.base import LogSeverity
+import uuid  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
+from decimal import Decimal  # noqa: F401
+
 from business.tac import TacBusObj
-from helpers import SessionContext
-from helpers import ApiToken
-from helpers import TypeConversion
-import models as farm_models
-import managers as farm_managers
-import business
+from flows.base import LogSeverity
+from flows.base.tac_farm_dashboard_init_report import \
+    BaseFlowTacFarmDashboardInitReport
+from helpers import SessionContext  # noqa: F401
+from helpers import TypeConversion  # noqa: F401
+
+
 class FlowTacFarmDashboardInitReportResult():
     """
-    #TODO add comment
+    Represents the result of the
+    FlowTacFarmDashboardInitReport process.
     """
-    context_object_code: uuid.UUID = uuid.UUID(int=0)
     customer_code: uuid.UUID = uuid.UUID(int=0)
-# endset
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
+
     def __init__(self):
-        pass
+        """
+        Initializes a new instance of the
+        FlowTacFarmDashboardInitReportResult class.
+        """
+
     def to_json(self):
+        """
+        Converts the FlowTacFarmDashboardInitReportResult
+        instance to a JSON string.
+
+        Returns:
+            str: The JSON representation of the instance.
+        """
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
-            'customer_code': str(self.customer_code),
-# endset
+            'context_object_code':
+                str(self.context_object_code),
+            'customer_code':
+                str(self.customer_code),
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowTacFarmDashboardInitReport(BaseFlowTacFarmDashboardInitReport):
+
+
+class FlowTacFarmDashboardInitReport(
+    BaseFlowTacFarmDashboardInitReport
+):
     """
-    #TODO add comment
+    FlowTacFarmDashboardInitReport handles the addition of
+    a  to
+    a specific tac in the flow process.
+
+    This class extends the
+    BaseFlowTacFarmDashboardInitReportclass and
+    initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        #TODO add comment
-        """
-        super(FlowTacFarmDashboardInitReport, self).__init__(session_context)
+
     async def process(
         self,
         tac_bus_obj: TacBusObj,
 
-# endset
-        ) -> FlowTacFarmDashboardInitReportResult:
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Start")
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Code::" + str(tac_bus_obj.code))
+# endset  # noqa: E122
+    ) -> FlowTacFarmDashboardInitReportResult:
+        """
+        Processes the addition of a
+         to a specific tac.
+
+        Returns:
+            FlowTacFarmDashboardInitReportResult:
+                The result of the
+                FlowTacFarmDashboardInitReport process.
+        """
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Start"
+        )
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Code::" + str(tac_bus_obj.code)
+        )
         await super()._process_validation_rules(
             tac_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
         customer_code_output: uuid.UUID = uuid.UUID(int=0)
-# endset
+         
         customer_code_output = self._session_context.customer_code
 
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Building result")
+
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Building result")
         result = FlowTacFarmDashboardInitReportResult()
         result.context_object_code = tac_bus_obj.code
-        result.customer_code = customer_code_output
-# endset
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "End")
+        result.customer_code = (
+            customer_code_output)
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Result:" + result.to_json())
+
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "End")
         return result

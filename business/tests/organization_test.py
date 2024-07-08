@@ -1,6 +1,9 @@
 # business/tests/organization_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 """
 Unit tests for the
 OrganizationBusObj class.
@@ -117,7 +120,7 @@ class TestOrganizationBusObj:
                 empty_obj_list)
 
         assert len(bus_obj_list) == 0
-    # name,
+    # name
     # TacID
 
     @pytest.mark.asyncio

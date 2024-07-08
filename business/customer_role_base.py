@@ -401,8 +401,8 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             )
 
         return self.customer_role.customer_code_peek
-    # isPlaceholder,
-    # placeholder,
+    # isPlaceholder
+    # placeholder
     # RoleID
 
     @property
@@ -855,7 +855,7 @@ class CustomerRoleBaseBusObj(BaseBusObj):
             raise AttributeError(
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
-        # self.customer_role.customer_id = random.randint(0, 100)
+        # customer_id
         self.customer_role.is_placeholder = (
             random.choice([True, False]))
         self.customer_role.placeholder = (
@@ -972,6 +972,6 @@ class CustomerRoleBaseBusObj(BaseBusObj):
         customer_obj = await customer_manager.get_by_id(
             self.customer_id)
         return customer_obj
-    # isPlaceholder,
-    # placeholder,
+    # isPlaceholder
+    # placeholder
     # RoleID

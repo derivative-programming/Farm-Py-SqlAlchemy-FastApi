@@ -37,9 +37,9 @@ app.include_router(fs_farm_api_v1_0_router)
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(
-    request: Request,
+    request: Request,  # pylint: disable=unused-argument
     exc: RequestValidationError
-):  # pylint: disable=unused-argument
+):
     """
     Exception handler for RequestValidationError.
 

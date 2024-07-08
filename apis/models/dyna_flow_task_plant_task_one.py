@@ -101,7 +101,7 @@ class DynaFlowTaskPlantTaskOnePostModelResponse(PostResponse):
         session_context: SessionContext,
         dyna_flow_task_code: uuid.UUID,
         request: DynaFlowTaskPlantTaskOnePostModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the request and generates the response.
         """

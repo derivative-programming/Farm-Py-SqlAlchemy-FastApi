@@ -49,9 +49,9 @@ class TestDynaFlowTaskTypeFactory:
         Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        session_local = sessionmaker(  # pylint: disable=invalid-name
             bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
+        session_instance = session_local()
         yield session_instance
         session_instance.close()
 
@@ -229,12 +229,12 @@ class TestDynaFlowTaskTypeFactory:
         assert obj.name == "" or isinstance(
             obj.name, str)
         assert isinstance(obj.pac_id, int)
-        # description,
-        # displayOrder,
-        # isActive,
-        # lookupEnumName,
-        # maxRetryCount,
-        # name,
+        # description
+        # displayOrder
+        # isActive
+        # lookupEnumName
+        # maxRetryCount
+        # name
         # pacID
 
         assert isinstance(
@@ -269,12 +269,12 @@ class TestDynaFlowTaskTypeFactory:
         assert new_obj.last_update_user_id == uuid.UUID(int=0)
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
-        # description,
-        # displayOrder,
-        # isActive,
-        # lookupEnumName,
-        # maxRetryCount,
-        # name,
+        # description
+        # displayOrder
+        # isActive
+        # lookupEnumName
+        # maxRetryCount
+        # name
         # PacID
 
         assert isinstance(
@@ -332,12 +332,12 @@ class TestDynaFlowTaskTypeFactory:
         session.commit()
         assert dyna_flow_task_type_2.last_change_code != \
             original_last_change_code
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # maxRetryCount,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # maxRetryCount
+    # name
     # PacID
 
     def test_invalid_pac_id(self, session):

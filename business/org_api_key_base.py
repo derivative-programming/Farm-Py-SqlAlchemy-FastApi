@@ -278,7 +278,9 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
         :param value: The Api Key Value value.
         :raises AttributeError: If the
             OrgApiKey object is not initialized.
-        :raises AssertionError: If the Api Key Value is not a string.
+        :raises AssertionError: If the
+            Api Key Value
+            is not a string.
         """
 
         if not self.org_api_key:
@@ -286,7 +288,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "api_key_value must be a string"
+        assert isinstance(value, str), \
+            "api_key_value must be a string"
         self.org_api_key.api_key_value = value
     # createdBy
 
@@ -320,7 +323,9 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
         :param value: The Created By value.
         :raises AttributeError: If the
             OrgApiKey object is not initialized.
-        :raises AssertionError: If the Created By is not a string.
+        :raises AssertionError: If the
+            Created By
+            is not a string.
         """
 
         if not self.org_api_key:
@@ -328,7 +333,8 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "created_by must be a string"
+        assert isinstance(value, str), \
+            "created_by must be a string"
         self.org_api_key.created_by = value
     # createdUTCDateTime
 
@@ -544,7 +550,9 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
         :param value: The Name value.
         :raises AttributeError: If the
             OrgApiKey object is not initialized.
-        :raises AssertionError: If the Name is not a string.
+        :raises AssertionError: If the
+            Name
+            is not a string.
         """
 
         if not self.org_api_key:
@@ -552,17 +560,18 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "name must be a string"
+        assert isinstance(value, str), \
+            "name must be a string"
         self.org_api_key.name = value
     # OrganizationID
     # OrgCustomerID
-    # apiKeyValue,
-    # createdBy,
+    # apiKeyValue
+    # createdBy
     # createdUTCDateTime
     # expirationUTCDateTime
-    # isActive,
-    # isTempUserKey,
-    # name,
+    # isActive
+    # isTempUserKey
+    # name
     # OrganizationID
 
     @property
@@ -1102,7 +1111,7 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
             random.choice([True, False]))
         self.org_api_key.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        # self.org_api_key.organization_id = random.randint(0, 100)
+        # organization_id
         self.org_api_key.org_customer_id = random.choice(
             await managers_and_enums.OrgCustomerManager(
                 self._session_context).get_list()).org_customer_id
@@ -1178,13 +1187,13 @@ class OrgApiKeyBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.org_api_key_id
-    # apiKeyValue,
-    # createdBy,
+    # apiKeyValue
+    # createdBy
     # createdUTCDateTime
     # expirationUTCDateTime
-    # isActive,
-    # isTempUserKey,
-    # name,
+    # isActive
+    # isTempUserKey
+    # name
     # OrganizationID
 
     async def get_parent_name(self) -> str:

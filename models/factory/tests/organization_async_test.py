@@ -68,12 +68,12 @@ class TestOrganizationFactoryAsync:
             await connection.begin_nested()
             await connection.run_sync(Base.metadata.drop_all)
             await connection.run_sync(Base.metadata.create_all)
-            TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+            testing_session_local = sessionmaker(  # pylint: disable=invalid-name
                 expire_on_commit=False,
                 class_=AsyncSession,
                 bind=engine,
             )
-            async with TestingSessionLocal(bind=connection) as session:  # type: ignore # noqa: E501
+            async with testing_session_local(bind=connection) as session:  # type: ignore # noqa: E501
                 @event.listens_for(
                     session.sync_session, "after_transaction_end"
                 )
@@ -417,7 +417,7 @@ class TestOrganizationFactoryAsync:
             obj.name, str)
         assert isinstance(obj.tac_id, int)
         # Check for the peek values
-        # name,
+        # name
         # tacID
 
         assert isinstance(obj.tac_code_peek, uuid.UUID)
@@ -480,7 +480,7 @@ class TestOrganizationFactoryAsync:
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
 
-        # name,
+        # name
         # TacID
 
         assert isinstance(new_obj.tac_code_peek, uuid.UUID)
@@ -535,8 +535,6 @@ class TestOrganizationFactoryAsync:
         result = await session.execute(stmt)
         obj_1 = result.scalars().first()
 
-        # obj_1 = await session.query(Organization).filter_by(
-        # organization_id=organization.organization_id).first()
         obj_1.code = uuid.uuid4()
         await session.commit()
 
@@ -546,12 +544,10 @@ class TestOrganizationFactoryAsync:
         result = await session.execute(stmt)
         obj_2 = result.scalars().first()
 
-        # obj_2 = await session.query(Organization).filter_by(
-        # organization_id=organization.organization_id).first()
         obj_2.code = uuid.uuid4()
         await session.commit()
         assert obj_2.last_change_code != original_last_change_code
-    # name,
+    # name
     # TacID
 
     @pytest.mark.asyncio

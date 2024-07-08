@@ -1,6 +1,7 @@
 # business/tests/dyna_flow_type_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -749,11 +750,11 @@ class TestDynaFlowTypeBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.priority_level = \
                 "not-an-int"
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     def test_pac_id(
@@ -783,7 +784,7 @@ class TestDynaFlowTypeBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.pac_id = \
                 "not-an-int"
-    # priorityLevel,
+    # priorityLevel
 
     def test_insert_utc_date_time(
             self,

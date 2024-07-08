@@ -32,7 +32,6 @@ class ErrorLogFactory(factory.Factory):
 
         model = ErrorLog
 
-    # error_log_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
@@ -43,7 +42,7 @@ class ErrorLogFactory(factory.Factory):
     description = Faker('sentence', nb_words=4)
     is_client_side_error = Faker('boolean')
     is_resolved = Faker('boolean')
-    # pac_id = 0
+    # pac_id
     url = Faker('sentence', nb_words=4)
     pac_code_peek = factory.LazyFunction(  # PacID
         uuid.uuid4
@@ -52,7 +51,7 @@ class ErrorLogFactory(factory.Factory):
     @classmethod
     def _build(
         cls, model_class, *args, session=None, **kwargs
-    ) -> ErrorLog:
+    ) -> ErrorLog:  # pylint: disable=unused-argument
         """
             Builds and returns an instance
             of the ErrorLog model.
@@ -82,14 +81,12 @@ class ErrorLogFactory(factory.Factory):
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
-        # session.add(obj)
-        # session.commit()
         return obj
 
     @classmethod
     def _create(
         cls, model_class, *args, session=None, **kwargs
-    ) -> ErrorLog:
+    ) -> ErrorLog:  # pylint: disable=unused-argument
         """
         Create a new
         ErrorLog object
@@ -127,7 +124,7 @@ class ErrorLogFactory(factory.Factory):
     @classmethod
     async def create_async(
         cls, session, *args, **kwargs
-    ) -> ErrorLog:
+    ) -> ErrorLog:  # pylint: disable=unused-argument
         """
         Create a new
         ErrorLog object
@@ -159,7 +156,7 @@ class ErrorLogFactory(factory.Factory):
     @classmethod
     async def build_async(
         cls, session, *args, **kwargs
-    ) -> ErrorLog:
+    ) -> ErrorLog:  # pylint: disable=unused-argument
         """
         Build a new ErrorLog object
         asynchronously.
@@ -183,6 +180,4 @@ class ErrorLogFactory(factory.Factory):
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
-        # session.add(obj)
-        # await session.flush()
         return obj

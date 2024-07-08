@@ -1,6 +1,7 @@
 # apis/models/tests/land_user_plant_multi_select_to_editable_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains unit tests for the
 LandUserPlantMultiSelectToEditablePostModelResponse class.
@@ -133,7 +134,7 @@ class TestLandUserPlantMultiSelectToEditablePostModelRequest:
         assert data == expected_data
 
 
-class TestLandUserPlantMultiSelectToEditablePostModelResponse:  # pylint: disable=too-few-public-methods
+class TestLandUserPlantMultiSelectToEditablePostModelResponse:
     """
     This class contains unit tests for the
     LandUserPlantMultiSelectToEditablePostModelResponse class.

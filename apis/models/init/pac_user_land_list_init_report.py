@@ -43,7 +43,7 @@ class PacUserLandListInitReportGetInitModelResponse(
     def load_flow_response(
         self,
         data: FlowPacUserLandListInitReportResult
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Loads the response data from the
         FlowPacUserLandListInitReportResult object.

@@ -375,7 +375,9 @@ class DynaFlowBaseBusObj(BaseBusObj):
         :param value: The Description value.
         :raises AttributeError: If the
             DynaFlow object is not initialized.
-        :raises AssertionError: If the Description is not a string.
+        :raises AssertionError: If the
+            Description
+            is not a string.
         """
 
         if not self.dyna_flow:
@@ -383,7 +385,8 @@ class DynaFlowBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "description must be a string"
+        assert isinstance(value, str), \
+            "description must be a string"
         self.dyna_flow.description = value
     # DynaFlowTypeID
     # isBuildTaskDebugRequired
@@ -930,7 +933,9 @@ class DynaFlowBaseBusObj(BaseBusObj):
         :param value: The Param 1 value.
         :raises AttributeError: If the
             DynaFlow object is not initialized.
-        :raises AssertionError: If the Param 1 is not a string.
+        :raises AssertionError: If the
+            Param 1
+            is not a string.
         """
 
         if not self.dyna_flow:
@@ -938,7 +943,8 @@ class DynaFlowBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "param_1 must be a string"
+        assert isinstance(value, str), \
+            "param_1 must be a string"
         self.dyna_flow.param_1 = value
     # parentDynaFlowID
 
@@ -1117,7 +1123,9 @@ class DynaFlowBaseBusObj(BaseBusObj):
         :param value: The Result Value value.
         :raises AttributeError: If the
             DynaFlow object is not initialized.
-        :raises AssertionError: If the Result Value is not a string.
+        :raises AssertionError: If the
+            Result Value
+            is not a string.
         """
 
         if not self.dyna_flow:
@@ -1125,7 +1133,8 @@ class DynaFlowBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "result_value must be a string"
+        assert isinstance(value, str), \
+            "result_value must be a string"
         self.dyna_flow.result_value = value
     # rootDynaFlowID
 
@@ -1305,7 +1314,9 @@ class DynaFlowBaseBusObj(BaseBusObj):
         :param value: The Task Creation Processor Identifier value.
         :raises AttributeError: If the
             DynaFlow object is not initialized.
-        :raises AssertionError: If the Task Creation Processor Identifier is not a string.
+        :raises AssertionError: If the
+            Task Creation Processor Identifier
+            is not a string.
         """
 
         if not self.dyna_flow:
@@ -1313,11 +1324,12 @@ class DynaFlowBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "task_creation_processor_identifier must be a string"
+        assert isinstance(value, str), \
+            "task_creation_processor_identifier must be a string"
         self.dyna_flow.task_creation_processor_identifier = value
     # completedUTCDateTime
-    # dependencyDynaFlowID,
-    # description,
+    # dependencyDynaFlowID
+    # description
     # DynaFlowTypeID
 
     @property
@@ -1388,17 +1400,17 @@ class DynaFlowBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow.dyna_flow_type_code_peek
-    # isBuildTaskDebugRequired,
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isPaused,
-    # isResubmitted,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # isTaskCreationStarted,
-    # isTasksCreated,
+    # isBuildTaskDebugRequired
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isPaused
+    # isResubmitted
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # isTaskCreationStarted
+    # isTasksCreated
     # minStartUTCDateTime
     # PacID
 
@@ -1469,15 +1481,15 @@ class DynaFlowBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow.pac_code_peek
-    # param1,
-    # parentDynaFlowID,
-    # priorityLevel,
+    # param1
+    # parentDynaFlowID
+    # priorityLevel
     # requestedUTCDateTime
-    # resultValue,
-    # rootDynaFlowID,
+    # resultValue
+    # rootDynaFlowID
     # startedUTCDateTime
-    # subjectCode,
-    # taskCreationProcessorIdentifier,
+    # subjectCode
+    # taskCreationProcessorIdentifier
     # insert_utc_date_time
 
     @property
@@ -1897,7 +1909,7 @@ class DynaFlowBaseBusObj(BaseBusObj):
             random.randint(2000, 2023),
             random.randint(1, 12),
             random.randint(1, 28))
-        # self.dyna_flow.pac_id = random.randint(0, 100)
+        # pac_id
         self.dyna_flow.param_1 = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.dyna_flow.parent_dyna_flow_id = (
@@ -1992,20 +2004,20 @@ class DynaFlowBaseBusObj(BaseBusObj):
         """
         return self.dyna_flow_id
     # completedUTCDateTime
-    # dependencyDynaFlowID,
-    # description,
+    # dependencyDynaFlowID
+    # description
     # DynaFlowTypeID
-    # isBuildTaskDebugRequired,
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isPaused,
-    # isResubmitted,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # isTaskCreationStarted,
-    # isTasksCreated,
+    # isBuildTaskDebugRequired
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isPaused
+    # isResubmitted
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # isTaskCreationStarted
+    # isTasksCreated
     # minStartUTCDateTime
     # PacID
 
@@ -2044,12 +2056,12 @@ class DynaFlowBaseBusObj(BaseBusObj):
         pac_obj = await pac_manager.get_by_id(
             self.pac_id)
         return pac_obj
-    # param1,
-    # parentDynaFlowID,
-    # priorityLevel,
+    # param1
+    # parentDynaFlowID
+    # priorityLevel
     # requestedUTCDateTime
-    # resultValue,
-    # rootDynaFlowID,
+    # resultValue
+    # rootDynaFlowID
     # startedUTCDateTime
-    # subjectCode,
-    # taskCreationProcessorIdentifier,
+    # subjectCode
+    # taskCreationProcessorIdentifier

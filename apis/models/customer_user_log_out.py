@@ -101,7 +101,7 @@ class CustomerUserLogOutPostModelResponse(PostResponse):
         session_context: SessionContext,
         customer_code: uuid.UUID,
         request: CustomerUserLogOutPostModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the request and generates the response.
         """

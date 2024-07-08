@@ -68,12 +68,12 @@ class TestCustomerRoleFactoryAsync:
             await connection.begin_nested()
             await connection.run_sync(Base.metadata.drop_all)
             await connection.run_sync(Base.metadata.create_all)
-            TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+            testing_session_local = sessionmaker(  # pylint: disable=invalid-name
                 expire_on_commit=False,
                 class_=AsyncSession,
                 bind=engine,
             )
-            async with TestingSessionLocal(bind=connection) as session:  # type: ignore # noqa: E501
+            async with testing_session_local(bind=connection) as session:  # type: ignore # noqa: E501
                 @event.listens_for(
                     session.sync_session, "after_transaction_end"
                 )
@@ -421,8 +421,8 @@ class TestCustomerRoleFactoryAsync:
         # customerID
 
         assert isinstance(obj.customer_code_peek, uuid.UUID)
-        # isPlaceholder,
-        # placeholder,
+        # isPlaceholder
+        # placeholder
         # roleID
 
         assert isinstance(obj.role_code_peek, uuid.UUID)
@@ -488,8 +488,8 @@ class TestCustomerRoleFactoryAsync:
         # CustomerID
 
         assert isinstance(new_obj.customer_code_peek, uuid.UUID)
-        # isPlaceholder,
-        # placeholder,
+        # isPlaceholder
+        # placeholder
         # RoleID
 
         assert isinstance(new_obj.role_code_peek, uuid.UUID)
@@ -546,8 +546,6 @@ class TestCustomerRoleFactoryAsync:
         result = await session.execute(stmt)
         obj_1 = result.scalars().first()
 
-        # obj_1 = await session.query(CustomerRole).filter_by(
-        # customer_role_id=customer_role.customer_role_id).first()
         obj_1.code = uuid.uuid4()
         await session.commit()
 
@@ -557,8 +555,6 @@ class TestCustomerRoleFactoryAsync:
         result = await session.execute(stmt)
         obj_2 = result.scalars().first()
 
-        # obj_2 = await session.query(CustomerRole).filter_by(
-        # customer_role_id=customer_role.customer_role_id).first()
         obj_2.code = uuid.uuid4()
         await session.commit()
         assert obj_2.last_change_code != original_last_change_code
@@ -588,8 +584,8 @@ class TestCustomerRoleFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-    # isPlaceholder,
-    # placeholder,
+    # isPlaceholder
+    # placeholder
     # RoleID
 
     @pytest.mark.asyncio

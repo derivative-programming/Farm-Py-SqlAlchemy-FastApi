@@ -1,6 +1,7 @@
 # business/tests/land_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -716,11 +717,11 @@ class TestLandBaseBusObj:
             mock_sess_base_bus_obj.name = \
                 123
     # PacID
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     def test_pac_id(

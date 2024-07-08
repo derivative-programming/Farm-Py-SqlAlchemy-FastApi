@@ -404,10 +404,8 @@ class CustomerManager:
         data = json.loads(json_str)
         customer_dict = schema.load(data)
 
-        #we need to load the obj form db and into session first.
+        # we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
-
-        # new_customer = Customer(**customer_dict)
 
         # load or create
         new_customer = await self.get_by_id(

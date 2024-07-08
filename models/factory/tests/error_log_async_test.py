@@ -68,12 +68,12 @@ class TestErrorLogFactoryAsync:
             await connection.begin_nested()
             await connection.run_sync(Base.metadata.drop_all)
             await connection.run_sync(Base.metadata.create_all)
-            TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+            testing_session_local = sessionmaker(  # pylint: disable=invalid-name
                 expire_on_commit=False,
                 class_=AsyncSession,
                 bind=engine,
             )
-            async with TestingSessionLocal(bind=connection) as session:  # type: ignore # noqa: E501
+            async with testing_session_local(bind=connection) as session:  # type: ignore # noqa: E501
                 @event.listens_for(
                     session.sync_session, "after_transaction_end"
                 )
@@ -424,16 +424,16 @@ class TestErrorLogFactoryAsync:
         assert obj.url == "" or isinstance(
             obj.url, str)
         # Check for the peek values
-        # browserCode,
-        # contextCode,
+        # browserCode
+        # contextCode
         # createdUTCDateTime
-        # description,
-        # isClientSideError,
-        # isResolved,
+        # description
+        # isClientSideError
+        # isResolved
         # pacID
 
         assert isinstance(obj.pac_code_peek, uuid.UUID)
-        # url,
+        # url
 
         assert isinstance(obj.insert_utc_date_time, datetime)
         assert isinstance(obj.last_update_utc_date_time, datetime)
@@ -493,16 +493,16 @@ class TestErrorLogFactoryAsync:
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
 
-        # browserCode,
-        # contextCode,
+        # browserCode
+        # contextCode
         # createdUTCDateTime
-        # description,
-        # isClientSideError,
-        # isResolved,
+        # description
+        # isClientSideError
+        # isResolved
         # PacID
 
         assert isinstance(new_obj.pac_code_peek, uuid.UUID)
-        # url,
+        # url
         assert isinstance(new_obj.browser_code, uuid.UUID)
         assert isinstance(new_obj.context_code, uuid.UUID)
         assert new_obj.created_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
@@ -560,8 +560,6 @@ class TestErrorLogFactoryAsync:
         result = await session.execute(stmt)
         obj_1 = result.scalars().first()
 
-        # obj_1 = await session.query(ErrorLog).filter_by(
-        # error_log_id=error_log.error_log_id).first()
         obj_1.code = uuid.uuid4()
         await session.commit()
 
@@ -571,17 +569,15 @@ class TestErrorLogFactoryAsync:
         result = await session.execute(stmt)
         obj_2 = result.scalars().first()
 
-        # obj_2 = await session.query(ErrorLog).filter_by(
-        # error_log_id=error_log.error_log_id).first()
         obj_2.code = uuid.uuid4()
         await session.commit()
         assert obj_2.last_change_code != original_last_change_code
-    # browserCode,
-    # contextCode,
+    # browserCode
+    # contextCode
     # createdUTCDateTime
-    # description,
-    # isClientSideError,
-    # isResolved,
+    # description
+    # isClientSideError
+    # isResolved
     # PacID
 
     @pytest.mark.asyncio
@@ -608,4 +604,4 @@ class TestErrorLogFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-    # url,
+    # url

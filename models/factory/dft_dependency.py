@@ -32,13 +32,12 @@ class DFTDependencyFactory(factory.Factory):
 
         model = DFTDependency
 
-    # dft_dependency_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
     last_update_user_id = factory.LazyFunction(uuid.uuid4)
     dependency_df_task_id = Faker('random_int')
-    # dyna_flow_task_id = 0
+    # dyna_flow_task_id
     is_placeholder = Faker('boolean')
     dyna_flow_task_code_peek = factory.LazyFunction(  # DynaFlowTaskID
         uuid.uuid4
@@ -47,7 +46,7 @@ class DFTDependencyFactory(factory.Factory):
     @classmethod
     def _build(
         cls, model_class, *args, session=None, **kwargs
-    ) -> DFTDependency:
+    ) -> DFTDependency:  # pylint: disable=unused-argument
         """
             Builds and returns an instance
             of the DFTDependency model.
@@ -77,14 +76,12 @@ class DFTDependencyFactory(factory.Factory):
         obj.dyna_flow_task_id = (  # DynaFlowTaskID
             dyna_flow_task_id_dyna_flow_task_instance.dyna_flow_task_id)
         obj.dyna_flow_task_code_peek = dyna_flow_task_id_dyna_flow_task_instance.code  # DynaFlowTaskID
-        # session.add(obj)
-        # session.commit()
         return obj
 
     @classmethod
     def _create(
         cls, model_class, *args, session=None, **kwargs
-    ) -> DFTDependency:
+    ) -> DFTDependency:  # pylint: disable=unused-argument
         """
         Create a new
         DFTDependency object
@@ -122,7 +119,7 @@ class DFTDependencyFactory(factory.Factory):
     @classmethod
     async def create_async(
         cls, session, *args, **kwargs
-    ) -> DFTDependency:
+    ) -> DFTDependency:  # pylint: disable=unused-argument
         """
         Create a new
         DFTDependency object
@@ -154,7 +151,7 @@ class DFTDependencyFactory(factory.Factory):
     @classmethod
     async def build_async(
         cls, session, *args, **kwargs
-    ) -> DFTDependency:
+    ) -> DFTDependency:  # pylint: disable=unused-argument
         """
         Build a new DFTDependency object
         asynchronously.
@@ -178,6 +175,4 @@ class DFTDependencyFactory(factory.Factory):
         obj.dyna_flow_task_id = (  # DynaFlowTaskID
             dyna_flow_task_id_dyna_flow_task_instance.dyna_flow_task_id)
         obj.dyna_flow_task_code_peek = dyna_flow_task_id_dyna_flow_task_instance.code  # DynaFlowTaskID
-        # session.add(obj)
-        # await session.flush()
         return obj

@@ -33,17 +33,16 @@ class DynaFlowTypeScheduleFactory(factory.Factory):
 
         model = DynaFlowTypeSchedule
 
-    # dyna_flow_type_schedule_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
     last_update_user_id = factory.LazyFunction(uuid.uuid4)
-    # dyna_flow_type_id = 0
+    # dyna_flow_type_id
     frequency_in_hours = Faker('random_int')
     is_active = Faker('boolean')
     last_utc_date_time = factory.LazyFunction(datetime.utcnow)
     next_utc_date_time = factory.LazyFunction(datetime.utcnow)
-    # pac_id = 0
+    # pac_id
     dyna_flow_type_code_peek = factory.LazyFunction(  # DynaFlowTypeID
         uuid.uuid4
     )
@@ -54,7 +53,7 @@ class DynaFlowTypeScheduleFactory(factory.Factory):
     @classmethod
     def _build(
         cls, model_class, *args, session=None, **kwargs
-    ) -> DynaFlowTypeSchedule:
+    ) -> DynaFlowTypeSchedule:  # pylint: disable=unused-argument
         """
             Builds and returns an instance
             of the DynaFlowTypeSchedule model.
@@ -94,14 +93,12 @@ class DynaFlowTypeScheduleFactory(factory.Factory):
         obj.dyna_flow_type_code_peek = (  # DynaFlowTypeID
             dyna_flow_type_id_dyna_flow_type_instance.code)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
-        # session.add(obj)
-        # session.commit()
         return obj
 
     @classmethod
     def _create(
         cls, model_class, *args, session=None, **kwargs
-    ) -> DynaFlowTypeSchedule:
+    ) -> DynaFlowTypeSchedule:  # pylint: disable=unused-argument
         """
         Create a new
         DynaFlowTypeSchedule object
@@ -149,7 +146,7 @@ class DynaFlowTypeScheduleFactory(factory.Factory):
     @classmethod
     async def create_async(
         cls, session, *args, **kwargs
-    ) -> DynaFlowTypeSchedule:
+    ) -> DynaFlowTypeSchedule:  # pylint: disable=unused-argument
         """
         Create a new
         DynaFlowTypeSchedule object
@@ -191,7 +188,7 @@ class DynaFlowTypeScheduleFactory(factory.Factory):
     @classmethod
     async def build_async(
         cls, session, *args, **kwargs
-    ) -> DynaFlowTypeSchedule:
+    ) -> DynaFlowTypeSchedule:  # pylint: disable=unused-argument
         """
         Build a new DynaFlowTypeSchedule object
         asynchronously.
@@ -225,6 +222,4 @@ class DynaFlowTypeScheduleFactory(factory.Factory):
         obj.dyna_flow_type_code_peek = (  # DynaFlowTypeID
             dyna_flow_type_id_dyna_flow_type_instance.code)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
-        # session.add(obj)
-        # await session.flush()
         return obj

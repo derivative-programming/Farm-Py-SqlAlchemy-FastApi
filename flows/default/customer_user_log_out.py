@@ -16,7 +16,8 @@ from decimal import Decimal  # noqa: F401
 
 from business.customer import CustomerBusObj
 from flows.base import LogSeverity
-from flows.base.customer_user_log_out import BaseFlowCustomerUserLogOut
+from flows.base.customer_user_log_out import (
+    BaseFlowCustomerUserLogOut)
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

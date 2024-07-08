@@ -1,6 +1,7 @@
 # business/tests/customer_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -1323,25 +1324,25 @@ class TestCustomerBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.zip = \
                 123
-    # activeOrganizationID,
-    # email,
+    # activeOrganizationID
+    # email
     # emailConfirmedUTCDateTime
-    # firstName,
+    # firstName
     # forgotPasswordKeyExpirationUTCDateTime
-    # forgotPasswordKeyValue,
-    # fSUserCodeValue,
-    # isActive,
-    # isEmailAllowed,
-    # isEmailConfirmed,
-    # isEmailMarketingAllowed,
-    # isLocked,
-    # isMultipleOrganizationsAllowed,
-    # isVerboseLoggingForced,
+    # forgotPasswordKeyValue
+    # fSUserCodeValue
+    # isActive
+    # isEmailAllowed
+    # isEmailConfirmed
+    # isEmailMarketingAllowed
+    # isLocked
+    # isMultipleOrganizationsAllowed
+    # isVerboseLoggingForced
     # lastLoginUTCDateTime
-    # lastName,
-    # password,
-    # phone,
-    # province,
+    # lastName
+    # password
+    # phone
+    # province
     # registrationUTCDateTime
     # TacID
 
@@ -1372,8 +1373,8 @@ class TestCustomerBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.tac_id = \
                 "not-an-int"
-    # uTCOffsetInMinutes,
-    # zip,
+    # uTCOffsetInMinutes
+    # zip
 
     def test_insert_utc_date_time(
             self,

@@ -1,6 +1,7 @@
 # apis/models/tests/customer_user_log_out_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains unit tests for the
 CustomerUserLogOutPostModelResponse class.
@@ -131,7 +132,7 @@ class TestCustomerUserLogOutPostModelRequest:
         assert data == expected_data
 
 
-class TestCustomerUserLogOutPostModelResponse:  # pylint: disable=too-few-public-methods
+class TestCustomerUserLogOutPostModelResponse:
     """
     This class contains unit tests for the
     CustomerUserLogOutPostModelResponse class.

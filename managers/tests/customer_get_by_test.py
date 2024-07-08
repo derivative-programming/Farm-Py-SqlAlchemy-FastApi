@@ -161,25 +161,25 @@ class TestCustomerGetByManager:
 
         assert customer is None
 
-    # activeOrganizationID,
-    # email,
+    # activeOrganizationID
+    # email
     # emailConfirmedUTCDateTime
-    # firstName,
+    # firstName
     # forgotPasswordKeyExpirationUTCDateTime
-    # forgotPasswordKeyValue,
-    # fSUserCodeValue,
-    # isActive,
-    # isEmailAllowed,
-    # isEmailConfirmed,
-    # isEmailMarketingAllowed,
-    # isLocked,
-    # isMultipleOrganizationsAllowed,
-    # isVerboseLoggingForced,
+    # forgotPasswordKeyValue
+    # fSUserCodeValue
+    # isActive
+    # isEmailAllowed
+    # isEmailConfirmed
+    # isEmailMarketingAllowed
+    # isLocked
+    # isMultipleOrganizationsAllowed
+    # isVerboseLoggingForced
     # lastLoginUTCDateTime
-    # lastName,
-    # password,
-    # phone,
-    # province,
+    # lastName
+    # password
+    # phone
+    # province
     # registrationUTCDateTime
     # TacID
 
@@ -294,5 +294,5 @@ class TestCustomerGetByManager:
                 invalid_id)  # type: ignore
 
         await session.rollback()
-    # uTCOffsetInMinutes,
-    # zip,
+    # uTCOffsetInMinutes
+    # zip

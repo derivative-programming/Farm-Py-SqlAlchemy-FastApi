@@ -1,6 +1,7 @@
 # business/tests/dyna_flow_task_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -1256,8 +1257,8 @@ class TestDynaFlowTaskBaseBusObj:
             mock_sess_base_bus_obj.started_utc_date_time = \
                 "not-a-datetime"
     # completedUTCDateTime
-    # dependencyDynaFlowTaskID,
-    # description,
+    # dependencyDynaFlowTaskID
+    # description
     # DynaFlowID
 
     def test_dyna_flow_id(
@@ -1287,7 +1288,7 @@ class TestDynaFlowTaskBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.dyna_flow_id = \
                 "not-an-int"
-    # dynaFlowSubjectCode,
+    # dynaFlowSubjectCode
     # DynaFlowTaskTypeID
 
     def test_dyna_flow_task_type_id(
@@ -1319,21 +1320,21 @@ class TestDynaFlowTaskBaseBusObj:
         with pytest.raises(ValueError):
             mock_sess_base_bus_obj.dyna_flow_task_type_id = \
                 "not-an-int"
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isParallelRunAllowed,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # maxRetryCount,
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isParallelRunAllowed
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # maxRetryCount
     # minStartUTCDateTime
-    # param1,
-    # param2,
-    # processorIdentifier,
+    # param1
+    # param2
+    # processorIdentifier
     # requestedUTCDateTime
-    # resultValue,
-    # retryCount,
+    # resultValue
+    # retryCount
     # startedUTCDateTime
 
     def test_insert_utc_date_time(

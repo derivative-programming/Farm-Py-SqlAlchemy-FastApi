@@ -15,12 +15,16 @@
 
         ##GENLOOPPropStart
         ##GENIF[isFKLookup=true,calculatedisFKObjectParentOFOwnerObject=false]Start
-        GENVALSnakefKObjectName_manager = managers_and_enums.GENVALPascalfKObjectNameManager(
-            self._session_context)
-        GENVALSnakeName_GENVALSnakefKObjectName = await GENVALSnakefKObjectName_manager.from_enum(
-            managers_and_enums.GENVALPascalfKObjectNameEnum.UNKNOWN)
-        item.GENVALSnakeName = GENVALSnakeName_GENVALSnakefKObjectName.GENVALSnakefKObjectName_id
-        item.GENVALSnakeObjectName.GENVALSnakeName_code_peek = GENVALSnakeName_GENVALSnakefKObjectName.code
+        GENVALSnakefKObjectName_manager = \
+            managers_and_enums.GENVALPascalfKObjectNameManager(
+                self._session_context)
+        GENVALSnakeName_GENVALSnakefKObjectName = await \
+            GENVALSnakefKObjectName_manager.from_enum(
+                managers_and_enums.GENVALPascalfKObjectNameEnum.UNKNOWN)
+        item.GENVALSnakeName = \
+            GENVALSnakeName_GENVALSnakefKObjectName.GENVALSnakefKObjectName_id
+        item.GENVALSnakeObjectName.GENVALSnakeName_code_peek = \
+            GENVALSnakeName_GENVALSnakefKObjectName.code
         ##GENIF[isFKLookup=true,calculatedisFKObjectParentOFOwnerObject=false]End
         ##GENLOOPPropEnd
         
@@ -53,7 +57,8 @@
         self, GENVALSnakeName
     ) -> List[GENVALPascalObjectNameBusObj]: 
         """
-        get GENVALSnakeObjectName by GENVALSnakeName
+        get GENVALSnakeObjectName by
+        GENVALSnakeName
         """
         results = []
         GENVALSnakeObjectName_manager = managers_and_enums.GENVALPascalObjectNameManager(

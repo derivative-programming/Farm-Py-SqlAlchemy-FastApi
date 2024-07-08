@@ -1,5 +1,6 @@
 # business/tests/dyna_flow_type_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 DynaFlowTypeFluentBusObj class.
@@ -102,11 +103,11 @@ class TestDynaFlowTypeFluentBusObj:
         result = new_fluent_bus_obj.set_prop_priority_level(42)
         assert new_fluent_bus_obj.priority_level == 42
         assert result is new_fluent_bus_obj
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     def test_set_prop_pac_id(self, new_fluent_bus_obj):
@@ -116,4 +117,4 @@ class TestDynaFlowTypeFluentBusObj:
         result = new_fluent_bus_obj.set_prop_pac_id(1)
         assert new_fluent_bus_obj.pac_id == 1
         assert result is new_fluent_bus_obj
-    # priorityLevel,
+    # priorityLevel

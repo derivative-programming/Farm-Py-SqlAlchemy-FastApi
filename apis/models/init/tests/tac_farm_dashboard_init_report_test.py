@@ -82,11 +82,7 @@ async def test_process_request(flow_response, session):
     """
     Test the process_request method.
     """
-    mock_session_context = Mock(spec=SessionContext)
-    mock_tac_bus_obj = patch(
-        "apis.models.init.tac_farm_dashboard_init_report."
-        "TacBusObj",
-        autospec=True).start()
+    session_context = SessionContext({}, session)
     mock_flow = patch(
         "apis.models.init.tac_farm_dashboard_init_report."
         "FlowTacFarmDashboardInitReport",
@@ -101,14 +97,12 @@ async def test_process_request(flow_response, session):
     tac = await TacFactory.create_async(session)
 
     result = await request.process_request(
-        mock_session_context,
+        session_context,
         tac.code,
         response)
 
     assert result.success is True
     assert result.message == "Success."
-    mock_tac_bus_obj.assert_called_once_with(
-        mock_session_context)
     mock_flow_instance.process.assert_called_once()
 
     patch.stopall()

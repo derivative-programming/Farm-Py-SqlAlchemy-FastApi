@@ -1,5 +1,6 @@
 # business/tests/date_greater_than_filter_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 DateGreaterThanFilterFluentBusObj class.
@@ -102,12 +103,12 @@ class TestDateGreaterThanFilterFluentBusObj:
             "Vanilla"
         assert result is new_fluent_bus_obj
     # PacID
-    # dayCount,
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # dayCount
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     def test_set_prop_pac_id(self, new_fluent_bus_obj):

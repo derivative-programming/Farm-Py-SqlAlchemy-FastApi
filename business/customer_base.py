@@ -423,7 +423,9 @@ class CustomerBaseBusObj(BaseBusObj):
         :param value: The First Name value.
         :raises AttributeError: If the
             Customer object is not initialized.
-        :raises AssertionError: If the First Name is not a string.
+        :raises AssertionError: If the
+            First Name
+            is not a string.
         """
 
         if not self.customer:
@@ -431,7 +433,8 @@ class CustomerBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "first_name must be a string"
+        assert isinstance(value, str), \
+            "first_name must be a string"
         self.customer.first_name = value
     # forgotPasswordKeyExpirationUTCDateTime
 
@@ -514,7 +517,9 @@ class CustomerBaseBusObj(BaseBusObj):
         :param value: The Forgot Password Key Value value.
         :raises AttributeError: If the
             Customer object is not initialized.
-        :raises AssertionError: If the Forgot Password Key Value is not a string.
+        :raises AssertionError: If the
+            Forgot Password Key Value
+            is not a string.
         """
 
         if not self.customer:
@@ -522,7 +527,8 @@ class CustomerBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "forgot_password_key_value must be a string"
+        assert isinstance(value, str), \
+            "forgot_password_key_value must be a string"
         self.customer.forgot_password_key_value = value
     # fSUserCodeValue
 
@@ -948,7 +954,9 @@ class CustomerBaseBusObj(BaseBusObj):
         :param value: The Last Name value.
         :raises AttributeError: If the
             Customer object is not initialized.
-        :raises AssertionError: If the Last Name is not a string.
+        :raises AssertionError: If the
+            Last Name
+            is not a string.
         """
 
         if not self.customer:
@@ -956,7 +964,8 @@ class CustomerBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "last_name must be a string"
+        assert isinstance(value, str), \
+            "last_name must be a string"
         self.customer.last_name = value
     # password
 
@@ -990,7 +999,9 @@ class CustomerBaseBusObj(BaseBusObj):
         :param value: The Password value.
         :raises AttributeError: If the
             Customer object is not initialized.
-        :raises AssertionError: If the Password is not a string.
+        :raises AssertionError: If the
+            Password
+            is not a string.
         """
 
         if not self.customer:
@@ -998,7 +1009,8 @@ class CustomerBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "password must be a string"
+        assert isinstance(value, str), \
+            "password must be a string"
         self.customer.password = value
     # phone
 
@@ -1091,7 +1103,9 @@ class CustomerBaseBusObj(BaseBusObj):
         :param value: The Province value.
         :raises AttributeError: If the
             Customer object is not initialized.
-        :raises AssertionError: If the Province is not a string.
+        :raises AssertionError: If the
+            Province
+            is not a string.
         """
 
         if not self.customer:
@@ -1099,7 +1113,8 @@ class CustomerBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "province must be a string"
+        assert isinstance(value, str), \
+            "province must be a string"
         self.customer.province = value
     # registrationUTCDateTime
 
@@ -1231,7 +1246,9 @@ class CustomerBaseBusObj(BaseBusObj):
         :param value: The Zip value.
         :raises AttributeError: If the
             Customer object is not initialized.
-        :raises AssertionError: If the Zip is not a string.
+        :raises AssertionError: If the
+            Zip
+            is not a string.
         """
 
         if not self.customer:
@@ -1239,27 +1256,28 @@ class CustomerBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "zip must be a string"
+        assert isinstance(value, str), \
+            "zip must be a string"
         self.customer.zip = value
-    # activeOrganizationID,
-    # email,
+    # activeOrganizationID
+    # email
     # emailConfirmedUTCDateTime
-    # firstName,
+    # firstName
     # forgotPasswordKeyExpirationUTCDateTime
-    # forgotPasswordKeyValue,
-    # fSUserCodeValue,
-    # isActive,
-    # isEmailAllowed,
-    # isEmailConfirmed,
-    # isEmailMarketingAllowed,
-    # isLocked,
-    # isMultipleOrganizationsAllowed,
-    # isVerboseLoggingForced,
+    # forgotPasswordKeyValue
+    # fSUserCodeValue
+    # isActive
+    # isEmailAllowed
+    # isEmailConfirmed
+    # isEmailMarketingAllowed
+    # isLocked
+    # isMultipleOrganizationsAllowed
+    # isVerboseLoggingForced
     # lastLoginUTCDateTime
-    # lastName,
-    # password,
-    # phone,
-    # province,
+    # lastName
+    # password
+    # phone
+    # province
     # registrationUTCDateTime
     # TacID
 
@@ -1330,8 +1348,8 @@ class CustomerBaseBusObj(BaseBusObj):
             )
 
         return self.customer.tac_code_peek
-    # uTCOffsetInMinutes,
-    # zip,
+    # uTCOffsetInMinutes
+    # zip
     # insert_utc_date_time
 
     @property
@@ -1761,7 +1779,7 @@ class CustomerBaseBusObj(BaseBusObj):
             random.randint(2000, 2023),
             random.randint(1, 12),
             random.randint(1, 28))
-        # self.customer.tac_id = random.randint(0, 100)
+        # tac_id
         self.customer.utc_offset_in_minutes = (
             random.randint(0, 100))
         self.customer.zip = "".join(
@@ -1838,25 +1856,25 @@ class CustomerBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.customer_id
-    # activeOrganizationID,
-    # email,
+    # activeOrganizationID
+    # email
     # emailConfirmedUTCDateTime
-    # firstName,
+    # firstName
     # forgotPasswordKeyExpirationUTCDateTime
-    # forgotPasswordKeyValue,
-    # fSUserCodeValue,
-    # isActive,
-    # isEmailAllowed,
-    # isEmailConfirmed,
-    # isEmailMarketingAllowed,
-    # isLocked,
-    # isMultipleOrganizationsAllowed,
-    # isVerboseLoggingForced,
+    # forgotPasswordKeyValue
+    # fSUserCodeValue
+    # isActive
+    # isEmailAllowed
+    # isEmailConfirmed
+    # isEmailMarketingAllowed
+    # isLocked
+    # isMultipleOrganizationsAllowed
+    # isVerboseLoggingForced
     # lastLoginUTCDateTime
-    # lastName,
-    # password,
-    # phone,
-    # province,
+    # lastName
+    # password
+    # phone
+    # province
     # registrationUTCDateTime
     # TacID
 
@@ -1895,5 +1913,5 @@ class CustomerBaseBusObj(BaseBusObj):
         tac_obj = await tac_manager.get_by_id(
             self.tac_id)
         return tac_obj
-    # uTCOffsetInMinutes,
-    # zip,
+    # uTCOffsetInMinutes
+    # zip

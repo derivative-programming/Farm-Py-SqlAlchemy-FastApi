@@ -1,6 +1,9 @@
 # business/tests/plant_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 """
 Unit tests for the
 PlantBusObj class.
@@ -118,17 +121,17 @@ class TestPlantBusObj:
 
         assert len(bus_obj_list) == 0
 # endset
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
+    # isDeleteAllowed
+    # isEditAllowed
+    # otherFlavor
+    # someBigIntVal
+    # someBitVal
+    # someDecimalVal
+    # someEmailAddress
+    # someFloatVal
+    # someIntVal
+    # someMoneyVal
+    # someNVarCharVal
     # someDateVal
     # someUTCDateTimeVal
     # LandID
@@ -225,7 +228,7 @@ class TestPlantBusObj:
 
         assert fk_bus_obj.code == \
             new_bus_obj.flvr_foreign_key_code_peek
-    # somePhoneNumber,
-    # someTextVal,
-    # someUniqueidentifierVal,
+    # somePhoneNumber
+    # someTextVal
+    # someUniqueidentifierVal
     # someVarCharVal

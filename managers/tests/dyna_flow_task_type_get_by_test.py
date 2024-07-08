@@ -161,12 +161,12 @@ class TestDynaFlowTaskTypeGetByManager:
 
         assert dyna_flow_task_type is None
 
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # maxRetryCount,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # maxRetryCount
+    # name
     # PacID
 
     @pytest.mark.asyncio

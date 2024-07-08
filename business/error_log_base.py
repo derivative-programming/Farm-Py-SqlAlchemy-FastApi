@@ -425,7 +425,9 @@ class ErrorLogBaseBusObj(BaseBusObj):
         :param value: The Description value.
         :raises AttributeError: If the
             ErrorLog object is not initialized.
-        :raises AssertionError: If the Description is not a string.
+        :raises AssertionError: If the
+            Description
+            is not a string.
         """
 
         if not self.error_log:
@@ -433,7 +435,8 @@ class ErrorLogBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "description must be a string"
+        assert isinstance(value, str), \
+            "description must be a string"
         self.error_log.description = value
     # isClientSideError
 
@@ -552,7 +555,9 @@ class ErrorLogBaseBusObj(BaseBusObj):
         :param value: The Url value.
         :raises AttributeError: If the
             ErrorLog object is not initialized.
-        :raises AssertionError: If the Url is not a string.
+        :raises AssertionError: If the
+            Url
+            is not a string.
         """
 
         if not self.error_log:
@@ -560,14 +565,15 @@ class ErrorLogBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "url must be a string"
+        assert isinstance(value, str), \
+            "url must be a string"
         self.error_log.url = value
-    # browserCode,
-    # contextCode,
+    # browserCode
+    # contextCode
     # createdUTCDateTime
-    # description,
-    # isClientSideError,
-    # isResolved,
+    # description
+    # isClientSideError
+    # isResolved
     # PacID
 
     @property
@@ -637,7 +643,7 @@ class ErrorLogBaseBusObj(BaseBusObj):
             )
 
         return self.error_log.pac_code_peek
-    # url,
+    # url
     # insert_utc_date_time
 
     @property
@@ -1032,7 +1038,7 @@ class ErrorLogBaseBusObj(BaseBusObj):
             random.choice([True, False]))
         self.error_log.is_resolved = (
             random.choice([True, False]))
-        # self.error_log.pac_id = random.randint(0, 100)
+        # pac_id
         self.error_log.url = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
 
@@ -1107,12 +1113,12 @@ class ErrorLogBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.error_log_id
-    # browserCode,
-    # contextCode,
+    # browserCode
+    # contextCode
     # createdUTCDateTime
-    # description,
-    # isClientSideError,
-    # isResolved,
+    # description
+    # isClientSideError
+    # isResolved
     # PacID
 
     async def get_parent_name(self) -> str:
@@ -1150,4 +1156,4 @@ class ErrorLogBaseBusObj(BaseBusObj):
         pac_obj = await pac_manager.get_by_id(
             self.pac_id)
         return pac_obj
-    # url,
+    # url

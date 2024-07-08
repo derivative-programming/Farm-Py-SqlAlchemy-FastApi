@@ -42,7 +42,6 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
         result = FlowCustomerBuildTempApiKeyResult()
         result.context_object_code = uuid.uuid4()
         result.tmp_org_api_key_code = uuid.uuid4()
-
         # Call to_json method
         json_output = result.to_json()
 
@@ -74,7 +73,6 @@ class TestCustomerBuildTempApiKeyPostModelResponse:
         customer_bus_obj.load_from_obj_instance(customer)
 
         role_required = ""
-
 
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):

@@ -1,6 +1,7 @@
 # apis/models/tests/tac_login_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains unit tests for the
 TacLoginPostModelResponse class.
@@ -144,7 +145,7 @@ class TestTacLoginPostModelRequest:
         assert data == expected_data
 
 
-class TestTacLoginPostModelResponse:  # pylint: disable=too-few-public-methods
+class TestTacLoginPostModelResponse:
     """
     This class contains unit tests for the
     TacLoginPostModelResponse class.

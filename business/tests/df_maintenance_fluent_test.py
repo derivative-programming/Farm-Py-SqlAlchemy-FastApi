@@ -1,5 +1,6 @@
 # business/tests/df_maintenance_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 DFMaintenanceFluentBusObj class.
@@ -129,9 +130,9 @@ class TestDFMaintenanceFluentBusObj:
         assert new_fluent_bus_obj.scheduled_df_process_request_processor_identifier == \
             "Vanilla"
         assert result is new_fluent_bus_obj
-    # isPaused,
-    # isScheduledDFProcessRequestCompleted,
-    # isScheduledDFProcessRequestStarted,
+    # isPaused
+    # isScheduledDFProcessRequestCompleted
+    # isScheduledDFProcessRequestStarted
     # lastScheduledDFProcessRequestUTCDateTime
     # nextScheduledDFProcessRequestUTCDateTime
     # PacID
@@ -143,6 +144,6 @@ class TestDFMaintenanceFluentBusObj:
         result = new_fluent_bus_obj.set_prop_pac_id(1)
         assert new_fluent_bus_obj.pac_id == 1
         assert result is new_fluent_bus_obj
-    # pausedByUsername,
+    # pausedByUsername
     # pausedUTCDateTime
-    # scheduledDFProcessRequestProcessorIdentifier,
+    # scheduledDFProcessRequestProcessorIdentifier

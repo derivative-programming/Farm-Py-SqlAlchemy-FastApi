@@ -351,25 +351,25 @@ class CustomerFluentBusObj(CustomerBaseBusObj):
 
         self.zip = value
         return self
-    # activeOrganizationID,
-    # email,
+    # activeOrganizationID
+    # email
     # emailConfirmedUTCDateTime
-    # firstName,
+    # firstName
     # forgotPasswordKeyExpirationUTCDateTime
-    # forgotPasswordKeyValue,
-    # fSUserCodeValue,
-    # isActive,
-    # isEmailAllowed,
-    # isEmailConfirmed,
-    # isEmailMarketingAllowed,
-    # isLocked,
-    # isMultipleOrganizationsAllowed,
-    # isVerboseLoggingForced,
+    # forgotPasswordKeyValue
+    # fSUserCodeValue
+    # isActive
+    # isEmailAllowed
+    # isEmailConfirmed
+    # isEmailMarketingAllowed
+    # isLocked
+    # isMultipleOrganizationsAllowed
+    # isVerboseLoggingForced
     # lastLoginUTCDateTime
-    # lastName,
-    # password,
-    # phone,
-    # province,
+    # lastName
+    # password
+    # phone
+    # province
     # registrationUTCDateTime
     # TacID
 
@@ -388,5 +388,5 @@ class CustomerFluentBusObj(CustomerBaseBusObj):
 
         self.tac_id = value
         return self
-    # uTCOffsetInMinutes,
-    # zip,
+    # uTCOffsetInMinutes
+    # zip

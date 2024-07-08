@@ -1,5 +1,6 @@
 # business/tests/plant_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 PlantFluentBusObj class.
@@ -237,17 +238,17 @@ class TestPlantFluentBusObj:
         assert result is new_fluent_bus_obj
     # LandID
 # endset
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
+    # isDeleteAllowed
+    # isEditAllowed
+    # otherFlavor
+    # someBigIntVal
+    # someBitVal
+    # someDecimalVal
+    # someEmailAddress
+    # someFloatVal
+    # someIntVal
+    # someMoneyVal
+    # someNVarCharVal
     # someDateVal
     # someUTCDateTimeVal
     # FlvrForeignKeyID
@@ -268,8 +269,8 @@ class TestPlantFluentBusObj:
         result = new_fluent_bus_obj.set_prop_land_id(1)
         assert new_fluent_bus_obj.land_id == 1
         assert result is new_fluent_bus_obj
-    # somePhoneNumber,
-    # someTextVal,
-    # someUniqueidentifierVal,
-    # someVarCharVal,
+    # somePhoneNumber
+    # someTextVal
+    # someUniqueidentifierVal
+    # someVarCharVal
 # endset

@@ -49,9 +49,9 @@ class TestCustomerRoleFactory:
         Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        session_local = sessionmaker(  # pylint: disable=invalid-name
             bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
+        session_instance = session_local()
         yield session_instance
         session_instance.close()
 
@@ -227,8 +227,8 @@ class TestCustomerRoleFactory:
 
         assert isinstance(
             obj.customer_code_peek, uuid.UUID)
-        # isPlaceholder,
-        # placeholder,
+        # isPlaceholder
+        # placeholder
         # roleID
 
         assert isinstance(
@@ -267,8 +267,8 @@ class TestCustomerRoleFactory:
 
         assert isinstance(
             new_obj.customer_code_peek, uuid.UUID)
-        # isPlaceholder,
-        # placeholder,
+        # isPlaceholder
+        # placeholder
         # RoleID
 
         assert isinstance(
@@ -350,8 +350,8 @@ class TestCustomerRoleFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-    # isPlaceholder,
-    # placeholder,
+    # isPlaceholder
+    # placeholder
     # RoleID
 
     def test_invalid_role_id(self, session):

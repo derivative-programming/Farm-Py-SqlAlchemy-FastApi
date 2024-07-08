@@ -1,6 +1,9 @@
 # business/tests/org_customer_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 """
 Unit tests for the
 OrgCustomerBusObj class.
@@ -165,7 +168,7 @@ class TestOrgCustomerBusObj:
 
         assert fk_bus_obj.code == \
             new_bus_obj.customer_code_peek
-    # email,
+    # email
     # OrganizationID
 
     @pytest.mark.asyncio

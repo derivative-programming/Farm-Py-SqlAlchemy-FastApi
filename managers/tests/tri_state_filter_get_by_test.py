@@ -161,11 +161,11 @@ class TestTriStateFilterGetByManager:
 
         assert tri_state_filter is None
 
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     @pytest.mark.asyncio
@@ -279,4 +279,4 @@ class TestTriStateFilterGetByManager:
                 invalid_id)  # type: ignore
 
         await session.rollback()
-    # stateIntValue,
+    # stateIntValue

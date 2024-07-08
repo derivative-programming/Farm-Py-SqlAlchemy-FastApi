@@ -70,7 +70,8 @@ class LandReportsBusObj(LandFluentBusObj):
         Get the Land Plant List report.
 
         Returns:
-            List[ReportItemLandPlantList]: The Land Plant List report.
+            List[ReportItemLandPlantList]:
+                The Land Plant List report.
         """
         report_manager = reports_managers. \
             ReportManagerLandPlantList(

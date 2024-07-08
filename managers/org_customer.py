@@ -415,10 +415,8 @@ class OrgCustomerManager:
         data = json.loads(json_str)
         org_customer_dict = schema.load(data)
 
-        #we need to load the obj form db and into session first.
+        # we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
-
-        # new_org_customer = OrgCustomer(**org_customer_dict)
 
         # load or create
         new_org_customer = await self.get_by_id(

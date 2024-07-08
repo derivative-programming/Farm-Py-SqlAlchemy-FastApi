@@ -16,7 +16,8 @@ from decimal import Decimal  # noqa: F401
 
 from business.plant import PlantBusObj
 from flows.base import LogSeverity
-from flows.base.plant_user_property_random_update import BaseFlowPlantUserPropertyRandomUpdate
+from flows.base.plant_user_property_random_update import (
+    BaseFlowPlantUserPropertyRandomUpdate)
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

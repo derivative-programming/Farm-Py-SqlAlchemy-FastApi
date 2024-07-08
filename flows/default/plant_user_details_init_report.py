@@ -16,7 +16,8 @@ from decimal import Decimal  # noqa: F401
 
 from business.plant import PlantBusObj
 from flows.base import LogSeverity
-from flows.base.plant_user_details_init_report import BaseFlowPlantUserDetailsInitReport
+from flows.base.plant_user_details_init_report import (
+    BaseFlowPlantUserDetailsInitReport)
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

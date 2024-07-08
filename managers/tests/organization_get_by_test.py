@@ -161,7 +161,7 @@ class TestOrganizationGetByManager:
 
         assert organization is None
 
-    # name,
+    # name
     # TacID
 
     @pytest.mark.asyncio

@@ -33,14 +33,13 @@ class OrgCustomerFactory(factory.Factory):
 
         model = OrgCustomer
 
-    # org_customer_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
     last_update_user_id = factory.LazyFunction(uuid.uuid4)
-    # customer_id = 0
+    # customer_id
     email = Faker('email')
-    # organization_id = 0
+    # organization_id
     customer_code_peek = factory.LazyFunction(  # CustomerID
         uuid.uuid4
     )
@@ -51,7 +50,7 @@ class OrgCustomerFactory(factory.Factory):
     @classmethod
     def _build(
         cls, model_class, *args, session=None, **kwargs
-    ) -> OrgCustomer:
+    ) -> OrgCustomer:  # pylint: disable=unused-argument
         """
             Builds and returns an instance
             of the OrgCustomer model.
@@ -91,14 +90,12 @@ class OrgCustomerFactory(factory.Factory):
         obj.customer_code_peek = (  # CustomerID
             customer_id_customer_instance.code)
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-        # session.add(obj)
-        # session.commit()
         return obj
 
     @classmethod
     def _create(
         cls, model_class, *args, session=None, **kwargs
-    ) -> OrgCustomer:
+    ) -> OrgCustomer:  # pylint: disable=unused-argument
         """
         Create a new
         OrgCustomer object
@@ -146,7 +143,7 @@ class OrgCustomerFactory(factory.Factory):
     @classmethod
     async def create_async(
         cls, session, *args, **kwargs
-    ) -> OrgCustomer:
+    ) -> OrgCustomer:  # pylint: disable=unused-argument
         """
         Create a new
         OrgCustomer object
@@ -188,7 +185,7 @@ class OrgCustomerFactory(factory.Factory):
     @classmethod
     async def build_async(
         cls, session, *args, **kwargs
-    ) -> OrgCustomer:
+    ) -> OrgCustomer:  # pylint: disable=unused-argument
         """
         Build a new OrgCustomer object
         asynchronously.
@@ -222,6 +219,4 @@ class OrgCustomerFactory(factory.Factory):
         obj.customer_code_peek = (  # CustomerID
             customer_id_customer_instance.code)
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
-        # session.add(obj)
-        # await session.flush()
         return obj

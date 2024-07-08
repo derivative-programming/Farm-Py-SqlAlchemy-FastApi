@@ -278,7 +278,9 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         :param value: The Description value.
         :raises AttributeError: If the
             TriStateFilter object is not initialized.
-        :raises AssertionError: If the Description is not a string.
+        :raises AssertionError: If the
+            Description
+            is not a string.
         """
 
         if not self.tri_state_filter:
@@ -286,7 +288,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "description must be a string"
+        assert isinstance(value, str), \
+            "description must be a string"
         self.tri_state_filter.description = value
     # displayOrder
 
@@ -410,7 +413,9 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         :param value: The Lookup Enum Name value.
         :raises AttributeError: If the
             TriStateFilter object is not initialized.
-        :raises AssertionError: If the Lookup Enum Name is not a string.
+        :raises AssertionError: If the
+            Lookup Enum Name
+            is not a string.
         """
 
         if not self.tri_state_filter:
@@ -418,7 +423,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "lookup_enum_name must be a string"
+        assert isinstance(value, str), \
+            "lookup_enum_name must be a string"
         self.tri_state_filter.lookup_enum_name = value
     # name
 
@@ -452,7 +458,9 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         :param value: The Name value.
         :raises AttributeError: If the
             TriStateFilter object is not initialized.
-        :raises AssertionError: If the Name is not a string.
+        :raises AssertionError: If the
+            Name
+            is not a string.
         """
 
         if not self.tri_state_filter:
@@ -460,7 +468,8 @@ class TriStateFilterBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "name must be a string"
+        assert isinstance(value, str), \
+            "name must be a string"
         self.tri_state_filter.name = value
     # PacID
     # stateIntValue
@@ -511,11 +520,11 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         assert isinstance(value, int), (
             "state_int_value must be an integer")
         self.tri_state_filter.state_int_value = value
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     @property
@@ -585,7 +594,7 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             )
 
         return self.tri_state_filter.pac_code_peek
-    # stateIntValue,
+    # stateIntValue
     # insert_utc_date_time
 
     @property
@@ -978,7 +987,7 @@ class TriStateFilterBaseBusObj(BaseBusObj):
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.tri_state_filter.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        # self.tri_state_filter.pac_id = random.randint(0, 100)
+        # pac_id
         self.tri_state_filter.state_int_value = (
             random.randint(0, 100))
 
@@ -1053,11 +1062,11 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.tri_state_filter_id
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     async def get_parent_name(self) -> str:
@@ -1095,4 +1104,4 @@ class TriStateFilterBaseBusObj(BaseBusObj):
         pac_obj = await pac_manager.get_by_id(
             self.pac_id)
         return pac_obj
-    # stateIntValue,
+    # stateIntValue

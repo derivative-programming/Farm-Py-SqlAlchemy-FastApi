@@ -1,6 +1,7 @@
 # business/tests/plant_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -1165,10 +1166,10 @@ class TestPlantBaseBusObj:
     # FlvrForeignKeyID
     # LandID
 # endset
-    # someNVarCharVal,
-    # somePhoneNumber,
-    # someTextVal,
-    # someUniqueidentifierVal,
+    # someNVarCharVal
+    # somePhoneNumber
+    # someTextVal
+    # someUniqueidentifierVal
     # FlvrForeignKeyID
 
     def test_flvr_foreign_key_id(
@@ -1229,17 +1230,17 @@ class TestPlantBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.land_id = \
                 "not-an-int"
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someVarCharVal,
+    # isDeleteAllowed
+    # isEditAllowed
+    # otherFlavor
+    # someBigIntVal
+    # someBitVal
+    # someDecimalVal
+    # someEmailAddress
+    # someFloatVal
+    # someIntVal
+    # someMoneyVal
+    # someVarCharVal
     # someDateVal
     # someUTCDateTimeVal
 # endset

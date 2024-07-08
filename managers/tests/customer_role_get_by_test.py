@@ -274,8 +274,8 @@ class TestCustomerRoleGetByManager:
                 invalid_id)  # type: ignore
 
         await session.rollback()
-    # isPlaceholder,
-    # placeholder,
+    # isPlaceholder
+    # placeholder
     # RoleID
 
     @pytest.mark.asyncio

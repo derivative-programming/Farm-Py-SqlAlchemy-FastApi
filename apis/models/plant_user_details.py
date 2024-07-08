@@ -358,7 +358,7 @@ class PlantUserDetailsGetModelResponse(
         session_context: SessionContext,
         plant_code: uuid.UUID,
         request: PlantUserDetailsGetModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the API request and generates the response items.
 

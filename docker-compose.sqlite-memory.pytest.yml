@@ -16,8 +16,8 @@ services:
       - ./pytest/reports:/usr/src/app/pytest/reports
       - ./pytest/data:/usr/src/app/pytest/data
     networks:
-      - app-network
+      - pytest-sqlite-memory-app-network
 
 networks:
-  app-network:
+  pytest-sqlite-memory-app-network:
     driver: bridge

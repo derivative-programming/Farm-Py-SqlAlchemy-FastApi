@@ -16,7 +16,8 @@ from decimal import Decimal  # noqa: F401
 
 from business.tac import TacBusObj
 from flows.base import LogSeverity
-from flows.base.tac_farm_dashboard_init_report import BaseFlowTacFarmDashboardInitReport
+from flows.base.tac_farm_dashboard_init_report import (
+    BaseFlowTacFarmDashboardInitReport)
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

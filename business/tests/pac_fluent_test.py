@@ -1,5 +1,6 @@
 # business/tests/pac_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 PacFluentBusObj class.
@@ -90,8 +91,8 @@ class TestPacFluentBusObj:
         assert new_fluent_bus_obj.name == \
             "Vanilla"
         assert result is new_fluent_bus_obj
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name

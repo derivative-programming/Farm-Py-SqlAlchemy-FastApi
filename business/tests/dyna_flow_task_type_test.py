@@ -1,6 +1,9 @@
 # business/tests/dyna_flow_task_type_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 """
 Unit tests for the
 DynaFlowTaskTypeBusObj class.
@@ -117,12 +120,12 @@ class TestDynaFlowTaskTypeBusObj:
                 empty_obj_list)
 
         assert len(bus_obj_list) == 0
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # maxRetryCount,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # maxRetryCount
+    # name
     # PacID
 
     @pytest.mark.asyncio

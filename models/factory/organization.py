@@ -32,13 +32,12 @@ class OrganizationFactory(factory.Factory):
 
         model = Organization
 
-    # organization_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
     last_update_user_id = factory.LazyFunction(uuid.uuid4)
     name = Faker('sentence', nb_words=4)
-    # tac_id = 0
+    # tac_id
     tac_code_peek = factory.LazyFunction(  # TacID
         uuid.uuid4
     )
@@ -46,7 +45,7 @@ class OrganizationFactory(factory.Factory):
     @classmethod
     def _build(
         cls, model_class, *args, session=None, **kwargs
-    ) -> Organization:
+    ) -> Organization:  # pylint: disable=unused-argument
         """
             Builds and returns an instance
             of the Organization model.
@@ -76,14 +75,12 @@ class OrganizationFactory(factory.Factory):
         obj.tac_id = (  # TacID
             tac_id_tac_instance.tac_id)
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
-        # session.add(obj)
-        # session.commit()
         return obj
 
     @classmethod
     def _create(
         cls, model_class, *args, session=None, **kwargs
-    ) -> Organization:
+    ) -> Organization:  # pylint: disable=unused-argument
         """
         Create a new
         Organization object
@@ -121,7 +118,7 @@ class OrganizationFactory(factory.Factory):
     @classmethod
     async def create_async(
         cls, session, *args, **kwargs
-    ) -> Organization:
+    ) -> Organization:  # pylint: disable=unused-argument
         """
         Create a new
         Organization object
@@ -153,7 +150,7 @@ class OrganizationFactory(factory.Factory):
     @classmethod
     async def build_async(
         cls, session, *args, **kwargs
-    ) -> Organization:
+    ) -> Organization:  # pylint: disable=unused-argument
         """
         Build a new Organization object
         asynchronously.
@@ -177,6 +174,4 @@ class OrganizationFactory(factory.Factory):
         obj.tac_id = (  # TacID
             tac_id_tac_instance.tac_id)
         obj.tac_code_peek = tac_id_tac_instance.code  # TacID
-        # session.add(obj)
-        # await session.flush()
         return obj

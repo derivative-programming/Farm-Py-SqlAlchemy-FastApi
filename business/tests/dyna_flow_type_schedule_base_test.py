@@ -1,6 +1,7 @@
 # business/tests/dyna_flow_type_schedule_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -723,8 +724,8 @@ class TestDynaFlowTypeScheduleBaseBusObj:
         with pytest.raises(ValueError):
             mock_sess_base_bus_obj.dyna_flow_type_id = \
                 "not-an-int"
-    # frequencyInHours,
-    # isActive,
+    # frequencyInHours
+    # isActive
     # lastUTCDateTime
     # nextUTCDateTime
     # PacID

@@ -97,8 +97,8 @@ class PacFluentBusObj(PacBaseBusObj):
 
         self.name = value
         return self
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name

@@ -2,6 +2,10 @@
 
 echo "Waiting for 60 seconds to allow SonarQube to start..."
 sleep 60
+
+[ -f "output.json" ] && rm -f "output.json"
+[ -f "pytest_html_report.html" ] && rm -f "pytest_html_report.html"
+
 sonar-scanner \
   -Dsonar.projectKey=DemoApp \
   -Dsonar.sources=. \

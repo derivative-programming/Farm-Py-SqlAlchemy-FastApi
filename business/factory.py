@@ -167,8 +167,7 @@ class BusObjFactory:
                 .load_from_code(code)
             )
 
-        else:
-            raise ValueError(f"Unknown object type: {name}")
+        raise ValueError(f"Unknown object type: {name}")
 
     @staticmethod
     async def create_from_id(
@@ -299,5 +298,4 @@ class BusObjFactory:
                 .load_from_id(obj_id)
             )
 
-        else:
-            raise ValueError(f"Unknown object type: {name}")
+        raise ValueError(f"Unknown object type: {name}")

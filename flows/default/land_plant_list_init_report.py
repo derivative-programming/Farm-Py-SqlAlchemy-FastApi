@@ -16,7 +16,8 @@ from decimal import Decimal  # noqa: F401
 
 from business.land import LandBusObj
 from flows.base import LogSeverity
-from flows.base.land_plant_list_init_report import BaseFlowLandPlantListInitReport
+from flows.base.land_plant_list_init_report import (
+    BaseFlowLandPlantListInitReport)
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

@@ -68,12 +68,12 @@ class TestCustomerFactoryAsync:
             await connection.begin_nested()
             await connection.run_sync(Base.metadata.drop_all)
             await connection.run_sync(Base.metadata.create_all)
-            TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+            testing_session_local = sessionmaker(  # pylint: disable=invalid-name
                 expire_on_commit=False,
                 class_=AsyncSession,
                 bind=engine,
             )
-            async with TestingSessionLocal(bind=connection) as session:  # type: ignore # noqa: E501
+            async with testing_session_local(bind=connection) as session:  # type: ignore # noqa: E501
                 @event.listens_for(
                     session.sync_session, "after_transaction_end"
                 )
@@ -445,31 +445,31 @@ class TestCustomerFactoryAsync:
         assert obj.zip == "" or isinstance(
             obj.zip, str)
         # Check for the peek values
-        # activeOrganizationID,
-        # email,
+        # activeOrganizationID
+        # email
         # emailConfirmedUTCDateTime
-        # firstName,
+        # firstName
         # forgotPasswordKeyExpirationUTCDateTime
-        # forgotPasswordKeyValue,
-        # fSUserCodeValue,
-        # isActive,
-        # isEmailAllowed,
-        # isEmailConfirmed,
-        # isEmailMarketingAllowed,
-        # isLocked,
-        # isMultipleOrganizationsAllowed,
-        # isVerboseLoggingForced,
+        # forgotPasswordKeyValue
+        # fSUserCodeValue
+        # isActive
+        # isEmailAllowed
+        # isEmailConfirmed
+        # isEmailMarketingAllowed
+        # isLocked
+        # isMultipleOrganizationsAllowed
+        # isVerboseLoggingForced
         # lastLoginUTCDateTime
-        # lastName,
-        # password,
-        # phone,
-        # province,
+        # lastName
+        # password
+        # phone
+        # province
         # registrationUTCDateTime
         # tacID
 
         assert isinstance(obj.tac_code_peek, uuid.UUID)
-        # uTCOffsetInMinutes,
-        # zip,
+        # uTCOffsetInMinutes
+        # zip
 
         assert isinstance(obj.insert_utc_date_time, datetime)
         assert isinstance(obj.last_update_utc_date_time, datetime)
@@ -529,31 +529,31 @@ class TestCustomerFactoryAsync:
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
 
-        # activeOrganizationID,
-        # email,
+        # activeOrganizationID
+        # email
         # emailConfirmedUTCDateTime
-        # firstName,
+        # firstName
         # forgotPasswordKeyExpirationUTCDateTime
-        # forgotPasswordKeyValue,
-        # fSUserCodeValue,
-        # isActive,
-        # isEmailAllowed,
-        # isEmailConfirmed,
-        # isEmailMarketingAllowed,
-        # isLocked,
-        # isMultipleOrganizationsAllowed,
-        # isVerboseLoggingForced,
+        # forgotPasswordKeyValue
+        # fSUserCodeValue
+        # isActive
+        # isEmailAllowed
+        # isEmailConfirmed
+        # isEmailMarketingAllowed
+        # isLocked
+        # isMultipleOrganizationsAllowed
+        # isVerboseLoggingForced
         # lastLoginUTCDateTime
-        # lastName,
-        # password,
-        # phone,
-        # province,
+        # lastName
+        # password
+        # phone
+        # province
         # registrationUTCDateTime
         # TacID
 
         assert isinstance(new_obj.tac_code_peek, uuid.UUID)
-        # uTCOffsetInMinutes,
-        # zip,
+        # uTCOffsetInMinutes
+        # zip
         assert new_obj.active_organization_id == 0
         assert new_obj.email == ""
         assert new_obj.email_confirmed_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
@@ -626,8 +626,6 @@ class TestCustomerFactoryAsync:
         result = await session.execute(stmt)
         obj_1 = result.scalars().first()
 
-        # obj_1 = await session.query(Customer).filter_by(
-        # customer_id=customer.customer_id).first()
         obj_1.code = uuid.uuid4()
         await session.commit()
 
@@ -637,30 +635,28 @@ class TestCustomerFactoryAsync:
         result = await session.execute(stmt)
         obj_2 = result.scalars().first()
 
-        # obj_2 = await session.query(Customer).filter_by(
-        # customer_id=customer.customer_id).first()
         obj_2.code = uuid.uuid4()
         await session.commit()
         assert obj_2.last_change_code != original_last_change_code
-    # activeOrganizationID,
-    # email,
+    # activeOrganizationID
+    # email
     # emailConfirmedUTCDateTime
-    # firstName,
+    # firstName
     # forgotPasswordKeyExpirationUTCDateTime
-    # forgotPasswordKeyValue,
-    # fSUserCodeValue,
-    # isActive,
-    # isEmailAllowed,
-    # isEmailConfirmed,
-    # isEmailMarketingAllowed,
-    # isLocked,
-    # isMultipleOrganizationsAllowed,
-    # isVerboseLoggingForced,
+    # forgotPasswordKeyValue
+    # fSUserCodeValue
+    # isActive
+    # isEmailAllowed
+    # isEmailConfirmed
+    # isEmailMarketingAllowed
+    # isLocked
+    # isMultipleOrganizationsAllowed
+    # isVerboseLoggingForced
     # lastLoginUTCDateTime
-    # lastName,
-    # password,
-    # phone,
-    # province,
+    # lastName
+    # password
+    # phone
+    # province
     # registrationUTCDateTime
     # TacID
 
@@ -688,5 +684,5 @@ class TestCustomerFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-    # uTCOffsetInMinutes,
-    # zip,
+    # uTCOffsetInMinutes
+    # zip

@@ -33,7 +33,6 @@ class DynaFlowTaskFactory(factory.Factory):
 
         model = DynaFlowTask
 
-    # dyna_flow_task_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
@@ -41,9 +40,9 @@ class DynaFlowTaskFactory(factory.Factory):
     completed_utc_date_time = factory.LazyFunction(datetime.utcnow)
     dependency_dyna_flow_task_id = Faker('random_int')
     description = Faker('sentence', nb_words=4)
-    # dyna_flow_id = 0
+    # dyna_flow_id
     dyna_flow_subject_code = factory.LazyFunction(uuid.uuid4)
-    # dyna_flow_task_type_id = 0
+    # dyna_flow_task_type_id
     is_canceled = Faker('boolean')
     is_cancel_requested = Faker('boolean')
     is_completed = Faker('boolean')
@@ -70,7 +69,7 @@ class DynaFlowTaskFactory(factory.Factory):
     @classmethod
     def _build(
         cls, model_class, *args, session=None, **kwargs
-    ) -> DynaFlowTask:
+    ) -> DynaFlowTask:  # pylint: disable=unused-argument
         """
             Builds and returns an instance
             of the DynaFlowTask model.
@@ -110,14 +109,12 @@ class DynaFlowTaskFactory(factory.Factory):
         obj.dyna_flow_code_peek = dyna_flow_id_dyna_flow_instance.code  # DynaFlowID
         obj.dyna_flow_task_type_code_peek = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.code)
-        # session.add(obj)
-        # session.commit()
         return obj
 
     @classmethod
     def _create(
         cls, model_class, *args, session=None, **kwargs
-    ) -> DynaFlowTask:
+    ) -> DynaFlowTask:  # pylint: disable=unused-argument
         """
         Create a new
         DynaFlowTask object
@@ -165,7 +162,7 @@ class DynaFlowTaskFactory(factory.Factory):
     @classmethod
     async def create_async(
         cls, session, *args, **kwargs
-    ) -> DynaFlowTask:
+    ) -> DynaFlowTask:  # pylint: disable=unused-argument
         """
         Create a new
         DynaFlowTask object
@@ -207,7 +204,7 @@ class DynaFlowTaskFactory(factory.Factory):
     @classmethod
     async def build_async(
         cls, session, *args, **kwargs
-    ) -> DynaFlowTask:
+    ) -> DynaFlowTask:  # pylint: disable=unused-argument
         """
         Build a new DynaFlowTask object
         asynchronously.
@@ -241,6 +238,4 @@ class DynaFlowTaskFactory(factory.Factory):
         obj.dyna_flow_code_peek = dyna_flow_id_dyna_flow_instance.code  # DynaFlowID
         obj.dyna_flow_task_type_code_peek = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.code)
-        # session.add(obj)
-        # await session.flush()
         return obj

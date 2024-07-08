@@ -366,7 +366,7 @@ class OrgCustomerBaseBusObj(BaseBusObj):
             )
 
         return self.org_customer.customer_code_peek
-    # email,
+    # email
     # OrganizationID
 
     @property
@@ -823,7 +823,7 @@ class OrgCustomerBaseBusObj(BaseBusObj):
                 self._session_context).get_list()).customer_id
         self.org_customer.email = (
             f"user{random.randint(1, 100)}@abc.com")
-        # self.org_customer.organization_id = random.randint(0, 100)
+        # organization_id
 
         return self
 
@@ -897,7 +897,7 @@ class OrgCustomerBaseBusObj(BaseBusObj):
         """
         return self.org_customer_id
     # CustomerID
-    # email,
+    # email
     # OrganizationID
 
     async def get_parent_name(self) -> str:

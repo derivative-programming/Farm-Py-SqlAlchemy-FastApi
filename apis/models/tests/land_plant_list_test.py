@@ -1,6 +1,7 @@
 # apis/models/tests/land_plant_list_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -8,17 +9,16 @@ LandPlantListGetModelRequestFactoryAsync
 class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
-
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from unittest.mock import AsyncMock, patch, Mock
+from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
-
-from helpers.type_conversion import TypeConversion  # noqa: F401
 from helpers.session_context import SessionContext
+from helpers.type_conversion import TypeConversion  # noqa: F401
+from models.factory.land import LandFactory
 
 from ..factory.land_plant_list import (
     LandPlantListGetModelRequestFactory)
@@ -26,7 +26,6 @@ from ..land_plant_list import (
     LandPlantListGetModelRequest,
     LandPlantListGetModelResponse,
     LandPlantListGetModelResponseItem)
-from models.factory.land import LandFactory
 
 TEST_ERROR_TEXT = "Test Error"
 
@@ -250,7 +249,7 @@ class LandPlantListGetModelRequestFactoryAsync:
         assert isinstance(model_instance.item_count_per_page, int)
 
 
-class MockReportItemLandPlantList:
+class MockReportItemLandPlantList:  # pylint: disable=too-few-public-methods
     """
     This class contains mock report items for the
     LandPlantListGetModelResponse class.
@@ -283,7 +282,7 @@ class MockReportItemLandPlantList:
         self.flavor_code = uuid.uuid4()
         self.some_int_conditional_on_deletable = 2
         self.n_var_char_as_url = \
-            "http://example.com"
+            "https://example.com"
         self.update_link_plant_code = uuid.uuid4()
         self.delete_async_button_link_plant_code = uuid.uuid4()
         self.details_link_plant_code = uuid.uuid4()

@@ -1,5 +1,6 @@
 # business/tests/customer_role_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 CustomerRoleFluentBusObj class.
@@ -67,8 +68,8 @@ class TestCustomerRoleFluentBusObj:
         result = new_fluent_bus_obj.set_prop_customer_id(1)
         assert new_fluent_bus_obj.customer_id == 1
         assert result is new_fluent_bus_obj
-    # isPlaceholder,
-    # placeholder,
+    # isPlaceholder
+    # placeholder
     # RoleID
 
     def test_set_prop_role_id(self, new_fluent_bus_obj):

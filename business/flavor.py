@@ -60,11 +60,11 @@ class FlavorBusObj(FlavorDynaFlowsBusObj):
             result.append(flavor_bus_obj)
 
         return result
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     async def get_pac_id_obj(self) -> models.Pac:

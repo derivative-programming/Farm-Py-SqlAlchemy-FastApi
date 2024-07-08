@@ -1,6 +1,7 @@
 # business/tests/pac_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -713,11 +714,11 @@ class TestPacBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.name = \
                 123
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
 
     def test_insert_utc_date_time(
             self,

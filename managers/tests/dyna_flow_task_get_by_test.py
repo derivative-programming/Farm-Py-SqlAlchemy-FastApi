@@ -162,8 +162,8 @@ class TestDynaFlowTaskGetByManager:
         assert dyna_flow_task is None
 
     # completedUTCDateTime
-    # dependencyDynaFlowTaskID,
-    # description,
+    # dependencyDynaFlowTaskID
+    # description
     # DynaFlowID
 
     @pytest.mark.asyncio
@@ -277,7 +277,7 @@ class TestDynaFlowTaskGetByManager:
                 invalid_id)  # type: ignore
 
         await session.rollback()
-    # dynaFlowSubjectCode,
+    # dynaFlowSubjectCode
     # DynaFlowTaskTypeID
 
     @pytest.mark.asyncio
@@ -401,19 +401,19 @@ class TestDynaFlowTaskGetByManager:
                 invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isParallelRunAllowed,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # maxRetryCount,
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isParallelRunAllowed
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # maxRetryCount
     # minStartUTCDateTime
-    # param1,
-    # param2,
-    # processorIdentifier,
+    # param1
+    # param2
+    # processorIdentifier
     # requestedUTCDateTime
-    # resultValue,
-    # retryCount,
+    # resultValue
+    # retryCount
     # startedUTCDateTime

@@ -355,7 +355,7 @@ class DFMaintenance(Base):
             value = value.replace(tzinfo=timezone.utc)
 
         self._last_update_utc_date_time = value
-    # isPaused,
+    # isPaused
 
     @property
     def is_paused(self) -> bool:
@@ -375,7 +375,7 @@ class DFMaintenance(Base):
         """
 
         self._is_paused = value
-    # isScheduledDFProcessRequestCompleted,
+    # isScheduledDFProcessRequestCompleted
 
     @property
     def is_scheduled_df_process_request_completed(self) -> bool:
@@ -395,7 +395,7 @@ class DFMaintenance(Base):
         """
 
         self._is_scheduled_df_process_request_completed = value
-    # isScheduledDFProcessRequestStarted,
+    # isScheduledDFProcessRequestStarted
 
     @property
     def is_scheduled_df_process_request_started(self) -> bool:
@@ -474,7 +474,7 @@ class DFMaintenance(Base):
             value = value.replace(tzinfo=timezone.utc)
         self._next_scheduled_df_process_request_utc_date_time = value
     # PacID
-    # pausedByUsername,
+    # pausedByUsername
 
     @property
     def paused_by_username(self) -> str:
@@ -524,7 +524,7 @@ class DFMaintenance(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._paused_utc_date_time = value
-    # scheduledDFProcessRequestProcessorIdentifier,
+    # scheduledDFProcessRequestProcessorIdentifier
 
     @property
     def scheduled_df_process_request_processor_identifier(self) -> str:

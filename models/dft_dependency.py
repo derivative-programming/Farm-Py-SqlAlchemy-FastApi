@@ -285,7 +285,7 @@ class DFTDependency(Base):
             value = value.replace(tzinfo=timezone.utc)
 
         self._last_update_utc_date_time = value
-    # dependencyDFTaskID,
+    # dependencyDFTaskID
 
     @property
     def dependency_df_task_id(self) -> int:
@@ -306,7 +306,7 @@ class DFTDependency(Base):
 
         self._dependency_df_task_id = value
     # DynaFlowTaskID
-    # isPlaceholder,
+    # isPlaceholder
 
     @property
     def is_placeholder(self) -> bool:

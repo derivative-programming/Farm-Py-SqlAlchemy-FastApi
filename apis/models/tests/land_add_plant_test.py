@@ -1,6 +1,7 @@
 # apis/models/tests/land_add_plant_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains unit tests for the
 LandAddPlantPostModelResponse class.
@@ -182,7 +183,7 @@ class TestLandAddPlantPostModelRequest:
         assert math.isclose(camel_case_dict['requestSomeFloatVal'], 3.14)
         assert camel_case_dict['requestSomeDecimalVal'] == Decimal('99.99')
         assert camel_case_dict['requestSomeUTCDateTimeVal'] == datetime(
-            2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc) 
+            2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
         assert camel_case_dict['requestSomeDateVal'] == date(2023, 1, 1)
         assert camel_case_dict['requestSomeMoneyVal'] == Decimal('100.00')
         assert camel_case_dict['requestSomeNVarCharVal'] == \
@@ -322,7 +323,7 @@ class TestLandAddPlantPostModelRequest:
         assert data == expected_data
 
 
-class TestLandAddPlantPostModelResponse:  # pylint: disable=too-few-public-methods
+class TestLandAddPlantPostModelResponse:
     """
     This class contains unit tests for the
     LandAddPlantPostModelResponse class.

@@ -1,5 +1,6 @@
 # business/tests/dyna_flow_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 DynaFlowFluentBusObj class.
@@ -302,8 +303,8 @@ class TestDynaFlowFluentBusObj:
             "Vanilla"
         assert result is new_fluent_bus_obj
     # completedUTCDateTime
-    # dependencyDynaFlowID,
-    # description,
+    # dependencyDynaFlowID
+    # description
     # DynaFlowTypeID
 
     def test_set_prop_dyna_flow_type_id(self, new_fluent_bus_obj):
@@ -313,17 +314,17 @@ class TestDynaFlowFluentBusObj:
         result = new_fluent_bus_obj.set_prop_dyna_flow_type_id(1)
         assert new_fluent_bus_obj.dyna_flow_type_id == 1
         assert result is new_fluent_bus_obj
-    # isBuildTaskDebugRequired,
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isPaused,
-    # isResubmitted,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # isTaskCreationStarted,
-    # isTasksCreated,
+    # isBuildTaskDebugRequired
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isPaused
+    # isResubmitted
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # isTaskCreationStarted
+    # isTasksCreated
     # minStartUTCDateTime
     # PacID
 
@@ -334,12 +335,12 @@ class TestDynaFlowFluentBusObj:
         result = new_fluent_bus_obj.set_prop_pac_id(1)
         assert new_fluent_bus_obj.pac_id == 1
         assert result is new_fluent_bus_obj
-    # param1,
-    # parentDynaFlowID,
-    # priorityLevel,
+    # param1
+    # parentDynaFlowID
+    # priorityLevel
     # requestedUTCDateTime
-    # resultValue,
-    # rootDynaFlowID,
+    # resultValue
+    # rootDynaFlowID
     # startedUTCDateTime
-    # subjectCode,
-    # taskCreationProcessorIdentifier,
+    # subjectCode
+    # taskCreationProcessorIdentifier

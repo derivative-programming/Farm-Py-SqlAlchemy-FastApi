@@ -94,8 +94,8 @@ class DynaFlowTypeScheduleBusObj(DynaFlowTypeScheduleDynaFlowsBusObj):
         bus_obj = DynaFlowTypeBusObj(self._session_context)
         await bus_obj.load_from_id(self.dyna_flow_type_id)
         return bus_obj
-    # frequencyInHours,
-    # isActive,
+    # frequencyInHours
+    # isActive
     # lastUTCDateTime
     # nextUTCDateTime
     # PacID

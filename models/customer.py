@@ -521,7 +521,7 @@ class Customer(Base):
             value = value.replace(tzinfo=timezone.utc)
 
         self._last_update_utc_date_time = value
-    # activeOrganizationID,
+    # activeOrganizationID
 
     @property
     def active_organization_id(self) -> int:
@@ -541,7 +541,7 @@ class Customer(Base):
         """
 
         self._active_organization_id = value
-    # email,
+    # email
 
     @property
     def email(self) -> str:
@@ -588,7 +588,7 @@ class Customer(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._email_confirmed_utc_date_time = value
-    # firstName,
+    # firstName
 
     @property
     def first_name(self) -> str:
@@ -638,7 +638,7 @@ class Customer(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._forgot_password_key_expiration_utc_date_time = value
-    # forgotPasswordKeyValue,
+    # forgotPasswordKeyValue
 
     @property
     def forgot_password_key_value(self) -> str:
@@ -659,7 +659,7 @@ class Customer(Base):
         """
 
         self._forgot_password_key_value = value
-    # fSUserCodeValue,
+    # fSUserCodeValue
 
     @property
     def fs_user_code_value(self):
@@ -699,7 +699,7 @@ class Customer(Base):
             except ValueError as e:
                 raise ValueError(f"Invalid UUID value: {value}") from e
         self.last_update_utc_date_time = datetime.now(timezone.utc)
-    # isActive,
+    # isActive
 
     @property
     def is_active(self) -> bool:
@@ -719,7 +719,7 @@ class Customer(Base):
         """
 
         self._is_active = value
-    # isEmailAllowed,
+    # isEmailAllowed
 
     @property
     def is_email_allowed(self) -> bool:
@@ -739,7 +739,7 @@ class Customer(Base):
         """
 
         self._is_email_allowed = value
-    # isEmailConfirmed,
+    # isEmailConfirmed
 
     @property
     def is_email_confirmed(self) -> bool:
@@ -759,7 +759,7 @@ class Customer(Base):
         """
 
         self._is_email_confirmed = value
-    # isEmailMarketingAllowed,
+    # isEmailMarketingAllowed
 
     @property
     def is_email_marketing_allowed(self) -> bool:
@@ -779,7 +779,7 @@ class Customer(Base):
         """
 
         self._is_email_marketing_allowed = value
-    # isLocked,
+    # isLocked
 
     @property
     def is_locked(self) -> bool:
@@ -799,7 +799,7 @@ class Customer(Base):
         """
 
         self._is_locked = value
-    # isMultipleOrganizationsAllowed,
+    # isMultipleOrganizationsAllowed
 
     @property
     def is_multiple_organizations_allowed(self) -> bool:
@@ -819,7 +819,7 @@ class Customer(Base):
         """
 
         self._is_multiple_organizations_allowed = value
-    # isVerboseLoggingForced,
+    # isVerboseLoggingForced
 
     @property
     def is_verbose_logging_forced(self) -> bool:
@@ -868,7 +868,7 @@ class Customer(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._last_login_utc_date_time = value
-    # lastName,
+    # lastName
 
     @property
     def last_name(self) -> str:
@@ -889,7 +889,7 @@ class Customer(Base):
         """
 
         self._last_name = value
-    # password,
+    # password
 
     @property
     def password(self) -> str:
@@ -910,7 +910,7 @@ class Customer(Base):
         """
 
         self._password = value
-    # phone,
+    # phone
 
     @property
     def phone(self) -> str:
@@ -929,7 +929,7 @@ class Customer(Base):
         """
 
         self._phone = value
-    # province,
+    # province
 
     @property
     def province(self) -> str:
@@ -980,7 +980,7 @@ class Customer(Base):
             value = value.replace(tzinfo=timezone.utc)
         self._registration_utc_date_time = value
     # TacID
-    # uTCOffsetInMinutes,
+    # uTCOffsetInMinutes
 
     @property
     def utc_offset_in_minutes(self) -> int:
@@ -1000,7 +1000,7 @@ class Customer(Base):
         """
 
         self._utc_offset_in_minutes = value
-    # zip,
+    # zip
 
     @property
     def zip(self) -> str:

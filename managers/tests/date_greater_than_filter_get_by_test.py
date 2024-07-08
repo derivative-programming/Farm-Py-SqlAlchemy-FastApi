@@ -161,12 +161,12 @@ class TestDateGreaterThanFilterGetByManager:
 
         assert date_greater_than_filter is None
 
-    # dayCount,
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # dayCount
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     @pytest.mark.asyncio

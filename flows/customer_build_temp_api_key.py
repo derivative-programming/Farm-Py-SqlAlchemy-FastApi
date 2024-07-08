@@ -1,84 +1,119 @@
-# flows/default/customer_build_temp_api_key.py
+# flows/default/customer_build_temp_api_key.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the
+FlowCustomerBuildTempApiKey class
+and related classes
+that handle the addition of a
+ to a specific
+customer in the flow process.
 """
-import uuid
+
 import json
-from datetime import date, datetime
-from sqlalchemy import String
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from decimal import Decimal
-from flows.base.customer_build_temp_api_key import BaseFlowCustomerBuildTempApiKey
-from models import Customer
-from flows.base import LogSeverity
+import uuid  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
+from decimal import Decimal  # noqa: F401
+
 from business.customer import CustomerBusObj
-from helpers import SessionContext
-from helpers import ApiToken
-from helpers import TypeConversion
-import models as farm_models
-import managers as farm_managers
-import business
+from flows.base import LogSeverity
+from flows.base.customer_build_temp_api_key import (
+    BaseFlowCustomerBuildTempApiKey)
+from helpers import SessionContext  # noqa: F401
+from helpers import TypeConversion  # noqa: F401
+
+
 class FlowCustomerBuildTempApiKeyResult():
     """
-    #TODO add comment
+    Represents the result of the
+    FlowCustomerBuildTempApiKey process.
     """
-    context_object_code: uuid.UUID = uuid.UUID(int=0)
     tmp_org_api_key_code: uuid.UUID = uuid.UUID(int=0)
-# endset
+    context_object_code: uuid.UUID = uuid.UUID(int=0)
+
     def __init__(self):
-        pass
+        """
+        Initializes a new instance of the
+        FlowCustomerBuildTempApiKeyResult class.
+        """
+
     def to_json(self):
+        """
+        Converts the FlowCustomerBuildTempApiKeyResult
+        instance to a JSON string.
+
+        Returns:
+            str: The JSON representation of the instance.
+        """
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
-            'tmp_org_api_key_code': str(self.tmp_org_api_key_code),
-# endset
+            'context_object_code':
+                str(self.context_object_code),
+            'tmp_org_api_key_code':
+                str(self.tmp_org_api_key_code),
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowCustomerBuildTempApiKey(BaseFlowCustomerBuildTempApiKey):
+
+
+class FlowCustomerBuildTempApiKey(
+    BaseFlowCustomerBuildTempApiKey
+):
     """
-    #TODO add comment
+    FlowCustomerBuildTempApiKey handles the addition of
+    a  to
+    a specific customer in the flow process.
+
+    This class extends the
+    BaseFlowCustomerBuildTempApiKeyclass and
+    initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        #TODO add comment
-        """
-        super(FlowCustomerBuildTempApiKey, self).__init__(session_context)
+
     async def process(
         self,
         customer_bus_obj: CustomerBusObj,
 
-# endset
-        ) -> FlowCustomerBuildTempApiKeyResult:
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Start")
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Code::" + str(customer_bus_obj.code))
+# endset  # noqa: E122
+    ) -> FlowCustomerBuildTempApiKeyResult:
+        """
+        Processes the addition of a
+         to a specific customer.
+
+        Returns:
+            FlowCustomerBuildTempApiKeyResult:
+                The result of the
+                FlowCustomerBuildTempApiKey process.
+        """
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Start"
+        )
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Code::" + str(customer_bus_obj.code)
+        )
         await super()._process_validation_rules(
             customer_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
         tmp_org_api_key_code_output: uuid.UUID = uuid.UUID(int=0)
-# endset
+        # TODO: add flow logic
 
-        expiration_utc_date_time = datetime.utcnow + timedelta(days=1)
 
-        if customer_bus_obj.active_organization_id == 0:
-            raise ValueError("Active organization not set")
-
-        org_customer_manager = OrgCustomerManager(customer_bus_obj.get_session_context())
-        org_customer_list = await org_customer_manager.get_by_customer_id(customer_id=customer_bus_obj.customer_id)
-        org_customer_list_active_org = []
-        for org_customer in org_customer_list:
-            if org_customer.organization_id == customer_bus_obj.active_organization_id:
-                org_customer_list_active_org.append(org_customer)
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Building result")
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Building result")
         result = FlowCustomerBuildTempApiKeyResult()
         result.context_object_code = customer_bus_obj.code
-        result.tmp_org_api_key_code = tmp_org_api_key_code_output
-# endset
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "End")
+        result.tmp_org_api_key_code = (
+            tmp_org_api_key_code_output)
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Result:" + result.to_json())
+
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "End")
         return result

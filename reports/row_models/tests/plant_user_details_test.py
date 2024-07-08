@@ -80,7 +80,7 @@ class TestReportItemPlantUserDetails:
                 datetime(2023, 1, 1, 0, 0, 0),  # "2023-01-01T00:00:00",
             "some_var_char_val": "test",
             "phone_num_conditional_on_is_editable": "test",
-            "n_var_char_as_url": "http://example.com",
+            "n_var_char_as_url": "https://example.com",
             "update_button_text_link_plant_code": str(UUID(int=5)),
             "random_property_updates_link_plant_code": str(UUID(int=4)),
             "back_to_dashboard_link_tac_code": str(UUID(int=5)),
@@ -111,7 +111,7 @@ class TestReportItemPlantUserDetails:
             datetime.fromisoformat("2023-01-01T00:00:00"))
         assert report_item.some_var_char_val == "test"
         assert report_item.phone_num_conditional_on_is_editable == "test"
-        assert report_item.n_var_char_as_url == "http://example.com"
+        assert report_item.n_var_char_as_url == "https://example.com"
         assert report_item.update_button_text_link_plant_code == UUID(int=5)
         assert report_item.random_property_updates_link_plant_code == UUID(int=4)
         assert report_item.back_to_dashboard_link_tac_code == UUID(int=5)

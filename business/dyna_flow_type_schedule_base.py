@@ -506,8 +506,8 @@ class DynaFlowTypeScheduleBaseBusObj(BaseBusObj):
             )
 
         return self.dyna_flow_type_schedule.dyna_flow_type_code_peek
-    # frequencyInHours,
-    # isActive,
+    # frequencyInHours
+    # isActive
     # lastUTCDateTime
     # nextUTCDateTime
     # PacID
@@ -976,7 +976,7 @@ class DynaFlowTypeScheduleBaseBusObj(BaseBusObj):
             random.randint(2000, 2023),
             random.randint(1, 12),
             random.randint(1, 28))
-        # self.dyna_flow_type_schedule.pac_id = random.randint(0, 100)
+        # pac_id
 
         return self
 
@@ -1050,8 +1050,8 @@ class DynaFlowTypeScheduleBaseBusObj(BaseBusObj):
         """
         return self.dyna_flow_type_schedule_id
     # DynaFlowTypeID
-    # frequencyInHours,
-    # isActive,
+    # frequencyInHours
+    # isActive
     # lastUTCDateTime
     # nextUTCDateTime
     # PacID

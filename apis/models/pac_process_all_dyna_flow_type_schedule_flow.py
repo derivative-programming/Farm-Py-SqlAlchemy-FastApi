@@ -101,7 +101,7 @@ class PacProcessAllDynaFlowTypeScheduleFlowPostModelResponse(PostResponse):
         session_context: SessionContext,
         pac_code: uuid.UUID,
         request: PacProcessAllDynaFlowTypeScheduleFlowPostModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the request and generates the response.
         """

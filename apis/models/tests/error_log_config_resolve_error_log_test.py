@@ -1,6 +1,7 @@
 # apis/models/tests/error_log_config_resolve_error_log_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains unit tests for the
 ErrorLogConfigResolveErrorLogPostModelResponse class.
@@ -131,7 +132,7 @@ class TestErrorLogConfigResolveErrorLogPostModelRequest:
         assert data == expected_data
 
 
-class TestErrorLogConfigResolveErrorLogPostModelResponse:  # pylint: disable=too-few-public-methods
+class TestErrorLogConfigResolveErrorLogPostModelResponse:
     """
     This class contains unit tests for the
     ErrorLogConfigResolveErrorLogPostModelResponse class.

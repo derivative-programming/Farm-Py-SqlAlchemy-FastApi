@@ -63,11 +63,11 @@ class LandBusObj(LandDynaFlowsBusObj):
             result.append(land_bus_obj)
 
         return result
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     async def get_pac_id_obj(self) -> models.Pac:
@@ -165,12 +165,16 @@ class LandBusObj(LandDynaFlowsBusObj):
         item = PlantBusObj(self._session_context)
 
         assert item.plant is not None
-        flavor_manager = managers_and_enums.FlavorManager(
-            self._session_context)
-        flvr_foreign_key_id_flavor = await flavor_manager.from_enum(
-            managers_and_enums.FlavorEnum.UNKNOWN)
-        item.flvr_foreign_key_id = flvr_foreign_key_id_flavor.flavor_id
-        item.plant.flvr_foreign_key_id_code_peek = flvr_foreign_key_id_flavor.code
+        flavor_manager = \
+            managers_and_enums.FlavorManager(
+                self._session_context)
+        flvr_foreign_key_id_flavor = await \
+            flavor_manager.from_enum(
+                managers_and_enums.FlavorEnum.UNKNOWN)
+        item.flvr_foreign_key_id = \
+            flvr_foreign_key_id_flavor.flavor_id
+        item.plant.flvr_foreign_key_id_code_peek = \
+            flvr_foreign_key_id_flavor.code
 
         item.land_id = self.land_id
         item.plant.land_code_peek = self.code

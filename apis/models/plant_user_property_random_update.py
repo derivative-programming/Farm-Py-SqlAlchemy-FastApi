@@ -101,7 +101,7 @@ class PlantUserPropertyRandomUpdatePostModelResponse(PostResponse):
         session_context: SessionContext,
         plant_code: uuid.UUID,
         request: PlantUserPropertyRandomUpdatePostModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the request and generates the response.
         """

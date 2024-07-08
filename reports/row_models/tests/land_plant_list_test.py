@@ -82,7 +82,7 @@ class TestReportItemLandPlantList:
             "flavor_name": "Vanilla",
             "flavor_code": str(UUID(int=2)),
             "some_int_conditional_on_deletable": 10,
-            "n_var_char_as_url": "http://example.com",
+            "n_var_char_as_url": "https://example.com",
             "update_link_plant_code": str(UUID(int=3)),
             "delete_async_button_link_plant_code": str(UUID(int=4)),
             "details_link_plant_code": str(UUID(int=5)),
@@ -114,7 +114,7 @@ class TestReportItemLandPlantList:
         assert report_item.flavor_name == "Vanilla"
         assert report_item.flavor_code == UUID(int=2)
         assert report_item.some_int_conditional_on_deletable == 10
-        assert report_item.n_var_char_as_url == "http://example.com"
+        assert report_item.n_var_char_as_url == "https://example.com"
         assert report_item.update_link_plant_code == UUID(int=3)
         assert report_item.delete_async_button_link_plant_code == UUID(int=4)
         assert report_item.details_link_plant_code == UUID(int=5)

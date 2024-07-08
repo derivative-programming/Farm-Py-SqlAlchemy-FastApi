@@ -224,7 +224,7 @@ class PacUserDateGreaterThanFilterListGetModelResponse(
         session_context: SessionContext,
         pac_code: uuid.UUID,
         request: PacUserDateGreaterThanFilterListGetModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the API request and generates the response items.
 

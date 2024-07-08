@@ -284,8 +284,8 @@ class TestDynaFlowTypeScheduleGetByManager:
                 invalid_id)  # type: ignore  # noqa: E501
 
         await session.rollback()
-    # frequencyInHours,
-    # isActive,
+    # frequencyInHours
+    # isActive
     # lastUTCDateTime
     # nextUTCDateTime
     # PacID

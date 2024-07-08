@@ -321,8 +321,8 @@ class DynaFlowTaskFluentBusObj(DynaFlowTaskBaseBusObj):
         self.started_utc_date_time = value
         return self
     # completedUTCDateTime
-    # dependencyDynaFlowTaskID,
-    # description,
+    # dependencyDynaFlowTaskID
+    # description
     # DynaFlowID
 
     def set_prop_dyna_flow_id(self, value: int):
@@ -340,7 +340,7 @@ class DynaFlowTaskFluentBusObj(DynaFlowTaskBaseBusObj):
 
         self.dyna_flow_id = value
         return self
-    # dynaFlowSubjectCode,
+    # dynaFlowSubjectCode
     # DynaFlowTaskTypeID
 
     def set_prop_dyna_flow_task_type_id(self, value: int):
@@ -358,43 +358,19 @@ class DynaFlowTaskFluentBusObj(DynaFlowTaskBaseBusObj):
         """
         self.dyna_flow_task_type_id = value
         return self
-
-    # async def set_prop_dyna_flow_task_type_id_by_enum(
-    #     self,
-    #     dyna_flow_task_type_enum: managers_and_enums.DynaFlowTaskTypeEnum
-    # ):
-    #     """
-    #     """
-    #     if not isinstance(
-    #         dyna_flow_task_type_enum,
-    #         managers_and_enums.DynaFlowTaskTypeEnum
-    #     ):
-    #         raise ValueError("dyna_flow_task_type_enum must be a DynaFlowTaskTypeEnum")
-
-    #     dyna_flow_task_type_manager =  \
-    #         managers_and_enums.DynaFlowTaskTypeManager(
-    #             self._session_context
-    #         )
-    #     dyna_flow_task_type_obj = await (
-    #         dyna_flow_task_type_manager.
-    #         from_enum(dyna_flow_task_type_enum)
-    #     )
-
-    #     self.dyna_flow_task_type_id = dyna_flow_task_type_obj.dyna_flow_task_type_id
-    #     return self
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isParallelRunAllowed,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # maxRetryCount,
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isParallelRunAllowed
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # maxRetryCount
     # minStartUTCDateTime
-    # param1,
-    # param2,
-    # processorIdentifier,
+    # param1
+    # param2
+    # processorIdentifier
     # requestedUTCDateTime
-    # resultValue,
-    # retryCount,
+    # resultValue
+    # retryCount
     # startedUTCDateTime

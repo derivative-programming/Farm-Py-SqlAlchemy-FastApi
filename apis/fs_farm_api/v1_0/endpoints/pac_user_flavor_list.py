@@ -129,19 +129,29 @@ class PacUserFlavorListRouter(BaseRouter):
         # Start a transaction
         async with session:
             try:
-                logging.info("Start session...")
+                logging.info(
+                    "PacUserFlavorListRouter"
+                    ".request_get_init "
+                    "Start session...")
                 session_context = SessionContext(auth_dict, session)
                 pac_code = session_context.check_context_code(
                     "PacCode",
                     pac_code
                 )
 
+                logging.info(
+                    "PacUserFlavorListRouter."
+                    "request_get_init "
+                    "process_request...")
                 response = await init_request.process_request(
                     session_context,
                     pac_code,
                     response
                 )
             except TypeError as te:
+                logging.info(
+                    "PacUserFlavorListRouter.request_get_init"
+                    " TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
@@ -163,8 +173,9 @@ class PacUserFlavorListRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "PacUserFlavorListRouter"
-            ".init get result:%s",
+            "PacUserFlavorListRouter."
+            "request_get_init "
+            "result:%s",
             response_data)
         return response
 
@@ -230,17 +241,25 @@ class PacUserFlavorListRouter(BaseRouter):
                     "PacCode",
                     pac_code
                 )
-                logging.info("Request...")
+                logging.info(
+                    "PacUserFlavorListRouter"
+                    ".request_get_with_id "
+                    "Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model
-                logging.info("process request...")
+                logging.info(
+                    "PacUserFlavorListRouter"
+                    ".request_get_with_id "
+                    "process request...")
                 await response.process_request(
                     session_context,
                     pac_code,
                     request_model
                 )
                 logging.info(
-                    'PacUserFlavorListRouter success')
+                    "PacUserFlavorListRouter"
+                    ".request_get_with_id "
+                    "success")
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logging.info(
                     EXCEPTION_OCCURRED,
@@ -259,7 +278,9 @@ class PacUserFlavorListRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "PacUserFlavorListRouter.submit get result:%s",
+            "PacUserFlavorListRouter"
+            ".request_get_with_id "
+            "result:%s",
             response_data
         )
         return response
@@ -297,8 +318,9 @@ class PacUserFlavorListRouter(BaseRouter):
         """
 
         logging.info(
-            "PacUserFlavorListRouter.request_get_with_id_to_csv"
-            " start. pacCode:%s",
+            "PacUserFlavorListRouter."
+            "request_get_with_id_to_csv "
+            "start. pacCode:%s",
             pac_code
         )
         auth_dict = BaseRouter.implementation_check(
@@ -330,10 +352,16 @@ class PacUserFlavorListRouter(BaseRouter):
                     "PacCode",
                     pac_code
                 )
-                logging.info("Request...")
+                logging.info(
+                    "PacUserFlavorListRouter."
+                    "request_get_with_id_to_csv "
+                    "Request...")
                 logging.info(request_model.__dict__)
                 response.request = request_model
-                logging.info("process request...")
+                logging.info(
+                    "PacUserFlavorListRouter."
+                    "request_get_with_id_to_csv "
+                    "process request...")
                 await response.process_request(
                     session_context,
                     pac_code,
@@ -366,16 +394,15 @@ class PacUserFlavorListRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "PacUserFlavorListRouter"
-            ".submit get result:%s",
+            "PacUserFlavorListRouter."
+            "request_get_with_id_to_csv "
+            "get result:%s",
             response_data
         )
 
-        uuid_value = uuid.uuid4()
-
         output_file_name = (
             "pac_user_flavor_list_"
-            f"{str(pac_code)}_{str(uuid_value)}.csv"
+            f"{str(pac_code)}_{str(uuid.uuid4())}.csv"
         )
         return FileResponse(
             tmp_file_path,

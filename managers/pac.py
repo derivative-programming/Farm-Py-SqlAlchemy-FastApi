@@ -451,10 +451,8 @@ class PacManager:
         data = json.loads(json_str)
         pac_dict = schema.load(data)
 
-        #we need to load the obj form db and into session first.
+        # we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
-
-        # new_pac = Pac(**pac_dict)
 
         # load or create
         new_pac = await self.get_by_id(

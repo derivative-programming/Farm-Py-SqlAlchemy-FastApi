@@ -140,9 +140,9 @@ class DFMaintenanceFluentBusObj(DFMaintenanceBaseBusObj):
 
         self.scheduled_df_process_request_processor_identifier = value
         return self
-    # isPaused,
-    # isScheduledDFProcessRequestCompleted,
-    # isScheduledDFProcessRequestStarted,
+    # isPaused
+    # isScheduledDFProcessRequestCompleted
+    # isScheduledDFProcessRequestStarted
     # lastScheduledDFProcessRequestUTCDateTime
     # nextScheduledDFProcessRequestUTCDateTime
     # PacID
@@ -162,6 +162,6 @@ class DFMaintenanceFluentBusObj(DFMaintenanceBaseBusObj):
 
         self.pac_id = value
         return self
-    # pausedByUsername,
+    # pausedByUsername
     # pausedUTCDateTime
-    # scheduledDFProcessRequestProcessorIdentifier,
+    # scheduledDFProcessRequestProcessorIdentifier

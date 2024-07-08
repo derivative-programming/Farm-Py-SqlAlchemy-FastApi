@@ -278,7 +278,9 @@ class PacBaseBusObj(BaseBusObj):
         :param value: The Description value.
         :raises AttributeError: If the
             Pac object is not initialized.
-        :raises AssertionError: If the Description is not a string.
+        :raises AssertionError: If the
+            Description
+            is not a string.
         """
 
         if not self.pac:
@@ -286,7 +288,8 @@ class PacBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "description must be a string"
+        assert isinstance(value, str), \
+            "description must be a string"
         self.pac.description = value
     # displayOrder
 
@@ -410,7 +413,9 @@ class PacBaseBusObj(BaseBusObj):
         :param value: The Lookup Enum Name value.
         :raises AttributeError: If the
             Pac object is not initialized.
-        :raises AssertionError: If the Lookup Enum Name is not a string.
+        :raises AssertionError: If the
+            Lookup Enum Name
+            is not a string.
         """
 
         if not self.pac:
@@ -418,7 +423,8 @@ class PacBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "lookup_enum_name must be a string"
+        assert isinstance(value, str), \
+            "lookup_enum_name must be a string"
         self.pac.lookup_enum_name = value
     # name
 
@@ -452,7 +458,9 @@ class PacBaseBusObj(BaseBusObj):
         :param value: The Name value.
         :raises AttributeError: If the
             Pac object is not initialized.
-        :raises AssertionError: If the Name is not a string.
+        :raises AssertionError: If the
+            Name
+            is not a string.
         """
 
         if not self.pac:
@@ -460,13 +468,14 @@ class PacBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "name must be a string"
+        assert isinstance(value, str), \
+            "name must be a string"
         self.pac.name = value
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # insert_utc_date_time
 
     @property
@@ -931,8 +940,8 @@ class PacBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.pac_id
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name

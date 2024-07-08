@@ -1,6 +1,7 @@
 # business/tests/dyna_flow_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -1390,8 +1391,8 @@ class TestDynaFlowBaseBusObj:
             mock_sess_base_bus_obj.task_creation_processor_identifier = \
                 123
     # completedUTCDateTime
-    # dependencyDynaFlowID,
-    # description,
+    # dependencyDynaFlowID
+    # description
     # DynaFlowTypeID
 
     def test_dyna_flow_type_id(
@@ -1423,17 +1424,17 @@ class TestDynaFlowBaseBusObj:
         with pytest.raises(ValueError):
             mock_sess_base_bus_obj.dyna_flow_type_id = \
                 "not-an-int"
-    # isBuildTaskDebugRequired,
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isPaused,
-    # isResubmitted,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # isTaskCreationStarted,
-    # isTasksCreated,
+    # isBuildTaskDebugRequired
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isPaused
+    # isResubmitted
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # isTaskCreationStarted
+    # isTasksCreated
     # minStartUTCDateTime
     # PacID
 
@@ -1464,15 +1465,15 @@ class TestDynaFlowBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.pac_id = \
                 "not-an-int"
-    # param1,
-    # parentDynaFlowID,
-    # priorityLevel,
+    # param1
+    # parentDynaFlowID
+    # priorityLevel
     # requestedUTCDateTime
-    # resultValue,
-    # rootDynaFlowID,
+    # resultValue
+    # rootDynaFlowID
     # startedUTCDateTime
-    # subjectCode,
-    # taskCreationProcessorIdentifier,
+    # subjectCode
+    # taskCreationProcessorIdentifier
 
     def test_insert_utc_date_time(
             self,

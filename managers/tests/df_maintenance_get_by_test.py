@@ -161,9 +161,9 @@ class TestDFMaintenanceGetByManager:
 
         assert df_maintenance is None
 
-    # isPaused,
-    # isScheduledDFProcessRequestCompleted,
-    # isScheduledDFProcessRequestStarted,
+    # isPaused
+    # isScheduledDFProcessRequestCompleted
+    # isScheduledDFProcessRequestStarted
     # lastScheduledDFProcessRequestUTCDateTime
     # nextScheduledDFProcessRequestUTCDateTime
     # PacID
@@ -279,6 +279,6 @@ class TestDFMaintenanceGetByManager:
                 invalid_id)  # type: ignore
 
         await session.rollback()
-    # pausedByUsername,
+    # pausedByUsername
     # pausedUTCDateTime
-    # scheduledDFProcessRequestProcessorIdentifier,
+    # scheduledDFProcessRequestProcessorIdentifier

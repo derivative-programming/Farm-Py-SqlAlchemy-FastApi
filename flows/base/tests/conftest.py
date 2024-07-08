@@ -24,7 +24,7 @@ from sqlalchemy.orm import sessionmaker
 
 import pytest
 from config import TEST_DATABASE_URL
-from database import AsyncSessionLocal
+from database import async_session_local
 from models import Base
 
 
@@ -61,7 +61,7 @@ def engine():
 
 
 @pytest_asyncio.fixture(scope="function")
-async def session(engine) -> AsyncSessionLocal:  # type: ignore
+async def session(engine) -> async_session_local:  # type: ignore
     """
     Fixture to create an async session for the database.
 
@@ -70,7 +70,7 @@ async def session(engine) -> AsyncSessionLocal:  # type: ignore
             The async engine for the database.
 
     Returns:
-        database.AsyncSessionLocal: The async session for the database.
+        database.async_session_local: The async session for the database.
     """
 
     @event.listens_for(engine.sync_engine, "connect")
@@ -82,12 +82,12 @@ async def session(engine) -> AsyncSessionLocal:  # type: ignore
         await connection.begin_nested()
         await connection.run_sync(Base.metadata.drop_all)
         await connection.run_sync(Base.metadata.create_all)
-        TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        testing_session_local = sessionmaker(  # pylint: disable=invalid-name
             expire_on_commit=False,
             class_=AsyncSession,
             bind=engine,
         )
-        async with TestingSessionLocal(bind=connection) as session_obj:  # type: ignore # noqa: E501
+        async with testing_session_local(bind=connection) as session_obj:  # type: ignore # noqa: E501
             @event.listens_for(
                 session_obj.sync_session, "after_transaction_end"
             )

@@ -118,7 +118,7 @@ class LandPlantListInitReportGetInitModelResponse(
     def load_flow_response(
         self,
         data: FlowLandPlantListInitReportResult
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Loads the response data from the
         FlowLandPlantListInitReportResult object.

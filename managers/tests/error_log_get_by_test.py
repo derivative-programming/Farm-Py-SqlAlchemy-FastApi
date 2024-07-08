@@ -161,12 +161,12 @@ class TestErrorLogGetByManager:
 
         assert error_log is None
 
-    # browserCode,
-    # contextCode,
+    # browserCode
+    # contextCode
     # createdUTCDateTime
-    # description,
-    # isClientSideError,
-    # isResolved,
+    # description
+    # isClientSideError
+    # isResolved
     # PacID
 
     @pytest.mark.asyncio
@@ -280,4 +280,4 @@ class TestErrorLogGetByManager:
                 invalid_id)  # type: ignore
 
         await session.rollback()
-    # url,
+    # url

@@ -163,17 +163,17 @@ class TestPlantGetByManager:
 
 # endset
 
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
+    # isDeleteAllowed
+    # isEditAllowed
+    # otherFlavor
+    # someBigIntVal
+    # someBitVal
+    # someDecimalVal
+    # someEmailAddress
+    # someFloatVal
+    # someIntVal
+    # someMoneyVal
+    # someNVarCharVal
     # someDateVal
     # someUTCDateTimeVal
     # FlvrForeignKeyID
@@ -412,8 +412,8 @@ class TestPlantGetByManager:
                 invalid_id)  # type: ignore
 
         await session.rollback()
-    # somePhoneNumber,
-    # someTextVal,
-    # someUniqueidentifierVal,
-    # someVarCharVal,
+    # somePhoneNumber
+    # someTextVal
+    # someUniqueidentifierVal
+    # someVarCharVal
 # endset

@@ -129,19 +129,29 @@ class TacRegisterRouter(BaseRouter):
         # Start a transaction
         async with session:
             try:
-                logging.info("Start session...")
+                logging.info(
+                    "TacRegisterRouter"
+                    ".request_get_init "
+                    "Start session...")
                 session_context = SessionContext(auth_dict, session)
                 tac_code = session_context.check_context_code(
                     "TacCode",
                     tac_code
                 )
 
+                logging.info(
+                    "TacRegisterRouter."
+                    "request_get_init "
+                    "process_request...")
                 response = await init_request.process_request(
                     session_context,
                     tac_code,
                     response
                 )
             except TypeError as te:
+                logging.info(
+                    "TacRegisterRouter.request_get_init"
+                    " TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
@@ -163,8 +173,9 @@ class TacRegisterRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "TacRegisterRouter"
-            ".init get result:%s",
+            "TacRegisterRouter."
+            "request_get_init "
+            "result:%s",
             response_data)
         return response
 
@@ -217,13 +228,19 @@ class TacRegisterRouter(BaseRouter):
         # Start a transaction
         async with session:
             try:
-                logging.info("Start session...")
+                logging.info(
+                    "TacRegisterRouter."
+                    "request_post_with_id "
+                    "Start session...")
                 session_context = SessionContext(auth_dict, session)
                 tac_code = session_context.check_context_code(
                     "TacCode",
                     tac_code)
 
-                logging.info("Request...")
+                logging.info(
+                    "TacRegisterRouter."
+                    "request_post_with_id "
+                    "Request...")
                 logging.info(request_model.__dict__)
                 await response.process_request(
                     session_context,
@@ -231,7 +248,10 @@ class TacRegisterRouter(BaseRouter):
                     request_model
                 )
             except TypeError as te:
-                logging.info("TypeError Exception occurred")
+                logging.info(
+                    "TacRegisterRouter."
+                    "request_post_with_id "
+                    "TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
@@ -239,7 +259,10 @@ class TacRegisterRouter(BaseRouter):
                 response.message = f"{te} traceback: {traceback_string}"
                 logging.info(API_LOG_ERROR_FORMAT, response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
-                logging.info("Exception occurred")
+                logging.info(
+                    "TacRegisterRouter."
+                    "request_post_with_id "
+                    "Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
@@ -253,7 +276,8 @@ class TacRegisterRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "TacRegisterRouter"
-            ".submit get result:%s",
+            "TacRegisterRouter."
+            "request_post_with_id "
+            "get result:%s",
             response_data)
         return response

@@ -161,7 +161,7 @@ class TestDFTDependencyGetByManager:
 
         assert dft_dependency is None
 
-    # dependencyDFTaskID,
+    # dependencyDFTaskID
     # DynaFlowTaskID
 
     @pytest.mark.asyncio
@@ -275,4 +275,4 @@ class TestDFTDependencyGetByManager:
                 invalid_id)  # type: ignore
 
         await session.rollback()
-    # isPlaceholder,
+    # isPlaceholder

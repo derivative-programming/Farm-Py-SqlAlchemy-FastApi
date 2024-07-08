@@ -1,4 +1,4 @@
-# flows/default/dyna_flow_task_dyna_flow_cleanup.py
+# flows/default/dyna_flow_task_dyna_flow_cleanup.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
 """
 This module contains the
@@ -9,18 +9,18 @@ that handle the addition of a
 dyna_flow_task in the flow process.
 """
 
+import json
 from typing import List
 import uuid  # noqa: F401
-import json
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from flows.base.dyna_flow_task_dyna_flow_cleanup import (
-    BaseFlowDynaFlowTaskDynaFlowCleanup)
-from flows.base import LogSeverity
+
 from business.dyna_flow_task import DynaFlowTaskBusObj
+from flows.base import LogSeverity
+from flows.base.dyna_flow_task_dyna_flow_cleanup import \
+    BaseFlowDynaFlowTaskDynaFlowCleanup
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
-import managers as managers_and_enums
 
 
 class FlowDynaFlowTaskDynaFlowCleanupResult():
@@ -136,6 +136,7 @@ class FlowDynaFlowTaskDynaFlowCleanup(
         #         "/Report/TacConfigDynaFlowList/" + DR.Core.CurrentRuntime.get_tac(session_context, TacManager.LookupEnum.Primary).code,
         #         EmailTypeManager.LookupEnum.DynaFlow_Error_ToConfig,
         #         dyna_flow.code
+
 
         super()._log_message_and_severity(
             LogSeverity.INFORMATION_HIGH_DETAIL,

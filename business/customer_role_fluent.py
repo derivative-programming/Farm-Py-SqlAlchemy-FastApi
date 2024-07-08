@@ -71,8 +71,8 @@ class CustomerRoleFluentBusObj(CustomerRoleBaseBusObj):
 
         self.customer_id = value
         return self
-    # isPlaceholder,
-    # placeholder,
+    # isPlaceholder
+    # placeholder
     # RoleID
 
     def set_prop_role_id(self, value: int):
@@ -90,27 +90,3 @@ class CustomerRoleFluentBusObj(CustomerRoleBaseBusObj):
         """
         self.role_id = value
         return self
-
-    # async def set_prop_role_id_by_enum(
-    #     self,
-    #     role_enum: managers_and_enums.RoleEnum
-    # ):
-    #     """
-    #     """
-    #     if not isinstance(
-    #         role_enum,
-    #         managers_and_enums.RoleEnum
-    #     ):
-    #         raise ValueError("role_enum must be a RoleEnum")
-
-    #     role_manager =  \
-    #         managers_and_enums.RoleManager(
-    #             self._session_context
-    #         )
-    #     role_obj = await (
-    #         role_manager.
-    #         from_enum(role_enum)
-    #     )
-
-    #     self.role_id = role_obj.role_id
-    #     return self

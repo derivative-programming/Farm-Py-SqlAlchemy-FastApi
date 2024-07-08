@@ -272,7 +272,7 @@ class LandAddPlantPostModelResponse(PostResponse):
         session_context: SessionContext,
         land_code: uuid.UUID,
         request: LandAddPlantPostModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the request and generates the response.
         """

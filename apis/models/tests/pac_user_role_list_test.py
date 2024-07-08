@@ -1,6 +1,7 @@
 # apis/models/tests/pac_user_role_list_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -8,17 +9,16 @@ PacUserRoleListGetModelRequestFactoryAsync
 class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
-
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from unittest.mock import AsyncMock, patch, Mock
+from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
-
-from helpers.type_conversion import TypeConversion  # noqa: F401
 from helpers.session_context import SessionContext
+from helpers.type_conversion import TypeConversion  # noqa: F401
+from models.factory.pac import PacFactory
 
 from ..factory.pac_user_role_list import (
     PacUserRoleListGetModelRequestFactory)
@@ -141,7 +141,7 @@ class PacUserRoleListGetModelRequestFactoryAsync:
         assert isinstance(model_instance.item_count_per_page, int)
 
 
-class MockReportItemPacUserRoleList:
+class MockReportItemPacUserRoleList:  # pylint: disable=too-few-public-methods
     """
     This class contains mock report items for the
     PacUserRoleListGetModelResponse class.

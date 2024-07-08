@@ -64,8 +64,8 @@ class DynaFlowBusObj(DynaFlowDynaFlowsBusObj):
 
         return result
     # completedUTCDateTime
-    # dependencyDynaFlowID,
-    # description,
+    # dependencyDynaFlowID
+    # description
     # DynaFlowTypeID
 
     async def get_dyna_flow_type_id_obj(self) -> models.DynaFlowType:
@@ -100,17 +100,17 @@ class DynaFlowBusObj(DynaFlowDynaFlowsBusObj):
         bus_obj = DynaFlowTypeBusObj(self._session_context)
         await bus_obj.load_from_id(self.dyna_flow_type_id)
         return bus_obj
-    # isBuildTaskDebugRequired,
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isPaused,
-    # isResubmitted,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # isTaskCreationStarted,
-    # isTasksCreated,
+    # isBuildTaskDebugRequired
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isPaused
+    # isResubmitted
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # isTaskCreationStarted
+    # isTasksCreated
     # minStartUTCDateTime
     # PacID
 
@@ -147,15 +147,15 @@ class DynaFlowBusObj(DynaFlowDynaFlowsBusObj):
         bus_obj = PacBusObj(self._session_context)
         await bus_obj.load_from_id(self.pac_id)
         return bus_obj
-    # param1,
-    # parentDynaFlowID,
-    # priorityLevel,
+    # param1
+    # parentDynaFlowID
+    # priorityLevel
     # requestedUTCDateTime
-    # resultValue,
-    # rootDynaFlowID,
+    # resultValue
+    # rootDynaFlowID
     # startedUTCDateTime
-    # subjectCode,
-    # taskCreationProcessorIdentifier,
+    # subjectCode
+    # taskCreationProcessorIdentifier
 
 
     async def build_dyna_flow_task(
@@ -168,12 +168,16 @@ class DynaFlowBusObj(DynaFlowDynaFlowsBusObj):
         item = DynaFlowTaskBusObj(self._session_context)
 
         assert item.dyna_flow_task is not None
-        dyna_flow_task_type_manager = managers_and_enums.DynaFlowTaskTypeManager(
-            self._session_context)
-        dyna_flow_task_type_id_dyna_flow_task_type = await dyna_flow_task_type_manager.from_enum(
-            managers_and_enums.DynaFlowTaskTypeEnum.UNKNOWN)
-        item.dyna_flow_task_type_id = dyna_flow_task_type_id_dyna_flow_task_type.dyna_flow_task_type_id
-        item.dyna_flow_task.dyna_flow_task_type_id_code_peek = dyna_flow_task_type_id_dyna_flow_task_type.code
+        dyna_flow_task_type_manager = \
+            managers_and_enums.DynaFlowTaskTypeManager(
+                self._session_context)
+        dyna_flow_task_type_id_dyna_flow_task_type = await \
+            dyna_flow_task_type_manager.from_enum(
+                managers_and_enums.DynaFlowTaskTypeEnum.UNKNOWN)
+        item.dyna_flow_task_type_id = \
+            dyna_flow_task_type_id_dyna_flow_task_type.dyna_flow_task_type_id
+        item.dyna_flow_task.dyna_flow_task_type_id_code_peek = \
+            dyna_flow_task_type_id_dyna_flow_task_type.code
 
         item.dyna_flow_id = self.dyna_flow_id
         item.dyna_flow_task.dyna_flow_code_peek = self.code

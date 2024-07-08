@@ -63,14 +63,14 @@ class PlantDynaFlowsBusObj(PlantReportsBusObj):
         dyna_flow.dyna_flow_type_id = dyna_flow_type.dyna_flow_type_id
 
         dyna_flow = await dyna_flow_manager.add(dyna_flow)
-        
+
         assert isinstance(dyna_flow, DynaFlow)
 
         if dyna_flow.parent_dyna_flow_id > 0:
 
             parent_dyna_flow = await dyna_flow_manager.get_by_id(
                 dyna_flow.parent_dyna_flow_id)
-            
+
             assert isinstance(parent_dyna_flow, DynaFlow)
 
             dyna_flow.root_dyna_flow_id = parent_dyna_flow.root_dyna_flow_id
@@ -79,6 +79,8 @@ class PlantDynaFlowsBusObj(PlantReportsBusObj):
             dyna_flow.root_dyna_flow_id = dyna_flow.dyna_flow_id
 
         dyna_flow = await dyna_flow_manager.update(dyna_flow)
+
+        assert isinstance(dyna_flow, DynaFlow)
 
         return dyna_flow.dyna_flow_id
 # endset

@@ -16,7 +16,8 @@ from decimal import Decimal  # noqa: F401
 
 from business.land import LandBusObj
 from flows.base import LogSeverity
-from flows.base.land_user_plant_multi_select_to_not_editable import BaseFlowLandUserPlantMultiSelectToNotEditable
+from flows.base.land_user_plant_multi_select_to_not_editable import (
+    BaseFlowLandUserPlantMultiSelectToNotEditable)
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

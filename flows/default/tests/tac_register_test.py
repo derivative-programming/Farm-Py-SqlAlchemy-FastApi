@@ -47,7 +47,6 @@ class TestTacRegisterPostModelResponse:
         result.utc_offset_in_minutes = 123
         result.role_name_csv_list = "test text"
         result.api_key = "test text"
-
         # Call to_json method
         json_output = result.to_json()
 
@@ -94,7 +93,6 @@ class TestTacRegisterPostModelResponse:
         confirm_password: str = ""
         first_name: str = ""
         last_name: str = ""
-
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
                 await flow.process(

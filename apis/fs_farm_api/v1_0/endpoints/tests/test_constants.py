@@ -5,6 +5,6 @@ This module contains constants used for testing
 the endpoints in the fs_farm_api.
 """
 
-TEST_DOMAIN = "http://test"
+TEST_DOMAIN = "https://test.com"
 
 REPORT_TO_CSV_MEDIA_TYPE = "text/csv"

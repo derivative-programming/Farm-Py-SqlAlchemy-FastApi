@@ -1,74 +1,117 @@
-# flows/default/plant_user_delete.py
+# flows/default/plant_user_delete.py  # pylint: disable=duplicate-code
+# pylint: disable=unused-import
 """
-    #TODO add comment
+This module contains the
+FlowPlantUserDelete class
+and related classes
+that handle the addition of a
+ to a specific
+plant in the flow process.
 """
-import uuid
+
 import json
-from datetime import date, datetime
-from sqlalchemy import String
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-from decimal import Decimal
-from flows.base.plant_user_delete import BaseFlowPlantUserDelete
-from models import Plant
-from flows.base import LogSeverity
+import uuid  # noqa: F401
+from datetime import date, datetime, timezone  # noqa: F401
+from decimal import Decimal  # noqa: F401
+
 from business.plant import PlantBusObj
-from helpers import SessionContext
-from helpers import ApiToken
-from helpers import TypeConversion
-import models as farm_models
-import managers as farm_managers
-import business
+from flows.base import LogSeverity
+from flows.base.plant_user_delete import BaseFlowPlantUserDelete
+from helpers import SessionContext  # noqa: F401
+from helpers import TypeConversion  # noqa: F401
+
+
 class FlowPlantUserDeleteResult():
     """
-    #TODO add comment
+    Represents the result of the
+    FlowPlantUserDelete process.
     """
+
     context_object_code: uuid.UUID = uuid.UUID(int=0)
 
-# endset
     def __init__(self):
-        pass
+        """
+        Initializes a new instance of the
+        FlowPlantUserDeleteResult class.
+        """
+
     def to_json(self):
+        """
+        Converts the FlowPlantUserDeleteResult
+        instance to a JSON string.
+
+        Returns:
+            str: The JSON representation of the instance.
+        """
         # Create a dictionary representation of the instance
         data = {
-            'context_object_code': str(self.context_object_code),
+            'context_object_code':
+                str(self.context_object_code),
 
-# endset
+# endset  # noqa: E122
         }
         # Serialize the dictionary to JSON
         return json.dumps(data)
-class FlowPlantUserDelete(BaseFlowPlantUserDelete):
+
+
+class FlowPlantUserDelete(
+    BaseFlowPlantUserDelete
+):
     """
-    #TODO add comment
+    FlowPlantUserDelete handles the addition of
+    a  to
+    a specific plant in the flow process.
+
+    This class extends the
+    BaseFlowPlantUserDeleteclass and
+    initializes it with the provided session context.
     """
-    def __init__(self, session_context: SessionContext):
-        """
-        #TODO add comment
-        """
-        super(FlowPlantUserDelete, self).__init__(session_context)
+
     async def process(
         self,
         plant_bus_obj: PlantBusObj,
 
-# endset
-        ) -> FlowPlantUserDeleteResult:
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Start")
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Code::" + str(plant_bus_obj.code))
+# endset  # noqa: E122
+    ) -> FlowPlantUserDeleteResult:
+        """
+        Processes the addition of a
+         to a specific plant.
+
+        Returns:
+            FlowPlantUserDeleteResult:
+                The result of the
+                FlowPlantUserDelete process.
+        """
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Start"
+        )
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Code::" + str(plant_bus_obj.code)
+        )
         await super()._process_validation_rules(
             plant_bus_obj,
 
-# endset
+# endset  # noqa: E122
         )
         super()._throw_queued_validation_errors()
 
-# endset
+        
         await plant_bus_obj.delete()
 
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Building result")
+
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Building result")
         result = FlowPlantUserDeleteResult()
         result.context_object_code = plant_bus_obj.code
 
-# endset
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "Result:" + result.to_json())
-        super()._log_message_and_severity(LogSeverity.INFORMATION_HIGH_DETAIL, "End")
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "Result:" + result.to_json())
+
+        super()._log_message_and_severity(
+            LogSeverity.INFORMATION_HIGH_DETAIL,
+            "End")
         return result

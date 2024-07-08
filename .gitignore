@@ -163,3 +163,4 @@ allure-results/
 allure-report/
 pytest/
 /.scannerwork
+archive/

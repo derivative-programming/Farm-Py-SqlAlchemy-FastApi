@@ -20,7 +20,6 @@ from flows.base import LogSeverity
 from helpers import SessionContext, TypeConversion  # noqa: F401
 from managers.org_customer import OrgCustomerManager  # noqa: F401
 
-# from models import ErrorLog
 from .base_flow import BaseFlow
 
 
@@ -108,7 +107,6 @@ class BaseFlowErrorLogConfigResolveErrorLog(BaseFlow):  # pylint: disable=too-fe
 
 
             if val is True:
-                # item = await item.get_parent_obj()
                 item = await BusObjFactory.create_from_code(
                     item.get_session_context(),  # type: ignore
                     item.get_parent_name(),  # type: ignore

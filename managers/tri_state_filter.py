@@ -479,10 +479,8 @@ class TriStateFilterManager:
         data = json.loads(json_str)
         tri_state_filter_dict = schema.load(data)
 
-        #we need to load the obj form db and into session first.
+        # we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
-
-        # new_tri_state_filter = TriStateFilter(**tri_state_filter_dict)
 
         # load or create
         new_tri_state_filter = await self.get_by_id(

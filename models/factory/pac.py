@@ -32,7 +32,6 @@ class PacFactory(factory.Factory):
 
         model = Pac
 
-    # pac_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
@@ -47,7 +46,7 @@ class PacFactory(factory.Factory):
     @classmethod
     def _build(
         cls, model_class, *args, session=None, **kwargs
-    ) -> Pac:
+    ) -> Pac:  # pylint: disable=unused-argument
         """
             Builds and returns an instance
             of the Pac model.
@@ -73,14 +72,12 @@ class PacFactory(factory.Factory):
         obj = model_class(*args, **kwargs)
 
 
-        # session.add(obj)
-        # session.commit()
         return obj
 
     @classmethod
     def _create(
         cls, model_class, *args, session=None, **kwargs
-    ) -> Pac:
+    ) -> Pac:  # pylint: disable=unused-argument
         """
         Create a new
         Pac object
@@ -114,7 +111,7 @@ class PacFactory(factory.Factory):
     @classmethod
     async def create_async(
         cls, session, *args, **kwargs
-    ) -> Pac:
+    ) -> Pac:  # pylint: disable=unused-argument
         """
         Create a new
         Pac object
@@ -142,7 +139,7 @@ class PacFactory(factory.Factory):
     @classmethod
     async def build_async(
         cls, session, *args, **kwargs
-    ) -> Pac:
+    ) -> Pac:  # pylint: disable=unused-argument
         """
         Build a new Pac object
         asynchronously.
@@ -162,6 +159,4 @@ class PacFactory(factory.Factory):
             .build(session=None, *args, **kwargs)
 
 
-        # session.add(obj)
-        # await session.flush()
         return obj

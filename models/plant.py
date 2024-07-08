@@ -492,7 +492,7 @@ class Plant(Base):
 
         self._last_update_utc_date_time = value
 
-    # isDeleteAllowed,
+    # isDeleteAllowed
 
     @property
     def is_delete_allowed(self) -> bool:
@@ -512,7 +512,7 @@ class Plant(Base):
         """
 
         self._is_delete_allowed = value
-    # isEditAllowed,
+    # isEditAllowed
 
     @property
     def is_edit_allowed(self) -> bool:
@@ -532,7 +532,7 @@ class Plant(Base):
         """
 
         self._is_edit_allowed = value
-    # otherFlavor,
+    # otherFlavor
 
     @property
     def other_flavor(self) -> str:
@@ -553,7 +553,7 @@ class Plant(Base):
         """
 
         self._other_flavor = value
-    # someBigIntVal,
+    # someBigIntVal
 
     @property
     def some_big_int_val(self) -> int:
@@ -574,7 +574,7 @@ class Plant(Base):
         """
 
         self._some_big_int_val = value
-    # someBitVal,
+    # someBitVal
 
     @property
     def some_bit_val(self) -> bool:
@@ -593,7 +593,7 @@ class Plant(Base):
         """
 
         self._some_bit_val = value
-    # someDecimalVal,
+    # someDecimalVal
 
     @property
     def some_decimal_val(self) -> Decimal:
@@ -614,7 +614,7 @@ class Plant(Base):
         """
 
         self._some_decimal_val = value
-    # someEmailAddress,
+    # someEmailAddress
 
     @property
     def some_email_address(self) -> str:
@@ -632,7 +632,7 @@ class Plant(Base):
         """
 
         self._some_email_address = value
-    # someFloatVal,
+    # someFloatVal
 
     @property
     def some_float_val(self) -> float:
@@ -652,7 +652,7 @@ class Plant(Base):
         """
 
         self._some_float_val = value
-    # someIntVal,
+    # someIntVal
 
     @property
     def some_int_val(self) -> int:
@@ -672,7 +672,7 @@ class Plant(Base):
         """
 
         self._some_int_val = value
-    # someMoneyVal,
+    # someMoneyVal
 
     @property
     def some_money_val(self) -> Decimal:
@@ -697,7 +697,7 @@ class Plant(Base):
         """
 
         self._some_money_val = value
-    # someVarCharVal,
+    # someVarCharVal
 
     @property
     def some_var_char_val(self) -> str:
@@ -770,7 +770,7 @@ class Plant(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._some_utc_date_time_val = value
-    # someNVarCharVal,
+    # someNVarCharVal
 
     @property
     def some_n_var_char_val(self) -> str:
@@ -789,7 +789,7 @@ class Plant(Base):
         """
 
         self._some_n_var_char_val = value
-    # somePhoneNumber,
+    # somePhoneNumber
 
     @property
     def some_phone_number(self) -> str:
@@ -808,7 +808,7 @@ class Plant(Base):
         """
 
         self._some_phone_number = value
-    # someUniqueidentifierVal,
+    # someUniqueidentifierVal
 
     @property
     def some_uniqueidentifier_val(self):
@@ -848,7 +848,7 @@ class Plant(Base):
             except ValueError as e:
                 raise ValueError(f"Invalid UUID value: {value}") from e
         self.last_update_utc_date_time = datetime.now(timezone.utc)
-    # someTextVal,
+    # someTextVal
 
     @property
     def some_text_val(self) -> str:

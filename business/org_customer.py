@@ -94,7 +94,7 @@ class OrgCustomerBusObj(OrgCustomerDynaFlowsBusObj):
         bus_obj = CustomerBusObj(self._session_context)
         await bus_obj.load_from_id(self.customer_id)
         return bus_obj
-    # email,
+    # email
     # OrganizationID
 
     async def get_organization_id_obj(self) -> models.Organization:

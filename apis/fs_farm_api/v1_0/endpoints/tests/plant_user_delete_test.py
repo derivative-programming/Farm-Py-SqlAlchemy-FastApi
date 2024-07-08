@@ -14,17 +14,15 @@ from unittest.mock import AsyncMock, patch
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
-import apis.fs_farm_api.v1_0.endpoints.tests.test_constants as test_constants
 import models.factory as model_factorys
 import pytest
 from apis import models as apis_models
+from apis.fs_farm_api.v1_0.endpoints.tests import test_constants
 from database import get_db
 from helpers.api_token import ApiToken
 from main import app
 
 from ..plant_user_delete import PlantUserDeleteRouterConfig
-
-# from main import app
 
 ##GENTrainingBlock[caseisPostWithIdAvailable]Start
 ##GENLearn[isPostWithIdAvailable=true,isGetInitAvailable=false]Start
@@ -397,7 +395,7 @@ async def test_submit_endpoint_method_failure(
 ##GENTrainingBlock[caseisPostWithIdAvailable]End
 
 
-def teardown_module(module):  # pylint: disable=unused-argument
+def teardown_module():  # pylint: disable=unused-argument
     """
     Teardown function for the module.
 

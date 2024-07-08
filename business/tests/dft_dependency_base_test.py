@@ -1,6 +1,7 @@
 # business/tests/dft_dependency_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -611,7 +612,7 @@ class TestDFTDependencyBaseBusObj:
         with pytest.raises(ValueError):
             mock_sess_base_bus_obj.is_placeholder = \
                 "not-a-boolean"
-    # dependencyDFTaskID,
+    # dependencyDFTaskID
     # DynaFlowTaskID
 
     def test_dyna_flow_task_id(
@@ -641,7 +642,7 @@ class TestDFTDependencyBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.dyna_flow_task_id = \
                 "not-an-int"
-    # isPlaceholder,
+    # isPlaceholder
 
     def test_insert_utc_date_time(
             self,

@@ -39,7 +39,8 @@ class TacReportsBusObj(TacFluentBusObj):
         Get the Tac Farm Dashboard report.
 
         Returns:
-            List[ReportItemTacFarmDashboard]: The Tac Farm Dashboard report.
+            List[ReportItemTacFarmDashboard]:
+                The Tac Farm Dashboard report.
         """
         report_manager = reports_managers. \
             ReportManagerTacFarmDashboard(

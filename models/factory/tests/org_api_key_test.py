@@ -49,9 +49,9 @@ class TestOrgApiKeyFactory:
         Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        session_local = sessionmaker(  # pylint: disable=invalid-name
             bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
+        session_instance = session_local()
         yield session_instance
         session_instance.close()
 
@@ -233,13 +233,13 @@ class TestOrgApiKeyFactory:
             obj.name, str)
         assert isinstance(obj.organization_id, int)
         assert isinstance(obj.org_customer_id, int)
-        # apiKeyValue,
-        # createdBy,
+        # apiKeyValue
+        # createdBy
         # createdUTCDateTime
         # expirationUTCDateTime
-        # isActive,
-        # isTempUserKey,
-        # name,
+        # isActive
+        # isTempUserKey
+        # name
         # organizationID
 
         assert isinstance(
@@ -278,13 +278,13 @@ class TestOrgApiKeyFactory:
         assert new_obj.last_update_user_id == uuid.UUID(int=0)
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
-        # apiKeyValue,
-        # createdBy,
+        # apiKeyValue
+        # createdBy
         # createdUTCDateTime
         # expirationUTCDateTime
-        # isActive,
-        # isTempUserKey,
-        # name,
+        # isActive
+        # isTempUserKey
+        # name
         # OrganizationID
 
         assert isinstance(
@@ -348,13 +348,13 @@ class TestOrgApiKeyFactory:
         session.commit()
         assert org_api_key_2.last_change_code != \
             original_last_change_code
-    # apiKeyValue,
-    # createdBy,
+    # apiKeyValue
+    # createdBy
     # createdUTCDateTime
     # expirationUTCDateTime
-    # isActive,
-    # isTempUserKey,
-    # name,
+    # isActive
+    # isTempUserKey
+    # name
     # OrganizationID
 
     def test_invalid_organization_id(self, session):

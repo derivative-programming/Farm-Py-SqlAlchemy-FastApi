@@ -193,11 +193,7 @@ async def test_process_request(flow_response, session):
     """
     Test the process_request method.
     """
-    mock_session_context = Mock(spec=SessionContext)
-    mock_land_bus_obj = patch(
-        "apis.models.init.land_plant_list_init_report."
-        "LandBusObj",
-        autospec=True).start()
+    session_context = SessionContext({}, session)
     mock_flow = patch(
         "apis.models.init.land_plant_list_init_report."
         "FlowLandPlantListInitReport",
@@ -212,14 +208,12 @@ async def test_process_request(flow_response, session):
     land = await LandFactory.create_async(session)
 
     result = await request.process_request(
-        mock_session_context,
+        session_context,
         land.code,
         response)
 
     assert result.success is True
     assert result.message == "Success."
-    mock_land_bus_obj.assert_called_once_with(
-        mock_session_context)
     mock_flow_instance.process.assert_called_once()
 
     patch.stopall()

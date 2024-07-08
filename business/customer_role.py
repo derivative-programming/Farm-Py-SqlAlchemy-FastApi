@@ -95,8 +95,8 @@ class CustomerRoleBusObj(CustomerRoleDynaFlowsBusObj):
         bus_obj = CustomerBusObj(self._session_context)
         await bus_obj.load_from_id(self.customer_id)
         return bus_obj
-    # isPlaceholder,
-    # placeholder,
+    # isPlaceholder
+    # placeholder
     # RoleID
 
     async def get_role_id_obj(self) -> models.Role:

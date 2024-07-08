@@ -16,7 +16,8 @@ from decimal import Decimal  # noqa: F401
 
 from business.dyna_flow_task import DynaFlowTaskBusObj
 from flows.base import LogSeverity
-from flows.base.process_all_dyna_flow_type_schedule_task import BaseFlowProcessAllDynaFlowTypeScheduleTask
+from flows.base.process_all_dyna_flow_type_schedule_task import (
+    BaseFlowProcessAllDynaFlowTypeScheduleTask)
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

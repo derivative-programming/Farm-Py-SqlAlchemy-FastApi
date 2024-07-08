@@ -42,7 +42,6 @@ class TestDynaFlowTaskDynaFlowCleanupPostModelResponse:
         result = FlowDynaFlowTaskDynaFlowCleanupResult()
         result.context_object_code = uuid.uuid4()
 
-
         # Call to_json method
         json_output = result.to_json()
 
@@ -73,7 +72,6 @@ class TestDynaFlowTaskDynaFlowCleanupPostModelResponse:
         dyna_flow_task_bus_obj.load_from_obj_instance(dyna_flow_task)
 
         role_required = ""
-
 
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):

@@ -161,11 +161,11 @@ class TestDynaFlowTypeGetByManager:
 
         assert dyna_flow_type is None
 
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     @pytest.mark.asyncio
@@ -279,4 +279,4 @@ class TestDynaFlowTypeGetByManager:
                 invalid_id)  # type: ignore
 
         await session.rollback()
-    # priorityLevel,
+    # priorityLevel

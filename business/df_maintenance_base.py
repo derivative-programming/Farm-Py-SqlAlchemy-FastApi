@@ -503,7 +503,9 @@ class DFMaintenanceBaseBusObj(BaseBusObj):
         :param value: The Paused By Username value.
         :raises AttributeError: If the
             DFMaintenance object is not initialized.
-        :raises AssertionError: If the Paused By Username is not a string.
+        :raises AssertionError: If the
+            Paused By Username
+            is not a string.
         """
 
         if not self.df_maintenance:
@@ -511,7 +513,8 @@ class DFMaintenanceBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "paused_by_username must be a string"
+        assert isinstance(value, str), \
+            "paused_by_username must be a string"
         self.df_maintenance.paused_by_username = value
     # pausedUTCDateTime
 
@@ -594,7 +597,9 @@ class DFMaintenanceBaseBusObj(BaseBusObj):
         :param value: The Scheduled DF Process Request Processor Identifier value.
         :raises AttributeError: If the
             DFMaintenance object is not initialized.
-        :raises AssertionError: If the Scheduled DF Process Request Processor Identifier is not a string.
+        :raises AssertionError: If the
+            Scheduled DF Process Request Processor Identifier
+            is not a string.
         """
 
         if not self.df_maintenance:
@@ -602,11 +607,12 @@ class DFMaintenanceBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "scheduled_df_process_request_processor_identifier must be a string"
+        assert isinstance(value, str), \
+            "scheduled_df_process_request_processor_identifier must be a string"
         self.df_maintenance.scheduled_df_process_request_processor_identifier = value
-    # isPaused,
-    # isScheduledDFProcessRequestCompleted,
-    # isScheduledDFProcessRequestStarted,
+    # isPaused
+    # isScheduledDFProcessRequestCompleted
+    # isScheduledDFProcessRequestStarted
     # lastScheduledDFProcessRequestUTCDateTime
     # nextScheduledDFProcessRequestUTCDateTime
     # PacID
@@ -678,9 +684,9 @@ class DFMaintenanceBaseBusObj(BaseBusObj):
             )
 
         return self.df_maintenance.pac_code_peek
-    # pausedByUsername,
+    # pausedByUsername
     # pausedUTCDateTime
-    # scheduledDFProcessRequestProcessorIdentifier,
+    # scheduledDFProcessRequestProcessorIdentifier
     # insert_utc_date_time
 
     @property
@@ -1077,7 +1083,7 @@ class DFMaintenanceBaseBusObj(BaseBusObj):
             random.randint(2000, 2023),
             random.randint(1, 12),
             random.randint(1, 28))
-        # self.df_maintenance.pac_id = random.randint(0, 100)
+        # pac_id
         self.df_maintenance.paused_by_username = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.df_maintenance.paused_utc_date_time = datetime(
@@ -1158,9 +1164,9 @@ class DFMaintenanceBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.df_maintenance_id
-    # isPaused,
-    # isScheduledDFProcessRequestCompleted,
-    # isScheduledDFProcessRequestStarted,
+    # isPaused
+    # isScheduledDFProcessRequestCompleted
+    # isScheduledDFProcessRequestStarted
     # lastScheduledDFProcessRequestUTCDateTime
     # nextScheduledDFProcessRequestUTCDateTime
     # PacID
@@ -1200,6 +1206,6 @@ class DFMaintenanceBaseBusObj(BaseBusObj):
         pac_obj = await pac_manager.get_by_id(
             self.pac_id)
         return pac_obj
-    # pausedByUsername,
+    # pausedByUsername
     # pausedUTCDateTime
-    # scheduledDFProcessRequestProcessorIdentifier,
+    # scheduledDFProcessRequestProcessorIdentifier

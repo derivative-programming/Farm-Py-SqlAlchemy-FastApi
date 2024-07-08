@@ -1,6 +1,9 @@
 # business/tests/dyna_flow_task_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 """
 Unit tests for the
 DynaFlowTaskBusObj class.
@@ -118,8 +121,8 @@ class TestDynaFlowTaskBusObj:
 
         assert len(bus_obj_list) == 0
     # completedUTCDateTime
-    # dependencyDynaFlowTaskID,
-    # description,
+    # dependencyDynaFlowTaskID
+    # description
     # DynaFlowID
 
     @pytest.mark.asyncio
@@ -166,7 +169,7 @@ class TestDynaFlowTaskBusObj:
 
         assert fk_bus_obj.code == \
             new_bus_obj.dyna_flow_code_peek
-    # dynaFlowSubjectCode,
+    # dynaFlowSubjectCode
     # DynaFlowTaskTypeID
 
     @pytest.mark.asyncio
@@ -215,19 +218,19 @@ class TestDynaFlowTaskBusObj:
 
         assert fk_bus_obj.code == \
             new_bus_obj.dyna_flow_task_type_code_peek
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isParallelRunAllowed,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # maxRetryCount,
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isParallelRunAllowed
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # maxRetryCount
     # minStartUTCDateTime
-    # param1,
-    # param2,
-    # processorIdentifier,
+    # param1
+    # param2
+    # processorIdentifier
     # requestedUTCDateTime
-    # resultValue,
-    # retryCount,
+    # resultValue
+    # retryCount
     # startedUTCDateTime

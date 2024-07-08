@@ -136,7 +136,7 @@ class TacLoginPostModelResponse(PostResponse):
         session_context: SessionContext,
         tac_code: uuid.UUID,
         request: TacLoginPostModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the request and generates the response.
         """

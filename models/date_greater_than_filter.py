@@ -335,7 +335,7 @@ class DateGreaterThanFilter(Base):
             value = value.replace(tzinfo=timezone.utc)
 
         self._last_update_utc_date_time = value
-    # dayCount,
+    # dayCount
 
     @property
     def day_count(self) -> int:
@@ -355,7 +355,7 @@ class DateGreaterThanFilter(Base):
         """
 
         self._day_count = value
-    # description,
+    # description
 
     @property
     def description(self) -> str:
@@ -376,7 +376,7 @@ class DateGreaterThanFilter(Base):
         """
 
         self._description = value
-    # displayOrder,
+    # displayOrder
 
     @property
     def display_order(self) -> int:
@@ -396,7 +396,7 @@ class DateGreaterThanFilter(Base):
         """
 
         self._display_order = value
-    # isActive,
+    # isActive
 
     @property
     def is_active(self) -> bool:
@@ -416,7 +416,7 @@ class DateGreaterThanFilter(Base):
         """
 
         self._is_active = value
-    # lookupEnumName,
+    # lookupEnumName
 
     @property
     def lookup_enum_name(self) -> str:
@@ -437,7 +437,7 @@ class DateGreaterThanFilter(Base):
         """
 
         self._lookup_enum_name = value
-    # name,
+    # name
 
     @property
     def name(self) -> str:

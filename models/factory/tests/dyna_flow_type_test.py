@@ -49,9 +49,9 @@ class TestDynaFlowTypeFactory:
         Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        session_local = sessionmaker(  # pylint: disable=invalid-name
             bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
+        session_instance = session_local()
         yield session_instance
         session_instance.close()
 
@@ -229,16 +229,16 @@ class TestDynaFlowTypeFactory:
             obj.name, str)
         assert isinstance(obj.pac_id, int)
         assert isinstance(obj.priority_level, int)
-        # description,
-        # displayOrder,
-        # isActive,
-        # lookupEnumName,
-        # name,
+        # description
+        # displayOrder
+        # isActive
+        # lookupEnumName
+        # name
         # pacID
 
         assert isinstance(
             obj.pac_code_peek, uuid.UUID)
-        # priorityLevel,
+        # priorityLevel
         assert isinstance(obj.insert_utc_date_time, datetime)
         assert isinstance(obj.last_update_utc_date_time, datetime)
 
@@ -269,16 +269,16 @@ class TestDynaFlowTypeFactory:
         assert new_obj.last_update_user_id == uuid.UUID(int=0)
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
-        # description,
-        # displayOrder,
-        # isActive,
-        # lookupEnumName,
-        # name,
+        # description
+        # displayOrder
+        # isActive
+        # lookupEnumName
+        # name
         # PacID
 
         assert isinstance(
             new_obj.pac_code_peek, uuid.UUID)
-        # priorityLevel,
+        # priorityLevel
         assert new_obj is not None
         assert new_obj.description == ""
         assert new_obj.display_order == 0
@@ -332,11 +332,11 @@ class TestDynaFlowTypeFactory:
         session.commit()
         assert dyna_flow_type_2.last_change_code != \
             original_last_change_code
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     def test_invalid_pac_id(self, session):
@@ -364,4 +364,4 @@ class TestDynaFlowTypeFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-    # priorityLevel,
+    # priorityLevel

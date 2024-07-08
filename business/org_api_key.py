@@ -60,13 +60,13 @@ class OrgApiKeyBusObj(OrgApiKeyDynaFlowsBusObj):
             result.append(org_api_key_bus_obj)
 
         return result
-    # apiKeyValue,
-    # createdBy,
+    # apiKeyValue
+    # createdBy
     # createdUTCDateTime
     # expirationUTCDateTime
-    # isActive,
-    # isTempUserKey,
-    # name,
+    # isActive
+    # isTempUserKey
+    # name
     # OrganizationID
 
     async def get_organization_id_obj(self) -> models.Organization:

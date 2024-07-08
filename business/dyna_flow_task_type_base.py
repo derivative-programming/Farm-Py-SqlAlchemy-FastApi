@@ -278,7 +278,9 @@ class DynaFlowTaskTypeBaseBusObj(BaseBusObj):
         :param value: The Description value.
         :raises AttributeError: If the
             DynaFlowTaskType object is not initialized.
-        :raises AssertionError: If the Description is not a string.
+        :raises AssertionError: If the
+            Description
+            is not a string.
         """
 
         if not self.dyna_flow_task_type:
@@ -286,7 +288,8 @@ class DynaFlowTaskTypeBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "description must be a string"
+        assert isinstance(value, str), \
+            "description must be a string"
         self.dyna_flow_task_type.description = value
     # displayOrder
 
@@ -410,7 +413,9 @@ class DynaFlowTaskTypeBaseBusObj(BaseBusObj):
         :param value: The Lookup Enum Name value.
         :raises AttributeError: If the
             DynaFlowTaskType object is not initialized.
-        :raises AssertionError: If the Lookup Enum Name is not a string.
+        :raises AssertionError: If the
+            Lookup Enum Name
+            is not a string.
         """
 
         if not self.dyna_flow_task_type:
@@ -418,7 +423,8 @@ class DynaFlowTaskTypeBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "lookup_enum_name must be a string"
+        assert isinstance(value, str), \
+            "lookup_enum_name must be a string"
         self.dyna_flow_task_type.lookup_enum_name = value
     # maxRetryCount
 
@@ -500,7 +506,9 @@ class DynaFlowTaskTypeBaseBusObj(BaseBusObj):
         :param value: The Name value.
         :raises AttributeError: If the
             DynaFlowTaskType object is not initialized.
-        :raises AssertionError: If the Name is not a string.
+        :raises AssertionError: If the
+            Name
+            is not a string.
         """
 
         if not self.dyna_flow_task_type:
@@ -508,15 +516,16 @@ class DynaFlowTaskTypeBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "name must be a string"
+        assert isinstance(value, str), \
+            "name must be a string"
         self.dyna_flow_task_type.name = value
     # PacID
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # maxRetryCount,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # maxRetryCount
+    # name
     # PacID
 
     @property
@@ -980,7 +989,7 @@ class DynaFlowTaskTypeBaseBusObj(BaseBusObj):
             random.randint(0, 100))
         self.dyna_flow_task_type.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        # self.dyna_flow_task_type.pac_id = random.randint(0, 100)
+        # pac_id
 
         return self
 
@@ -1053,12 +1062,12 @@ class DynaFlowTaskTypeBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.dyna_flow_task_type_id
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # maxRetryCount,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # maxRetryCount
+    # name
     # PacID
 
     async def get_parent_name(self) -> str:

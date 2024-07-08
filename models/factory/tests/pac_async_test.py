@@ -68,12 +68,12 @@ class TestPacFactoryAsync:
             await connection.begin_nested()
             await connection.run_sync(Base.metadata.drop_all)
             await connection.run_sync(Base.metadata.create_all)
-            TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+            testing_session_local = sessionmaker(  # pylint: disable=invalid-name
                 expire_on_commit=False,
                 class_=AsyncSession,
                 bind=engine,
             )
-            async with TestingSessionLocal(bind=connection) as session:  # type: ignore # noqa: E501
+            async with testing_session_local(bind=connection) as session:  # type: ignore # noqa: E501
                 @event.listens_for(
                     session.sync_session, "after_transaction_end"
                 )
@@ -422,11 +422,11 @@ class TestPacFactoryAsync:
         assert obj.name == "" or isinstance(
             obj.name, str)
         # Check for the peek values
-        # description,
-        # displayOrder,
-        # isActive,
-        # lookupEnumName,
-        # name,
+        # description
+        # displayOrder
+        # isActive
+        # lookupEnumName
+        # name
 
         assert isinstance(obj.insert_utc_date_time, datetime)
         assert isinstance(obj.last_update_utc_date_time, datetime)
@@ -486,11 +486,11 @@ class TestPacFactoryAsync:
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
 
-        # description,
-        # displayOrder,
-        # isActive,
-        # lookupEnumName,
-        # name,
+        # description
+        # displayOrder
+        # isActive
+        # lookupEnumName
+        # name
         assert new_obj.description == ""
         assert new_obj.display_order == 0
         assert new_obj.is_active is False
@@ -545,8 +545,6 @@ class TestPacFactoryAsync:
         result = await session.execute(stmt)
         obj_1 = result.scalars().first()
 
-        # obj_1 = await session.query(Pac).filter_by(
-        # pac_id=pac.pac_id).first()
         obj_1.code = uuid.uuid4()
         await session.commit()
 
@@ -556,13 +554,11 @@ class TestPacFactoryAsync:
         result = await session.execute(stmt)
         obj_2 = result.scalars().first()
 
-        # obj_2 = await session.query(Pac).filter_by(
-        # pac_id=pac.pac_id).first()
         obj_2.code = uuid.uuid4()
         await session.commit()
         assert obj_2.last_change_code != original_last_change_code
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name

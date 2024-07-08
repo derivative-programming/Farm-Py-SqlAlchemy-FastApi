@@ -60,12 +60,12 @@ class ErrorLogBusObj(ErrorLogDynaFlowsBusObj):
             result.append(error_log_bus_obj)
 
         return result
-    # browserCode,
-    # contextCode,
+    # browserCode
+    # contextCode
     # createdUTCDateTime
-    # description,
-    # isClientSideError,
-    # isResolved,
+    # description
+    # isClientSideError
+    # isResolved
     # PacID
 
     async def get_pac_id_obj(self) -> models.Pac:
@@ -101,4 +101,4 @@ class ErrorLogBusObj(ErrorLogDynaFlowsBusObj):
         bus_obj = PacBusObj(self._session_context)
         await bus_obj.load_from_id(self.pac_id)
         return bus_obj
-    # url,
+    # url

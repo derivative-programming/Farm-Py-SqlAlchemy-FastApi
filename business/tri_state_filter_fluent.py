@@ -115,11 +115,11 @@ class TriStateFilterFluentBusObj(TriStateFilterBaseBusObj):
         """
         self.state_int_value = value
         return self
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     def set_prop_pac_id(self, value: int):
@@ -137,4 +137,4 @@ class TriStateFilterFluentBusObj(TriStateFilterBaseBusObj):
 
         self.pac_id = value
         return self
-    # stateIntValue,
+    # stateIntValue

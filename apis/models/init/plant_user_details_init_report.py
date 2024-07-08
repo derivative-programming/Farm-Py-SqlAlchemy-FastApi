@@ -54,7 +54,7 @@ class PlantUserDetailsInitReportGetInitModelResponse(
     def load_flow_response(
         self,
         data: FlowPlantUserDetailsInitReportResult
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Loads the response data from the
         FlowPlantUserDetailsInitReportResult object.

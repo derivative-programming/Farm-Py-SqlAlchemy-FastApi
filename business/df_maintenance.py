@@ -60,9 +60,9 @@ class DFMaintenanceBusObj(DFMaintenanceDynaFlowsBusObj):
             result.append(df_maintenance_bus_obj)
 
         return result
-    # isPaused,
-    # isScheduledDFProcessRequestCompleted,
-    # isScheduledDFProcessRequestStarted,
+    # isPaused
+    # isScheduledDFProcessRequestCompleted
+    # isScheduledDFProcessRequestStarted
     # lastScheduledDFProcessRequestUTCDateTime
     # nextScheduledDFProcessRequestUTCDateTime
     # PacID
@@ -100,6 +100,6 @@ class DFMaintenanceBusObj(DFMaintenanceDynaFlowsBusObj):
         bus_obj = PacBusObj(self._session_context)
         await bus_obj.load_from_id(self.pac_id)
         return bus_obj
-    # pausedByUsername,
+    # pausedByUsername
     # pausedUTCDateTime
-    # scheduledDFProcessRequestProcessorIdentifier,
+    # scheduledDFProcessRequestProcessorIdentifier

@@ -104,7 +104,7 @@ class LandUserPlantMultiSelectToNotEditablePostModelResponse(PostResponse):
         session_context: SessionContext,
         land_code: uuid.UUID,
         request: LandUserPlantMultiSelectToNotEditablePostModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the request and generates the response.
         """

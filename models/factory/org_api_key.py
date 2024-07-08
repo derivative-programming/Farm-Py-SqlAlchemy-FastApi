@@ -33,7 +33,6 @@ class OrgApiKeyFactory(factory.Factory):
 
         model = OrgApiKey
 
-    # org_api_key_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
@@ -45,8 +44,8 @@ class OrgApiKeyFactory(factory.Factory):
     is_active = Faker('boolean')
     is_temp_user_key = Faker('boolean')
     name = Faker('sentence', nb_words=4)
-    # organization_id = 0
-    # org_customer_id = 0
+    # organization_id
+    # org_customer_id
     organization_code_peek = factory.LazyFunction(  # OrganizationID
         uuid.uuid4
     )
@@ -57,7 +56,7 @@ class OrgApiKeyFactory(factory.Factory):
     @classmethod
     def _build(
         cls, model_class, *args, session=None, **kwargs
-    ) -> OrgApiKey:
+    ) -> OrgApiKey:  # pylint: disable=unused-argument
         """
             Builds and returns an instance
             of the OrgApiKey model.
@@ -97,14 +96,12 @@ class OrgApiKeyFactory(factory.Factory):
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-        # session.add(obj)
-        # session.commit()
         return obj
 
     @classmethod
     def _create(
         cls, model_class, *args, session=None, **kwargs
-    ) -> OrgApiKey:
+    ) -> OrgApiKey:  # pylint: disable=unused-argument
         """
         Create a new
         OrgApiKey object
@@ -152,7 +149,7 @@ class OrgApiKeyFactory(factory.Factory):
     @classmethod
     async def create_async(
         cls, session, *args, **kwargs
-    ) -> OrgApiKey:
+    ) -> OrgApiKey:  # pylint: disable=unused-argument
         """
         Create a new
         OrgApiKey object
@@ -194,7 +191,7 @@ class OrgApiKeyFactory(factory.Factory):
     @classmethod
     async def build_async(
         cls, session, *args, **kwargs
-    ) -> OrgApiKey:
+    ) -> OrgApiKey:  # pylint: disable=unused-argument
         """
         Build a new OrgApiKey object
         asynchronously.
@@ -228,6 +225,4 @@ class OrgApiKeyFactory(factory.Factory):
         obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
-        # session.add(obj)
-        # await session.flush()
         return obj

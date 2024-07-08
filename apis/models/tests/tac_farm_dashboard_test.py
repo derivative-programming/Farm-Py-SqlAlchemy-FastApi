@@ -1,6 +1,7 @@
 # apis/models/tests/tac_farm_dashboard_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -8,17 +9,16 @@ TacFarmDashboardGetModelRequestFactoryAsync
 class.
 """
 
-import uuid  # noqa: F401
 import math  # noqa: F401
-
+import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
-from unittest.mock import AsyncMock, patch, Mock
+from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
-
-from helpers.type_conversion import TypeConversion  # noqa: F401
 from helpers.session_context import SessionContext
+from helpers.type_conversion import TypeConversion  # noqa: F401
+from models.factory.tac import TacFactory
 
 from ..factory.tac_farm_dashboard import (
     TacFarmDashboardGetModelRequestFactory)
@@ -141,7 +141,7 @@ class TacFarmDashboardGetModelRequestFactoryAsync:
         assert isinstance(model_instance.item_count_per_page, int)
 
 
-class MockReportItemTacFarmDashboard:
+class MockReportItemTacFarmDashboard:  # pylint: disable=too-few-public-methods
     """
     This class contains mock report items for the
     TacFarmDashboardGetModelResponse class.

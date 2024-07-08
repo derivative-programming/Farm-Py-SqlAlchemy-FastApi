@@ -319,7 +319,9 @@ class PlantBaseBusObj(BaseBusObj):
         :param value: The is edit allowed flag value.
         :raises AttributeError: If the
             Plant object is not initialized.
-        :raises AssertionError: If the is edit allowed flag is not a boolean.
+        :raises AssertionError: If the
+            is edit allowed
+            is not a boolean.
         """
 
         if not self.plant:
@@ -361,7 +363,9 @@ class PlantBaseBusObj(BaseBusObj):
         :param value: The other flavor value.
         :raises AttributeError: If the
             Plant object is not initialized.
-        :raises AssertionError: If the other flavor is not a string.
+        :raises AssertionError: If the
+            other flavor
+            is not a string.
         """
 
         if not self.plant:
@@ -369,7 +373,8 @@ class PlantBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "other_flavor must be a string"
+        assert isinstance(value, str), \
+            "other_flavor must be a string"
         self.plant.other_flavor = value
     # someBigIntVal
 
@@ -400,7 +405,9 @@ class PlantBaseBusObj(BaseBusObj):
         :param value: The some big int value.
         :raises AttributeError: If the
             Plant object is not initialized.
-        :raises AssertionError: If the some big int value is not an integer.
+        :raises AssertionError: If the 
+            some big int value
+            is not an integer.
         """
 
         if not self.plant:
@@ -439,7 +446,9 @@ class PlantBaseBusObj(BaseBusObj):
         :param value: The some bit value.
         :raises AttributeError: If the
             Plant object is not initialized.
-        :raises AssertionError: If the some bit value is not a boolean.
+        :raises AssertionError: If the
+            some bit value
+            is not a boolean.
         """
 
         if not self.plant:
@@ -478,7 +487,9 @@ class PlantBaseBusObj(BaseBusObj):
         :param value: The some date value.
         :raises AttributeError: If the
             Plant object is not initialized.
-        :raises AssertionError: If the some date value is not a date object.
+        :raises AssertionError: If the
+            some date value
+            is not a date object.
         """
 
         if not self.plant:
@@ -519,7 +530,9 @@ class PlantBaseBusObj(BaseBusObj):
         :param value: The some decimal value.
         :raises AttributeError: If the
             Plant object is not initialized.
-        :raises AssertionError: If the some decimal value is not a number.
+        :raises AssertionError: If the
+            some decimal value
+            is not a number.
         """
 
         if not self.plant:
@@ -1033,17 +1046,17 @@ class PlantBaseBusObj(BaseBusObj):
         self.plant.some_var_char_val = value
     # LandID
 # endset
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
+    # isDeleteAllowed
+    # isEditAllowed
+    # otherFlavor
+    # someBigIntVal
+    # someBitVal
+    # someDecimalVal
+    # someEmailAddress
+    # someFloatVal
+    # someIntVal
+    # someMoneyVal
+    # someNVarCharVal
     # someDateVal
     # someUTCDateTimeVal
     # FlvrForeignKeyID
@@ -1185,10 +1198,10 @@ class PlantBaseBusObj(BaseBusObj):
             )
 
         return self.plant.land_code_peek
-    # somePhoneNumber,
-    # someTextVal,
-    # someUniqueidentifierVal,
-    # someVarCharVal,
+    # somePhoneNumber
+    # someTextVal
+    # someUniqueidentifierVal
+    # someVarCharVal
 
 # endset
     # insert_utc_date_time
@@ -1581,7 +1594,7 @@ class PlantBaseBusObj(BaseBusObj):
             random.choice([True, False]))
         self.plant.is_edit_allowed = (
             random.choice([True, False]))
-        # self.plant.land_id = random.randint(0, 100)
+        # land_id
         self.plant.other_flavor = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.plant.some_big_int_val = (
@@ -1689,17 +1702,17 @@ class PlantBaseBusObj(BaseBusObj):
         """
         return self.plant_id
 
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
+    # isDeleteAllowed
+    # isEditAllowed
+    # otherFlavor
+    # someBigIntVal
+    # someBitVal
+    # someDecimalVal
+    # someEmailAddress
+    # someFloatVal
+    # someIntVal
+    # someMoneyVal
+    # someNVarCharVal
     # someDateVal
     # someUTCDateTimeVal
     # FlvrForeignKeyID
@@ -1740,8 +1753,8 @@ class PlantBaseBusObj(BaseBusObj):
         land_obj = await land_manager.get_by_id(
             self.land_id)
         return land_obj
-    # somePhoneNumber,
-    # someTextVal,
-    # someUniqueidentifierVal,
-    # someVarCharVal,
+    # somePhoneNumber
+    # someTextVal
+    # someUniqueidentifierVal
+    # someVarCharVal
 # endset

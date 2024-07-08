@@ -1,6 +1,7 @@
 # business/tests/organization_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -579,7 +580,7 @@ class TestOrganizationBaseBusObj:
             mock_sess_base_bus_obj.name = \
                 123
     # TacID
-    # name,
+    # name
     # TacID
 
     def test_tac_id(

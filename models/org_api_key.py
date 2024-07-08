@@ -360,7 +360,7 @@ class OrgApiKey(Base):
             value = value.replace(tzinfo=timezone.utc)
 
         self._last_update_utc_date_time = value
-    # apiKeyValue,
+    # apiKeyValue
 
     @property
     def api_key_value(self) -> str:
@@ -381,7 +381,7 @@ class OrgApiKey(Base):
         """
 
         self._api_key_value = value
-    # createdBy,
+    # createdBy
 
     @property
     def created_by(self) -> str:
@@ -460,7 +460,7 @@ class OrgApiKey(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._expiration_utc_date_time = value
-    # isActive,
+    # isActive
 
     @property
     def is_active(self) -> bool:
@@ -480,7 +480,7 @@ class OrgApiKey(Base):
         """
 
         self._is_active = value
-    # isTempUserKey,
+    # isTempUserKey
 
     @property
     def is_temp_user_key(self) -> bool:
@@ -500,7 +500,7 @@ class OrgApiKey(Base):
         """
 
         self._is_temp_user_key = value
-    # name,
+    # name
 
     @property
     def name(self) -> str:

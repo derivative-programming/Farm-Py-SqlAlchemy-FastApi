@@ -1,5 +1,6 @@
 # business/tests/dyna_flow_task_type_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 DynaFlowTaskTypeFluentBusObj class.
@@ -102,12 +103,12 @@ class TestDynaFlowTaskTypeFluentBusObj:
             "Vanilla"
         assert result is new_fluent_bus_obj
     # PacID
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # maxRetryCount,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # maxRetryCount
+    # name
     # PacID
 
     def test_set_prop_pac_id(self, new_fluent_bus_obj):

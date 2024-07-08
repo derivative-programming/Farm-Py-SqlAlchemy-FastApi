@@ -68,12 +68,12 @@ class TestPlantFactoryAsync:
             await connection.begin_nested()
             await connection.run_sync(Base.metadata.drop_all)
             await connection.run_sync(Base.metadata.create_all)
-            TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+            testing_session_local = sessionmaker(  # pylint: disable=invalid-name
                 expire_on_commit=False,
                 class_=AsyncSession,
                 bind=engine,
             )
-            async with TestingSessionLocal(bind=connection) as session:  # type: ignore # noqa: E501
+            async with testing_session_local(bind=connection) as session:  # type: ignore # noqa: E501
                 @event.listens_for(
                     session.sync_session, "after_transaction_end"
                 )
@@ -440,17 +440,17 @@ class TestPlantFactoryAsync:
             obj.some_var_char_val, str)
         # Check for the peek values
 # endset
-        # isDeleteAllowed,
-        # isEditAllowed,
-        # otherFlavor,
-        # someBigIntVal,
-        # someBitVal,
-        # someDecimalVal,
-        # someEmailAddress,
-        # someFloatVal,
-        # someIntVal,
-        # someMoneyVal,
-        # someVarCharVal,
+        # isDeleteAllowed
+        # isEditAllowed
+        # otherFlavor
+        # someBigIntVal
+        # someBitVal
+        # someDecimalVal
+        # someEmailAddress
+        # someFloatVal
+        # someIntVal
+        # someMoneyVal
+        # someVarCharVal
         # someDateVal
         # someUTCDateTimeVal
         # flvrForeignKeyID
@@ -459,10 +459,10 @@ class TestPlantFactoryAsync:
         # landID
 
         assert isinstance(obj.land_code_peek, uuid.UUID)
-        # someNVarCharVal,
-        # somePhoneNumber,
-        # someTextVal,
-        # someUniqueidentifierVal,
+        # someNVarCharVal
+        # somePhoneNumber
+        # someTextVal
+        # someUniqueidentifierVal
 # endset
 
         assert isinstance(obj.insert_utc_date_time, datetime)
@@ -524,17 +524,17 @@ class TestPlantFactoryAsync:
         assert new_obj.last_update_utc_date_time is not None
 
 # endset
-        # isDeleteAllowed,
-        # isEditAllowed,
-        # otherFlavor,
-        # someBigIntVal,
-        # someBitVal,
-        # someDecimalVal,
-        # someEmailAddress,
-        # someFloatVal,
-        # someIntVal,
-        # someMoneyVal,
-        # someNVarCharVal,
+        # isDeleteAllowed
+        # isEditAllowed
+        # otherFlavor
+        # someBigIntVal
+        # someBitVal
+        # someDecimalVal
+        # someEmailAddress
+        # someFloatVal
+        # someIntVal
+        # someMoneyVal
+        # someNVarCharVal
         # someDateVal
         # someUTCDateTimeVal
         # LandID
@@ -543,10 +543,10 @@ class TestPlantFactoryAsync:
         # FlvrForeignKeyID
 
         assert isinstance(new_obj.flvr_foreign_key_code_peek, uuid.UUID)
-        # somePhoneNumber,
-        # someTextVal,
-        # someUniqueidentifierVal,
-        # someVarCharVal,
+        # somePhoneNumber
+        # someTextVal
+        # someUniqueidentifierVal
+        # someVarCharVal
 # endset
 
         assert new_obj.flvr_foreign_key_id == 0
@@ -619,8 +619,6 @@ class TestPlantFactoryAsync:
         result = await session.execute(stmt)
         obj_1 = result.scalars().first()
 
-        # obj_1 = await session.query(Plant).filter_by(
-        # plant_id=plant.plant_id).first()
         obj_1.code = uuid.uuid4()
         await session.commit()
 
@@ -630,24 +628,22 @@ class TestPlantFactoryAsync:
         result = await session.execute(stmt)
         obj_2 = result.scalars().first()
 
-        # obj_2 = await session.query(Plant).filter_by(
-        # plant_id=plant.plant_id).first()
         obj_2.code = uuid.uuid4()
         await session.commit()
         assert obj_2.last_change_code != original_last_change_code
 # endset
 
-    # isDeleteAllowed,
-    # isEditAllowed,
-    # otherFlavor,
-    # someBigIntVal,
-    # someBitVal,
-    # someDecimalVal,
-    # someEmailAddress,
-    # someFloatVal,
-    # someIntVal,
-    # someMoneyVal,
-    # someNVarCharVal,
+    # isDeleteAllowed
+    # isEditAllowed
+    # otherFlavor
+    # someBigIntVal
+    # someBitVal
+    # someDecimalVal
+    # someEmailAddress
+    # someFloatVal
+    # someIntVal
+    # someMoneyVal
+    # someNVarCharVal
     # someDateVal
     # someUTCDateTimeVal
     # LandID
@@ -703,8 +699,8 @@ class TestPlantFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-    # somePhoneNumber,
-    # someTextVal,
-    # someUniqueidentifierVal,
-    # someVarCharVal,
+    # somePhoneNumber
+    # someTextVal
+    # someUniqueidentifierVal
+    # someVarCharVal
 # endset

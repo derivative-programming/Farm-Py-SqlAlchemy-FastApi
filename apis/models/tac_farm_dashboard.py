@@ -194,7 +194,7 @@ class TacFarmDashboardGetModelResponse(
         session_context: SessionContext,
         tac_code: uuid.UUID,
         request: TacFarmDashboardGetModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the API request and generates the response items.
 

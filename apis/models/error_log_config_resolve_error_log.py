@@ -101,7 +101,7 @@ class ErrorLogConfigResolveErrorLogPostModelResponse(PostResponse):
         session_context: SessionContext,
         error_log_code: uuid.UUID,
         request: ErrorLogConfigResolveErrorLogPostModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the request and generates the response.
         """

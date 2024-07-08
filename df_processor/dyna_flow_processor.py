@@ -257,7 +257,7 @@ class DynaFlowProcessor:
                 await pac.load_from_enum(
                     pac_enum=managers_and_enums.PacEnum.UNKNOWN)
 
-                df_mainenance_bus_obj = await self.get_dFMaintenance(
+                df_mainenance_bus_obj = await self.get_df_maintenance(
                     session_context)
 
                 print("request any scheduled dataflows")
@@ -351,7 +351,7 @@ class DynaFlowProcessor:
                 await pac.load_from_enum(
                     pac_enum=managers_and_enums.PacEnum.UNKNOWN)
 
-                df_mainenance_bus_obj = await self.get_dFMaintenance(
+                df_mainenance_bus_obj = await self.get_df_maintenance(
                     session_context)
 
                 if df_mainenance_bus_obj. \
@@ -409,7 +409,7 @@ class DynaFlowProcessor:
         print("DynaFlow maintenance claimed for processing")
         return ownership
 
-    async def get_dFMaintenance(self, session_context) -> DFMaintenanceBusObj:
+    async def get_df_maintenance(self, session_context) -> DFMaintenanceBusObj:
         """
         Get the DynaFlow maintenance object.
         """

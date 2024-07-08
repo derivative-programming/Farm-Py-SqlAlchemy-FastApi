@@ -432,7 +432,7 @@ class LandPlantListGetModelResponse(
         session_context: SessionContext,
         land_code: uuid.UUID,
         request: LandPlantListGetModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the API request and generates the response items.
 

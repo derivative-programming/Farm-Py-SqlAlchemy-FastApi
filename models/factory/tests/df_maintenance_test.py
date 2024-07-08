@@ -49,9 +49,9 @@ class TestDFMaintenanceFactory:
         Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        session_local = sessionmaker(  # pylint: disable=invalid-name
             bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
+        session_instance = session_local()
         yield session_instance
         session_instance.close()
 
@@ -233,18 +233,18 @@ class TestDFMaintenanceFactory:
                           datetime)
         assert obj.scheduled_df_process_request_processor_identifier == "" or isinstance(
             obj.scheduled_df_process_request_processor_identifier, str)
-        # isPaused,
-        # isScheduledDFProcessRequestCompleted,
-        # isScheduledDFProcessRequestStarted,
+        # isPaused
+        # isScheduledDFProcessRequestCompleted
+        # isScheduledDFProcessRequestStarted
         # lastScheduledDFProcessRequestUTCDateTime
         # nextScheduledDFProcessRequestUTCDateTime
         # pacID
 
         assert isinstance(
             obj.pac_code_peek, uuid.UUID)
-        # pausedByUsername,
+        # pausedByUsername
         # pausedUTCDateTime
-        # scheduledDFProcessRequestProcessorIdentifier,
+        # scheduledDFProcessRequestProcessorIdentifier
         assert isinstance(obj.insert_utc_date_time, datetime)
         assert isinstance(obj.last_update_utc_date_time, datetime)
 
@@ -275,18 +275,18 @@ class TestDFMaintenanceFactory:
         assert new_obj.last_update_user_id == uuid.UUID(int=0)
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
-        # isPaused,
-        # isScheduledDFProcessRequestCompleted,
-        # isScheduledDFProcessRequestStarted,
+        # isPaused
+        # isScheduledDFProcessRequestCompleted
+        # isScheduledDFProcessRequestStarted
         # lastScheduledDFProcessRequestUTCDateTime
         # nextScheduledDFProcessRequestUTCDateTime
         # PacID
 
         assert isinstance(
             new_obj.pac_code_peek, uuid.UUID)
-        # pausedByUsername,
+        # pausedByUsername
         # pausedUTCDateTime
-        # scheduledDFProcessRequestProcessorIdentifier,
+        # scheduledDFProcessRequestProcessorIdentifier
         assert new_obj is not None
         assert new_obj.is_paused is False
         assert new_obj.is_scheduled_df_process_request_completed is False
@@ -342,9 +342,9 @@ class TestDFMaintenanceFactory:
         session.commit()
         assert df_maintenance_2.last_change_code != \
             original_last_change_code
-    # isPaused,
-    # isScheduledDFProcessRequestCompleted,
-    # isScheduledDFProcessRequestStarted,
+    # isPaused
+    # isScheduledDFProcessRequestCompleted
+    # isScheduledDFProcessRequestStarted
     # lastScheduledDFProcessRequestUTCDateTime
     # nextScheduledDFProcessRequestUTCDateTime
     # PacID
@@ -374,6 +374,6 @@ class TestDFMaintenanceFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-    # pausedByUsername,
+    # pausedByUsername
     # pausedUTCDateTime
-    # scheduledDFProcessRequestProcessorIdentifier,
+    # scheduledDFProcessRequestProcessorIdentifier

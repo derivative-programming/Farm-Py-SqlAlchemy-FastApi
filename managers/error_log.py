@@ -404,10 +404,8 @@ class ErrorLogManager:
         data = json.loads(json_str)
         error_log_dict = schema.load(data)
 
-        #we need to load the obj form db and into session first.
+        # we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
-
-        # new_error_log = ErrorLog(**error_log_dict)
 
         # load or create
         new_error_log = await self.get_by_id(

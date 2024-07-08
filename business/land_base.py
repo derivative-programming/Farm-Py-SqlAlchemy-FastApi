@@ -278,7 +278,9 @@ class LandBaseBusObj(BaseBusObj):
         :param value: The Description value.
         :raises AttributeError: If the
             Land object is not initialized.
-        :raises AssertionError: If the Description is not a string.
+        :raises AssertionError: If the
+            Description
+            is not a string.
         """
 
         if not self.land:
@@ -286,7 +288,8 @@ class LandBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "description must be a string"
+        assert isinstance(value, str), \
+            "description must be a string"
         self.land.description = value
     # displayOrder
 
@@ -410,7 +413,9 @@ class LandBaseBusObj(BaseBusObj):
         :param value: The Lookup Enum Name value.
         :raises AttributeError: If the
             Land object is not initialized.
-        :raises AssertionError: If the Lookup Enum Name is not a string.
+        :raises AssertionError: If the
+            Lookup Enum Name
+            is not a string.
         """
 
         if not self.land:
@@ -418,7 +423,8 @@ class LandBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "lookup_enum_name must be a string"
+        assert isinstance(value, str), \
+            "lookup_enum_name must be a string"
         self.land.lookup_enum_name = value
     # name
 
@@ -452,7 +458,9 @@ class LandBaseBusObj(BaseBusObj):
         :param value: The Name value.
         :raises AttributeError: If the
             Land object is not initialized.
-        :raises AssertionError: If the Name is not a string.
+        :raises AssertionError: If the
+            Name
+            is not a string.
         """
 
         if not self.land:
@@ -460,14 +468,15 @@ class LandBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "name must be a string"
+        assert isinstance(value, str), \
+            "name must be a string"
         self.land.name = value
     # PacID
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     @property
@@ -929,7 +938,7 @@ class LandBaseBusObj(BaseBusObj):
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.land.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        # self.land.pac_id = random.randint(0, 100)
+        # pac_id
 
         return self
 
@@ -1002,11 +1011,11 @@ class LandBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.land_id
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     async def get_parent_name(self) -> str:

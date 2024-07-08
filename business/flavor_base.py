@@ -278,7 +278,9 @@ class FlavorBaseBusObj(BaseBusObj):
         :param value: The Description value.
         :raises AttributeError: If the
             Flavor object is not initialized.
-        :raises AssertionError: If the Description is not a string.
+        :raises AssertionError: If the
+            Description
+            is not a string.
         """
 
         if not self.flavor:
@@ -286,7 +288,8 @@ class FlavorBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "description must be a string"
+        assert isinstance(value, str), \
+            "description must be a string"
         self.flavor.description = value
     # displayOrder
 
@@ -410,7 +413,9 @@ class FlavorBaseBusObj(BaseBusObj):
         :param value: The Lookup Enum Name value.
         :raises AttributeError: If the
             Flavor object is not initialized.
-        :raises AssertionError: If the Lookup Enum Name is not a string.
+        :raises AssertionError: If the
+            Lookup Enum Name
+            is not a string.
         """
 
         if not self.flavor:
@@ -418,7 +423,8 @@ class FlavorBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "lookup_enum_name must be a string"
+        assert isinstance(value, str), \
+            "lookup_enum_name must be a string"
         self.flavor.lookup_enum_name = value
     # name
 
@@ -452,7 +458,9 @@ class FlavorBaseBusObj(BaseBusObj):
         :param value: The Name value.
         :raises AttributeError: If the
             Flavor object is not initialized.
-        :raises AssertionError: If the Name is not a string.
+        :raises AssertionError: If the
+            Name
+            is not a string.
         """
 
         if not self.flavor:
@@ -460,14 +468,15 @@ class FlavorBaseBusObj(BaseBusObj):
                 NOT_INITIALIZED_ERROR_MESSAGE
             )
 
-        assert isinstance(value, str), "name must be a string"
+        assert isinstance(value, str), \
+            "name must be a string"
         self.flavor.name = value
     # PacID
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     @property
@@ -929,7 +938,7 @@ class FlavorBaseBusObj(BaseBusObj):
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
         self.flavor.name = "".join(
             random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        # self.flavor.pac_id = random.randint(0, 100)
+        # pac_id
 
         return self
 
@@ -1002,11 +1011,11 @@ class FlavorBaseBusObj(BaseBusObj):
         :rtype: int
         """
         return self.flavor_id
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     async def get_parent_name(self) -> str:

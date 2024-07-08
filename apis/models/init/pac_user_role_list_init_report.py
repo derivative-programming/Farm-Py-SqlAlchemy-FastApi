@@ -43,7 +43,7 @@ class PacUserRoleListInitReportGetInitModelResponse(
     def load_flow_response(
         self,
         data: FlowPacUserRoleListInitReportResult
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Loads the response data from the
         FlowPacUserRoleListInitReportResult object.

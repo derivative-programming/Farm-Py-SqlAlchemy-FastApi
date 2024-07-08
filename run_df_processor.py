@@ -1,3 +1,14 @@
+# run_df_processor.py  # pylint: disable=duplicate-code
+"""
+This module is responsible for running the data flow processor.
+
+It initializes the database, configures logging,
+and runs the DynaFlowProcessor.
+
+Functions:
+- init_db: Create the database tables.
+- main: Initialize the database and run the DynaFlowProcessor.
+"""
 
 import asyncio
 import logging
@@ -24,7 +35,7 @@ logging.basicConfig(level=logging.INFO,
 
 async def init_db():
     """
-    Create the database tables
+    Create the database tables.
     """
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
@@ -38,8 +49,7 @@ async def init_db():
 
 async def main():
     """
-    - Initialize the database
-    - run to df processor
+    Initialize the database and run the DynaFlowProcessor.
     """
     await init_db()
 

@@ -300,7 +300,7 @@ class CustomerRole(Base):
 
         self._last_update_utc_date_time = value
     # CustomerID
-    # isPlaceholder,
+    # isPlaceholder
 
     @property
     def is_placeholder(self) -> bool:
@@ -320,7 +320,7 @@ class CustomerRole(Base):
         """
 
         self._is_placeholder = value
-    # placeholder,
+    # placeholder
 
     @property
     def placeholder(self) -> bool:

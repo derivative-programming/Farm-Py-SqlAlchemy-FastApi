@@ -1,6 +1,7 @@
 # business/tests/df_maintenance_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -833,9 +834,9 @@ class TestDFMaintenanceBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.scheduled_df_process_request_processor_identifier = \
                 123
-    # isPaused,
-    # isScheduledDFProcessRequestCompleted,
-    # isScheduledDFProcessRequestStarted,
+    # isPaused
+    # isScheduledDFProcessRequestCompleted
+    # isScheduledDFProcessRequestStarted
     # lastScheduledDFProcessRequestUTCDateTime
     # nextScheduledDFProcessRequestUTCDateTime
     # PacID
@@ -867,9 +868,9 @@ class TestDFMaintenanceBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.pac_id = \
                 "not-an-int"
-    # pausedByUsername,
+    # pausedByUsername
     # pausedUTCDateTime
-    # scheduledDFProcessRequestProcessorIdentifier,
+    # scheduledDFProcessRequestProcessorIdentifier
 
     def test_insert_utc_date_time(
             self,

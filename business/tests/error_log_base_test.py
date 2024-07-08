@@ -1,6 +1,7 @@
 # business/tests/error_log_base_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
+# pylint: disable=too-few-public-methods
 
 """
 This module contains unit tests for the
@@ -801,12 +802,12 @@ class TestErrorLogBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.url = \
                 123
-    # browserCode,
-    # contextCode,
+    # browserCode
+    # contextCode
     # createdUTCDateTime
-    # description,
-    # isClientSideError,
-    # isResolved,
+    # description
+    # isClientSideError
+    # isResolved
     # PacID
 
     def test_pac_id(
@@ -836,7 +837,7 @@ class TestErrorLogBaseBusObj:
         with pytest.raises(AssertionError):
             mock_sess_base_bus_obj.pac_id = \
                 "not-an-int"
-    # url,
+    # url
 
     def test_insert_utc_date_time(
             self,

@@ -129,19 +129,29 @@ class CustomerUserLogOutRouter(BaseRouter):
         # Start a transaction
         async with session:
             try:
-                logging.info("Start session...")
+                logging.info(
+                    "CustomerUserLogOutRouter"
+                    ".request_get_init "
+                    "Start session...")
                 session_context = SessionContext(auth_dict, session)
                 customer_code = session_context.check_context_code(
                     "CustomerCode",
                     customer_code
                 )
 
+                logging.info(
+                    "CustomerUserLogOutRouter."
+                    "request_get_init "
+                    "process_request...")
                 response = await init_request.process_request(
                     session_context,
                     customer_code,
                     response
                 )
             except TypeError as te:
+                logging.info(
+                    "CustomerUserLogOutRouter.request_get_init"
+                    " TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__))
@@ -163,8 +173,9 @@ class CustomerUserLogOutRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "CustomerUserLogOutRouter"
-            ".init get result:%s",
+            "CustomerUserLogOutRouter."
+            "request_get_init "
+            "result:%s",
             response_data)
         return response
 
@@ -217,13 +228,19 @@ class CustomerUserLogOutRouter(BaseRouter):
         # Start a transaction
         async with session:
             try:
-                logging.info("Start session...")
+                logging.info(
+                    "CustomerUserLogOutRouter."
+                    "request_post_with_id "
+                    "Start session...")
                 session_context = SessionContext(auth_dict, session)
                 customer_code = session_context.check_context_code(
                     "CustomerCode",
                     customer_code)
 
-                logging.info("Request...")
+                logging.info(
+                    "CustomerUserLogOutRouter."
+                    "request_post_with_id "
+                    "Request...")
                 logging.info(request_model.__dict__)
                 await response.process_request(
                     session_context,
@@ -231,7 +248,10 @@ class CustomerUserLogOutRouter(BaseRouter):
                     request_model
                 )
             except TypeError as te:
-                logging.info("TypeError Exception occurred")
+                logging.info(
+                    "CustomerUserLogOutRouter."
+                    "request_post_with_id "
+                    "TypeError Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(te.__traceback__)
@@ -239,7 +259,10 @@ class CustomerUserLogOutRouter(BaseRouter):
                 response.message = f"{te} traceback: {traceback_string}"
                 logging.info(API_LOG_ERROR_FORMAT, response.message)
             except Exception as e:  # pylint: disable=broad-exception-caught
-                logging.info("Exception occurred")
+                logging.info(
+                    "CustomerUserLogOutRouter."
+                    "request_post_with_id "
+                    "Exception occurred")
                 response.success = False
                 traceback_string = "".join(
                     traceback.format_tb(e.__traceback__)
@@ -253,7 +276,8 @@ class CustomerUserLogOutRouter(BaseRouter):
                     await session.rollback()
         response_data = response.model_dump_json()
         logging.info(
-            "CustomerUserLogOutRouter"
-            ".submit get result:%s",
+            "CustomerUserLogOutRouter."
+            "request_post_with_id "
+            "get result:%s",
             response_data)
         return response

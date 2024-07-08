@@ -68,12 +68,12 @@ class TestDFMaintenanceFactoryAsync:
             await connection.begin_nested()
             await connection.run_sync(Base.metadata.drop_all)
             await connection.run_sync(Base.metadata.create_all)
-            TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+            testing_session_local = sessionmaker(  # pylint: disable=invalid-name
                 expire_on_commit=False,
                 class_=AsyncSession,
                 bind=engine,
             )
-            async with TestingSessionLocal(bind=connection) as session:  # type: ignore # noqa: E501
+            async with testing_session_local(bind=connection) as session:  # type: ignore # noqa: E501
                 @event.listens_for(
                     session.sync_session, "after_transaction_end"
                 )
@@ -425,17 +425,17 @@ class TestDFMaintenanceFactoryAsync:
         assert obj.scheduled_df_process_request_processor_identifier == "" or isinstance(
             obj.scheduled_df_process_request_processor_identifier, str)
         # Check for the peek values
-        # isPaused,
-        # isScheduledDFProcessRequestCompleted,
-        # isScheduledDFProcessRequestStarted,
+        # isPaused
+        # isScheduledDFProcessRequestCompleted
+        # isScheduledDFProcessRequestStarted
         # lastScheduledDFProcessRequestUTCDateTime
         # nextScheduledDFProcessRequestUTCDateTime
         # pacID
 
         assert isinstance(obj.pac_code_peek, uuid.UUID)
-        # pausedByUsername,
+        # pausedByUsername
         # pausedUTCDateTime
-        # scheduledDFProcessRequestProcessorIdentifier,
+        # scheduledDFProcessRequestProcessorIdentifier
 
         assert isinstance(obj.insert_utc_date_time, datetime)
         assert isinstance(obj.last_update_utc_date_time, datetime)
@@ -495,17 +495,17 @@ class TestDFMaintenanceFactoryAsync:
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
 
-        # isPaused,
-        # isScheduledDFProcessRequestCompleted,
-        # isScheduledDFProcessRequestStarted,
+        # isPaused
+        # isScheduledDFProcessRequestCompleted
+        # isScheduledDFProcessRequestStarted
         # lastScheduledDFProcessRequestUTCDateTime
         # nextScheduledDFProcessRequestUTCDateTime
         # PacID
 
         assert isinstance(new_obj.pac_code_peek, uuid.UUID)
-        # pausedByUsername,
+        # pausedByUsername
         # pausedUTCDateTime
-        # scheduledDFProcessRequestProcessorIdentifier,
+        # scheduledDFProcessRequestProcessorIdentifier
         assert new_obj.is_paused is False
         assert new_obj.is_scheduled_df_process_request_completed is False
         assert new_obj.is_scheduled_df_process_request_started is False
@@ -564,8 +564,6 @@ class TestDFMaintenanceFactoryAsync:
         result = await session.execute(stmt)
         obj_1 = result.scalars().first()
 
-        # obj_1 = await session.query(DFMaintenance).filter_by(
-        # df_maintenance_id=df_maintenance.df_maintenance_id).first()
         obj_1.code = uuid.uuid4()
         await session.commit()
 
@@ -575,14 +573,12 @@ class TestDFMaintenanceFactoryAsync:
         result = await session.execute(stmt)
         obj_2 = result.scalars().first()
 
-        # obj_2 = await session.query(DFMaintenance).filter_by(
-        # df_maintenance_id=df_maintenance.df_maintenance_id).first()
         obj_2.code = uuid.uuid4()
         await session.commit()
         assert obj_2.last_change_code != original_last_change_code
-    # isPaused,
-    # isScheduledDFProcessRequestCompleted,
-    # isScheduledDFProcessRequestStarted,
+    # isPaused
+    # isScheduledDFProcessRequestCompleted
+    # isScheduledDFProcessRequestStarted
     # lastScheduledDFProcessRequestUTCDateTime
     # nextScheduledDFProcessRequestUTCDateTime
     # PacID
@@ -611,6 +607,6 @@ class TestDFMaintenanceFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-    # pausedByUsername,
+    # pausedByUsername
     # pausedUTCDateTime
-    # scheduledDFProcessRequestProcessorIdentifier,
+    # scheduledDFProcessRequestProcessorIdentifier

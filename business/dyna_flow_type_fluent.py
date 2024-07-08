@@ -115,11 +115,11 @@ class DynaFlowTypeFluentBusObj(DynaFlowTypeBaseBusObj):
         """
         self.priority_level = value
         return self
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     def set_prop_pac_id(self, value: int):
@@ -137,4 +137,4 @@ class DynaFlowTypeFluentBusObj(DynaFlowTypeBaseBusObj):
 
         self.pac_id = value
         return self
-    # priorityLevel,
+    # priorityLevel

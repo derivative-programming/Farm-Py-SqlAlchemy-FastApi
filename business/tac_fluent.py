@@ -98,11 +98,11 @@ class TacFluentBusObj(TacBaseBusObj):
         self.name = value
         return self
     # PacID
-    # description,
-    # displayOrder,
-    # isActive,
-    # lookupEnumName,
-    # name,
+    # description
+    # displayOrder
+    # isActive
+    # lookupEnumName
+    # name
     # PacID
 
     def set_prop_pac_id(self, value: int):

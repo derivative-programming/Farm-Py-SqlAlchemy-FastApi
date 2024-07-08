@@ -66,7 +66,7 @@ class OrganizationBusObj(OrganizationDynaFlowsBusObj):
             result.append(organization_bus_obj)
 
         return result
-    # name,
+    # name
     # TacID
 
     async def get_tac_id_obj(self) -> models.Tac:

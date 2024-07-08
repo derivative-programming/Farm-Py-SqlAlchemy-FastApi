@@ -68,12 +68,12 @@ class TestDynaFlowTaskFactoryAsync:
             await connection.begin_nested()
             await connection.run_sync(Base.metadata.drop_all)
             await connection.run_sync(Base.metadata.create_all)
-            TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+            testing_session_local = sessionmaker(  # pylint: disable=invalid-name
                 expire_on_commit=False,
                 class_=AsyncSession,
                 bind=engine,
             )
-            async with TestingSessionLocal(bind=connection) as session:  # type: ignore # noqa: E501
+            async with testing_session_local(bind=connection) as session:  # type: ignore # noqa: E501
                 @event.listens_for(
                     session.sync_session, "after_transaction_end"
                 )
@@ -442,30 +442,30 @@ class TestDynaFlowTaskFactoryAsync:
         assert isinstance(obj.started_utc_date_time, datetime)
         # Check for the peek values
         # completedUTCDateTime
-        # dependencyDynaFlowTaskID,
-        # description,
+        # dependencyDynaFlowTaskID
+        # description
         # dynaFlowID
 
         assert isinstance(obj.dyna_flow_code_peek, uuid.UUID)
-        # dynaFlowSubjectCode,
+        # dynaFlowSubjectCode
         # dynaFlowTaskTypeID
 
         assert isinstance(obj.dyna_flow_task_type_code_peek, uuid.UUID)
-        # isCanceled,
-        # isCancelRequested,
-        # isCompleted,
-        # isParallelRunAllowed,
-        # isRunTaskDebugRequired,
-        # isStarted,
-        # isSuccessful,
-        # maxRetryCount,
+        # isCanceled
+        # isCancelRequested
+        # isCompleted
+        # isParallelRunAllowed
+        # isRunTaskDebugRequired
+        # isStarted
+        # isSuccessful
+        # maxRetryCount
         # minStartUTCDateTime
-        # param1,
-        # param2,
-        # processorIdentifier,
+        # param1
+        # param2
+        # processorIdentifier
         # requestedUTCDateTime
-        # resultValue,
-        # retryCount,
+        # resultValue
+        # retryCount
         # startedUTCDateTime
 
         assert isinstance(obj.insert_utc_date_time, datetime)
@@ -527,30 +527,30 @@ class TestDynaFlowTaskFactoryAsync:
         assert new_obj.last_update_utc_date_time is not None
 
         # completedUTCDateTime
-        # dependencyDynaFlowTaskID,
-        # description,
+        # dependencyDynaFlowTaskID
+        # description
         # DynaFlowID
 
         assert isinstance(new_obj.dyna_flow_code_peek, uuid.UUID)
-        # dynaFlowSubjectCode,
+        # dynaFlowSubjectCode
         # DynaFlowTaskTypeID
 
         assert isinstance(new_obj.dyna_flow_task_type_code_peek, uuid.UUID)
-        # isCanceled,
-        # isCancelRequested,
-        # isCompleted,
-        # isParallelRunAllowed,
-        # isRunTaskDebugRequired,
-        # isStarted,
-        # isSuccessful,
-        # maxRetryCount,
+        # isCanceled
+        # isCancelRequested
+        # isCompleted
+        # isParallelRunAllowed
+        # isRunTaskDebugRequired
+        # isStarted
+        # isSuccessful
+        # maxRetryCount
         # minStartUTCDateTime
-        # param1,
-        # param2,
-        # processorIdentifier,
+        # param1
+        # param2
+        # processorIdentifier
         # requestedUTCDateTime
-        # resultValue,
-        # retryCount,
+        # resultValue
+        # retryCount
         # startedUTCDateTime
         assert new_obj.completed_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.dependency_dyna_flow_task_id == 0
@@ -623,8 +623,6 @@ class TestDynaFlowTaskFactoryAsync:
         result = await session.execute(stmt)
         obj_1 = result.scalars().first()
 
-        # obj_1 = await session.query(DynaFlowTask).filter_by(
-        # dyna_flow_task_id=dyna_flow_task.dyna_flow_task_id).first()
         obj_1.code = uuid.uuid4()
         await session.commit()
 
@@ -634,14 +632,12 @@ class TestDynaFlowTaskFactoryAsync:
         result = await session.execute(stmt)
         obj_2 = result.scalars().first()
 
-        # obj_2 = await session.query(DynaFlowTask).filter_by(
-        # dyna_flow_task_id=dyna_flow_task.dyna_flow_task_id).first()
         obj_2.code = uuid.uuid4()
         await session.commit()
         assert obj_2.last_change_code != original_last_change_code
     # completedUTCDateTime
-    # dependencyDynaFlowTaskID,
-    # description,
+    # dependencyDynaFlowTaskID
+    # description
     # DynaFlowID
 
     @pytest.mark.asyncio
@@ -668,7 +664,7 @@ class TestDynaFlowTaskFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-    # dynaFlowSubjectCode,
+    # dynaFlowSubjectCode
     # DynaFlowTaskTypeID
 
     @pytest.mark.asyncio
@@ -695,19 +691,19 @@ class TestDynaFlowTaskFactoryAsync:
         with pytest.raises(IntegrityError):
             await session.commit()
         await session.rollback()
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isParallelRunAllowed,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # maxRetryCount,
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isParallelRunAllowed
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # maxRetryCount
     # minStartUTCDateTime
-    # param1,
-    # param2,
-    # processorIdentifier,
+    # param1
+    # param2
+    # processorIdentifier
     # requestedUTCDateTime
-    # resultValue,
-    # retryCount,
+    # resultValue
+    # retryCount
     # startedUTCDateTime

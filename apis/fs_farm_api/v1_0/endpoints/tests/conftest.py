@@ -34,14 +34,14 @@ async def overridden_get_db():
         await conn.run_sync(Base.metadata.create_all)
 
     # Create a sessionmaker
-    AsyncSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+    async_session_local = sessionmaker(  # pylint: disable=invalid-name
         bind=engine,
         class_=AsyncSession,
         expire_on_commit=False
     )
 
     # Create a new session for the test
-    async with AsyncSessionLocal() as session:  # type: ignore
+    async with async_session_local() as session:  # type: ignore
         yield session
 
     # After the test is done, drop all the tables

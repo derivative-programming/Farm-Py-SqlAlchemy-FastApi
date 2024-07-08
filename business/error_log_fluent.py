@@ -126,12 +126,12 @@ class ErrorLogFluentBusObj(ErrorLogBaseBusObj):
 
         self.url = value
         return self
-    # browserCode,
-    # contextCode,
+    # browserCode
+    # contextCode
     # createdUTCDateTime
-    # description,
-    # isClientSideError,
-    # isResolved,
+    # description
+    # isClientSideError
+    # isResolved
     # PacID
 
     def set_prop_pac_id(self, value: int):
@@ -149,4 +149,4 @@ class ErrorLogFluentBusObj(ErrorLogBaseBusObj):
 
         self.pac_id = value
         return self
-    # url,
+    # url

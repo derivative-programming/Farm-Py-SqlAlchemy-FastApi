@@ -32,7 +32,6 @@ class DFMaintenanceFactory(factory.Factory):
 
         model = DFMaintenance
 
-    # df_maintenance_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
@@ -42,7 +41,7 @@ class DFMaintenanceFactory(factory.Factory):
     is_scheduled_df_process_request_started = Faker('boolean')
     last_scheduled_df_process_request_utc_date_time = factory.LazyFunction(datetime.utcnow)
     next_scheduled_df_process_request_utc_date_time = factory.LazyFunction(datetime.utcnow)
-    # pac_id = 0
+    # pac_id
     paused_by_username = Faker('sentence', nb_words=4)
     paused_utc_date_time = factory.LazyFunction(datetime.utcnow)
     scheduled_df_process_request_processor_identifier = Faker('sentence', nb_words=4)
@@ -53,7 +52,7 @@ class DFMaintenanceFactory(factory.Factory):
     @classmethod
     def _build(
         cls, model_class, *args, session=None, **kwargs
-    ) -> DFMaintenance:
+    ) -> DFMaintenance:  # pylint: disable=unused-argument
         """
             Builds and returns an instance
             of the DFMaintenance model.
@@ -83,14 +82,12 @@ class DFMaintenanceFactory(factory.Factory):
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
-        # session.add(obj)
-        # session.commit()
         return obj
 
     @classmethod
     def _create(
         cls, model_class, *args, session=None, **kwargs
-    ) -> DFMaintenance:
+    ) -> DFMaintenance:  # pylint: disable=unused-argument
         """
         Create a new
         DFMaintenance object
@@ -128,7 +125,7 @@ class DFMaintenanceFactory(factory.Factory):
     @classmethod
     async def create_async(
         cls, session, *args, **kwargs
-    ) -> DFMaintenance:
+    ) -> DFMaintenance:  # pylint: disable=unused-argument
         """
         Create a new
         DFMaintenance object
@@ -160,7 +157,7 @@ class DFMaintenanceFactory(factory.Factory):
     @classmethod
     async def build_async(
         cls, session, *args, **kwargs
-    ) -> DFMaintenance:
+    ) -> DFMaintenance:  # pylint: disable=unused-argument
         """
         Build a new DFMaintenance object
         asynchronously.
@@ -184,6 +181,4 @@ class DFMaintenanceFactory(factory.Factory):
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
-        # session.add(obj)
-        # await session.flush()
         return obj

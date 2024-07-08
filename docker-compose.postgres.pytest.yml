@@ -15,7 +15,7 @@ services:
     volumes:
       - ./reports:/app/reports
     networks:
-      - app-network
+      - pytest-app-postgres-network
 
   app-db-server:
     image: postgres:14
@@ -26,9 +26,9 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: dp_farm
     volumes:
-      - app_postgres_data:/var/lib/postgresql/data
+      - pytest_app_postgres_data:/var/lib/postgresql/data
     networks:
-      - app-network
+      - pytest-app-postgres-network
     command: -p 5433
   
   pgadmin:
@@ -41,7 +41,7 @@ services:
     depends_on:
       - app-db-server
     networks:
-      - app-network
+      - pytest-app-postgres-network
 
   adminer:
     image: adminer
@@ -53,7 +53,7 @@ services:
     depends_on:
       - app-db-server
     networks:
-      - app-network
+      - pytest-app-postgres-network
       
 
   nginx:
@@ -66,8 +66,8 @@ services:
       - app
 
 networks:
-  app-network:
+  pytest-app-postgres-network:
     driver: bridge
 
 volumes:
-  app_postgres_data:
+  pytest_app_postgres_data:

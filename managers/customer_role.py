@@ -415,10 +415,8 @@ class CustomerRoleManager:
         data = json.loads(json_str)
         customer_role_dict = schema.load(data)
 
-        #we need to load the obj form db and into session first.
+        # we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
-
-        # new_customer_role = CustomerRole(**customer_role_dict)
 
         # load or create
         new_customer_role = await self.get_by_id(

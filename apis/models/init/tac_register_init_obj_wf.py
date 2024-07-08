@@ -62,7 +62,7 @@ class TacRegisterInitObjWFGetInitModelResponse(
     def load_flow_response(
         self,
         data: FlowTacRegisterInitObjWFResult
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Loads the response data from the
         FlowTacRegisterInitObjWFResult object.

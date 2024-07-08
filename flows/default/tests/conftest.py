@@ -80,12 +80,12 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
         await connection.begin_nested()
         await connection.run_sync(Base.metadata.drop_all)
         await connection.run_sync(Base.metadata.create_all)
-        TestingSessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        testing_session_local = sessionmaker(  # pylint: disable=invalid-name
             expire_on_commit=False,
             class_=AsyncSession,
             bind=engine,
         )
-        async with TestingSessionLocal(bind=connection) as session_obj:  # type: ignore # noqa: E501
+        async with testing_session_local(bind=connection) as session_obj:  # type: ignore # noqa: E501
             @event.listens_for(
                 session_obj.sync_session, "after_transaction_end"
             )

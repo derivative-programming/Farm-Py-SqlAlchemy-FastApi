@@ -11,38 +11,24 @@ services:
     depends_on:
       - app-db-server
     environment:
-      DATABASE_URL: postgresql+asyncpg://user:password@app-db-server:5433/dp_farm
+      DATABASE_URL: mssql+pyodbc://sa:password@app-db-server:1433/dp_farm?driver=ODBC+Driver+17+for+SQL+Server
     volumes:
       - .:/usr/src/app
     networks:
-      - app-network
+      - pytest-app-sqlserver-network
 
   app-db-server:
-    image: postgres:14
+    image: mcr.microsoft.com/mssql/server:2019-latest
     ports:
-      - "5433:5433"
+      - "1433:1433"
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: dp_farm
+      SA_PASSWORD: "password"
+      ACCEPT_EULA: "Y"
     volumes:
-      - app_postgres_data:/var/lib/postgresql/data
+      - pytest_app_sqlserver_data:/var/opt/mssql
     networks:
-      - app-network
-    command: -p 5433
+      - pytest-app-sqlserver-network
   
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
-      PGADMIN_DEFAULT_PASSWORD: "admin"
-    ports:
-      - "5050:80"
-    depends_on:
-      - app-db-server
-    networks:
-      - app-network
-
   adminer:
     image: adminer
     restart: always
@@ -53,11 +39,12 @@ services:
     depends_on:
       - app-db-server
     networks:
-      - app-network
+      - pytest-app-sqlserver-network
 
 networks:
-  app-network:
+  pytest-app-sqlserver-network:
     driver: bridge
 
 volumes:
-  app_postgres_data:
+  pytest_app_sqlserver_data:
+

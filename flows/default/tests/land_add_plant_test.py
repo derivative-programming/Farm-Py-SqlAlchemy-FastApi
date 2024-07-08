@@ -61,7 +61,6 @@ class TestLandAddPlantPostModelResponse:
         result.output_some_phone_number = "123-456-7890"
         result.output_some_email_address = "test@example.com"
 # endset
-
         # Call to_json method
         json_output = result.to_json()
 
@@ -152,7 +151,6 @@ class TestLandAddPlantPostModelResponse:
         request_some_email_address: str = ""
         request_sample_image_upload_file: str = ""
 # endset
-
         if len(role_required) > 0:
             with pytest.raises(FlowValidationError):
                 await flow.process(

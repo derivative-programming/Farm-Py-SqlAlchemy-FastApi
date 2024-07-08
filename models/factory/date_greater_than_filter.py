@@ -32,7 +32,6 @@ class DateGreaterThanFilterFactory(factory.Factory):
 
         model = DateGreaterThanFilter
 
-    # date_greater_than_filter_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
@@ -43,7 +42,7 @@ class DateGreaterThanFilterFactory(factory.Factory):
     is_active = Faker('boolean')
     lookup_enum_name = Faker('sentence', nb_words=4)
     name = Faker('sentence', nb_words=4)
-    # pac_id = 0
+    # pac_id
     pac_code_peek = factory.LazyFunction(  # PacID
         uuid.uuid4
     )
@@ -51,7 +50,7 @@ class DateGreaterThanFilterFactory(factory.Factory):
     @classmethod
     def _build(
         cls, model_class, *args, session=None, **kwargs
-    ) -> DateGreaterThanFilter:
+    ) -> DateGreaterThanFilter:  # pylint: disable=unused-argument
         """
             Builds and returns an instance
             of the DateGreaterThanFilter model.
@@ -81,14 +80,12 @@ class DateGreaterThanFilterFactory(factory.Factory):
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
-        # session.add(obj)
-        # session.commit()
         return obj
 
     @classmethod
     def _create(
         cls, model_class, *args, session=None, **kwargs
-    ) -> DateGreaterThanFilter:
+    ) -> DateGreaterThanFilter:  # pylint: disable=unused-argument
         """
         Create a new
         DateGreaterThanFilter object
@@ -126,7 +123,7 @@ class DateGreaterThanFilterFactory(factory.Factory):
     @classmethod
     async def create_async(
         cls, session, *args, **kwargs
-    ) -> DateGreaterThanFilter:
+    ) -> DateGreaterThanFilter:  # pylint: disable=unused-argument
         """
         Create a new
         DateGreaterThanFilter object
@@ -158,7 +155,7 @@ class DateGreaterThanFilterFactory(factory.Factory):
     @classmethod
     async def build_async(
         cls, session, *args, **kwargs
-    ) -> DateGreaterThanFilter:
+    ) -> DateGreaterThanFilter:  # pylint: disable=unused-argument
         """
         Build a new DateGreaterThanFilter object
         asynchronously.
@@ -182,6 +179,4 @@ class DateGreaterThanFilterFactory(factory.Factory):
         obj.pac_id = (  # PacID
             pac_id_pac_instance.pac_id)
         obj.pac_code_peek = pac_id_pac_instance.code  # PacID
-        # session.add(obj)
-        # await session.flush()
         return obj

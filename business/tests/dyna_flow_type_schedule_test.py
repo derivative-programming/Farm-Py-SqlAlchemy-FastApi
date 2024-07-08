@@ -1,6 +1,9 @@
 # business/tests/dyna_flow_type_schedule_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 """
 Unit tests for the
 DynaFlowTypeScheduleBusObj class.
@@ -165,8 +168,8 @@ class TestDynaFlowTypeScheduleBusObj:
 
         assert fk_bus_obj.code == \
             new_bus_obj.dyna_flow_type_code_peek
-    # frequencyInHours,
-    # isActive,
+    # frequencyInHours
+    # isActive
     # lastUTCDateTime
     # nextUTCDateTime
     # PacID

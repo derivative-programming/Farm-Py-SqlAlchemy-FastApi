@@ -415,10 +415,8 @@ class DynaFlowTaskManager:
         data = json.loads(json_str)
         dyna_flow_task_dict = schema.load(data)
 
-        #we need to load the obj form db and into session first.
+        # we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
-
-        # new_dyna_flow_task = DynaFlowTask(**dyna_flow_task_dict)
 
         # load or create
         new_dyna_flow_task = await self.get_by_id(

@@ -36,7 +36,7 @@ class TacFarmDashboardGetModelRequestFactory(
         cls,
         model_class,
         *args,
-        session=None,
+        session=None,  # pylint: disable=unused-argument
         **kwargs
     ) -> TacFarmDashboardGetModelRequest:
         """
@@ -66,7 +66,7 @@ class TacFarmDashboardGetModelRequestFactory(
         cls,
         model_class,
         *args,
-        session=None,
+        session=None,  # pylint: disable=unused-argument
         **kwargs
     ) -> TacFarmDashboardGetModelRequest:
         """
@@ -93,7 +93,7 @@ class TacFarmDashboardGetModelRequestFactory(
     @classmethod
     async def create_async(
         cls,
-        session: AsyncSession,
+        session: AsyncSession,  # pylint: disable=unused-argument
         *args, **kwargs
     ) -> TacFarmDashboardGetModelRequest:
         """

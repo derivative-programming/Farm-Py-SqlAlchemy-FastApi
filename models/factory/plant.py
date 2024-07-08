@@ -34,15 +34,14 @@ class PlantFactory(factory.Factory):
 
         model = Plant
 
-    # plant_id = factory.Sequence(lambda n: n)
     code = factory.LazyFunction(uuid.uuid4)
     last_change_code = 0
     insert_user_id = factory.LazyFunction(uuid.uuid4)
     last_update_user_id = factory.LazyFunction(uuid.uuid4)
-    # flvr_foreign_key_id = 0
+    # flvr_foreign_key_id
     is_delete_allowed = Faker('boolean')
     is_edit_allowed = Faker('boolean')
-    # land_id = 0
+    # land_id
     other_flavor = Faker('sentence', nb_words=4)
     some_big_int_val = Faker('random_int')
     some_bit_val = Faker('boolean')
@@ -83,7 +82,7 @@ class PlantFactory(factory.Factory):
     @classmethod
     def _build(
         cls, model_class, *args, session=None, **kwargs
-    ) -> Plant:
+    ) -> Plant:  # pylint: disable=unused-argument
         """
             Builds and returns an instance
             of the Plant model.
@@ -128,14 +127,12 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
-        # session.add(obj)
-        # session.commit()
         return obj
 
     @classmethod
     def _create(
         cls, model_class, *args, session=None, **kwargs
-    ) -> Plant:
+    ) -> Plant:  # pylint: disable=unused-argument
         """
         Create a new
         Plant object
@@ -188,7 +185,7 @@ class PlantFactory(factory.Factory):
     @classmethod
     async def create_async(
         cls, session, *args, **kwargs
-    ) -> Plant:
+    ) -> Plant:  # pylint: disable=unused-argument
         """
         Create a new
         Plant object
@@ -235,7 +232,7 @@ class PlantFactory(factory.Factory):
     @classmethod
     async def build_async(
         cls, session, *args, **kwargs
-    ) -> Plant:
+    ) -> Plant:  # pylint: disable=unused-argument
         """
         Build a new Plant object
         asynchronously.
@@ -274,6 +271,4 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
-        # session.add(obj)
-        # await session.flush()
         return obj

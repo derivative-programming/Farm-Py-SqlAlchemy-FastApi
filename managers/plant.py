@@ -427,10 +427,8 @@ class PlantManager:
         data = json.loads(json_str)
         plant_dict = schema.load(data)
 
-        #we need to load the obj form db and into session first.
+        # we need to load the obj form db and into session first.
         # If not found, then no chagnes can be saved
-
-        # new_plant = Plant(**plant_dict)
 
         # load or create
         new_plant = await self.get_by_id(

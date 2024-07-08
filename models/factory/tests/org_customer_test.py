@@ -49,9 +49,9 @@ class TestOrgCustomerFactory:
         Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        session_local = sessionmaker(  # pylint: disable=invalid-name
             bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
+        session_instance = session_local()
         yield session_instance
         session_instance.close()
 
@@ -227,7 +227,7 @@ class TestOrgCustomerFactory:
 
         assert isinstance(
             obj.customer_code_peek, uuid.UUID)
-        # email,
+        # email
         # organizationID
 
         assert isinstance(
@@ -266,7 +266,7 @@ class TestOrgCustomerFactory:
 
         assert isinstance(
             new_obj.customer_code_peek, uuid.UUID)
-        # email,
+        # email
         # OrganizationID
 
         assert isinstance(
@@ -347,7 +347,7 @@ class TestOrgCustomerFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-    # email,
+    # email
     # OrganizationID
 
     def test_invalid_organization_id(self, session):

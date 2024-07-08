@@ -63,25 +63,25 @@ class CustomerBusObj(CustomerDynaFlowsBusObj):
             result.append(customer_bus_obj)
 
         return result
-    # activeOrganizationID,
-    # email,
+    # activeOrganizationID
+    # email
     # emailConfirmedUTCDateTime
-    # firstName,
+    # firstName
     # forgotPasswordKeyExpirationUTCDateTime
-    # forgotPasswordKeyValue,
-    # fSUserCodeValue,
-    # isActive,
-    # isEmailAllowed,
-    # isEmailConfirmed,
-    # isEmailMarketingAllowed,
-    # isLocked,
-    # isMultipleOrganizationsAllowed,
-    # isVerboseLoggingForced,
+    # forgotPasswordKeyValue
+    # fSUserCodeValue
+    # isActive
+    # isEmailAllowed
+    # isEmailConfirmed
+    # isEmailMarketingAllowed
+    # isLocked
+    # isMultipleOrganizationsAllowed
+    # isVerboseLoggingForced
     # lastLoginUTCDateTime
-    # lastName,
-    # password,
-    # phone,
-    # province,
+    # lastName
+    # password
+    # phone
+    # province
     # registrationUTCDateTime
     # TacID
 
@@ -118,8 +118,8 @@ class CustomerBusObj(CustomerDynaFlowsBusObj):
         bus_obj = TacBusObj(self._session_context)
         await bus_obj.load_from_id(self.tac_id)
         return bus_obj
-    # uTCOffsetInMinutes,
-    # zip,
+    # uTCOffsetInMinutes
+    # zip
 
 
     async def build_customer_role(
@@ -132,12 +132,16 @@ class CustomerBusObj(CustomerDynaFlowsBusObj):
         item = CustomerRoleBusObj(self._session_context)
 
         assert item.customer_role is not None
-        role_manager = managers_and_enums.RoleManager(
-            self._session_context)
-        role_id_role = await role_manager.from_enum(
-            managers_and_enums.RoleEnum.UNKNOWN)
-        item.role_id = role_id_role.role_id
-        item.customer_role.role_id_code_peek = role_id_role.code
+        role_manager = \
+            managers_and_enums.RoleManager(
+                self._session_context)
+        role_id_role = await \
+            role_manager.from_enum(
+                managers_and_enums.RoleEnum.UNKNOWN)
+        item.role_id = \
+            role_id_role.role_id
+        item.customer_role.role_id_code_peek = \
+            role_id_role.code
 
         item.customer_id = self.customer_id
         item.customer_role.customer_code_peek = self.code

@@ -1,6 +1,9 @@
 # business/tests/error_log_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 """
 Unit tests for the
 ErrorLogBusObj class.
@@ -117,12 +120,12 @@ class TestErrorLogBusObj:
                 empty_obj_list)
 
         assert len(bus_obj_list) == 0
-    # browserCode,
-    # contextCode,
+    # browserCode
+    # contextCode
     # createdUTCDateTime
-    # description,
-    # isClientSideError,
-    # isResolved,
+    # description
+    # isClientSideError
+    # isResolved
     # PacID
 
     @pytest.mark.asyncio
@@ -169,4 +172,4 @@ class TestErrorLogBusObj:
 
         assert fk_bus_obj.code == \
             new_bus_obj.pac_code_peek
-    # url,
+    # url

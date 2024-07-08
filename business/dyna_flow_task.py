@@ -64,8 +64,8 @@ class DynaFlowTaskBusObj(DynaFlowTaskDynaFlowsBusObj):
 
         return result
     # completedUTCDateTime
-    # dependencyDynaFlowTaskID,
-    # description,
+    # dependencyDynaFlowTaskID
+    # description
     # DynaFlowID
 
     async def get_dyna_flow_id_obj(self) -> models.DynaFlow:
@@ -101,7 +101,7 @@ class DynaFlowTaskBusObj(DynaFlowTaskDynaFlowsBusObj):
         bus_obj = DynaFlowBusObj(self._session_context)
         await bus_obj.load_from_id(self.dyna_flow_id)
         return bus_obj
-    # dynaFlowSubjectCode,
+    # dynaFlowSubjectCode
     # DynaFlowTaskTypeID
 
     async def get_dyna_flow_task_type_id_obj(self) -> models.DynaFlowTaskType:
@@ -136,21 +136,21 @@ class DynaFlowTaskBusObj(DynaFlowTaskDynaFlowsBusObj):
         bus_obj = DynaFlowTaskTypeBusObj(self._session_context)
         await bus_obj.load_from_id(self.dyna_flow_task_type_id)
         return bus_obj
-    # isCanceled,
-    # isCancelRequested,
-    # isCompleted,
-    # isParallelRunAllowed,
-    # isRunTaskDebugRequired,
-    # isStarted,
-    # isSuccessful,
-    # maxRetryCount,
+    # isCanceled
+    # isCancelRequested
+    # isCompleted
+    # isParallelRunAllowed
+    # isRunTaskDebugRequired
+    # isStarted
+    # isSuccessful
+    # maxRetryCount
     # minStartUTCDateTime
-    # param1,
-    # param2,
-    # processorIdentifier,
+    # param1
+    # param2
+    # processorIdentifier
     # requestedUTCDateTime
-    # resultValue,
-    # retryCount,
+    # resultValue
+    # retryCount
     # startedUTCDateTime
 
 

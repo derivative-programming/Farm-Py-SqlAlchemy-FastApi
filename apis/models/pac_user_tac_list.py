@@ -224,7 +224,7 @@ class PacUserTacListGetModelResponse(
         session_context: SessionContext,
         pac_code: uuid.UUID,
         request: PacUserTacListGetModelRequest
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Processes the API request and generates the response items.
 

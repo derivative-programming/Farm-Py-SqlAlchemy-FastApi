@@ -43,7 +43,7 @@ class PacUserTriStateFilterListInitReportGetInitModelResponse(
     def load_flow_response(
         self,
         data: FlowPacUserTriStateFilterListInitReportResult
-    ):
+    ):  # pylint: disable=unused-argument
         """
         Loads the response data from the
         FlowPacUserTriStateFilterListInitReportResult object.

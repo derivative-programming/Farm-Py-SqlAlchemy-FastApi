@@ -344,7 +344,7 @@ class ErrorLog(Base):
             value = value.replace(tzinfo=timezone.utc)
 
         self._last_update_utc_date_time = value
-    # browserCode,
+    # browserCode
 
     @property
     def browser_code(self):
@@ -384,7 +384,7 @@ class ErrorLog(Base):
             except ValueError as e:
                 raise ValueError(f"Invalid UUID value: {value}") from e
         self.last_update_utc_date_time = datetime.now(timezone.utc)
-    # contextCode,
+    # contextCode
 
     @property
     def context_code(self):
@@ -453,7 +453,7 @@ class ErrorLog(Base):
             # If the datetime is naive, assume UTC
             value = value.replace(tzinfo=timezone.utc)
         self._created_utc_date_time = value
-    # description,
+    # description
 
     @property
     def description(self) -> str:
@@ -474,7 +474,7 @@ class ErrorLog(Base):
         """
 
         self._description = value
-    # isClientSideError,
+    # isClientSideError
 
     @property
     def is_client_side_error(self) -> bool:
@@ -494,7 +494,7 @@ class ErrorLog(Base):
         """
 
         self._is_client_side_error = value
-    # isResolved,
+    # isResolved
 
     @property
     def is_resolved(self) -> bool:
@@ -515,7 +515,7 @@ class ErrorLog(Base):
 
         self._is_resolved = value
     # PacID
-    # url,
+    # url
 
     @property
     def url(self) -> str:

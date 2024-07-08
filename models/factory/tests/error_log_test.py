@@ -49,9 +49,9 @@ class TestErrorLogFactory:
         Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
-        SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+        session_local = sessionmaker(  # pylint: disable=invalid-name
             bind=engine, expire_on_commit=False)
-        session_instance = SessionLocal()
+        session_instance = session_local()
         yield session_instance
         session_instance.close()
 
@@ -234,17 +234,17 @@ class TestErrorLogFactory:
         assert isinstance(obj.pac_id, int)
         assert obj.url == "" or isinstance(
             obj.url, str)
-        # browserCode,
-        # contextCode,
+        # browserCode
+        # contextCode
         # createdUTCDateTime
-        # description,
-        # isClientSideError,
-        # isResolved,
+        # description
+        # isClientSideError
+        # isResolved
         # pacID
 
         assert isinstance(
             obj.pac_code_peek, uuid.UUID)
-        # url,
+        # url
         assert isinstance(obj.insert_utc_date_time, datetime)
         assert isinstance(obj.last_update_utc_date_time, datetime)
 
@@ -275,17 +275,17 @@ class TestErrorLogFactory:
         assert new_obj.last_update_user_id == uuid.UUID(int=0)
         assert new_obj.insert_utc_date_time is not None
         assert new_obj.last_update_utc_date_time is not None
-        # browserCode,
-        # contextCode,
+        # browserCode
+        # contextCode
         # createdUTCDateTime
-        # description,
-        # isClientSideError,
-        # isResolved,
+        # description
+        # isClientSideError
+        # isResolved
         # PacID
 
         assert isinstance(
             new_obj.pac_code_peek, uuid.UUID)
-        # url,
+        # url
         assert new_obj is not None
         # browser_code
         assert isinstance(
@@ -348,12 +348,12 @@ class TestErrorLogFactory:
         session.commit()
         assert error_log_2.last_change_code != \
             original_last_change_code
-    # browserCode,
-    # contextCode,
+    # browserCode
+    # contextCode
     # createdUTCDateTime
-    # description,
-    # isClientSideError,
-    # isResolved,
+    # description
+    # isClientSideError
+    # isResolved
     # PacID
 
     def test_invalid_pac_id(self, session):
@@ -381,4 +381,4 @@ class TestErrorLogFactory:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
-    # url,
+    # url

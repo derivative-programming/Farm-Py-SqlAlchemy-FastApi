@@ -1,5 +1,6 @@
 # business/tests/error_log_fluent_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 """
 Unit tests for the
 ErrorLogFluentBusObj class.
@@ -119,12 +120,12 @@ class TestErrorLogFluentBusObj:
         assert new_fluent_bus_obj.url == \
             "Vanilla"
         assert result is new_fluent_bus_obj
-    # browserCode,
-    # contextCode,
+    # browserCode
+    # contextCode
     # createdUTCDateTime
-    # description,
-    # isClientSideError,
-    # isResolved,
+    # description
+    # isClientSideError
+    # isResolved
     # PacID
 
     def test_set_prop_pac_id(self, new_fluent_bus_obj):
@@ -134,4 +135,4 @@ class TestErrorLogFluentBusObj:
         result = new_fluent_bus_obj.set_prop_pac_id(1)
         assert new_fluent_bus_obj.pac_id == 1
         assert result is new_fluent_bus_obj
-    # url,
+    # url

@@ -1,6 +1,9 @@
 # business/tests/dft_dependency_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 """
 Unit tests for the
 DFTDependencyBusObj class.
@@ -117,7 +120,7 @@ class TestDFTDependencyBusObj:
                 empty_obj_list)
 
         assert len(bus_obj_list) == 0
-    # dependencyDFTaskID,
+    # dependencyDFTaskID
     # DynaFlowTaskID
 
     @pytest.mark.asyncio
@@ -164,4 +167,4 @@ class TestDFTDependencyBusObj:
 
         assert fk_bus_obj.code == \
             new_bus_obj.dyna_flow_task_code_peek
-    # isPlaceholder,
+    # isPlaceholder

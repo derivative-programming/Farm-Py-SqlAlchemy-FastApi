@@ -1,6 +1,7 @@
 # apis/models/tests/customer_build_temp_api_key_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains unit tests for the
 CustomerBuildTempApiKeyPostModelResponse class.
@@ -131,7 +132,7 @@ class TestCustomerBuildTempApiKeyPostModelRequest:
         assert data == expected_data
 
 
-class TestCustomerBuildTempApiKeyPostModelResponse:  # pylint: disable=too-few-public-methods
+class TestCustomerBuildTempApiKeyPostModelResponse:
     """
     This class contains unit tests for the
     CustomerBuildTempApiKeyPostModelResponse class.

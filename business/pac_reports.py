@@ -39,7 +39,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac User Tri State Filter List report.
 
         Returns:
-            List[ReportItemPacUserTriStateFilterList]: The Pac User Tri State Filter List report.
+            List[ReportItemPacUserTriStateFilterList]:
+                The Pac User Tri State Filter List report.
         """
         report_manager = reports_managers. \
             ReportManagerPacUserTriStateFilterList(
@@ -66,7 +67,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac User Tac List report.
 
         Returns:
-            List[ReportItemPacUserTacList]: The Pac User Tac List report.
+            List[ReportItemPacUserTacList]:
+                The Pac User Tac List report.
         """
         report_manager = reports_managers. \
             ReportManagerPacUserTacList(
@@ -93,7 +95,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac User Role List report.
 
         Returns:
-            List[ReportItemPacUserRoleList]: The Pac User Role List report.
+            List[ReportItemPacUserRoleList]:
+                The Pac User Role List report.
         """
         report_manager = reports_managers. \
             ReportManagerPacUserRoleList(
@@ -120,7 +123,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac User Land List report.
 
         Returns:
-            List[ReportItemPacUserLandList]: The Pac User Land List report.
+            List[ReportItemPacUserLandList]:
+                The Pac User Land List report.
         """
         report_manager = reports_managers. \
             ReportManagerPacUserLandList(
@@ -147,7 +151,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac User Flavor List report.
 
         Returns:
-            List[ReportItemPacUserFlavorList]: The Pac User Flavor List report.
+            List[ReportItemPacUserFlavorList]:
+                The Pac User Flavor List report.
         """
         report_manager = reports_managers. \
             ReportManagerPacUserFlavorList(
@@ -174,7 +179,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac User Dyna Flow Type List report.
 
         Returns:
-            List[ReportItemPacUserDynaFlowTypeList]: The Pac User Dyna Flow Type List report.
+            List[ReportItemPacUserDynaFlowTypeList]:
+                The Pac User Dyna Flow Type List report.
         """
         report_manager = reports_managers. \
             ReportManagerPacUserDynaFlowTypeList(
@@ -201,7 +207,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac User Dyna Flow Task Type List report.
 
         Returns:
-            List[ReportItemPacUserDynaFlowTaskTypeList]: The Pac User Dyna Flow Task Type List report.
+            List[ReportItemPacUserDynaFlowTaskTypeList]:
+                The Pac User Dyna Flow Task Type List report.
         """
         report_manager = reports_managers. \
             ReportManagerPacUserDynaFlowTaskTypeList(
@@ -228,7 +235,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac User Date Greater Than Filter List report.
 
         Returns:
-            List[ReportItemPacUserDateGreaterThanFilterList]: The Pac User Date Greater Than Filter List report.
+            List[ReportItemPacUserDateGreaterThanFilterList]:
+                The Pac User Date Greater Than Filter List report.
         """
         report_manager = reports_managers. \
             ReportManagerPacUserDateGreaterThanFilterList(
@@ -264,7 +272,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac Config Dyna Flow Task Search report.
 
         Returns:
-            List[ReportItemPacConfigDynaFlowTaskSearch]: The Pac Config Dyna Flow Task Search report.
+            List[ReportItemPacConfigDynaFlowTaskSearch]:
+                The Pac Config Dyna Flow Task Search report.
         """
         report_manager = reports_managers. \
             ReportManagerPacConfigDynaFlowTaskSearch(
@@ -296,7 +305,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac Config Dyna Flow Task Run To Do List report.
 
         Returns:
-            List[ReportItemPacConfigDynaFlowTaskRunToDoList]: The Pac Config Dyna Flow Task Run To Do List report.
+            List[ReportItemPacConfigDynaFlowTaskRunToDoList]:
+                The Pac Config Dyna Flow Task Run To Do List report.
         """
         report_manager = reports_managers. \
             ReportManagerPacConfigDynaFlowTaskRunToDoList(
@@ -323,7 +333,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac Config Dyna Flow Task Retry Run List report.
 
         Returns:
-            List[ReportItemPacConfigDynaFlowTaskRetryRunList]: The Pac Config Dyna Flow Task Retry Run List report.
+            List[ReportItemPacConfigDynaFlowTaskRetryRunList]:
+                The Pac Config Dyna Flow Task Retry Run List report.
         """
         report_manager = reports_managers. \
             ReportManagerPacConfigDynaFlowTaskRetryRunList(
@@ -350,7 +361,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac Config Dyna Flow Retry Task Build List report.
 
         Returns:
-            List[ReportItemPacConfigDynaFlowRetryTaskBuildList]: The Pac Config Dyna Flow Retry Task Build List report.
+            List[ReportItemPacConfigDynaFlowRetryTaskBuildList]:
+                The Pac Config Dyna Flow Retry Task Build List report.
         """
         report_manager = reports_managers. \
             ReportManagerPacConfigDynaFlowRetryTaskBuildList(
@@ -378,7 +390,8 @@ class PacReportsBusObj(PacFluentBusObj):
         Get the Pac Config Dyna Flow DFT Build To Do List report.
 
         Returns:
-            List[ReportItemPacConfigDynaFlowDFTBuildToDoList]: The Pac Config Dyna Flow DFT Build To Do List report.
+            List[ReportItemPacConfigDynaFlowDFTBuildToDoList]:
+                The Pac Config Dyna Flow DFT Build To Do List report.
         """
         report_manager = reports_managers. \
             ReportManagerPacConfigDynaFlowDFTBuildToDoList(

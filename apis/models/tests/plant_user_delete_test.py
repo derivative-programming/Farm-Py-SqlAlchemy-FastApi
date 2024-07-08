@@ -1,6 +1,7 @@
 # apis/models/tests/plant_user_delete_test.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains unit tests for the
 PlantUserDeletePostModelResponse class.
@@ -131,7 +132,7 @@ class TestPlantUserDeletePostModelRequest:
         assert data == expected_data
 
 
-class TestPlantUserDeletePostModelResponse:  # pylint: disable=too-few-public-methods
+class TestPlantUserDeletePostModelResponse:
     """
     This class contains unit tests for the
     PlantUserDeletePostModelResponse class.
