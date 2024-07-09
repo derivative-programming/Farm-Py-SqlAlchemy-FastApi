@@ -1,4 +1,4 @@
-# apis/fs_farm_api/v1_0/endpoints/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code
+# apis/fs_farm_api/v1_0/endpoints/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

@@ -1,4 +1,4 @@
-# models/serialization_schema/organization.py  # pylint: disable=duplicate-code
+# models/serialization_schema/organization.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

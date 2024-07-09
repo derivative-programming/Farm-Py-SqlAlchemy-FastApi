@@ -1,4 +1,4 @@
-# models/serialization_schema/tests/df_maintenance_test.py  # pylint: disable=duplicate-code
+# models/serialization_schema/tests/df_maintenance_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 

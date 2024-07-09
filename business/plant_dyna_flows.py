@@ -1,4 +1,4 @@
-# business/plant_dyna_flows.py  # pylint: disable=duplicate-code
+# business/plant_dyna_flows.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 """
 This module contains the business logic related to plant dynamic flows.

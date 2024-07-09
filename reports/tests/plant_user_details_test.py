@@ -1,4 +1,4 @@
-# reports/tests/plant_user_details_test.py  # pylint: disable=duplicate-code
+# reports/tests/plant_user_details_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=protected-access
 # pylint: disable=unused-import
@@ -20,11 +20,14 @@ import pytest
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.plant import PlantFactory
-from reports.plant_user_details import ReportManagerPlantUserDetails
-from reports.providers.plant_user_details import ReportProviderPlantUserDetails
+from reports.plant_user_details import \
+    ReportManagerPlantUserDetails
+from reports.providers.plant_user_details import \
+    ReportProviderPlantUserDetails
 from reports.report_request_validation_error import \
     ReportRequestValidationError
-from reports.row_models.plant_user_details import ReportItemPlantUserDetails
+from reports.row_models.plant_user_details import \
+    ReportItemPlantUserDetails
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)

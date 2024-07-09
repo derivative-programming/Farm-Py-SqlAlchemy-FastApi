@@ -1,4 +1,4 @@
-# models/base.py  # pylint: disable=duplicate-code
+# models/base.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains the base classes and types for the SQLAlchemy models.

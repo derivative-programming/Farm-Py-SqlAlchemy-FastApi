@@ -1,4 +1,4 @@
-# models/factory/tests/error_log_test.py  # pylint: disable=duplicate-code
+# models/factory/tests/error_log_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import, too-many-public-methods
 """
 This module contains unit tests for the ErrorLogFactory
@@ -49,7 +49,7 @@ class TestErrorLogFactory:
         Fixture for creating a database session.
         """
         Base.metadata.create_all(engine)
-        session_local = sessionmaker(  # pylint: disable=invalid-name
+        session_local = sessionmaker(
             bind=engine, expire_on_commit=False)
         session_instance = session_local()
         yield session_instance

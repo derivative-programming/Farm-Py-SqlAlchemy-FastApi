@@ -1,4 +1,4 @@
-# flows/base/tests/customer_user_log_out_test.py  # pylint: disable=duplicate-code
+# flows/base/tests/customer_user_log_out_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-import
 """

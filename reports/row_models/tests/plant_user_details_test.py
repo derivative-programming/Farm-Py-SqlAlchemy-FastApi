@@ -1,4 +1,4 @@
-# reports/row_models/tests/plant_user_details_test.py  # pylint: disable=duplicate-code
+# reports/row_models/tests/plant_user_details_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import, too-many-public-methods
 
 """

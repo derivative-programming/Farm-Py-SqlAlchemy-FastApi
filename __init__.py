@@ -1,4 +1,4 @@
-# __init__.py  # pylint: disable=duplicate-code
+# __init__.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This is the main module of the Farm-Py-SqlAlchemy-FastApi package.

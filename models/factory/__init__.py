@@ -1,4 +1,4 @@
-# models/factory/__init__.py  # pylint: disable=duplicate-code
+# models/factory/__init__.py  # pylint: disable=duplicate-code # noqa: E501
 """
 This module contains factory classes for creating
 instances of various models.

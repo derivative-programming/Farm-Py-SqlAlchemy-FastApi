@@ -1,6 +1,6 @@
-# models/managers/dyna_flow_type.py  # pylint: disable=duplicate-code
+# models/managers/dyna_flow_type.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 DynaFlowTypeManager class, which is
@@ -205,8 +205,8 @@ class DynaFlowTypeManager:
         )
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(DynaFlowType._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 DynaFlowType._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(DynaFlowType._pac_id == Pac._pac_id,  # type: ignore
+                 DynaFlowType._pac_id != 0)  # type: ignore
         )
 
         return query

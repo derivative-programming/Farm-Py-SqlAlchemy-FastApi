@@ -1,4 +1,4 @@
-# flows/base/tests/land_user_plant_multi_select_to_editable_test.py  # pylint: disable=duplicate-code
+# flows/base/tests/land_user_plant_multi_select_to_editable_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-import
 """

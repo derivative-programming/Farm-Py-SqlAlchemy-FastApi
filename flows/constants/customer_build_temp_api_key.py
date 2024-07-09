@@ -1,4 +1,4 @@
-# flows/constants/customer_build_temp_api_key.py  # pylint: disable=duplicate-code
+# flows/constants/customer_build_temp_api_key.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
     This module contains configuration constants

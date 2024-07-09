@@ -1,4 +1,4 @@
-# flows/base/tests/tac_farm_dashboard_init_report_test.py  # pylint: disable=duplicate-code
+# flows/base/tests/tac_farm_dashboard_init_report_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-import
 """

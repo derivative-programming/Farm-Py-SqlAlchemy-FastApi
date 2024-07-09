@@ -1,6 +1,6 @@
-# models/managers/plant.py  # pylint: disable=duplicate-code
+# models/managers/plant.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 PlantManager class, which is
@@ -143,13 +143,13 @@ class PlantManager:
 # endset
         query = query.outerjoin(  # flvr_foreign_key_id
             Flavor,
-            and_(Plant._flvr_foreign_key_id == Flavor._flavor_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 Plant._flvr_foreign_key_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(Plant._flvr_foreign_key_id == Flavor._flavor_id,  # type: ignore
+                 Plant._flvr_foreign_key_id != 0)  # type: ignore
         )
         query = query.outerjoin(  # land_id
             Land,
-            and_(Plant._land_id == Land._land_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 Plant._land_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(Plant._land_id == Land._land_id,  # type: ignore
+                 Plant._land_id != 0)  # type: ignore
         )
 # endset
 

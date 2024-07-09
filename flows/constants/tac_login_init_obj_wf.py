@@ -1,4 +1,4 @@
-# flows/constants/tac_login_init_obj_wf.py  # pylint: disable=duplicate-code
+# flows/constants/tac_login_init_obj_wf.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
     This module contains configuration constants

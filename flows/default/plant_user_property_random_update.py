@@ -1,4 +1,4 @@
-# flows/default/plant_user_property_random_update.py  # pylint: disable=duplicate-code
+# flows/default/plant_user_property_random_update.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods
 """

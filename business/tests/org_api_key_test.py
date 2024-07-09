@@ -1,4 +1,4 @@
-# business/tests/org_api_key_test.py  # pylint: disable=duplicate-code
+# business/tests/org_api_key_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods

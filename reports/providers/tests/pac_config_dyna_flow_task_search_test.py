@@ -1,5 +1,6 @@
-# reports/providers/tests/pac_config_dyna_flow_task_search_test.py  # pylint: disable=duplicate-code
+# reports/providers/tests/pac_config_dyna_flow_task_search_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 
 """
 This module contains a test case for the
@@ -23,7 +24,7 @@ import current_runtime
 sqlite3.register_adapter(Decimal, str)
 
 
-class TestReportProviderPacConfigDynaFlowTaskSearch:  # pylint: disable=too-few-public-methods
+class TestReportProviderPacConfigDynaFlowTaskSearch:
     """
     This class contains test cases for the
     ReportProviderPacConfigDynaFlowTaskSearch class.

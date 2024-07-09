@@ -1,4 +1,4 @@
-# current_runtime.py  # pylint: disable=duplicate-code
+# current_runtime.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains the code for initializing various

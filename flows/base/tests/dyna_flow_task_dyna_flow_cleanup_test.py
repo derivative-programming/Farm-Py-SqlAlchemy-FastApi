@@ -1,4 +1,4 @@
-# flows/base/tests/dyna_flow_task_dyna_flow_cleanup_test.py  # pylint: disable=duplicate-code
+# flows/base/tests/dyna_flow_task_dyna_flow_cleanup_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-import
 """

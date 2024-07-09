@@ -1,4 +1,4 @@
-# flows/default/pac_user_flavor_list_init_report.py  # pylint: disable=duplicate-code
+# flows/default/pac_user_flavor_list_init_report.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods
 """

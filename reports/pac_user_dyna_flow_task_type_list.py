@@ -1,4 +1,4 @@
-# reports/pac_user_dyna_flow_task_type_list.py  # pylint: disable=duplicate-code
+# reports/pac_user_dyna_flow_task_type_list.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

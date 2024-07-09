@@ -1,4 +1,4 @@
-# apis/fs_farm_api/v1_0/endpoints/customer_build_temp_api_key.py  # pylint: disable=duplicate-code
+# apis/fs_farm_api/v1_0/endpoints/customer_build_temp_api_key.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

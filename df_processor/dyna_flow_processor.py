@@ -1,4 +1,4 @@
-# df_processor/dyna_flow_processor.py  # pylint: disable=duplicate-code
+# df_processor/dyna_flow_processor.py  # pylint: disable=duplicate-code # noqa: E501
 """
 This module contains the `DynaFlowProcessor` class, which is
 responsible for running the DynaFlowProcessor application. The

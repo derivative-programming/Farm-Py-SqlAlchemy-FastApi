@@ -1,4 +1,4 @@
-# flows/base/land_add_plant.py  # pylint: disable=duplicate-code
+# flows/base/land_add_plant.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

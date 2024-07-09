@@ -1,4 +1,4 @@
-# flows/default/dyna_flow_task_plant_task_one.py  # pylint: disable=duplicate-code
+# flows/default/dyna_flow_task_plant_task_one.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods
 """

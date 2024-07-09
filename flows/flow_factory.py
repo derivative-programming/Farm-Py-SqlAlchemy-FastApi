@@ -1,4 +1,4 @@
-# flows/flow_factory.py  # pylint: disable=duplicate-code
+# flows/flow_factory.py  # pylint: disable=duplicate-code # noqa: E501
 """
 This module contains the FlowFactory class, which
 is responsible for dynamically creating instances

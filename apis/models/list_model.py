@@ -1,4 +1,4 @@
-# apis/models/list_model.py  # pylint: disable=duplicate-code
+# apis/models/list_model.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains the ListModel class, which represents a

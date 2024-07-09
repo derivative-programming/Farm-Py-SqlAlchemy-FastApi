@@ -1,4 +1,4 @@
-# reports/tests/tac_farm_dashboard_test.py  # pylint: disable=duplicate-code
+# reports/tests/tac_farm_dashboard_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=protected-access
 # pylint: disable=unused-import
@@ -20,11 +20,14 @@ import pytest
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.tac import TacFactory
-from reports.tac_farm_dashboard import ReportManagerTacFarmDashboard
-from reports.providers.tac_farm_dashboard import ReportProviderTacFarmDashboard
+from reports.tac_farm_dashboard import \
+    ReportManagerTacFarmDashboard
+from reports.providers.tac_farm_dashboard import \
+    ReportProviderTacFarmDashboard
 from reports.report_request_validation_error import \
     ReportRequestValidationError
-from reports.row_models.tac_farm_dashboard import ReportItemTacFarmDashboard
+from reports.row_models.tac_farm_dashboard import \
+    ReportItemTacFarmDashboard
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)

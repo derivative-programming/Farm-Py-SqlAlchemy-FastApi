@@ -1,4 +1,4 @@
-# reports/pac_config_dyna_flow_task_search.py  # pylint: disable=duplicate-code
+# reports/pac_config_dyna_flow_task_search.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

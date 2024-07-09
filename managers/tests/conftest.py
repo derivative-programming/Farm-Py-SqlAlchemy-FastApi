@@ -1,4 +1,4 @@
-# models/managers/tests/conftest.py  # pylint: disable=duplicate-code
+# models/managers/tests/conftest.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-argument
 # pylint: disable=redefined-outer-name
 
@@ -84,7 +84,7 @@ async def session(engine) -> AsyncSession:  # type: ignore
         await connection.begin_nested()
         await connection.run_sync(Base.metadata.drop_all)
         await connection.run_sync(Base.metadata.create_all)
-        testing_session_local = sessionmaker(  # pylint: disable=invalid-name
+        testing_session_local = sessionmaker(
             expire_on_commit=False,
             class_=AsyncSession,
             bind=engine,

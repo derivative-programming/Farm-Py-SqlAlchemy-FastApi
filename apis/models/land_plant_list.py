@@ -1,4 +1,4 @@
-# apis/models/land_plant_list.py  # pylint: disable=duplicate-code
+# apis/models/land_plant_list.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

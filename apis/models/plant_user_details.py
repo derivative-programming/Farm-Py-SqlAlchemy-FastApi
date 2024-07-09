@@ -1,4 +1,4 @@
-# apis/models/plant_user_details.py  # pylint: disable=duplicate-code
+# apis/models/plant_user_details.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

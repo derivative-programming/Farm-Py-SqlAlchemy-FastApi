@@ -1,4 +1,4 @@
-# apis/models/land_user_plant_multi_select_to_not_editable.py  # pylint: disable=duplicate-code
+# apis/models/land_user_plant_multi_select_to_not_editable.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

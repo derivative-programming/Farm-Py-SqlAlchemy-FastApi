@@ -1,4 +1,4 @@
-# models/factory/base.py  # pylint: disable=duplicate-code
+# models/factory/base.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains the base factory class for creating SQLAlchemy sessions.

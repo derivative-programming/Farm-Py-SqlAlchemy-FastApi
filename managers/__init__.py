@@ -1,4 +1,4 @@
-# models/managers/__init__.py  # pylint: disable=duplicate-code
+# models/managers/__init__.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=line-too-long
 """
 This module contains the manager classes for various models.

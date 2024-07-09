@@ -1,4 +1,4 @@
-# flows/constants/pac_user_flavor_list_init_report.py  # pylint: disable=duplicate-code
+# flows/constants/pac_user_flavor_list_init_report.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
     This module contains configuration constants

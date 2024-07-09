@@ -1,4 +1,4 @@
-# flows/constants/tac_register.py  # pylint: disable=duplicate-code
+# flows/constants/tac_register.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
     This module contains configuration constants

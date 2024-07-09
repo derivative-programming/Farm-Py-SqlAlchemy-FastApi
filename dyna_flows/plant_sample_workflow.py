@@ -1,4 +1,4 @@
-# dyna_flows/plant_sample_workflow.py  # pylint: disable=duplicate-code
+# dyna_flows/plant_sample_workflow.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 """
 This module contains the implementation of the

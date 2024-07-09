@@ -1,4 +1,4 @@
-# flows/default/tests/customer_build_temp_api_key_test.py  # pylint: disable=duplicate-code
+# flows/default/tests/customer_build_temp_api_key_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import, too-many-public-methods
 
 """

@@ -1,4 +1,4 @@
-# flows/base/customer_build_temp_api_key.py  # pylint: disable=duplicate-code
+# flows/base/customer_build_temp_api_key.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

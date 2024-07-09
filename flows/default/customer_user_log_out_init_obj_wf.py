@@ -1,4 +1,4 @@
-# flows/default/customer_user_log_out_init_obj_wf.py  # pylint: disable=duplicate-code
+# flows/default/customer_user_log_out_init_obj_wf.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods
 """

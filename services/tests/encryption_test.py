@@ -1,4 +1,4 @@
-# services/tests/encryption_test.py  # pylint: disable=duplicate-code
+# services/tests/encryption_test.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains unit tests for the encryption module.

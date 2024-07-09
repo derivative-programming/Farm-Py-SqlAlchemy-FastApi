@@ -1,4 +1,4 @@
-# reports/__init__.py  # pylint: disable=duplicate-code
+# reports/__init__.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains the reports package.

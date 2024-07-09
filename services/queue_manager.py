@@ -1,4 +1,4 @@
-# services/queue_manager.py  # pylint: disable=duplicate-code
+# services/queue_manager.py  # pylint: disable=duplicate-code # noqa: E501
 """
 This module contains the QueueManager class which is
 responsible for managing the Azure Service Bus queue.

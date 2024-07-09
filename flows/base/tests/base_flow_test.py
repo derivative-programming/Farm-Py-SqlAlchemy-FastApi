@@ -1,4 +1,4 @@
-# flows/base/tests/base_flow_test.py  # pylint: disable=duplicate-code
+# flows/base/tests/base_flow_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=protected-access
 
 """

@@ -1,4 +1,4 @@
-# flows/base/__init__.py  # pylint: disable=duplicate-code
+# flows/base/__init__.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains the base flow classes and related imports.

@@ -1,4 +1,4 @@
-# reports/tests/land_plant_list_test.py  # pylint: disable=duplicate-code
+# reports/tests/land_plant_list_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=protected-access
 # pylint: disable=unused-import
@@ -20,11 +20,14 @@ import pytest
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.land import LandFactory
-from reports.land_plant_list import ReportManagerLandPlantList
-from reports.providers.land_plant_list import ReportProviderLandPlantList
+from reports.land_plant_list import \
+    ReportManagerLandPlantList
+from reports.providers.land_plant_list import \
+    ReportProviderLandPlantList
 from reports.report_request_validation_error import \
     ReportRequestValidationError
-from reports.row_models.land_plant_list import ReportItemLandPlantList
+from reports.row_models.land_plant_list import \
+    ReportItemLandPlantList
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
@@ -109,14 +112,16 @@ class TestReportManagerLandPlantList:
             some_decimal_val: Decimal = Decimal(0)
             some_min_utc_date_time_val: datetime = (
                 TypeConversion.get_default_date_time())
-            some_min_date_val: date = TypeConversion.get_default_date()
+            some_min_date_val: date = (
+                TypeConversion.get_default_date())
             some_money_val: Decimal = Decimal(0)
             some_n_var_char_val: str = ""
             some_var_char_val: str = ""
             some_text_val: str = ""
             some_phone_number: str = ""
             some_email_address: str = ""
-            flavor_code: uuid.UUID = uuid.uuid4()  # type: ignore
+            flavor_code: uuid.UUID = (
+                uuid.uuid4())
 # endset
             page_number = 1
             item_count_per_page = 10
@@ -218,14 +223,16 @@ class TestReportManagerLandPlantList:
             some_decimal_val: Decimal = Decimal(0)
             some_min_utc_date_time_val: datetime = (
                 TypeConversion.get_default_date_time())
-            some_min_date_val: date = TypeConversion.get_default_date()
+            some_min_date_val: date = (
+                TypeConversion.get_default_date())
             some_money_val: Decimal = Decimal(0)
             some_n_var_char_val: str = ""
             some_var_char_val: str = ""
             some_text_val: str = ""
             some_phone_number: str = ""
             some_email_address: str = ""
-            flavor_code: uuid.UUID = uuid.uuid4()  # type: ignore
+            flavor_code: uuid.UUID = (
+                uuid.uuid4())
 # endset
             page_number = 1
             order_by_column_name = ""
@@ -324,14 +331,16 @@ class TestReportManagerLandPlantList:
             some_decimal_val: Decimal = Decimal(0)
             some_min_utc_date_time_val: datetime = (
                 TypeConversion.get_default_date_time())
-            some_min_date_val: date = TypeConversion.get_default_date()
+            some_min_date_val: date = (
+                TypeConversion.get_default_date())
             some_money_val: Decimal = Decimal(0)
             some_n_var_char_val: str = ""
             some_var_char_val: str = ""
             some_text_val: str = ""
             some_phone_number: str = ""
             some_email_address: str = ""
-            flavor_code: uuid.UUID = uuid.uuid4()  # type: ignore
+            flavor_code: uuid.UUID = (
+                uuid.uuid4())
 # endset
             item_count_per_page = 10
             order_by_column_name = ""

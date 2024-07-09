@@ -1,4 +1,4 @@
-# dyna_flows/dyna_flow_factory.py  # pylint: disable=duplicate-code
+# dyna_flows/dyna_flow_factory.py  # pylint: disable=duplicate-code # noqa: E501
 """
 This module provides a factory class for creating instances of
 DynaFlow classes dynamically.

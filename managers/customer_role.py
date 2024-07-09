@@ -1,6 +1,6 @@
-# models/managers/customer_role.py  # pylint: disable=duplicate-code
+# models/managers/customer_role.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 CustomerRoleManager class, which is
@@ -135,13 +135,13 @@ class CustomerRoleManager:
         )
         query = query.outerjoin(  # customer_id
             Customer,
-            and_(CustomerRole._customer_id == Customer._customer_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 CustomerRole._customer_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(CustomerRole._customer_id == Customer._customer_id,  # type: ignore
+                 CustomerRole._customer_id != 0)  # type: ignore
         )
         query = query.outerjoin(  # role_id
             Role,
-            and_(CustomerRole._role_id == Role._role_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 CustomerRole._role_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(CustomerRole._role_id == Role._role_id,  # type: ignore
+                 CustomerRole._role_id != 0)  # type: ignore
         )
 
         return query

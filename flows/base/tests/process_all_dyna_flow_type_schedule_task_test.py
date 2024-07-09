@@ -1,4 +1,4 @@
-# flows/base/tests/process_all_dyna_flow_type_schedule_task_test.py  # pylint: disable=duplicate-code
+# flows/base/tests/process_all_dyna_flow_type_schedule_task_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-import
 """

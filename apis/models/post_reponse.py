@@ -1,4 +1,4 @@
-# apis/models/post_reponse.py  # pylint: disable=duplicate-code
+# apis/models/post_reponse.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains the definition of the PostResponse class.

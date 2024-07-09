@@ -1,4 +1,4 @@
-# apis/models/init/pac_user_tac_list_init_report.py  # pylint: disable=duplicate-code
+# apis/models/init/pac_user_tac_list_init_report.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

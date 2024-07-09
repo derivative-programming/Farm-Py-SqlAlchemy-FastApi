@@ -1,4 +1,4 @@
-# flows/default/land_add_plant.py  # pylint: disable=duplicate-code
+# flows/default/land_add_plant.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods
 """

@@ -1,4 +1,4 @@
-# reports/providers/pac_user_flavor_list.py  # pylint: disable=duplicate-code
+# reports/providers/pac_user_flavor_list.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

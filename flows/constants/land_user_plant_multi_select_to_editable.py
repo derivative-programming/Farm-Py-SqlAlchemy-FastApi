@@ -1,4 +1,4 @@
-# flows/constants/land_user_plant_multi_select_to_editable.py  # pylint: disable=duplicate-code
+# flows/constants/land_user_plant_multi_select_to_editable.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
     This module contains configuration constants

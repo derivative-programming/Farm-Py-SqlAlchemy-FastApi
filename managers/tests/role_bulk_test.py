@@ -1,4 +1,4 @@
-# models/managers/tests/role_test.py  # pylint: disable=duplicate-code
+# models/managers/tests/role_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-argument
 # pylint: disable=unused-import

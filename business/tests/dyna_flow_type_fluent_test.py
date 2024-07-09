@@ -1,4 +1,4 @@
-# business/tests/dyna_flow_type_fluent_test.py  # pylint: disable=duplicate-code
+# business/tests/dyna_flow_type_fluent_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=too-few-public-methods
 """

@@ -1,4 +1,4 @@
-# business/base_bus_obj.py  # pylint: disable=duplicate-code
+# business/base_bus_obj.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
     This module contains the base business object class.

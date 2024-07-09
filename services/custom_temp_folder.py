@@ -1,4 +1,4 @@
-# services/custom_temp_folder.py  # pylint: disable=duplicate-code
+# services/custom_temp_folder.py  # pylint: disable=duplicate-code # noqa: E501
 """
 A class that creates a custom temporary folder and
 provides methods to create temporary files and clear

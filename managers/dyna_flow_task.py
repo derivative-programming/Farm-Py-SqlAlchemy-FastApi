@@ -1,6 +1,6 @@
-# models/managers/dyna_flow_task.py  # pylint: disable=duplicate-code
+# models/managers/dyna_flow_task.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 DynaFlowTaskManager class, which is
@@ -135,13 +135,13 @@ class DynaFlowTaskManager:
         )
         query = query.outerjoin(  # dyna_flow_id
             DynaFlow,
-            and_(DynaFlowTask._dyna_flow_id == DynaFlow._dyna_flow_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 DynaFlowTask._dyna_flow_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(DynaFlowTask._dyna_flow_id == DynaFlow._dyna_flow_id,  # type: ignore
+                 DynaFlowTask._dyna_flow_id != 0)  # type: ignore
         )
         query = query.outerjoin(  # dyna_flow_task_type_id
             DynaFlowTaskType,
-            and_(DynaFlowTask._dyna_flow_task_type_id == DynaFlowTaskType._dyna_flow_task_type_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 DynaFlowTask._dyna_flow_task_type_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(DynaFlowTask._dyna_flow_task_type_id == DynaFlowTaskType._dyna_flow_task_type_id,  # type: ignore
+                 DynaFlowTask._dyna_flow_task_type_id != 0)  # type: ignore
         )
 
         return query

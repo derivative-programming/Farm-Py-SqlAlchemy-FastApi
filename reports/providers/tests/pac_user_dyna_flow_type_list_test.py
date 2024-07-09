@@ -1,5 +1,6 @@
-# reports/providers/tests/pac_user_dyna_flow_type_list_test.py  # pylint: disable=duplicate-code
+# reports/providers/tests/pac_user_dyna_flow_type_list_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import, too-many-public-methods
+# pylint: disable=too-few-public-methods
 
 """
 This module contains a test case for the
@@ -23,7 +24,7 @@ import current_runtime
 sqlite3.register_adapter(Decimal, str)
 
 
-class TestReportProviderPacUserDynaFlowTypeList:  # pylint: disable=too-few-public-methods
+class TestReportProviderPacUserDynaFlowTypeList:
     """
     This class contains test cases for the
     ReportProviderPacUserDynaFlowTypeList class.

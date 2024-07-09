@@ -1,4 +1,4 @@
-# business/org_api_key_reports.py  # pylint: disable=duplicate-code
+# business/org_api_key_reports.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 """
 This module contains the OrgApiKeyReportsBusObj class

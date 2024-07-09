@@ -1,4 +1,4 @@
-# reports/tests/pac_config_dyna_flow_retry_task_build_list_test.py  # pylint: disable=duplicate-code
+# reports/tests/pac_config_dyna_flow_retry_task_build_list_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=protected-access
 # pylint: disable=unused-import
@@ -20,11 +20,14 @@ import pytest
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.pac import PacFactory
-from reports.pac_config_dyna_flow_retry_task_build_list import ReportManagerPacConfigDynaFlowRetryTaskBuildList
-from reports.providers.pac_config_dyna_flow_retry_task_build_list import ReportProviderPacConfigDynaFlowRetryTaskBuildList
+from reports.pac_config_dyna_flow_retry_task_build_list import \
+    ReportManagerPacConfigDynaFlowRetryTaskBuildList
+from reports.providers.pac_config_dyna_flow_retry_task_build_list import \
+    ReportProviderPacConfigDynaFlowRetryTaskBuildList
 from reports.report_request_validation_error import \
     ReportRequestValidationError
-from reports.row_models.pac_config_dyna_flow_retry_task_build_list import ReportItemPacConfigDynaFlowRetryTaskBuildList
+from reports.row_models.pac_config_dyna_flow_retry_task_build_list import \
+    ReportItemPacConfigDynaFlowRetryTaskBuildList
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)

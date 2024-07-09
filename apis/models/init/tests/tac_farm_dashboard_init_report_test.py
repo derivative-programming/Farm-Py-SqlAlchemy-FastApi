@@ -1,6 +1,7 @@
-# apis/models/init/tests/tac_farm_dashboard_init_report_test.py  # pylint: disable=duplicate-code
+# apis/models/init/tests/tac_farm_dashboard_init_report_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the unit tests for the
 tac_farm_dashboard_init_report module.
@@ -21,7 +22,7 @@ from ..tac_farm_dashboard_init_report import (
     TacFarmDashboardInitReportGetInitModelResponse)
 
 
-class MockFlowTacFarmDashboardInitReportResult:  # pylint: disable=too-few-public-methods
+class MockFlowTacFarmDashboardInitReportResult:
     """
     A mock object for the
     FlowTacFarmDashboardInitReportResult

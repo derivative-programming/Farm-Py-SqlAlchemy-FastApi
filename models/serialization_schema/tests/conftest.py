@@ -1,4 +1,4 @@
-# models/serialization_schema/tests/conftest.py  # pylint: disable=duplicate-code
+# models/serialization_schema/tests/conftest.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=redefined-outer-name
 
 """
@@ -63,7 +63,7 @@ def session(engine):
     Base.metadata.create_all(engine)
 
     # Create a configured "Session" class
-    SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+    SessionLocal = sessionmaker(
         bind=engine, expire_on_commit=False)
 
     # Instantiate a session

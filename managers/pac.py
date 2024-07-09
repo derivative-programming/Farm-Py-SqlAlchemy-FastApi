@@ -1,6 +1,6 @@
-# models/managers/pac.py  # pylint: disable=duplicate-code
+# models/managers/pac.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 PacManager class, which is

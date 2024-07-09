@@ -1,4 +1,4 @@
-# flows/base/flow_validation_error.py  # pylint: disable=duplicate-code
+# flows/base/flow_validation_error.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains the definition of the

@@ -1,4 +1,4 @@
-# flows/default/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code
+# flows/default/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods
 """

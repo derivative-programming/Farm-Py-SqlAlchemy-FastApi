@@ -1,4 +1,4 @@
-# reports/tac_farm_dashboard.py  # pylint: disable=duplicate-code
+# reports/tac_farm_dashboard.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

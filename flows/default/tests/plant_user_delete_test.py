@@ -1,4 +1,4 @@
-# flows/default/tests/plant_user_delete_test.py  # pylint: disable=duplicate-code
+# flows/default/tests/plant_user_delete_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import, too-many-public-methods
 
 """

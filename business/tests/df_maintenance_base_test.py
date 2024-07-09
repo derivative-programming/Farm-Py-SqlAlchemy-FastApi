@@ -1,4 +1,4 @@
-# business/tests/df_maintenance_base_test.py  # pylint: disable=duplicate-code
+# business/tests/df_maintenance_base_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import, too-many-public-methods
 # pylint: disable=redefined-outer-name
 # pylint: disable=too-few-public-methods

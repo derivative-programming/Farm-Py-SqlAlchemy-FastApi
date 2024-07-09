@@ -1,4 +1,4 @@
-# services/logging_config.py  # pylint: disable=duplicate-code
+# services/logging_config.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module provides configuration for logging in the application.

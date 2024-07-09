@@ -1,6 +1,6 @@
-# models/managers/dyna_flow_task_type.py  # pylint: disable=duplicate-code
+# models/managers/dyna_flow_task_type.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 DynaFlowTaskTypeManager class, which is
@@ -225,8 +225,8 @@ class DynaFlowTaskTypeManager:
         )
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(DynaFlowTaskType._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 DynaFlowTaskType._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(DynaFlowTaskType._pac_id == Pac._pac_id,  # type: ignore
+                 DynaFlowTaskType._pac_id != 0)  # type: ignore
         )
 
         return query

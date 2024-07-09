@@ -1,4 +1,4 @@
-# services/machine_identifier.py  # pylint: disable=duplicate-code
+# services/machine_identifier.py  # pylint: disable=duplicate-code # noqa: E501
 """
 This module is used to generate a unique identifier
 for the machine that the application is running on.

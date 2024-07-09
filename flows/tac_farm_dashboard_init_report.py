@@ -1,4 +1,4 @@
-# flows/default/tac_farm_dashboard_init_report.py  # pylint: disable=duplicate-code
+# flows/default/tac_farm_dashboard_init_report.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods
 """
@@ -100,7 +100,7 @@ class FlowTacFarmDashboardInitReport(
         )
         super()._throw_queued_validation_errors()
         customer_code_output: uuid.UUID = uuid.UUID(int=0)
-         
+
         customer_code_output = self._session_context.customer_code
 
 

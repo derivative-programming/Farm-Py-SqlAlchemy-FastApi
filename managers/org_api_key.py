@@ -1,6 +1,6 @@
-# models/managers/org_api_key.py  # pylint: disable=duplicate-code
+# models/managers/org_api_key.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 OrgApiKeyManager class, which is
@@ -135,13 +135,13 @@ class OrgApiKeyManager:
         )
         query = query.outerjoin(  # organization_id
             Organization,
-            and_(OrgApiKey._organization_id == Organization._organization_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 OrgApiKey._organization_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(OrgApiKey._organization_id == Organization._organization_id,  # type: ignore
+                 OrgApiKey._organization_id != 0)  # type: ignore
         )
         query = query.outerjoin(  # org_customer_id
             OrgCustomer,
-            and_(OrgApiKey._org_customer_id == OrgCustomer._org_customer_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 OrgApiKey._org_customer_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(OrgApiKey._org_customer_id == OrgCustomer._org_customer_id,  # type: ignore
+                 OrgApiKey._org_customer_id != 0)  # type: ignore
         )
 
         return query

@@ -1,4 +1,4 @@
-# apis/models/factory/tac_farm_dashboard.py  # pylint: disable=duplicate-code
+# apis/models/factory/tac_farm_dashboard.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 """
 This module contains the factory class for creating

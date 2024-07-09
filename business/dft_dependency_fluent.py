@@ -1,4 +1,4 @@
-# business/dft_dependency_fluent.py  # pylint: disable=duplicate-code
+# business/dft_dependency_fluent.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

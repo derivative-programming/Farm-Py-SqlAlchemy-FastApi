@@ -1,4 +1,4 @@
-# reports/plant_user_details.py  # pylint: disable=duplicate-code
+# reports/plant_user_details.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

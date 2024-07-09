@@ -1,6 +1,6 @@
-# models/managers/df_maintenance.py  # pylint: disable=duplicate-code
+# models/managers/df_maintenance.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 DFMaintenanceManager class, which is
@@ -133,8 +133,8 @@ class DFMaintenanceManager:
         )
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(DFMaintenance._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 DFMaintenance._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(DFMaintenance._pac_id == Pac._pac_id,  # type: ignore
+                 DFMaintenance._pac_id != 0)  # type: ignore
         )
 
         return query

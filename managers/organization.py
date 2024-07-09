@@ -1,6 +1,6 @@
-# models/managers/organization.py  # pylint: disable=duplicate-code
+# models/managers/organization.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 OrganizationManager class, which is
@@ -133,8 +133,8 @@ class OrganizationManager:
         )
         query = query.outerjoin(  # tac_id
             Tac,
-            and_(Organization._tac_id == Tac._tac_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 Organization._tac_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(Organization._tac_id == Tac._tac_id,  # type: ignore
+                 Organization._tac_id != 0)  # type: ignore
         )
 
         return query

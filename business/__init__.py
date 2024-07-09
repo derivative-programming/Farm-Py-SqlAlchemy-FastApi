@@ -1,4 +1,4 @@
-# business/__init__.py  # pylint: disable=duplicate-code
+# business/__init__.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains the business objects for the application.

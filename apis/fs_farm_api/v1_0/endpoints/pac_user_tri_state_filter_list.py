@@ -1,4 +1,4 @@
-# apis/fs_farm_api/v1_0/endpoints/pac_user_tri_state_filter_list.py  # pylint: disable=duplicate-code
+# apis/fs_farm_api/v1_0/endpoints/pac_user_tri_state_filter_list.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

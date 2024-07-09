@@ -1,6 +1,7 @@
-# apis/models/init/tests/pac_user_land_list_init_report_test.py  # pylint: disable=duplicate-code
+# apis/models/init/tests/pac_user_land_list_init_report_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the unit tests for the
 pac_user_land_list_init_report module.
@@ -21,7 +22,7 @@ from ..pac_user_land_list_init_report import (
     PacUserLandListInitReportGetInitModelResponse)
 
 
-class MockFlowPacUserLandListInitReportResult:  # pylint: disable=too-few-public-methods
+class MockFlowPacUserLandListInitReportResult:
     """
     A mock object for the
     FlowPacUserLandListInitReportResult

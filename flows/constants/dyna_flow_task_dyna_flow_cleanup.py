@@ -1,4 +1,4 @@
-# flows/constants/dyna_flow_task_dyna_flow_cleanup.py  # pylint: disable=duplicate-code
+# flows/constants/dyna_flow_task_dyna_flow_cleanup.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
     This module contains configuration constants

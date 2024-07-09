@@ -1,4 +1,4 @@
-# business/dyna_flow_task_reports.py  # pylint: disable=duplicate-code
+# business/dyna_flow_task_reports.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 """
 This module contains the DynaFlowTaskReportsBusObj class

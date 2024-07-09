@@ -1,4 +1,4 @@
-# apis/models/dyna_flow_task_plant_task_two.py  # pylint: disable=duplicate-code
+# apis/models/dyna_flow_task_plant_task_two.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

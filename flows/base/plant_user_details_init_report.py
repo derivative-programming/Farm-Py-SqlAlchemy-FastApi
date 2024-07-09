@@ -1,4 +1,4 @@
-# flows/base/plant_user_details_init_report.py  # pylint: disable=duplicate-code
+# flows/base/plant_user_details_init_report.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

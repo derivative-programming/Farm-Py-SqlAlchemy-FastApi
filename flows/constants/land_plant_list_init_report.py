@@ -1,4 +1,4 @@
-# flows/constants/land_plant_list_init_report.py  # pylint: disable=duplicate-code
+# flows/constants/land_plant_list_init_report.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
     This module contains configuration constants

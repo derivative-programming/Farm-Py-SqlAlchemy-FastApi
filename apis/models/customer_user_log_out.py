@@ -1,4 +1,4 @@
-# apis/models/customer_user_log_out.py  # pylint: disable=duplicate-code
+# apis/models/customer_user_log_out.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

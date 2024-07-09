@@ -1,4 +1,4 @@
-# flows/base/log_severity.py  # pylint: disable=duplicate-code
+# flows/base/log_severity.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module defines the LogSeverity enumeration class.

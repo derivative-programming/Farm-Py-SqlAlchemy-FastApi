@@ -1,4 +1,4 @@
-# reports/row_models/tests/pac_config_dyna_flow_task_retry_run_list_test.py  # pylint: disable=duplicate-code
+# reports/row_models/tests/pac_config_dyna_flow_task_retry_run_list_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import, too-many-public-methods
 
 """

@@ -1,6 +1,6 @@
-# models/managers/role.py  # pylint: disable=duplicate-code
+# models/managers/role.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 RoleManager class, which is
@@ -215,8 +215,8 @@ class RoleManager:
         )
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Role._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 Role._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(Role._pac_id == Pac._pac_id,  # type: ignore
+                 Role._pac_id != 0)  # type: ignore
         )
 
         return query

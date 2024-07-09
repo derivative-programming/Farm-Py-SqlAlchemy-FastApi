@@ -1,4 +1,4 @@
-# flows/default/tac_register.py  # pylint: disable=duplicate-code
+# flows/default/tac_register.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods
 """
@@ -124,12 +124,15 @@ class FlowTacRegister(
 # endset  # noqa: E122
         )
         if password != confirm_password:
-            self._add_field_validation_error("confirm_password","Passwords do not match")
+            self._add_field_validation_error(
+                "confirm_password", "Passwords do not match")
 
         if len(email) > 0:
-            similar_email_list = await tac_bus_obj.get_customer_by_email_prop(email)
+            similar_email_list = await \
+                tac_bus_obj.get_customer_by_email_prop(email)
             if len(similar_email_list) > 0:
-                self._add_field_validation_error("email","This email is already registered")
+                self._add_field_validation_error(
+                    "email", "This email is already registered")
 
         super()._throw_queued_validation_errors()
         customer_code_output: uuid.UUID = uuid.UUID(int=0)
@@ -166,7 +169,7 @@ class FlowTacRegister(
         customer_role_bus_obj = await customer_bus_obj.build_customer_role()
         customer_role_bus_obj = (
             customer_role_bus_obj
-            .set_prop_role_id(await RoleBusObj.get(
+            .set_prop_role_id(await business.RoleBusObj.get(
                 customer_bus_obj.session,
                 role_enum=RoleEnum.User
                 ).role_id)
@@ -178,7 +181,7 @@ class FlowTacRegister(
             customer_role_bus_obj = await customer_bus_obj.build_customer_role()
             customer_role_bus_obj = (
                 customer_role_bus_obj
-                .set_prop_role_id(await RoleBusObj.get(
+                .set_prop_role_id(await business.RoleBusObj.get(
                     customer_bus_obj.session,
                     role_enum=RoleEnum.Config
                     ).role_id)
@@ -188,7 +191,7 @@ class FlowTacRegister(
             customer_role_bus_obj = await customer_bus_obj.build_customer_role()
             customer_role_bus_obj = (
                 customer_role_bus_obj
-                .set_prop_role_id(await RoleBusObj.get(
+                .set_prop_role_id(await business.RoleBusObj.get(
                     customer_bus_obj.session,
                     role_enum=RoleEnum.Admin
                     ).role_id)

@@ -1,4 +1,4 @@
-# apis/models/factory/dyna_flow_task_plant_task_one.py  # pylint: disable=duplicate-code
+# apis/models/factory/dyna_flow_task_plant_task_one.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 """
 Factory module for creating instances of

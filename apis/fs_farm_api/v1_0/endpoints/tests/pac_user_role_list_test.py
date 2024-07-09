@@ -1,4 +1,4 @@
-# apis/fs_farm_api/v1_0/endpoints/tests/pac_user_role_list_test.py  # pylint: disable=duplicate-code
+# apis/fs_farm_api/v1_0/endpoints/tests/pac_user_role_list_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import, too-many-public-methods
 
 """

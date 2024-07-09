@@ -1,4 +1,4 @@
-# dyna_flows/pac_process_all_dyna_flow_type_schedule_flow.py  # pylint: disable=duplicate-code
+# dyna_flows/pac_process_all_dyna_flow_type_schedule_flow.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 """
 This module contains the implementation of the

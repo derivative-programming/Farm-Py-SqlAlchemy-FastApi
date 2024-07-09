@@ -1,4 +1,4 @@
-# flows/base/plant_user_delete.py  # pylint: disable=duplicate-code
+# flows/base/plant_user_delete.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

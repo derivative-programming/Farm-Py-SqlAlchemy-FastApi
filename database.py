@@ -1,4 +1,4 @@
-# database.py  # pylint: disable=duplicate-code
+# database.py  # pylint: disable=duplicate-code # noqa: E501
 """
 This module provides functions for interacting with the database.
 """

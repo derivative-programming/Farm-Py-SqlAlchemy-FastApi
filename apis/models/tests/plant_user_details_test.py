@@ -1,4 +1,4 @@
-# apis/models/tests/plant_user_details_test.py  # pylint: disable=duplicate-code
+# apis/models/tests/plant_user_details_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods

@@ -1,4 +1,4 @@
-# business/land.py  # pylint: disable=duplicate-code
+# business/land.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 """
 This module contains the

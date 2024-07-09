@@ -1,4 +1,4 @@
-# config.py  # pylint: disable=duplicate-code
+# config.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module provides configuration settings for the application.

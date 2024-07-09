@@ -1,4 +1,4 @@
-# apis/models/factory/land_add_plant.py  # pylint: disable=duplicate-code
+# apis/models/factory/land_add_plant.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 """
 Factory module for creating instances of

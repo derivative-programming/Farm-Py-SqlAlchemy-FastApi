@@ -1,4 +1,4 @@
-# flows/base/tests/tac_register_init_obj_wf_test.py  # pylint: disable=duplicate-code
+# flows/base/tests/tac_register_init_obj_wf_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-import
 """

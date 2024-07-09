@@ -1,4 +1,4 @@
-# reports/tests/pac_user_flavor_list_test.py  # pylint: disable=duplicate-code
+# reports/tests/pac_user_flavor_list_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=protected-access
 # pylint: disable=unused-import
@@ -20,11 +20,14 @@ import pytest
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.pac import PacFactory
-from reports.pac_user_flavor_list import ReportManagerPacUserFlavorList
-from reports.providers.pac_user_flavor_list import ReportProviderPacUserFlavorList
+from reports.pac_user_flavor_list import \
+    ReportManagerPacUserFlavorList
+from reports.providers.pac_user_flavor_list import \
+    ReportProviderPacUserFlavorList
 from reports.report_request_validation_error import \
     ReportRequestValidationError
-from reports.row_models.pac_user_flavor_list import ReportItemPacUserFlavorList
+from reports.row_models.pac_user_flavor_list import \
+    ReportItemPacUserFlavorList
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)

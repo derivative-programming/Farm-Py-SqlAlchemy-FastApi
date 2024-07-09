@@ -1,4 +1,4 @@
-# apis/models/factory/pac_user_role_list.py  # pylint: disable=duplicate-code
+# apis/models/factory/pac_user_role_list.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 """
 This module contains the factory class for creating

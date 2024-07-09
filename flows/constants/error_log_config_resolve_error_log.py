@@ -1,4 +1,4 @@
-# flows/constants/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code
+# flows/constants/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
     This module contains configuration constants

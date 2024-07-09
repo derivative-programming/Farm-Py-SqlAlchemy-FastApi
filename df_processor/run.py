@@ -1,4 +1,4 @@
-# df_processor/run.py  # pylint: disable=duplicate-code
+# df_processor/run.py  # pylint: disable=duplicate-code # noqa: E501
 """
 This module contains the main function for the df processor.
 """

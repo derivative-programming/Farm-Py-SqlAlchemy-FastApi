@@ -1,4 +1,4 @@
-# apis/models/factory/__init__.py  # pylint: disable=duplicate-code
+# apis/models/factory/__init__.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains the factory functions for creating model request

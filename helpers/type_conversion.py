@@ -1,4 +1,4 @@
-# helpers/type_conversion.py  # pylint: disable=duplicate-code
+# helpers/type_conversion.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module provides helper functions and classes for type conversion.

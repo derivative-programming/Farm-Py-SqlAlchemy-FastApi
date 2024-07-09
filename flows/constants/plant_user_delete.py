@@ -1,4 +1,4 @@
-# flows/constants/plant_user_delete.py  # pylint: disable=duplicate-code
+# flows/constants/plant_user_delete.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
     This module contains configuration constants

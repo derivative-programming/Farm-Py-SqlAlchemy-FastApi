@@ -1,4 +1,4 @@
-# helpers/pydantic_serialization.py  # pylint: disable=duplicate-code
+# helpers/pydantic_serialization.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module provides helper functions and classes for Pydantic serialization.

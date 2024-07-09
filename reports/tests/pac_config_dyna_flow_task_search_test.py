@@ -1,4 +1,4 @@
-# reports/tests/pac_config_dyna_flow_task_search_test.py  # pylint: disable=duplicate-code
+# reports/tests/pac_config_dyna_flow_task_search_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=protected-access
 # pylint: disable=unused-import
@@ -20,11 +20,14 @@ import pytest
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.pac import PacFactory
-from reports.pac_config_dyna_flow_task_search import ReportManagerPacConfigDynaFlowTaskSearch
-from reports.providers.pac_config_dyna_flow_task_search import ReportProviderPacConfigDynaFlowTaskSearch
+from reports.pac_config_dyna_flow_task_search import \
+    ReportManagerPacConfigDynaFlowTaskSearch
+from reports.providers.pac_config_dyna_flow_task_search import \
+    ReportProviderPacConfigDynaFlowTaskSearch
 from reports.report_request_validation_error import \
     ReportRequestValidationError
-from reports.row_models.pac_config_dyna_flow_task_search import ReportItemPacConfigDynaFlowTaskSearch
+from reports.row_models.pac_config_dyna_flow_task_search import \
+    ReportItemPacConfigDynaFlowTaskSearch
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
@@ -88,11 +91,15 @@ class TestReportManagerPacConfigDynaFlowTaskSearch:
             role_required = "Config"
 
             session_context.role_name_csv = role_required
-            started_date_greater_than_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
+            started_date_greater_than_filter_code: uuid.UUID = (
+                uuid.uuid4())
             processor_identifier: str = ""
-            is_started_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
-            is_completed_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
-            is_successful_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
+            is_started_tri_state_filter_code: uuid.UUID = (
+                uuid.uuid4())
+            is_completed_tri_state_filter_code: uuid.UUID = (
+                uuid.uuid4())
+            is_successful_tri_state_filter_code: uuid.UUID = (
+                uuid.uuid4())
             page_number = 1
             item_count_per_page = 10
             order_by_column_name = ""
@@ -161,11 +168,15 @@ class TestReportManagerPacConfigDynaFlowTaskSearch:
             role_required = "Config"
 
             session_context.role_name_csv = role_required
-            started_date_greater_than_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
+            started_date_greater_than_filter_code: uuid.UUID = (
+                uuid.uuid4())
             processor_identifier: str = ""
-            is_started_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
-            is_completed_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
-            is_successful_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
+            is_started_tri_state_filter_code: uuid.UUID = (
+                uuid.uuid4())
+            is_completed_tri_state_filter_code: uuid.UUID = (
+                uuid.uuid4())
+            is_successful_tri_state_filter_code: uuid.UUID = (
+                uuid.uuid4())
             page_number = 1
             order_by_column_name = ""
             order_by_descending = False
@@ -231,11 +242,15 @@ class TestReportManagerPacConfigDynaFlowTaskSearch:
             role_required = "Config"
 
             session_context.role_name_csv = role_required
-            started_date_greater_than_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
+            started_date_greater_than_filter_code: uuid.UUID = (
+                uuid.uuid4())
             processor_identifier: str = ""
-            is_started_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
-            is_completed_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
-            is_successful_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
+            is_started_tri_state_filter_code: uuid.UUID = (
+                uuid.uuid4())
+            is_completed_tri_state_filter_code: uuid.UUID = (
+                uuid.uuid4())
+            is_successful_tri_state_filter_code: uuid.UUID = (
+                uuid.uuid4())
             item_count_per_page = 10
             order_by_column_name = ""
             order_by_descending = False

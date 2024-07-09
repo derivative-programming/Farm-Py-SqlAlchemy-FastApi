@@ -1,6 +1,6 @@
-# models/managers/tac.py  # pylint: disable=duplicate-code
+# models/managers/tac.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 TacManager class, which is
@@ -195,8 +195,8 @@ class TacManager:
         )
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Tac._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 Tac._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(Tac._pac_id == Pac._pac_id,  # type: ignore
+                 Tac._pac_id != 0)  # type: ignore
         )
 
         return query

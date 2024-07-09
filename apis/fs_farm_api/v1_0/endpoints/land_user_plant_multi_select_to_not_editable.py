@@ -1,4 +1,4 @@
-# apis/fs_farm_api/v1_0/endpoints/land_user_plant_multi_select_to_not_editable.py  # pylint: disable=duplicate-code
+# apis/fs_farm_api/v1_0/endpoints/land_user_plant_multi_select_to_not_editable.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

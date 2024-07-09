@@ -1,4 +1,4 @@
-# business/customer_base.py  # pylint: disable=duplicate-code
+# business/customer_base.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

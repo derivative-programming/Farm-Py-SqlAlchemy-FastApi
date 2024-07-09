@@ -1,6 +1,6 @@
-# models/managers/org_customer.py  # pylint: disable=duplicate-code
+# models/managers/org_customer.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 OrgCustomerManager class, which is
@@ -135,13 +135,13 @@ class OrgCustomerManager:
         )
         query = query.outerjoin(  # customer_id
             Customer,
-            and_(OrgCustomer._customer_id == Customer._customer_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 OrgCustomer._customer_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(OrgCustomer._customer_id == Customer._customer_id,  # type: ignore
+                 OrgCustomer._customer_id != 0)  # type: ignore
         )
         query = query.outerjoin(  # organization_id
             Organization,
-            and_(OrgCustomer._organization_id == Organization._organization_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 OrgCustomer._organization_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(OrgCustomer._organization_id == Organization._organization_id,  # type: ignore
+                 OrgCustomer._organization_id != 0)  # type: ignore
         )
 
         return query

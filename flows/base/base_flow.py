@@ -1,4 +1,4 @@
-# flows/base/base_flow.py  # pylint: disable=duplicate-code
+# flows/base/base_flow.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains the BaseFlow class which serves

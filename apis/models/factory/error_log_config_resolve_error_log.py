@@ -1,4 +1,4 @@
-# apis/models/factory/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code
+# apis/models/factory/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 """
 Factory module for creating instances of

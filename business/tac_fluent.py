@@ -1,4 +1,4 @@
-# business/tac_fluent.py  # pylint: disable=duplicate-code
+# business/tac_fluent.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

@@ -1,4 +1,4 @@
-# helpers/api_token.py  # pylint: disable=duplicate-code
+# helpers/api_token.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains functions and classes related to API token handling.

@@ -1,4 +1,4 @@
-# apis/fs_farm_api/v1_0/endpoints/tests/conftest.py  # pylint: disable=duplicate-code
+# apis/fs_farm_api/v1_0/endpoints/tests/conftest.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=redefined-outer-name
 """
 This module contains fixtures for unit testing the endpoints in the API.
@@ -34,7 +34,7 @@ async def overridden_get_db():
         await conn.run_sync(Base.metadata.create_all)
 
     # Create a sessionmaker
-    async_session_local = sessionmaker(  # pylint: disable=invalid-name
+    async_session_local = sessionmaker(
         bind=engine,
         class_=AsyncSession,
         expire_on_commit=False

@@ -1,4 +1,4 @@
-# apis/models/init/__init__.py  # pylint: disable=duplicate-code
+# apis/models/init/__init__.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains the initialization code for the models used in the APIs.

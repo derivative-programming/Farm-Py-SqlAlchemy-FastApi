@@ -1,4 +1,4 @@
-# flows/base/tests/pac_user_role_list_init_report_test.py  # pylint: disable=duplicate-code
+# flows/base/tests/pac_user_role_list_init_report_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-import
 """

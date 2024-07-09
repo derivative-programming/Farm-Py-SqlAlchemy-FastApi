@@ -1,6 +1,6 @@
-# models/managers/land.py  # pylint: disable=duplicate-code
+# models/managers/land.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 LandManager class, which is
@@ -195,8 +195,8 @@ class LandManager:
         )
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(Land._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 Land._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(Land._pac_id == Pac._pac_id,  # type: ignore
+                 Land._pac_id != 0)  # type: ignore
         )
 
         return query

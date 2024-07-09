@@ -1,4 +1,4 @@
-# apis/models/init/tests/land_add_plant_init_obj_wf_test.py  # pylint: disable=duplicate-code
+# apis/models/init/tests/land_add_plant_init_obj_wf_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods

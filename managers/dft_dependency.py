@@ -1,6 +1,6 @@
-# models/managers/dft_dependency.py  # pylint: disable=duplicate-code
+# models/managers/dft_dependency.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 DFTDependencyManager class, which is
@@ -133,8 +133,8 @@ class DFTDependencyManager:
         )
         query = query.outerjoin(  # dyna_flow_task_id
             DynaFlowTask,
-            and_(DFTDependency._dyna_flow_task_id == DynaFlowTask._dyna_flow_task_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 DFTDependency._dyna_flow_task_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(DFTDependency._dyna_flow_task_id == DynaFlowTask._dyna_flow_task_id,  # type: ignore
+                 DFTDependency._dyna_flow_task_id != 0)  # type: ignore
         )
 
         return query

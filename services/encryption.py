@@ -1,4 +1,4 @@
-# services/encryption.py  # pylint: disable=duplicate-code
+# services/encryption.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module provides functions for encrypting and decrypting

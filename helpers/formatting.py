@@ -1,4 +1,4 @@
-# helpers/formatting.py  # pylint: disable=duplicate-code
+# helpers/formatting.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
     This module provides helper functions for formatting strings.

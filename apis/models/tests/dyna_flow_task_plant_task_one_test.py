@@ -1,4 +1,4 @@
-# apis/models/tests/dyna_flow_task_plant_task_one_test.py  # pylint: disable=duplicate-code
+# apis/models/tests/dyna_flow_task_plant_task_one_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-argument, too-many-public-methods
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods

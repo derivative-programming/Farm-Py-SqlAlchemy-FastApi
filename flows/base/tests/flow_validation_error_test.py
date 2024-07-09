@@ -1,4 +1,4 @@
-# flows/base/tests/flow_validation_error_test.py  # pylint: disable=duplicate-code
+# flows/base/tests/flow_validation_error_test.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
 This module contains unit tests for the FlowValidationError class.

@@ -1,4 +1,4 @@
-# run_df_processor.py  # pylint: disable=duplicate-code
+# run_df_processor.py  # pylint: disable=duplicate-code # noqa: E501
 """
 This module is responsible for running the data flow processor.
 

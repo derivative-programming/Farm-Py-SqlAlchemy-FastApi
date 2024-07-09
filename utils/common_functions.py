@@ -1,4 +1,4 @@
-# utils/common_functions.py  # pylint: disable=duplicate-code
+# utils/common_functions.py  # pylint: disable=duplicate-code # noqa: E501
 
 """
     common utility functions

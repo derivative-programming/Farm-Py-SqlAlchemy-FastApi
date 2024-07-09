@@ -1,4 +1,4 @@
-# reports/reprot_manager_base.py  # pylint: disable=duplicate-code
+# reports/reprot_manager_base.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

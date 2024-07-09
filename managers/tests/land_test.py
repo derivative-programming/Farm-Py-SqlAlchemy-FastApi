@@ -1,4 +1,4 @@
-# managers/tests/land_test.py  # pylint: disable=duplicate-code
+# managers/tests/land_test.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=protected-access, too-many-public-methods
 # pylint: disable=unused-argument
 # pylint: disable=unused-import

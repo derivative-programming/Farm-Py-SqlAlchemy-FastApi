@@ -1,4 +1,4 @@
-# models/dyna_flow.py  # pylint: disable=duplicate-code
+# models/dyna_flow.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

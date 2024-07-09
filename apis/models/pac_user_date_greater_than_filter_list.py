@@ -1,4 +1,4 @@
-# apis/models/pac_user_date_greater_than_filter_list.py  # pylint: disable=duplicate-code
+# apis/models/pac_user_date_greater_than_filter_list.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 
 """

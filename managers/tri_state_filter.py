@@ -1,6 +1,6 @@
-# models/managers/tri_state_filter.py  # pylint: disable=duplicate-code
+# models/managers/tri_state_filter.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
-
+# pylint: disable=protected-access
 """
 This module contains the
 TriStateFilterManager class, which is
@@ -205,8 +205,8 @@ class TriStateFilterManager:
         )
         query = query.outerjoin(  # pac_id
             Pac,
-            and_(TriStateFilter._pac_id == Pac._pac_id,  # pylint: disable=protected-access  # noqa: E501 # type: ignore
-                 TriStateFilter._pac_id != 0)  # pylint: disable=protected-access  # noqa: E501 # type: ignore
+            and_(TriStateFilter._pac_id == Pac._pac_id,  # type: ignore
+                 TriStateFilter._pac_id != 0)  # type: ignore
         )
 
         return query

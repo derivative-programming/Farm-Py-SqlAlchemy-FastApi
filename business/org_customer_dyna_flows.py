@@ -1,4 +1,4 @@
-# business/org_customer_dyna_flows.py  # pylint: disable=duplicate-code
+# business/org_customer_dyna_flows.py  # pylint: disable=duplicate-code # noqa: E501
 # pylint: disable=unused-import
 """
 This module contains the business logic related to org_customer dynamic flows.
