@@ -289,7 +289,8 @@ class DynaFlowTask(Base):
         self.last_update_user_id = kwargs.get(
             'last_update_user_id', uuid.UUID(int=0))
         self.completed_utc_date_time = kwargs.get(
-            'completed_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'completed_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.dependency_dyna_flow_task_id = kwargs.get(
             'dependency_dyna_flow_task_id', 0)
         self.description = kwargs.get(
@@ -317,7 +318,8 @@ class DynaFlowTask(Base):
         self.max_retry_count = kwargs.get(
             'max_retry_count', 0)
         self.min_start_utc_date_time = kwargs.get(
-            'min_start_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'min_start_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.param_1 = kwargs.get(
             'param_1', "")
         self.param_2 = kwargs.get(
@@ -325,17 +327,21 @@ class DynaFlowTask(Base):
         self.processor_identifier = kwargs.get(
             'processor_identifier', "")
         self.requested_utc_date_time = kwargs.get(
-            'requested_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'requested_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.result_value = kwargs.get(
             'result_value', "")
         self.retry_count = kwargs.get(
             'retry_count', 0)
         self.started_utc_date_time = kwargs.get(
-            'started_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'started_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'insert_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'last_update_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.dyna_flow_code_peek = kwargs.get(  # DynaFlowID
             'dyna_flow_code_peek', uuid.UUID(int=0))
         self.dyna_flow_task_type_code_peek = kwargs.get(  # DynaFlowTaskTypeID
@@ -541,10 +547,12 @@ class DynaFlowTask(Base):
     @property
     def dependency_dyna_flow_task_id(self) -> int:
         """
-        Returns the value of the '_dependency_dyna_flow_task_id' attribute of the object.
+        Returns the value of the '_dependency_dyna_flow_task_id'
+            attribute of the object.
         If the attribute is not set, it returns 0.
 
-        :return: The value of the '_dependency_dyna_flow_task_id' attribute or 0 if not set.
+        :return: The value of the '_dependency_dyna_flow_task_id'
+            attribute or 0 if not set.
         :rtype: int
         """
         return getattr(self, '_dependency_dyna_flow_task_id', 0) or 0
@@ -764,10 +772,12 @@ class DynaFlowTask(Base):
     @property
     def max_retry_count(self) -> int:
         """
-        Returns the value of the '_max_retry_count' attribute of the object.
+        Returns the value of the '_max_retry_count'
+            attribute of the object.
         If the attribute is not set, it returns 0.
 
-        :return: The value of the '_max_retry_count' attribute or 0 if not set.
+        :return: The value of the '_max_retry_count'
+            attribute or 0 if not set.
         :rtype: int
         """
         return getattr(self, '_max_retry_count', 0) or 0
@@ -926,10 +936,12 @@ class DynaFlowTask(Base):
     @property
     def retry_count(self) -> int:
         """
-        Returns the value of the '_retry_count' attribute of the object.
+        Returns the value of the '_retry_count'
+            attribute of the object.
         If the attribute is not set, it returns 0.
 
-        :return: The value of the '_retry_count' attribute or 0 if not set.
+        :return: The value of the '_retry_count'
+            attribute or 0 if not set.
         :rtype: int
         """
         return getattr(self, '_retry_count', 0) or 0
@@ -1079,7 +1091,8 @@ def set_updated_on(
     target
 ):  # pylint: disable=unused-argument
     """
-    Sets the 'last_update_utc_date_time' attribute of
+    Sets the 'last_update_utc_date_time'
+    attribute of
     the target object to the current UTC date and time.
 
     :param mapper: The SQLAlchemy mapper object.

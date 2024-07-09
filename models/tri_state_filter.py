@@ -163,9 +163,11 @@ class TriStateFilter(Base):
         self.state_int_value = kwargs.get(
             'state_int_value', 0)
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'insert_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'last_update_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.pac_code_peek = kwargs.get(  # PacID
             'pac_code_peek', uuid.UUID(int=0))
 
@@ -361,10 +363,12 @@ class TriStateFilter(Base):
     @property
     def display_order(self) -> int:
         """
-        Returns the value of the '_display_order' attribute of the object.
+        Returns the value of the '_display_order'
+            attribute of the object.
         If the attribute is not set, it returns 0.
 
-        :return: The value of the '_display_order' attribute or 0 if not set.
+        :return: The value of the '_display_order'
+            attribute or 0 if not set.
         :rtype: int
         """
         return getattr(self, '_display_order', 0) or 0
@@ -444,10 +448,12 @@ class TriStateFilter(Base):
     @property
     def state_int_value(self) -> int:
         """
-        Returns the value of the '_state_int_value' attribute of the object.
+        Returns the value of the '_state_int_value'
+            attribute of the object.
         If the attribute is not set, it returns 0.
 
-        :return: The value of the '_state_int_value' attribute or 0 if not set.
+        :return: The value of the '_state_int_value'
+            attribute or 0 if not set.
         :rtype: int
         """
         return getattr(self, '_state_int_value', 0) or 0
@@ -532,7 +538,8 @@ def set_updated_on(
     target
 ):  # pylint: disable=unused-argument
     """
-    Sets the 'last_update_utc_date_time' attribute of
+    Sets the 'last_update_utc_date_time'
+    attribute of
     the target object to the current UTC date and time.
 
     :param mapper: The SQLAlchemy mapper object.

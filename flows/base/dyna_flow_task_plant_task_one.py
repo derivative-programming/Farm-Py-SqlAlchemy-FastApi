@@ -39,7 +39,7 @@ class BaseFlowDynaFlowTaskPlantTaskOne(BaseFlow):  # pylint: disable=too-few-pub
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowDynaFlowTaskPlantTaskOne, self).__init__(
+        super().__init__(
             "DynaFlowTaskPlantTaskOne",
             session_context,
         )

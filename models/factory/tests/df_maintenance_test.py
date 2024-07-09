@@ -291,11 +291,14 @@ class TestDFMaintenanceFactory:
         assert new_obj.is_paused is False
         assert new_obj.is_scheduled_df_process_request_completed is False
         assert new_obj.is_scheduled_df_process_request_started is False
-        assert new_obj.last_scheduled_df_process_request_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
-        assert new_obj.next_scheduled_df_process_request_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.last_scheduled_df_process_request_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.next_scheduled_df_process_request_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.pac_id == 0
         assert new_obj.paused_by_username == ""
-        assert new_obj.paused_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.paused_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.scheduled_df_process_request_processor_identifier == ""
 
     def test_last_change_code_concurrency(self, session):

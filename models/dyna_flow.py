@@ -323,7 +323,8 @@ class DynaFlow(Base):
         self.last_update_user_id = kwargs.get(
             'last_update_user_id', uuid.UUID(int=0))
         self.completed_utc_date_time = kwargs.get(
-            'completed_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'completed_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.dependency_dyna_flow_id = kwargs.get(
             'dependency_dyna_flow_id', 0)
         self.description = kwargs.get(
@@ -353,7 +354,8 @@ class DynaFlow(Base):
         self.is_tasks_created = kwargs.get(
             'is_tasks_created', False)
         self.min_start_utc_date_time = kwargs.get(
-            'min_start_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'min_start_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.pac_id = kwargs.get(
             'pac_id', 0)
         self.param_1 = kwargs.get(
@@ -363,21 +365,25 @@ class DynaFlow(Base):
         self.priority_level = kwargs.get(
             'priority_level', 0)
         self.requested_utc_date_time = kwargs.get(
-            'requested_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'requested_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.result_value = kwargs.get(
             'result_value', "")
         self.root_dyna_flow_id = kwargs.get(
             'root_dyna_flow_id', 0)
         self.started_utc_date_time = kwargs.get(
-            'started_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'started_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.subject_code = kwargs.get(
             'subject_code', uuid.uuid4())
         self.task_creation_processor_identifier = kwargs.get(
             'task_creation_processor_identifier', "")
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'insert_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'last_update_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.dyna_flow_type_code_peek = kwargs.get(  # DynaFlowTypeID
             'dyna_flow_type_code_peek', uuid.UUID(int=0))
         self.pac_code_peek = kwargs.get(  # PacID
@@ -583,10 +589,12 @@ class DynaFlow(Base):
     @property
     def dependency_dyna_flow_id(self) -> int:
         """
-        Returns the value of the '_dependency_dyna_flow_id' attribute of the object.
+        Returns the value of the '_dependency_dyna_flow_id'
+            attribute of the object.
         If the attribute is not set, it returns 0.
 
-        :return: The value of the '_dependency_dyna_flow_id' attribute or 0 if not set.
+        :return: The value of the '_dependency_dyna_flow_id'
+            attribute or 0 if not set.
         :rtype: int
         """
         return getattr(self, '_dependency_dyna_flow_id', 0) or 0
@@ -896,10 +904,12 @@ class DynaFlow(Base):
     @property
     def parent_dyna_flow_id(self) -> int:
         """
-        Returns the value of the '_parent_dyna_flow_id' attribute of the object.
+        Returns the value of the '_parent_dyna_flow_id'
+            attribute of the object.
         If the attribute is not set, it returns 0.
 
-        :return: The value of the '_parent_dyna_flow_id' attribute or 0 if not set.
+        :return: The value of the '_parent_dyna_flow_id'
+            attribute or 0 if not set.
         :rtype: int
         """
         return getattr(self, '_parent_dyna_flow_id', 0) or 0
@@ -916,10 +926,12 @@ class DynaFlow(Base):
     @property
     def priority_level(self) -> int:
         """
-        Returns the value of the '_priority_level' attribute of the object.
+        Returns the value of the '_priority_level'
+            attribute of the object.
         If the attribute is not set, it returns 0.
 
-        :return: The value of the '_priority_level' attribute or 0 if not set.
+        :return: The value of the '_priority_level'
+            attribute or 0 if not set.
         :rtype: int
         """
         return getattr(self, '_priority_level', 0) or 0
@@ -986,10 +998,12 @@ class DynaFlow(Base):
     @property
     def root_dyna_flow_id(self) -> int:
         """
-        Returns the value of the '_root_dyna_flow_id' attribute of the object.
+        Returns the value of the '_root_dyna_flow_id'
+            attribute of the object.
         If the attribute is not set, it returns 0.
 
-        :return: The value of the '_root_dyna_flow_id' attribute or 0 if not set.
+        :return: The value of the '_root_dyna_flow_id'
+            attribute or 0 if not set.
         :rtype: int
         """
         return getattr(self, '_root_dyna_flow_id', 0) or 0
@@ -1204,7 +1218,8 @@ def set_updated_on(
     target
 ):  # pylint: disable=unused-argument
     """
-    Sets the 'last_update_utc_date_time' attribute of
+    Sets the 'last_update_utc_date_time'
+    attribute of
     the target object to the current UTC date and time.
 
     :param mapper: The SQLAlchemy mapper object.

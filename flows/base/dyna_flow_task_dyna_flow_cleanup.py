@@ -39,7 +39,7 @@ class BaseFlowDynaFlowTaskDynaFlowCleanup(BaseFlow):  # pylint: disable=too-few-
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowDynaFlowTaskDynaFlowCleanup, self).__init__(
+        super().__init__(
             "DynaFlowTaskDynaFlowCleanup",
             session_context,
         )

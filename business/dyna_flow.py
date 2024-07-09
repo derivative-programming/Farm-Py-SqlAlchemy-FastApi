@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import DynaFlow
 
-from .dyna_flow_dyna_flows import DynaFlowDynaFlowsBusObj
+from .dyna_flow_dyna_flows import \
+    DynaFlowDynaFlowsBusObj
 
 
 from .dyna_flow_task import DynaFlowTaskBusObj

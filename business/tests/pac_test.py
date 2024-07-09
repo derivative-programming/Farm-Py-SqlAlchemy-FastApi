@@ -69,7 +69,8 @@ async def new_bus_obj(session, new_obj) -> PacBusObj:
     """
 
     session_context = SessionContext({}, session)
-    pac_bus_obj = PacBusObj(session_context, new_obj)
+    pac_bus_obj = PacBusObj(
+        session_context, new_obj)
 
     return pac_bus_obj
 
@@ -103,7 +104,8 @@ class TestPacBusObj:
                 bus_obj.load_from_obj_instance.called
                 for bus_obj in bus_obj_list)
 
-            for bus_obj, pac in zip(bus_obj_list, obj_list):
+            for bus_obj, pac in \
+                    zip(bus_obj_list, obj_list):
                 mock_load.assert_any_call(pac)
 
     @pytest.mark.asyncio

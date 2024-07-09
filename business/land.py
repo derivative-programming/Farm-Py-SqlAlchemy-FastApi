@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import Land
 
-from .land_dyna_flows import LandDynaFlowsBusObj
+from .land_dyna_flows import \
+    LandDynaFlowsBusObj
 
 
 from .plant import PlantBusObj

@@ -563,7 +563,8 @@ class TestDynaFlowFactoryAsync:
         # startedUTCDateTime
         # subjectCode
         # taskCreationProcessorIdentifier
-        assert new_obj.completed_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.completed_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.dependency_dyna_flow_id == 0
         assert new_obj.description == ""
         assert new_obj.dyna_flow_type_id == 0
@@ -578,15 +579,18 @@ class TestDynaFlowFactoryAsync:
         assert new_obj.is_successful is False
         assert new_obj.is_task_creation_started is False
         assert new_obj.is_tasks_created is False
-        assert new_obj.min_start_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.min_start_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.pac_id == 0
         assert new_obj.param_1 == ""
         assert new_obj.parent_dyna_flow_id == 0
         assert new_obj.priority_level == 0
-        assert new_obj.requested_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.requested_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.result_value == ""
         assert new_obj.root_dyna_flow_id == 0
-        assert new_obj.started_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.started_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert isinstance(new_obj.subject_code, uuid.UUID)
         assert new_obj.task_creation_processor_identifier == ""
 

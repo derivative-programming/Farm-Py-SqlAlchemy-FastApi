@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.dyna_flow_type import DynaFlowType
-from models.serialization_schema.dyna_flow_type import DynaFlowTypeSchema
+from models.serialization_schema.dyna_flow_type import \
+    DynaFlowTypeSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -101,7 +102,6 @@ class DynaFlowTypeManager:
             item.description = ""
             item.display_order = await self.count()
             item.is_active = True
-            # item.priority_level = 1
             await self.add(item)
         if await self.from_enum(DynaFlowTypeEnum.PACPROCESSALLDYNAFLOWTYPESCHEDULEFLOW) \
                 is None:
@@ -111,7 +111,6 @@ class DynaFlowTypeManager:
             item.description = "Pac Process All Dyna Flow Type Schedule Flow"
             item.display_order = await self.count()
             item.is_active = True
-            # item.priority_level = 1
             await self.add(item)
         if await self.from_enum(DynaFlowTypeEnum.PLANTSAMPLEWORKFLOW) \
                 is None:
@@ -121,7 +120,6 @@ class DynaFlowTypeManager:
             item.description = "Plant Sample Workflow"
             item.display_order = await self.count()
             item.is_active = True
-            # item.priority_level = 1
             await self.add(item)
         logging.info("DynaFlowTypeManager.Initialize end")
 
@@ -294,7 +292,8 @@ class DynaFlowTypeManager:
                 dyna_flow_type, or None if not found.
         """
         logging.info(
-            "DynaFlowTypeManager.get_by_id start dyna_flow_type_id: %s",
+            "DynaFlowTypeManager.get_by_id "
+            "start dyna_flow_type_id: %s",
             str(dyna_flow_type_id))
         if not isinstance(dyna_flow_type_id, int):
             raise TypeError(
@@ -391,7 +390,8 @@ class DynaFlowTypeManager:
             dyna_flow_type_id)
         if not dyna_flow_type:
             raise DynaFlowTypeNotFoundError(
-                f"DynaFlowType with ID {dyna_flow_type_id} not found!")
+                f"DynaFlowType with ID "
+                f"{dyna_flow_type_id} not found!")
 
         await self._session_context.session.delete(
             dyna_flow_type)
@@ -486,7 +486,8 @@ class DynaFlowTypeManager:
         new_dyna_flow_type = await self.get_by_id(
             dyna_flow_type_dict["dyna_flow_type_id"])
         if new_dyna_flow_type is None:
-            new_dyna_flow_type = DynaFlowType(**dyna_flow_type_dict)
+            new_dyna_flow_type = DynaFlowType(
+                **dyna_flow_type_dict)
             self._session_context.session.add(new_dyna_flow_type)
         else:
             for key, value in dyna_flow_type_dict.items():
@@ -520,18 +521,12 @@ class DynaFlowTypeManager:
         dyna_flow_type_dict_converted = schema.load(
             dyna_flow_type_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new DynaFlowType instance
-        # using the validated data
-        # new_dyna_flow_type = DynaFlowType(**dyna_flow_type_dict_converted)
-
         # load or create
         new_dyna_flow_type = await self.get_by_id(
             dyna_flow_type_dict_converted["dyna_flow_type_id"])
         if new_dyna_flow_type is None:
-            new_dyna_flow_type = DynaFlowType(**dyna_flow_type_dict_converted)
+            new_dyna_flow_type = DynaFlowType(
+                **dyna_flow_type_dict_converted)
             self._session_context.session.add(new_dyna_flow_type)
         else:
             for key, value in dyna_flow_type_dict_converted.items():
@@ -603,7 +598,8 @@ class DynaFlowTypeManager:
             "DynaFlowTypeManager.update_bulk start")
         updated_dyna_flow_types = []
         for update in dyna_flow_type_updates:
-            dyna_flow_type_id = update.get("dyna_flow_type_id")
+            dyna_flow_type_id = update.get(
+                "dyna_flow_type_id")
             if not isinstance(dyna_flow_type_id, int):
                 raise TypeError(
                     f"The dyna_flow_type_id must be an integer, "
@@ -613,7 +609,8 @@ class DynaFlowTypeManager:
                 continue
 
             logging.info(
-                "DynaFlowTypeManager.update_bulk dyna_flow_type_id:%s",
+                "DynaFlowTypeManager.update_bulk "
+                "dyna_flow_type_id:%s",
                 dyna_flow_type_id)
 
             dyna_flow_type = await self.get_by_id(
@@ -621,7 +618,8 @@ class DynaFlowTypeManager:
 
             if not dyna_flow_type:
                 raise DynaFlowTypeNotFoundError(
-                    f"DynaFlowType with ID {dyna_flow_type_id} not found!")
+                    f"DynaFlowType with ID "
+                    f"{dyna_flow_type_id} not found!")
 
             for key, value in update.items():
                 if key != "dyna_flow_type_id":
@@ -639,7 +637,8 @@ class DynaFlowTypeManager:
 
         return updated_dyna_flow_types
 
-    async def delete_bulk(self, dyna_flow_type_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, dyna_flow_type_ids: List[int]) -> bool:
         """
         Delete multiple dyna_flow_types
         by their IDs.
@@ -658,7 +657,8 @@ class DynaFlowTypeManager:
                 dyna_flow_type_id)
             if not dyna_flow_type:
                 raise DynaFlowTypeNotFoundError(
-                    f"DynaFlowType with ID {dyna_flow_type_id} not found!"
+                    f"DynaFlowType with ID "
+                    f"{dyna_flow_type_id} not found!"
                 )
 
             if dyna_flow_type:

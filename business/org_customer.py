@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import OrgCustomer
 
-from .org_customer_dyna_flows import OrgCustomerDynaFlowsBusObj
+from .org_customer_dyna_flows import \
+    OrgCustomerDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (

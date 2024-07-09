@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import CustomerRole
 
-from .customer_role_dyna_flows import CustomerRoleDynaFlowsBusObj
+from .customer_role_dyna_flows import \
+    CustomerRoleDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (

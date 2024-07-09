@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import Tac
 
-from .tac_dyna_flows import TacDynaFlowsBusObj
+from .tac_dyna_flows import \
+    TacDynaFlowsBusObj
 
 
 from .organization import OrganizationBusObj

@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.error_log import ErrorLog
-from models.serialization_schema.error_log import ErrorLogSchema
+from models.serialization_schema.error_log import \
+    ErrorLogSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -219,7 +220,8 @@ class ErrorLogManager:
                 error_log, or None if not found.
         """
         logging.info(
-            "ErrorLogManager.get_by_id start error_log_id: %s",
+            "ErrorLogManager.get_by_id "
+            "start error_log_id: %s",
             str(error_log_id))
         if not isinstance(error_log_id, int):
             raise TypeError(
@@ -316,7 +318,8 @@ class ErrorLogManager:
             error_log_id)
         if not error_log:
             raise ErrorLogNotFoundError(
-                f"ErrorLog with ID {error_log_id} not found!")
+                f"ErrorLog with ID "
+                f"{error_log_id} not found!")
 
         await self._session_context.session.delete(
             error_log)
@@ -411,7 +414,8 @@ class ErrorLogManager:
         new_error_log = await self.get_by_id(
             error_log_dict["error_log_id"])
         if new_error_log is None:
-            new_error_log = ErrorLog(**error_log_dict)
+            new_error_log = ErrorLog(
+                **error_log_dict)
             self._session_context.session.add(new_error_log)
         else:
             for key, value in error_log_dict.items():
@@ -445,18 +449,12 @@ class ErrorLogManager:
         error_log_dict_converted = schema.load(
             error_log_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new ErrorLog instance
-        # using the validated data
-        # new_error_log = ErrorLog(**error_log_dict_converted)
-
         # load or create
         new_error_log = await self.get_by_id(
             error_log_dict_converted["error_log_id"])
         if new_error_log is None:
-            new_error_log = ErrorLog(**error_log_dict_converted)
+            new_error_log = ErrorLog(
+                **error_log_dict_converted)
             self._session_context.session.add(new_error_log)
         else:
             for key, value in error_log_dict_converted.items():
@@ -528,7 +526,8 @@ class ErrorLogManager:
             "ErrorLogManager.update_bulk start")
         updated_error_logs = []
         for update in error_log_updates:
-            error_log_id = update.get("error_log_id")
+            error_log_id = update.get(
+                "error_log_id")
             if not isinstance(error_log_id, int):
                 raise TypeError(
                     f"The error_log_id must be an integer, "
@@ -538,7 +537,8 @@ class ErrorLogManager:
                 continue
 
             logging.info(
-                "ErrorLogManager.update_bulk error_log_id:%s",
+                "ErrorLogManager.update_bulk "
+                "error_log_id:%s",
                 error_log_id)
 
             error_log = await self.get_by_id(
@@ -546,7 +546,8 @@ class ErrorLogManager:
 
             if not error_log:
                 raise ErrorLogNotFoundError(
-                    f"ErrorLog with ID {error_log_id} not found!")
+                    f"ErrorLog with ID "
+                    f"{error_log_id} not found!")
 
             for key, value in update.items():
                 if key != "error_log_id":
@@ -564,7 +565,8 @@ class ErrorLogManager:
 
         return updated_error_logs
 
-    async def delete_bulk(self, error_log_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, error_log_ids: List[int]) -> bool:
         """
         Delete multiple error_logs
         by their IDs.
@@ -583,7 +585,8 @@ class ErrorLogManager:
                 error_log_id)
             if not error_log:
                 raise ErrorLogNotFoundError(
-                    f"ErrorLog with ID {error_log_id} not found!"
+                    f"ErrorLog with ID "
+                    f"{error_log_id} not found!"
                 )
 
             if error_log:

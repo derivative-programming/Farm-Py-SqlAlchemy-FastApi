@@ -39,7 +39,7 @@ class BaseFlowPacUserRoleListInitReport(BaseFlow):  # pylint: disable=too-few-pu
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowPacUserRoleListInitReport, self).__init__(
+        super().__init__(
             "PacUserRoleListInitReport",
             session_context,
         )

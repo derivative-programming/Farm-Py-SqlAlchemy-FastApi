@@ -24,7 +24,8 @@ from main import app
 
 from .....models import \
     factory as request_factory  # pylint: disable=reimported  # noqa: F401
-from ..land_user_plant_multi_select_to_not_editable import LandUserPlantMultiSelectToNotEditableRouterConfig
+from ..land_user_plant_multi_select_to_not_editable import \
+    LandUserPlantMultiSelectToNotEditableRouterConfig
 
 
 @pytest.mark.asyncio

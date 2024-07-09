@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import Customer
 
-from .customer_dyna_flows import CustomerDynaFlowsBusObj
+from .customer_dyna_flows import \
+    CustomerDynaFlowsBusObj
 
 
 from .customer_role import CustomerRoleBusObj

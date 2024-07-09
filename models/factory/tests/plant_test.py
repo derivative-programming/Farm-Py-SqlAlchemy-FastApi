@@ -357,7 +357,8 @@ class TestPlantFactory:
             new_obj.some_uniqueidentifier_val,
             uuid.UUID
         )
-        assert new_obj.some_utc_date_time_val == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.some_utc_date_time_val == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.some_var_char_val == ""
 # endset
 

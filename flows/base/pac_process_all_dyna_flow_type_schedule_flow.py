@@ -39,7 +39,7 @@ class BaseFlowPacProcessAllDynaFlowTypeScheduleFlow(BaseFlow):  # pylint: disabl
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowPacProcessAllDynaFlowTypeScheduleFlow, self).__init__(
+        super().__init__(
             "PacProcessAllDynaFlowTypeScheduleFlow",
             session_context,
         )

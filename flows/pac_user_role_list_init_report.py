@@ -1,5 +1,6 @@
 # flows/default/pac_user_role_list_init_report.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowPacUserRoleListInitReport class

@@ -125,9 +125,11 @@ class CustomerRole(Base):
         self.role_id = kwargs.get(
             'role_id', 0)
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'insert_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'last_update_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.customer_code_peek = kwargs.get(  # CustomerID
             'customer_code_peek', uuid.UUID(int=0))
         self.role_code_peek = kwargs.get(  # RoleID
@@ -432,7 +434,8 @@ def set_updated_on(
     target
 ):  # pylint: disable=unused-argument
     """
-    Sets the 'last_update_utc_date_time' attribute of
+    Sets the 'last_update_utc_date_time'
+    attribute of
     the target object to the current UTC date and time.
 
     :param mapper: The SQLAlchemy mapper object.

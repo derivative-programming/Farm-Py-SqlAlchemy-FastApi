@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.dyna_flow_task_type import DynaFlowTaskType
-from models.serialization_schema.dyna_flow_task_type import DynaFlowTaskTypeSchema
+from models.serialization_schema.dyna_flow_task_type import \
+    DynaFlowTaskTypeSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -103,7 +104,6 @@ class DynaFlowTaskTypeManager:
             item.description = ""
             item.display_order = await self.count()
             item.is_active = True
-            # item.max_retry_count = 1
             await self.add(item)
         if await self.from_enum(DynaFlowTaskTypeEnum.DYNAFLOWTASKDYNAFLOWCLEANUP) \
                 is None:
@@ -113,7 +113,6 @@ class DynaFlowTaskTypeManager:
             item.description = "Dyna Flow Task Dyna Flow Cleanup"
             item.display_order = await self.count()
             item.is_active = True
-            # item.max_retry_count = 1
             await self.add(item)
         if await self.from_enum(DynaFlowTaskTypeEnum.PROCESSALLDYNAFLOWTYPESCHEDULETASK) \
                 is None:
@@ -123,7 +122,6 @@ class DynaFlowTaskTypeManager:
             item.description = "Process All Scheduled DynaFlowTypes"
             item.display_order = await self.count()
             item.is_active = True
-            # item.max_retry_count = 1
             await self.add(item)
         if await self.from_enum(DynaFlowTaskTypeEnum.DYNAFLOWTASKPLANTTASKONE) \
                 is None:
@@ -133,7 +131,6 @@ class DynaFlowTaskTypeManager:
             item.description = "Dyna Flow Task Plant Task One"
             item.display_order = await self.count()
             item.is_active = True
-            # item.max_retry_count = 1
             await self.add(item)
         if await self.from_enum(DynaFlowTaskTypeEnum.DYNAFLOWTASKPLANTTASKTWO) \
                 is None:
@@ -143,7 +140,6 @@ class DynaFlowTaskTypeManager:
             item.description = "Dyna Flow Task Plant Task Two"
             item.display_order = await self.count()
             item.is_active = True
-            # item.max_retry_count = 1
             await self.add(item)
         logging.info("DynaFlowTaskTypeManager.Initialize end")
 
@@ -316,7 +312,8 @@ class DynaFlowTaskTypeManager:
                 dyna_flow_task_type, or None if not found.
         """
         logging.info(
-            "DynaFlowTaskTypeManager.get_by_id start dyna_flow_task_type_id: %s",
+            "DynaFlowTaskTypeManager.get_by_id "
+            "start dyna_flow_task_type_id: %s",
             str(dyna_flow_task_type_id))
         if not isinstance(dyna_flow_task_type_id, int):
             raise TypeError(
@@ -413,7 +410,8 @@ class DynaFlowTaskTypeManager:
             dyna_flow_task_type_id)
         if not dyna_flow_task_type:
             raise DynaFlowTaskTypeNotFoundError(
-                f"DynaFlowTaskType with ID {dyna_flow_task_type_id} not found!")
+                f"DynaFlowTaskType with ID "
+                f"{dyna_flow_task_type_id} not found!")
 
         await self._session_context.session.delete(
             dyna_flow_task_type)
@@ -508,7 +506,8 @@ class DynaFlowTaskTypeManager:
         new_dyna_flow_task_type = await self.get_by_id(
             dyna_flow_task_type_dict["dyna_flow_task_type_id"])
         if new_dyna_flow_task_type is None:
-            new_dyna_flow_task_type = DynaFlowTaskType(**dyna_flow_task_type_dict)
+            new_dyna_flow_task_type = DynaFlowTaskType(
+                **dyna_flow_task_type_dict)
             self._session_context.session.add(new_dyna_flow_task_type)
         else:
             for key, value in dyna_flow_task_type_dict.items():
@@ -542,18 +541,12 @@ class DynaFlowTaskTypeManager:
         dyna_flow_task_type_dict_converted = schema.load(
             dyna_flow_task_type_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new DynaFlowTaskType instance
-        # using the validated data
-        # new_dyna_flow_task_type = DynaFlowTaskType(**dyna_flow_task_type_dict_converted)
-
         # load or create
         new_dyna_flow_task_type = await self.get_by_id(
             dyna_flow_task_type_dict_converted["dyna_flow_task_type_id"])
         if new_dyna_flow_task_type is None:
-            new_dyna_flow_task_type = DynaFlowTaskType(**dyna_flow_task_type_dict_converted)
+            new_dyna_flow_task_type = DynaFlowTaskType(
+                **dyna_flow_task_type_dict_converted)
             self._session_context.session.add(new_dyna_flow_task_type)
         else:
             for key, value in dyna_flow_task_type_dict_converted.items():
@@ -625,7 +618,8 @@ class DynaFlowTaskTypeManager:
             "DynaFlowTaskTypeManager.update_bulk start")
         updated_dyna_flow_task_types = []
         for update in dyna_flow_task_type_updates:
-            dyna_flow_task_type_id = update.get("dyna_flow_task_type_id")
+            dyna_flow_task_type_id = update.get(
+                "dyna_flow_task_type_id")
             if not isinstance(dyna_flow_task_type_id, int):
                 raise TypeError(
                     f"The dyna_flow_task_type_id must be an integer, "
@@ -635,7 +629,8 @@ class DynaFlowTaskTypeManager:
                 continue
 
             logging.info(
-                "DynaFlowTaskTypeManager.update_bulk dyna_flow_task_type_id:%s",
+                "DynaFlowTaskTypeManager.update_bulk "
+                "dyna_flow_task_type_id:%s",
                 dyna_flow_task_type_id)
 
             dyna_flow_task_type = await self.get_by_id(
@@ -643,7 +638,8 @@ class DynaFlowTaskTypeManager:
 
             if not dyna_flow_task_type:
                 raise DynaFlowTaskTypeNotFoundError(
-                    f"DynaFlowTaskType with ID {dyna_flow_task_type_id} not found!")
+                    f"DynaFlowTaskType with ID "
+                    f"{dyna_flow_task_type_id} not found!")
 
             for key, value in update.items():
                 if key != "dyna_flow_task_type_id":
@@ -661,7 +657,8 @@ class DynaFlowTaskTypeManager:
 
         return updated_dyna_flow_task_types
 
-    async def delete_bulk(self, dyna_flow_task_type_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, dyna_flow_task_type_ids: List[int]) -> bool:
         """
         Delete multiple dyna_flow_task_types
         by their IDs.
@@ -680,7 +677,8 @@ class DynaFlowTaskTypeManager:
                 dyna_flow_task_type_id)
             if not dyna_flow_task_type:
                 raise DynaFlowTaskTypeNotFoundError(
-                    f"DynaFlowTaskType with ID {dyna_flow_task_type_id} not found!"
+                    f"DynaFlowTaskType with ID "
+                    f"{dyna_flow_task_type_id} not found!"
                 )
 
             if dyna_flow_task_type:

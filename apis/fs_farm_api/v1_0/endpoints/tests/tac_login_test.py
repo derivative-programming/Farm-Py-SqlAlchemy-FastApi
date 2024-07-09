@@ -24,7 +24,8 @@ from main import app
 
 from .....models import \
     factory as request_factory  # pylint: disable=reimported  # noqa: F401
-from ..tac_login import TacLoginRouterConfig
+from ..tac_login import \
+    TacLoginRouterConfig
 
 
 @pytest.mark.asyncio

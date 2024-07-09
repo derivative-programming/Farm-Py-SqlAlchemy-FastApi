@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import DFTDependency
 
-from .dft_dependency_dyna_flows import DFTDependencyDynaFlowsBusObj
+from .dft_dependency_dyna_flows import \
+    DFTDependencyDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (

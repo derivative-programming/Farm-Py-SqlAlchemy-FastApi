@@ -43,8 +43,6 @@ class TestReportItemTacFarmDashboard:
             "is_conditional_btn_available": True,
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemTacFarmDashboard(**data)
         report_item = ReportItemTacFarmDashboard()
         report_item.load_data_provider_dict(data)
         assert report_item.field_one_plant_list_link_land_code == UUID(int=5)

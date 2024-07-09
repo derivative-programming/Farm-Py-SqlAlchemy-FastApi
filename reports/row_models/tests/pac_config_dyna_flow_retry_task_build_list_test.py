@@ -39,8 +39,6 @@ class TestReportItemPacConfigDynaFlowRetryTaskBuildList:
             "dyna_flow_code": str(UUID(int=2)),
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemPacConfigDynaFlowRetryTaskBuildList(**data)
         report_item = ReportItemPacConfigDynaFlowRetryTaskBuildList()
         report_item.load_data_provider_dict(data)
         assert report_item.dyna_flow_code == UUID(int=2)

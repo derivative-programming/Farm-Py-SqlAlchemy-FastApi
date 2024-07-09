@@ -24,7 +24,8 @@ from main import app
 
 from .....models import \
     factory as request_factory  # pylint: disable=reimported  # noqa: F401
-from ..tac_farm_dashboard import TacFarmDashboardRouterConfig
+from ..tac_farm_dashboard import \
+    TacFarmDashboardRouterConfig
 
 
 @pytest.mark.asyncio

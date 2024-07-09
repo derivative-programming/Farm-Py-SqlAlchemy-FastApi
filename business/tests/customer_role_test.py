@@ -69,7 +69,8 @@ async def new_bus_obj(session, new_obj) -> CustomerRoleBusObj:
     """
 
     session_context = SessionContext({}, session)
-    customer_role_bus_obj = CustomerRoleBusObj(session_context, new_obj)
+    customer_role_bus_obj = CustomerRoleBusObj(
+        session_context, new_obj)
 
     return customer_role_bus_obj
 
@@ -103,7 +104,8 @@ class TestCustomerRoleBusObj:
                 bus_obj.load_from_obj_instance.called
                 for bus_obj in bus_obj_list)
 
-            for bus_obj, customer_role in zip(bus_obj_list, obj_list):
+            for bus_obj, customer_role in \
+                    zip(bus_obj_list, obj_list):
                 mock_load.assert_any_call(customer_role)
 
     @pytest.mark.asyncio

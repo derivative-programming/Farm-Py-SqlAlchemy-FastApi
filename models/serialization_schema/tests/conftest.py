@@ -12,8 +12,6 @@ import pytest
 from models import Base
 from services.logging_config import get_logger
 
-# from config import TEST_DATABASE_URL
-
 TEST_DATABASE_URL = "sqlite:///:memory:"
 logger = get_logger(__name__)
 

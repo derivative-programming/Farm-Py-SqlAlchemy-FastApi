@@ -1,5 +1,6 @@
 # flows/default/tac_register.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowTacRegister class
@@ -14,9 +15,12 @@ import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 
+import business
 from business.tac import TacBusObj
 from flows.base import LogSeverity
 from flows.base.tac_register import BaseFlowTacRegister
+from flows.customer_build_temp_api_key import (
+    FlowCustomerBuildTempApiKey, FlowCustomerBuildTempApiKeyResult)
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

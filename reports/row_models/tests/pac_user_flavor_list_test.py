@@ -51,8 +51,6 @@ class TestReportItemPacUserFlavorList:
             "pac_name": "test",
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemPacUserFlavorList(**data)
         report_item = ReportItemPacUserFlavorList()
         report_item.load_data_provider_dict(data)
         assert report_item.flavor_code == UUID(int=2)

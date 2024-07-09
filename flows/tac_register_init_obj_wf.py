@@ -1,5 +1,6 @@
 # flows/default/tac_register_init_obj_wf.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowTacRegisterInitObjWF class

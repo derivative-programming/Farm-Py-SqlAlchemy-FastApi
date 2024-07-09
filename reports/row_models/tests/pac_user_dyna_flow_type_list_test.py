@@ -51,8 +51,6 @@ class TestReportItemPacUserDynaFlowTypeList:
             "dyna_flow_type_priority_level": 1,
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemPacUserDynaFlowTypeList(**data)
         report_item = ReportItemPacUserDynaFlowTypeList()
         report_item.load_data_provider_dict(data)
         assert report_item.dyna_flow_type_code == UUID(int=2)

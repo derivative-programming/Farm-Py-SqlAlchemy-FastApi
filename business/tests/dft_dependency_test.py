@@ -69,7 +69,8 @@ async def new_bus_obj(session, new_obj) -> DFTDependencyBusObj:
     """
 
     session_context = SessionContext({}, session)
-    dft_dependency_bus_obj = DFTDependencyBusObj(session_context, new_obj)
+    dft_dependency_bus_obj = DFTDependencyBusObj(
+        session_context, new_obj)
 
     return dft_dependency_bus_obj
 
@@ -103,7 +104,8 @@ class TestDFTDependencyBusObj:
                 bus_obj.load_from_obj_instance.called
                 for bus_obj in bus_obj_list)
 
-            for bus_obj, dft_dependency in zip(bus_obj_list, obj_list):
+            for bus_obj, dft_dependency in \
+                    zip(bus_obj_list, obj_list):
                 mock_load.assert_any_call(dft_dependency)
 
     @pytest.mark.asyncio

@@ -24,7 +24,8 @@ from main import app
 
 from .....models import \
     factory as request_factory  # pylint: disable=reimported  # noqa: F401
-from ..land_plant_list import LandPlantListRouterConfig
+from ..land_plant_list import \
+    LandPlantListRouterConfig
 
 ##GENTrainingBlock[caseisGetInitAvailable]Start
 ##GENLearn[isGetInitAvailable=true]Start

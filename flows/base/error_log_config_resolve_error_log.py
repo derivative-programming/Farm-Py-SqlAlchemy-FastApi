@@ -39,7 +39,7 @@ class BaseFlowErrorLogConfigResolveErrorLog(BaseFlow):  # pylint: disable=too-fe
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowErrorLogConfigResolveErrorLog, self).__init__(
+        super().__init__(
             "ErrorLogConfigResolveErrorLog",
             session_context,
         )

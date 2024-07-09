@@ -19,7 +19,8 @@ from helpers.session_context import SessionContext
 from models.customer import Customer  # CustomerID
 from models.organization import Organization  # OrganizationID
 from models.org_customer import OrgCustomer
-from models.serialization_schema.org_customer import OrgCustomerSchema
+from models.serialization_schema.org_customer import \
+    OrgCustomerSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -230,7 +231,8 @@ class OrgCustomerManager:
                 org_customer, or None if not found.
         """
         logging.info(
-            "OrgCustomerManager.get_by_id start org_customer_id: %s",
+            "OrgCustomerManager.get_by_id "
+            "start org_customer_id: %s",
             str(org_customer_id))
         if not isinstance(org_customer_id, int):
             raise TypeError(
@@ -327,7 +329,8 @@ class OrgCustomerManager:
             org_customer_id)
         if not org_customer:
             raise OrgCustomerNotFoundError(
-                f"OrgCustomer with ID {org_customer_id} not found!")
+                f"OrgCustomer with ID "
+                f"{org_customer_id} not found!")
 
         await self._session_context.session.delete(
             org_customer)
@@ -422,7 +425,8 @@ class OrgCustomerManager:
         new_org_customer = await self.get_by_id(
             org_customer_dict["org_customer_id"])
         if new_org_customer is None:
-            new_org_customer = OrgCustomer(**org_customer_dict)
+            new_org_customer = OrgCustomer(
+                **org_customer_dict)
             self._session_context.session.add(new_org_customer)
         else:
             for key, value in org_customer_dict.items():
@@ -456,18 +460,12 @@ class OrgCustomerManager:
         org_customer_dict_converted = schema.load(
             org_customer_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new OrgCustomer instance
-        # using the validated data
-        # new_org_customer = OrgCustomer(**org_customer_dict_converted)
-
         # load or create
         new_org_customer = await self.get_by_id(
             org_customer_dict_converted["org_customer_id"])
         if new_org_customer is None:
-            new_org_customer = OrgCustomer(**org_customer_dict_converted)
+            new_org_customer = OrgCustomer(
+                **org_customer_dict_converted)
             self._session_context.session.add(new_org_customer)
         else:
             for key, value in org_customer_dict_converted.items():
@@ -539,7 +537,8 @@ class OrgCustomerManager:
             "OrgCustomerManager.update_bulk start")
         updated_org_customers = []
         for update in org_customer_updates:
-            org_customer_id = update.get("org_customer_id")
+            org_customer_id = update.get(
+                "org_customer_id")
             if not isinstance(org_customer_id, int):
                 raise TypeError(
                     f"The org_customer_id must be an integer, "
@@ -549,7 +548,8 @@ class OrgCustomerManager:
                 continue
 
             logging.info(
-                "OrgCustomerManager.update_bulk org_customer_id:%s",
+                "OrgCustomerManager.update_bulk "
+                "org_customer_id:%s",
                 org_customer_id)
 
             org_customer = await self.get_by_id(
@@ -557,7 +557,8 @@ class OrgCustomerManager:
 
             if not org_customer:
                 raise OrgCustomerNotFoundError(
-                    f"OrgCustomer with ID {org_customer_id} not found!")
+                    f"OrgCustomer with ID "
+                    f"{org_customer_id} not found!")
 
             for key, value in update.items():
                 if key != "org_customer_id":
@@ -575,7 +576,8 @@ class OrgCustomerManager:
 
         return updated_org_customers
 
-    async def delete_bulk(self, org_customer_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, org_customer_ids: List[int]) -> bool:
         """
         Delete multiple org_customers
         by their IDs.
@@ -594,7 +596,8 @@ class OrgCustomerManager:
                 org_customer_id)
             if not org_customer:
                 raise OrgCustomerNotFoundError(
-                    f"OrgCustomer with ID {org_customer_id} not found!"
+                    f"OrgCustomer with ID "
+                    f"{org_customer_id} not found!"
                 )
 
             if org_customer:

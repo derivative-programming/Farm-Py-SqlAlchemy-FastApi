@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import DFMaintenance
 
-from .df_maintenance_dyna_flows import DFMaintenanceDynaFlowsBusObj
+from .df_maintenance_dyna_flows import \
+    DFMaintenanceDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (

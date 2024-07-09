@@ -24,7 +24,8 @@ from main import app
 
 from .....models import \
     factory as request_factory  # pylint: disable=reimported  # noqa: F401
-from ..plant_user_details import PlantUserDetailsRouterConfig
+from ..plant_user_details import \
+    PlantUserDetailsRouterConfig
 
 
 @pytest.mark.asyncio

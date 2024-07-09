@@ -20,7 +20,8 @@ from apis.fs_farm_api.v1_0.endpoints.tests import test_constants
 from database import get_db
 from main import app
 
-from ..land_add_plant import LandAddPlantRouterConfig
+from ..land_add_plant import \
+    LandAddPlantRouterConfig
 
 # Test cases for the `submit` endpoint
 ##GENTrainingBlock[caseisPostWithIdAvailable]Start

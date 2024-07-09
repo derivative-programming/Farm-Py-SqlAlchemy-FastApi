@@ -19,7 +19,8 @@ from helpers.session_context import SessionContext
 from models.dyna_flow_type import DynaFlowType  # DynaFlowTypeID
 from models.pac import Pac  # PacID
 from models.dyna_flow_type_schedule import DynaFlowTypeSchedule
-from models.serialization_schema.dyna_flow_type_schedule import DynaFlowTypeScheduleSchema
+from models.serialization_schema.dyna_flow_type_schedule import \
+    DynaFlowTypeScheduleSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -230,7 +231,8 @@ class DynaFlowTypeScheduleManager:
                 dyna_flow_type_schedule, or None if not found.
         """
         logging.info(
-            "DynaFlowTypeScheduleManager.get_by_id start dyna_flow_type_schedule_id: %s",
+            "DynaFlowTypeScheduleManager.get_by_id "
+            "start dyna_flow_type_schedule_id: %s",
             str(dyna_flow_type_schedule_id))
         if not isinstance(dyna_flow_type_schedule_id, int):
             raise TypeError(
@@ -327,7 +329,8 @@ class DynaFlowTypeScheduleManager:
             dyna_flow_type_schedule_id)
         if not dyna_flow_type_schedule:
             raise DynaFlowTypeScheduleNotFoundError(
-                f"DynaFlowTypeSchedule with ID {dyna_flow_type_schedule_id} not found!")
+                f"DynaFlowTypeSchedule with ID "
+                f"{dyna_flow_type_schedule_id} not found!")
 
         await self._session_context.session.delete(
             dyna_flow_type_schedule)
@@ -422,7 +425,8 @@ class DynaFlowTypeScheduleManager:
         new_dyna_flow_type_schedule = await self.get_by_id(
             dyna_flow_type_schedule_dict["dyna_flow_type_schedule_id"])
         if new_dyna_flow_type_schedule is None:
-            new_dyna_flow_type_schedule = DynaFlowTypeSchedule(**dyna_flow_type_schedule_dict)
+            new_dyna_flow_type_schedule = DynaFlowTypeSchedule(
+                **dyna_flow_type_schedule_dict)
             self._session_context.session.add(new_dyna_flow_type_schedule)
         else:
             for key, value in dyna_flow_type_schedule_dict.items():
@@ -456,18 +460,12 @@ class DynaFlowTypeScheduleManager:
         dyna_flow_type_schedule_dict_converted = schema.load(
             dyna_flow_type_schedule_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new DynaFlowTypeSchedule instance
-        # using the validated data
-        # new_dyna_flow_type_schedule = DynaFlowTypeSchedule(**dyna_flow_type_schedule_dict_converted)
-
         # load or create
         new_dyna_flow_type_schedule = await self.get_by_id(
             dyna_flow_type_schedule_dict_converted["dyna_flow_type_schedule_id"])
         if new_dyna_flow_type_schedule is None:
-            new_dyna_flow_type_schedule = DynaFlowTypeSchedule(**dyna_flow_type_schedule_dict_converted)
+            new_dyna_flow_type_schedule = DynaFlowTypeSchedule(
+                **dyna_flow_type_schedule_dict_converted)
             self._session_context.session.add(new_dyna_flow_type_schedule)
         else:
             for key, value in dyna_flow_type_schedule_dict_converted.items():
@@ -539,7 +537,8 @@ class DynaFlowTypeScheduleManager:
             "DynaFlowTypeScheduleManager.update_bulk start")
         updated_dyna_flow_type_schedules = []
         for update in dyna_flow_type_schedule_updates:
-            dyna_flow_type_schedule_id = update.get("dyna_flow_type_schedule_id")
+            dyna_flow_type_schedule_id = update.get(
+                "dyna_flow_type_schedule_id")
             if not isinstance(dyna_flow_type_schedule_id, int):
                 raise TypeError(
                     f"The dyna_flow_type_schedule_id must be an integer, "
@@ -549,7 +548,8 @@ class DynaFlowTypeScheduleManager:
                 continue
 
             logging.info(
-                "DynaFlowTypeScheduleManager.update_bulk dyna_flow_type_schedule_id:%s",
+                "DynaFlowTypeScheduleManager.update_bulk "
+                "dyna_flow_type_schedule_id:%s",
                 dyna_flow_type_schedule_id)
 
             dyna_flow_type_schedule = await self.get_by_id(
@@ -557,7 +557,8 @@ class DynaFlowTypeScheduleManager:
 
             if not dyna_flow_type_schedule:
                 raise DynaFlowTypeScheduleNotFoundError(
-                    f"DynaFlowTypeSchedule with ID {dyna_flow_type_schedule_id} not found!")
+                    f"DynaFlowTypeSchedule with ID "
+                    f"{dyna_flow_type_schedule_id} not found!")
 
             for key, value in update.items():
                 if key != "dyna_flow_type_schedule_id":
@@ -575,7 +576,8 @@ class DynaFlowTypeScheduleManager:
 
         return updated_dyna_flow_type_schedules
 
-    async def delete_bulk(self, dyna_flow_type_schedule_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, dyna_flow_type_schedule_ids: List[int]) -> bool:
         """
         Delete multiple dyna_flow_type_schedules
         by their IDs.
@@ -594,7 +596,8 @@ class DynaFlowTypeScheduleManager:
                 dyna_flow_type_schedule_id)
             if not dyna_flow_type_schedule:
                 raise DynaFlowTypeScheduleNotFoundError(
-                    f"DynaFlowTypeSchedule with ID {dyna_flow_type_schedule_id} not found!"
+                    f"DynaFlowTypeSchedule with ID "
+                    f"{dyna_flow_type_schedule_id} not found!"
                 )
 
             if dyna_flow_type_schedule:

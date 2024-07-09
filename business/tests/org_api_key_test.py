@@ -69,7 +69,8 @@ async def new_bus_obj(session, new_obj) -> OrgApiKeyBusObj:
     """
 
     session_context = SessionContext({}, session)
-    org_api_key_bus_obj = OrgApiKeyBusObj(session_context, new_obj)
+    org_api_key_bus_obj = OrgApiKeyBusObj(
+        session_context, new_obj)
 
     return org_api_key_bus_obj
 
@@ -103,7 +104,8 @@ class TestOrgApiKeyBusObj:
                 bus_obj.load_from_obj_instance.called
                 for bus_obj in bus_obj_list)
 
-            for bus_obj, org_api_key in zip(bus_obj_list, obj_list):
+            for bus_obj, org_api_key in \
+                    zip(bus_obj_list, obj_list):
                 mock_load.assert_any_call(org_api_key)
 
     @pytest.mark.asyncio

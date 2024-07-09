@@ -98,7 +98,8 @@ class DynaFlowTaskFactory(factory.Factory):
             dyna_flow_id_dyna_flow_instance.dyna_flow_id)
         kwargs["dyna_flow_task_type_id"] = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.dyna_flow_task_type_id)
-        kwargs["dyna_flow_code_peek"] = dyna_flow_id_dyna_flow_instance.code  # DynaFlowID
+        kwargs["dyna_flow_code_peek"] = (  # DynaFlowID
+            dyna_flow_id_dyna_flow_instance.code)
         kwargs["dyna_flow_task_type_code_peek"] = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.code)
         obj = model_class(*args, **kwargs)
@@ -106,7 +107,8 @@ class DynaFlowTaskFactory(factory.Factory):
             dyna_flow_id_dyna_flow_instance.dyna_flow_id)
         obj.dyna_flow_task_type_id = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.dyna_flow_task_type_id)
-        obj.dyna_flow_code_peek = dyna_flow_id_dyna_flow_instance.code  # DynaFlowID
+        obj.dyna_flow_code_peek = (  # DynaFlowID
+            dyna_flow_id_dyna_flow_instance.code)
         obj.dyna_flow_task_type_code_peek = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.code)
         return obj
@@ -144,7 +146,8 @@ class DynaFlowTaskFactory(factory.Factory):
             dyna_flow_id_dyna_flow_instance.dyna_flow_id)
         kwargs["dyna_flow_task_type_id"] = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.dyna_flow_task_type_id)
-        kwargs["dyna_flow_code_peek"] = dyna_flow_id_dyna_flow_instance.code  # DynaFlowID
+        kwargs["dyna_flow_code_peek"] = (  # DynaFlowID
+            dyna_flow_id_dyna_flow_instance.code)
         kwargs["dyna_flow_task_type_code_peek"] = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.code)
         obj = model_class(*args, **kwargs)
@@ -152,7 +155,8 @@ class DynaFlowTaskFactory(factory.Factory):
             dyna_flow_id_dyna_flow_instance.dyna_flow_id)
         obj.dyna_flow_task_type_id = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.dyna_flow_task_type_id)
-        obj.dyna_flow_code_peek = dyna_flow_id_dyna_flow_instance.code  # DynaFlowID
+        obj.dyna_flow_code_peek = (  # DynaFlowID
+            dyna_flow_id_dyna_flow_instance.code)
         obj.dyna_flow_task_type_code_peek = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.code)
         session.add(obj)
@@ -185,7 +189,8 @@ class DynaFlowTaskFactory(factory.Factory):
             dyna_flow_id_dyna_flow_instance.dyna_flow_id)
         kwargs["dyna_flow_task_type_id"] = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.dyna_flow_task_type_id)
-        kwargs["dyna_flow_code_peek"] = dyna_flow_id_dyna_flow_instance.code  # DynaFlowID
+        kwargs["dyna_flow_code_peek"] = (  # DynaFlowID
+            dyna_flow_id_dyna_flow_instance.code)
         kwargs["dyna_flow_task_type_code_peek"] = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.code)
         obj = DynaFlowTaskFactory \
@@ -194,7 +199,8 @@ class DynaFlowTaskFactory(factory.Factory):
             dyna_flow_id_dyna_flow_instance.dyna_flow_id)
         obj.dyna_flow_task_type_id = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.dyna_flow_task_type_id)
-        obj.dyna_flow_code_peek = dyna_flow_id_dyna_flow_instance.code  # DynaFlowID
+        obj.dyna_flow_code_peek = (  # DynaFlowID
+            dyna_flow_id_dyna_flow_instance.code)
         obj.dyna_flow_task_type_code_peek = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.code)
         session.add(obj)
@@ -226,7 +232,8 @@ class DynaFlowTaskFactory(factory.Factory):
             dyna_flow_id_dyna_flow_instance.dyna_flow_id)
         kwargs["dyna_flow_task_type_id"] = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.dyna_flow_task_type_id)
-        kwargs["dyna_flow_code_peek"] = dyna_flow_id_dyna_flow_instance.code  # DynaFlowID
+        kwargs["dyna_flow_code_peek"] = (  # DynaFlowID
+            dyna_flow_id_dyna_flow_instance.code)
         kwargs["dyna_flow_task_type_code_peek"] = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.code)
         obj = DynaFlowTaskFactory \
@@ -235,7 +242,8 @@ class DynaFlowTaskFactory(factory.Factory):
             dyna_flow_id_dyna_flow_instance.dyna_flow_id)
         obj.dyna_flow_task_type_id = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.dyna_flow_task_type_id)
-        obj.dyna_flow_code_peek = dyna_flow_id_dyna_flow_instance.code  # DynaFlowID
+        obj.dyna_flow_code_peek = (  # DynaFlowID
+            dyna_flow_id_dyna_flow_instance.code)
         obj.dyna_flow_task_type_code_peek = (  # DynaFlowTaskTypeID
             dyna_flow_task_type_id_dyna_flow_task_type_instance.code)
         return obj

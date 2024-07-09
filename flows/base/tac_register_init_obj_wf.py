@@ -39,7 +39,7 @@ class BaseFlowTacRegisterInitObjWF(BaseFlow):  # pylint: disable=too-few-public-
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowTacRegisterInitObjWF, self).__init__(
+        super().__init__(
             "TacRegisterInitObjWF",
             session_context,
         )

@@ -19,7 +19,8 @@ from helpers.session_context import SessionContext
 from models.dyna_flow_type import DynaFlowType  # DynaFlowTypeID
 from models.pac import Pac  # PacID
 from models.dyna_flow import DynaFlow
-from models.serialization_schema.dyna_flow import DynaFlowSchema
+from models.serialization_schema.dyna_flow import \
+    DynaFlowSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -230,7 +231,8 @@ class DynaFlowManager:
                 dyna_flow, or None if not found.
         """
         logging.info(
-            "DynaFlowManager.get_by_id start dyna_flow_id: %s",
+            "DynaFlowManager.get_by_id "
+            "start dyna_flow_id: %s",
             str(dyna_flow_id))
         if not isinstance(dyna_flow_id, int):
             raise TypeError(
@@ -327,7 +329,8 @@ class DynaFlowManager:
             dyna_flow_id)
         if not dyna_flow:
             raise DynaFlowNotFoundError(
-                f"DynaFlow with ID {dyna_flow_id} not found!")
+                f"DynaFlow with ID "
+                f"{dyna_flow_id} not found!")
 
         await self._session_context.session.delete(
             dyna_flow)
@@ -422,7 +425,8 @@ class DynaFlowManager:
         new_dyna_flow = await self.get_by_id(
             dyna_flow_dict["dyna_flow_id"])
         if new_dyna_flow is None:
-            new_dyna_flow = DynaFlow(**dyna_flow_dict)
+            new_dyna_flow = DynaFlow(
+                **dyna_flow_dict)
             self._session_context.session.add(new_dyna_flow)
         else:
             for key, value in dyna_flow_dict.items():
@@ -456,18 +460,12 @@ class DynaFlowManager:
         dyna_flow_dict_converted = schema.load(
             dyna_flow_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new DynaFlow instance
-        # using the validated data
-        # new_dyna_flow = DynaFlow(**dyna_flow_dict_converted)
-
         # load or create
         new_dyna_flow = await self.get_by_id(
             dyna_flow_dict_converted["dyna_flow_id"])
         if new_dyna_flow is None:
-            new_dyna_flow = DynaFlow(**dyna_flow_dict_converted)
+            new_dyna_flow = DynaFlow(
+                **dyna_flow_dict_converted)
             self._session_context.session.add(new_dyna_flow)
         else:
             for key, value in dyna_flow_dict_converted.items():
@@ -539,7 +537,8 @@ class DynaFlowManager:
             "DynaFlowManager.update_bulk start")
         updated_dyna_flows = []
         for update in dyna_flow_updates:
-            dyna_flow_id = update.get("dyna_flow_id")
+            dyna_flow_id = update.get(
+                "dyna_flow_id")
             if not isinstance(dyna_flow_id, int):
                 raise TypeError(
                     f"The dyna_flow_id must be an integer, "
@@ -549,7 +548,8 @@ class DynaFlowManager:
                 continue
 
             logging.info(
-                "DynaFlowManager.update_bulk dyna_flow_id:%s",
+                "DynaFlowManager.update_bulk "
+                "dyna_flow_id:%s",
                 dyna_flow_id)
 
             dyna_flow = await self.get_by_id(
@@ -557,7 +557,8 @@ class DynaFlowManager:
 
             if not dyna_flow:
                 raise DynaFlowNotFoundError(
-                    f"DynaFlow with ID {dyna_flow_id} not found!")
+                    f"DynaFlow with ID "
+                    f"{dyna_flow_id} not found!")
 
             for key, value in update.items():
                 if key != "dyna_flow_id":
@@ -575,7 +576,8 @@ class DynaFlowManager:
 
         return updated_dyna_flows
 
-    async def delete_bulk(self, dyna_flow_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, dyna_flow_ids: List[int]) -> bool:
         """
         Delete multiple dyna_flows
         by their IDs.
@@ -594,7 +596,8 @@ class DynaFlowManager:
                 dyna_flow_id)
             if not dyna_flow:
                 raise DynaFlowNotFoundError(
-                    f"DynaFlow with ID {dyna_flow_id} not found!"
+                    f"DynaFlow with ID "
+                    f"{dyna_flow_id} not found!"
                 )
 
             if dyna_flow:
@@ -765,13 +768,13 @@ class DynaFlowManager:
         self,
         dependency_dyna_flow_id
     ) -> List[DynaFlow]:
-        logging.info(
-            "DynaFlowManager"
-            ".get_by_dependency_dyna_flow_id_prop")
         """
         Retrieve a list of DynaFlow by
         dependency_dyna_flow_id.
         """
+        logging.info(
+            "DynaFlowManager"
+            ".get_by_dependency_dyna_flow_id_prop")
         query_filter = (
             DynaFlow._dependency_dyna_flow_id == dependency_dyna_flow_id)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
@@ -780,13 +783,13 @@ class DynaFlowManager:
         self,
         is_completed
     ) -> List[DynaFlow]:
-        logging.info(
-            "DynaFlowManager"
-            ".get_by_is_completed_prop")
         """
         Retrieve a list of DynaFlow by
         is_completed.
         """
+        logging.info(
+            "DynaFlowManager"
+            ".get_by_is_completed_prop")
         query_filter = (
             DynaFlow._is_completed == is_completed)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
@@ -795,13 +798,13 @@ class DynaFlowManager:
         self,
         root_dyna_flow_id
     ) -> List[DynaFlow]:
-        logging.info(
-            "DynaFlowManager"
-            ".get_by_root_dyna_flow_id_prop")
         """
         Retrieve a list of DynaFlow by
         root_dyna_flow_id.
         """
+        logging.info(
+            "DynaFlowManager"
+            ".get_by_root_dyna_flow_id_prop")
         query_filter = (
             DynaFlow._root_dyna_flow_id == root_dyna_flow_id)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
@@ -810,13 +813,13 @@ class DynaFlowManager:
         self,
         subject_code
     ) -> List[DynaFlow]:
-        logging.info(
-            "DynaFlowManager"
-            ".get_by_subject_code_prop")
         """
         Retrieve a list of DynaFlow by
         subject_code.
         """
+        logging.info(
+            "DynaFlowManager"
+            ".get_by_subject_code_prop")
         query_filter = (
             DynaFlow._subject_code == subject_code)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)

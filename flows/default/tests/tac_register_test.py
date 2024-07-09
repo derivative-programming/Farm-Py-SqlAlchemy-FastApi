@@ -132,11 +132,3 @@ class TestTacRegisterPostModelResponse:
                 )
 
         session_context.role_name_csv = role_required
-
-        # result = await response_instance.process_request(
-        #     session=session,
-        #     session_context=session_context,
-        #     tac_code=tac.code,
-        #     request=request_instance
-        #     )
-        # assert isinstance(result,FlowTacRegisterResult)

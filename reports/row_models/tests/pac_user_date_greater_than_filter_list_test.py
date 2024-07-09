@@ -51,8 +51,6 @@ class TestReportItemPacUserDateGreaterThanFilterList:
             "date_greater_than_filter_name": "test",
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemPacUserDateGreaterThanFilterList(**data)
         report_item = ReportItemPacUserDateGreaterThanFilterList()
         report_item.load_data_provider_dict(data)
         assert report_item.date_greater_than_filter_code == UUID(int=2)

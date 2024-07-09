@@ -69,7 +69,8 @@ async def new_bus_obj(session, new_obj) -> DFMaintenanceBusObj:
     """
 
     session_context = SessionContext({}, session)
-    df_maintenance_bus_obj = DFMaintenanceBusObj(session_context, new_obj)
+    df_maintenance_bus_obj = DFMaintenanceBusObj(
+        session_context, new_obj)
 
     return df_maintenance_bus_obj
 
@@ -103,7 +104,8 @@ class TestDFMaintenanceBusObj:
                 bus_obj.load_from_obj_instance.called
                 for bus_obj in bus_obj_list)
 
-            for bus_obj, df_maintenance in zip(bus_obj_list, obj_list):
+            for bus_obj, df_maintenance in \
+                    zip(bus_obj_list, obj_list):
                 mock_load.assert_any_call(df_maintenance)
 
     @pytest.mark.asyncio

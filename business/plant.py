@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import Plant
 
-from .plant_dyna_flows import PlantDynaFlowsBusObj
+from .plant_dyna_flows import \
+    PlantDynaFlowsBusObj
 
 ##GENINCLUDEFILE[GENVALPascalName.top.include.*]
 

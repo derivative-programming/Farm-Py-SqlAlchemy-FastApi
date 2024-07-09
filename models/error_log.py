@@ -160,7 +160,8 @@ class ErrorLog(Base):
         self.context_code = kwargs.get(
             'context_code', uuid.uuid4())
         self.created_utc_date_time = kwargs.get(
-            'created_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'created_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.description = kwargs.get(
             'description', "")
         self.is_client_side_error = kwargs.get(
@@ -172,9 +173,11 @@ class ErrorLog(Base):
         self.url = kwargs.get(
             'url', "")
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'insert_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'last_update_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.pac_code_peek = kwargs.get(  # PacID
             'pac_code_peek', uuid.UUID(int=0))
 
@@ -610,7 +613,8 @@ def set_updated_on(
     target
 ):  # pylint: disable=unused-argument
     """
-    Sets the 'last_update_utc_date_time' attribute of
+    Sets the 'last_update_utc_date_time'
+    attribute of
     the target object to the current UTC date and time.
 
     :param mapper: The SQLAlchemy mapper object.

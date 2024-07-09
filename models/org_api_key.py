@@ -172,9 +172,11 @@ class OrgApiKey(Base):
         self.created_by = kwargs.get(
             'created_by', "")
         self.created_utc_date_time = kwargs.get(
-            'created_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'created_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.expiration_utc_date_time = kwargs.get(
-            'expiration_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'expiration_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.is_active = kwargs.get(
             'is_active', False)
         self.is_temp_user_key = kwargs.get(
@@ -186,9 +188,11 @@ class OrgApiKey(Base):
         self.org_customer_id = kwargs.get(
             'org_customer_id', 0)
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'insert_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'last_update_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.organization_code_peek = kwargs.get(  # OrganizationID
             'organization_code_peek', uuid.UUID(int=0))
         self.org_customer_code_peek = kwargs.get(  # OrgCustomerID
@@ -619,7 +623,8 @@ def set_updated_on(
     target
 ):  # pylint: disable=unused-argument
     """
-    Sets the 'last_update_utc_date_time' attribute of
+    Sets the 'last_update_utc_date_time'
+    attribute of
     the target object to the current UTC date and time.
 
     :param mapper: The SQLAlchemy mapper object.

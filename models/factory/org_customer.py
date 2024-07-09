@@ -81,7 +81,8 @@ class OrgCustomerFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         kwargs["customer_code_peek"] = (  # CustomerID
             customer_id_customer_instance.code)
-        kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
+        kwargs["organization_code_peek"] = (  # OrganizationID
+            organization_id_organization_instance.code)
         obj = model_class(*args, **kwargs)
         obj.customer_id = (  # CustomerID
             customer_id_customer_instance.customer_id)
@@ -89,7 +90,8 @@ class OrgCustomerFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         obj.customer_code_peek = (  # CustomerID
             customer_id_customer_instance.code)
-        obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
+        obj.organization_code_peek = (  # OrganizationID
+            organization_id_organization_instance.code)
         return obj
 
     @classmethod
@@ -127,7 +129,8 @@ class OrgCustomerFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         kwargs["customer_code_peek"] = (  # CustomerID
             customer_id_customer_instance.code)
-        kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
+        kwargs["organization_code_peek"] = (  # OrganizationID
+            organization_id_organization_instance.code)
         obj = model_class(*args, **kwargs)
         obj.customer_id = (  # CustomerID
             customer_id_customer_instance.customer_id)
@@ -135,7 +138,8 @@ class OrgCustomerFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         obj.customer_code_peek = (  # CustomerID
             customer_id_customer_instance.code)
-        obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
+        obj.organization_code_peek = (  # OrganizationID
+            organization_id_organization_instance.code)
         session.add(obj)
         session.commit()
         return obj
@@ -168,7 +172,8 @@ class OrgCustomerFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         kwargs["customer_code_peek"] = (  # CustomerID
             customer_id_customer_instance.code)
-        kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
+        kwargs["organization_code_peek"] = (  # OrganizationID
+            organization_id_organization_instance.code)
         obj = OrgCustomerFactory \
             .build(session=None, *args, **kwargs)
         obj.customer_id = (  # CustomerID
@@ -177,7 +182,8 @@ class OrgCustomerFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         obj.customer_code_peek = (  # CustomerID
             customer_id_customer_instance.code)
-        obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
+        obj.organization_code_peek = (  # OrganizationID
+            organization_id_organization_instance.code)
         session.add(obj)
         await session.flush()
         return obj
@@ -209,7 +215,8 @@ class OrgCustomerFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         kwargs["customer_code_peek"] = (  # CustomerID
             customer_id_customer_instance.code)
-        kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
+        kwargs["organization_code_peek"] = (  # OrganizationID
+            organization_id_organization_instance.code)
         obj = OrgCustomerFactory \
             .build(session=None, *args, **kwargs)
         obj.customer_id = (  # CustomerID
@@ -218,5 +225,6 @@ class OrgCustomerFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         obj.customer_code_peek = (  # CustomerID
             customer_id_customer_instance.code)
-        obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
+        obj.organization_code_peek = (  # OrganizationID
+            organization_id_organization_instance.code)
         return obj

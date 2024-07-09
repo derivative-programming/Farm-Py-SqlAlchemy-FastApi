@@ -39,7 +39,7 @@ class BaseFlowLandAddPlant(BaseFlow):  # pylint: disable=too-few-public-methods
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowLandAddPlant, self).__init__(
+        super().__init__(
             "LandAddPlant",
             session_context,
         )

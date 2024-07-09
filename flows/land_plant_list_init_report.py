@@ -1,5 +1,6 @@
 # flows/default/land_plant_list_init_report.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowLandPlantListInitReport class
@@ -14,6 +15,7 @@ import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 
+import business
 from business.land import LandBusObj
 from flows.base import LogSeverity
 from flows.base.land_plant_list_init_report import \

@@ -1,5 +1,6 @@
 # flows/default/customer_user_log_out_init_obj_wf.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowCustomerUserLogOutInitObjWF class
@@ -14,6 +15,7 @@ import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 
+import business  # noqa: F401
 from business.customer import CustomerBusObj
 from flows.base import LogSeverity
 from flows.base.customer_user_log_out_init_obj_wf import (

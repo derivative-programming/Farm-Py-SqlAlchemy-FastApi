@@ -86,8 +86,6 @@ class TestReportItemPlantUserDetails:
             "back_to_dashboard_link_tac_code": str(UUID(int=5)),
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemPlantUserDetails(**data)
         report_item = ReportItemPlantUserDetails()
         report_item.load_data_provider_dict(data)
         assert report_item.flavor_name == "test"

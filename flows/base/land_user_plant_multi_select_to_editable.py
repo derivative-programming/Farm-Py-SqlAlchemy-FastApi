@@ -39,7 +39,7 @@ class BaseFlowLandUserPlantMultiSelectToEditable(BaseFlow):  # pylint: disable=t
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowLandUserPlantMultiSelectToEditable, self).__init__(
+        super().__init__(
             "LandUserPlantMultiSelectToEditable",
             session_context,
         )

@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.df_maintenance import DFMaintenance
-from models.serialization_schema.df_maintenance import DFMaintenanceSchema
+from models.serialization_schema.df_maintenance import \
+    DFMaintenanceSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -219,7 +220,8 @@ class DFMaintenanceManager:
                 df_maintenance, or None if not found.
         """
         logging.info(
-            "DFMaintenanceManager.get_by_id start df_maintenance_id: %s",
+            "DFMaintenanceManager.get_by_id "
+            "start df_maintenance_id: %s",
             str(df_maintenance_id))
         if not isinstance(df_maintenance_id, int):
             raise TypeError(
@@ -316,7 +318,8 @@ class DFMaintenanceManager:
             df_maintenance_id)
         if not df_maintenance:
             raise DFMaintenanceNotFoundError(
-                f"DFMaintenance with ID {df_maintenance_id} not found!")
+                f"DFMaintenance with ID "
+                f"{df_maintenance_id} not found!")
 
         await self._session_context.session.delete(
             df_maintenance)
@@ -411,7 +414,8 @@ class DFMaintenanceManager:
         new_df_maintenance = await self.get_by_id(
             df_maintenance_dict["df_maintenance_id"])
         if new_df_maintenance is None:
-            new_df_maintenance = DFMaintenance(**df_maintenance_dict)
+            new_df_maintenance = DFMaintenance(
+                **df_maintenance_dict)
             self._session_context.session.add(new_df_maintenance)
         else:
             for key, value in df_maintenance_dict.items():
@@ -445,18 +449,12 @@ class DFMaintenanceManager:
         df_maintenance_dict_converted = schema.load(
             df_maintenance_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new DFMaintenance instance
-        # using the validated data
-        # new_df_maintenance = DFMaintenance(**df_maintenance_dict_converted)
-
         # load or create
         new_df_maintenance = await self.get_by_id(
             df_maintenance_dict_converted["df_maintenance_id"])
         if new_df_maintenance is None:
-            new_df_maintenance = DFMaintenance(**df_maintenance_dict_converted)
+            new_df_maintenance = DFMaintenance(
+                **df_maintenance_dict_converted)
             self._session_context.session.add(new_df_maintenance)
         else:
             for key, value in df_maintenance_dict_converted.items():
@@ -528,7 +526,8 @@ class DFMaintenanceManager:
             "DFMaintenanceManager.update_bulk start")
         updated_df_maintenances = []
         for update in df_maintenance_updates:
-            df_maintenance_id = update.get("df_maintenance_id")
+            df_maintenance_id = update.get(
+                "df_maintenance_id")
             if not isinstance(df_maintenance_id, int):
                 raise TypeError(
                     f"The df_maintenance_id must be an integer, "
@@ -538,7 +537,8 @@ class DFMaintenanceManager:
                 continue
 
             logging.info(
-                "DFMaintenanceManager.update_bulk df_maintenance_id:%s",
+                "DFMaintenanceManager.update_bulk "
+                "df_maintenance_id:%s",
                 df_maintenance_id)
 
             df_maintenance = await self.get_by_id(
@@ -546,7 +546,8 @@ class DFMaintenanceManager:
 
             if not df_maintenance:
                 raise DFMaintenanceNotFoundError(
-                    f"DFMaintenance with ID {df_maintenance_id} not found!")
+                    f"DFMaintenance with ID "
+                    f"{df_maintenance_id} not found!")
 
             for key, value in update.items():
                 if key != "df_maintenance_id":
@@ -564,7 +565,8 @@ class DFMaintenanceManager:
 
         return updated_df_maintenances
 
-    async def delete_bulk(self, df_maintenance_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, df_maintenance_ids: List[int]) -> bool:
         """
         Delete multiple df_maintenances
         by their IDs.
@@ -583,7 +585,8 @@ class DFMaintenanceManager:
                 df_maintenance_id)
             if not df_maintenance:
                 raise DFMaintenanceNotFoundError(
-                    f"DFMaintenance with ID {df_maintenance_id} not found!"
+                    f"DFMaintenance with ID "
+                    f"{df_maintenance_id} not found!"
                 )
 
             if df_maintenance:

@@ -39,7 +39,7 @@ class BaseFlowPacUserFlavorListInitReport(BaseFlow):  # pylint: disable=too-few-
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowPacUserFlavorListInitReport, self).__init__(
+        super().__init__(
             "PacUserFlavorListInitReport",
             session_context,
         )

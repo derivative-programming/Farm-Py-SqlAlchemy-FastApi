@@ -1,5 +1,6 @@
 # flows/default/land_user_plant_multi_select_to_not_editable.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowLandUserPlantMultiSelectToNotEditable class

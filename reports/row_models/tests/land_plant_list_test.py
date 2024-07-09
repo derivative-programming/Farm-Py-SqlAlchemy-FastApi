@@ -88,8 +88,6 @@ class TestReportItemLandPlantList:
             "details_link_plant_code": str(UUID(int=5)),
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemLandPlantList(**data)
         report_item = ReportItemLandPlantList()
         report_item.load_data_provider_dict(data)
 

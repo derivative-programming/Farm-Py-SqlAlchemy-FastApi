@@ -11,7 +11,8 @@ from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
 
 import pytest
-from business.dyna_flow_type_schedule_fluent import DynaFlowTypeScheduleFluentBusObj
+from business.dyna_flow_type_schedule_fluent import \
+    DynaFlowTypeScheduleFluentBusObj
 from helpers.session_context import SessionContext
 
 

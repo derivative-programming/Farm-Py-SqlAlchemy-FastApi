@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import DynaFlowTaskType
 
-from .dyna_flow_task_type_dyna_flows import DynaFlowTaskTypeDynaFlowsBusObj
+from .dyna_flow_task_type_dyna_flows import \
+    DynaFlowTaskTypeDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (

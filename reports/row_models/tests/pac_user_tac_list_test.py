@@ -51,8 +51,6 @@ class TestReportItemPacUserTacList:
             "pac_name": "test",
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemPacUserTacList(**data)
         report_item = ReportItemPacUserTacList()
         report_item.load_data_provider_dict(data)
         assert report_item.tac_code == UUID(int=2)

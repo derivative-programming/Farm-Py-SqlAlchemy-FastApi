@@ -71,11 +71,13 @@ class DFTDependencyFactory(factory.Factory):
             DynaFlowTaskFactory.create(session=session))
         kwargs["dyna_flow_task_id"] = (  # DynaFlowTaskID
             dyna_flow_task_id_dyna_flow_task_instance.dyna_flow_task_id)
-        kwargs["dyna_flow_task_code_peek"] = dyna_flow_task_id_dyna_flow_task_instance.code  # DynaFlowTaskID
+        kwargs["dyna_flow_task_code_peek"] = (  # DynaFlowTaskID
+            dyna_flow_task_id_dyna_flow_task_instance.code)
         obj = model_class(*args, **kwargs)
         obj.dyna_flow_task_id = (  # DynaFlowTaskID
             dyna_flow_task_id_dyna_flow_task_instance.dyna_flow_task_id)
-        obj.dyna_flow_task_code_peek = dyna_flow_task_id_dyna_flow_task_instance.code  # DynaFlowTaskID
+        obj.dyna_flow_task_code_peek = (  # DynaFlowTaskID
+            dyna_flow_task_id_dyna_flow_task_instance.code)
         return obj
 
     @classmethod
@@ -107,11 +109,13 @@ class DFTDependencyFactory(factory.Factory):
             DynaFlowTaskFactory.create(session=session))
         kwargs["dyna_flow_task_id"] = (  # DynaFlowTaskID
             dyna_flow_task_id_dyna_flow_task_instance.dyna_flow_task_id)
-        kwargs["dyna_flow_task_code_peek"] = dyna_flow_task_id_dyna_flow_task_instance.code  # DynaFlowTaskID
+        kwargs["dyna_flow_task_code_peek"] = (  # DynaFlowTaskID
+            dyna_flow_task_id_dyna_flow_task_instance.code)
         obj = model_class(*args, **kwargs)
         obj.dyna_flow_task_id = (  # DynaFlowTaskID
             dyna_flow_task_id_dyna_flow_task_instance.dyna_flow_task_id)
-        obj.dyna_flow_task_code_peek = dyna_flow_task_id_dyna_flow_task_instance.code  # DynaFlowTaskID
+        obj.dyna_flow_task_code_peek = (  # DynaFlowTaskID
+            dyna_flow_task_id_dyna_flow_task_instance.code)
         session.add(obj)
         session.commit()
         return obj
@@ -138,12 +142,14 @@ class DFTDependencyFactory(factory.Factory):
             DynaFlowTaskFactory.create_async(session=session))
         kwargs["dyna_flow_task_id"] = (  # DynaFlowTaskID
             dyna_flow_task_id_dyna_flow_task_instance.dyna_flow_task_id)
-        kwargs["dyna_flow_task_code_peek"] = dyna_flow_task_id_dyna_flow_task_instance.code  # DynaFlowTaskID
+        kwargs["dyna_flow_task_code_peek"] = (  # DynaFlowTaskID
+            dyna_flow_task_id_dyna_flow_task_instance.code)
         obj = DFTDependencyFactory \
             .build(session=None, *args, **kwargs)
         obj.dyna_flow_task_id = (  # DynaFlowTaskID
             dyna_flow_task_id_dyna_flow_task_instance.dyna_flow_task_id)
-        obj.dyna_flow_task_code_peek = dyna_flow_task_id_dyna_flow_task_instance.code  # DynaFlowTaskID
+        obj.dyna_flow_task_code_peek = (  # DynaFlowTaskID
+            dyna_flow_task_id_dyna_flow_task_instance.code)
         session.add(obj)
         await session.flush()
         return obj
@@ -169,10 +175,12 @@ class DFTDependencyFactory(factory.Factory):
             DynaFlowTaskFactory.create_async(session=session))
         kwargs["dyna_flow_task_id"] = (  # DynaFlowTaskID
             dyna_flow_task_id_dyna_flow_task_instance.dyna_flow_task_id)
-        kwargs["dyna_flow_task_code_peek"] = dyna_flow_task_id_dyna_flow_task_instance.code  # DynaFlowTaskID
+        kwargs["dyna_flow_task_code_peek"] = (  # DynaFlowTaskID
+            dyna_flow_task_id_dyna_flow_task_instance.code)
         obj = DFTDependencyFactory \
             .build(session=None, *args, **kwargs)
         obj.dyna_flow_task_id = (  # DynaFlowTaskID
             dyna_flow_task_id_dyna_flow_task_instance.dyna_flow_task_id)
-        obj.dyna_flow_task_code_peek = dyna_flow_task_id_dyna_flow_task_instance.code  # DynaFlowTaskID
+        obj.dyna_flow_task_code_peek = (  # DynaFlowTaskID
+            dyna_flow_task_id_dyna_flow_task_instance.code)
         return obj

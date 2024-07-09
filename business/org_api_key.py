@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import OrgApiKey
 
-from .org_api_key_dyna_flows import OrgApiKeyDynaFlowsBusObj
+from .org_api_key_dyna_flows import \
+    OrgApiKeyDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (

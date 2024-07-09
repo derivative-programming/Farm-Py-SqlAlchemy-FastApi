@@ -104,11 +104,3 @@ class TestCustomerUserLogOutPostModelResponse:
                 )
 
         session_context.role_name_csv = role_required
-
-        # result = await response_instance.process_request(
-        #     session=session,
-        #     session_context=session_context,
-        #     customer_code=customer.code,
-        #     request=request_instance
-        #     )
-        # assert isinstance(result,FlowCustomerUserLogOutResult)

@@ -39,7 +39,7 @@ class BaseFlowPlantSampleWorkflow(BaseFlow):  # pylint: disable=too-few-public-m
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowPlantSampleWorkflow, self).__init__(
+        super().__init__(
             "PlantSampleWorkflow",
             session_context,
         )

@@ -11,7 +11,8 @@ from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
 
 import pytest
-from business.organization_fluent import OrganizationFluentBusObj
+from business.organization_fluent import \
+    OrganizationFluentBusObj
 from helpers.session_context import SessionContext
 
 

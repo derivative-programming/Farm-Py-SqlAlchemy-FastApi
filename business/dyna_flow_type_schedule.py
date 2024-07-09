@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import DynaFlowTypeSchedule
 
-from .dyna_flow_type_schedule_dyna_flows import DynaFlowTypeScheduleDynaFlowsBusObj
+from .dyna_flow_type_schedule_dyna_flows import \
+    DynaFlowTypeScheduleDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (

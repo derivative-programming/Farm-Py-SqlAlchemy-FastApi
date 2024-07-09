@@ -11,7 +11,8 @@ from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
 
 import pytest
-from business.tri_state_filter_fluent import TriStateFilterFluentBusObj
+from business.tri_state_filter_fluent import \
+    TriStateFilterFluentBusObj
 from helpers.session_context import SessionContext
 
 

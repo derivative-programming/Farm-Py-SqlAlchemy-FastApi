@@ -341,9 +341,11 @@ class TestCustomerFactory:
         assert new_obj is not None
         assert new_obj.active_organization_id == 0
         assert new_obj.email == ""
-        assert new_obj.email_confirmed_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.email_confirmed_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.first_name == ""
-        assert new_obj.forgot_password_key_expiration_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.forgot_password_key_expiration_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.forgot_password_key_value == ""
         # fs_user_code_value
         assert isinstance(
@@ -357,12 +359,14 @@ class TestCustomerFactory:
         assert new_obj.is_locked is False
         assert new_obj.is_multiple_organizations_allowed is False
         assert new_obj.is_verbose_logging_forced is False
-        assert new_obj.last_login_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.last_login_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.last_name == ""
         assert new_obj.password == ""
         assert new_obj.phone == ""
         assert new_obj.province == ""
-        assert new_obj.registration_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.registration_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.tac_id == 0
         assert new_obj.utc_offset_in_minutes == 0
         assert new_obj.zip == ""

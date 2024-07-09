@@ -51,8 +51,6 @@ class TestReportItemPacConfigDynaFlowTaskSearch:
             "dyna_flow_task_code": str(UUID(int=2)),
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemPacConfigDynaFlowTaskSearch(**data)
         report_item = ReportItemPacConfigDynaFlowTaskSearch()
         report_item.load_data_provider_dict(data)
         assert report_item.started_utc_date_time == (

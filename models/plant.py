@@ -311,13 +311,16 @@ class Plant(Base):
         self.some_uniqueidentifier_val = kwargs.get(
             'some_uniqueidentifier_val', uuid.uuid4())
         self.some_utc_date_time_val = kwargs.get(
-            'some_utc_date_time_val', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'some_utc_date_time_val',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.some_var_char_val = kwargs.get(
             'some_var_char_val', "")
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'insert_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'last_update_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
 # endset
         self.flvr_foreign_key_code_peek = kwargs.get(  # FlvrForeignKeyID
             'flvr_foreign_key_code_peek', uuid.UUID(int=0))
@@ -657,10 +660,12 @@ class Plant(Base):
     @property
     def some_int_val(self) -> int:
         """
-        Returns the value of the '_some_int_val' attribute of the object.
+        Returns the value of the '_some_int_val'
+            attribute of the object.
         If the attribute is not set, it returns 0.
 
-        :return: The value of the '_some_int_val' attribute or 0 if not set.
+        :return: The value of the '_some_int_val'
+            attribute or 0 if not set.
         :rtype: int
         """
         return getattr(self, '_some_int_val', 0) or 0
@@ -725,7 +730,8 @@ class Plant(Base):
         if it exists, otherwise returns the default date of January 1, 1753.
 
         :return: A date object representing the value of
-            '_some_date_val' attribute or the default date.
+            '_some_date_val'
+            attribute or the default date.
         :rtype: date
         """
         return getattr(
@@ -978,7 +984,8 @@ def set_updated_on(
     target
 ):  # pylint: disable=unused-argument
     """
-    Sets the 'last_update_utc_date_time' attribute of
+    Sets the 'last_update_utc_date_time'
+    attribute of
     the target object to the current UTC date and time.
 
     :param mapper: The SQLAlchemy mapper object.

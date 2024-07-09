@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.flavor import Flavor
-from models.serialization_schema.flavor import FlavorSchema
+from models.serialization_schema.flavor import \
+    FlavorSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -101,7 +102,6 @@ class FlavorManager:
             item.description = "Unknown"
             item.display_order = await self.count()
             item.is_active = True
-            # item. = 1
             await self.add(item)
         if await self.from_enum(FlavorEnum.SWEET) \
                 is None:
@@ -111,7 +111,6 @@ class FlavorManager:
             item.description = "Sweet"
             item.display_order = await self.count()
             item.is_active = True
-            # item. = 1
             await self.add(item)
         if await self.from_enum(FlavorEnum.SOUR) \
                 is None:
@@ -121,7 +120,6 @@ class FlavorManager:
             item.description = "Sour"
             item.display_order = await self.count()
             item.is_active = True
-            # item. = 1
             await self.add(item)
         logging.info("FlavorManager.Initialize end")
 
@@ -294,7 +292,8 @@ class FlavorManager:
                 flavor, or None if not found.
         """
         logging.info(
-            "FlavorManager.get_by_id start flavor_id: %s",
+            "FlavorManager.get_by_id "
+            "start flavor_id: %s",
             str(flavor_id))
         if not isinstance(flavor_id, int):
             raise TypeError(
@@ -391,7 +390,8 @@ class FlavorManager:
             flavor_id)
         if not flavor:
             raise FlavorNotFoundError(
-                f"Flavor with ID {flavor_id} not found!")
+                f"Flavor with ID "
+                f"{flavor_id} not found!")
 
         await self._session_context.session.delete(
             flavor)
@@ -486,7 +486,8 @@ class FlavorManager:
         new_flavor = await self.get_by_id(
             flavor_dict["flavor_id"])
         if new_flavor is None:
-            new_flavor = Flavor(**flavor_dict)
+            new_flavor = Flavor(
+                **flavor_dict)
             self._session_context.session.add(new_flavor)
         else:
             for key, value in flavor_dict.items():
@@ -520,18 +521,12 @@ class FlavorManager:
         flavor_dict_converted = schema.load(
             flavor_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new Flavor instance
-        # using the validated data
-        # new_flavor = Flavor(**flavor_dict_converted)
-
         # load or create
         new_flavor = await self.get_by_id(
             flavor_dict_converted["flavor_id"])
         if new_flavor is None:
-            new_flavor = Flavor(**flavor_dict_converted)
+            new_flavor = Flavor(
+                **flavor_dict_converted)
             self._session_context.session.add(new_flavor)
         else:
             for key, value in flavor_dict_converted.items():
@@ -603,7 +598,8 @@ class FlavorManager:
             "FlavorManager.update_bulk start")
         updated_flavors = []
         for update in flavor_updates:
-            flavor_id = update.get("flavor_id")
+            flavor_id = update.get(
+                "flavor_id")
             if not isinstance(flavor_id, int):
                 raise TypeError(
                     f"The flavor_id must be an integer, "
@@ -613,7 +609,8 @@ class FlavorManager:
                 continue
 
             logging.info(
-                "FlavorManager.update_bulk flavor_id:%s",
+                "FlavorManager.update_bulk "
+                "flavor_id:%s",
                 flavor_id)
 
             flavor = await self.get_by_id(
@@ -621,7 +618,8 @@ class FlavorManager:
 
             if not flavor:
                 raise FlavorNotFoundError(
-                    f"Flavor with ID {flavor_id} not found!")
+                    f"Flavor with ID "
+                    f"{flavor_id} not found!")
 
             for key, value in update.items():
                 if key != "flavor_id":
@@ -639,7 +637,8 @@ class FlavorManager:
 
         return updated_flavors
 
-    async def delete_bulk(self, flavor_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, flavor_ids: List[int]) -> bool:
         """
         Delete multiple flavors
         by their IDs.
@@ -658,7 +657,8 @@ class FlavorManager:
                 flavor_id)
             if not flavor:
                 raise FlavorNotFoundError(
-                    f"Flavor with ID {flavor_id} not found!"
+                    f"Flavor with ID "
+                    f"{flavor_id} not found!"
                 )
 
             if flavor:

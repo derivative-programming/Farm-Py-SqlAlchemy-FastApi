@@ -39,7 +39,7 @@ class BaseFlowPacUserTriStateFilterListInitReport(BaseFlow):  # pylint: disable=
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowPacUserTriStateFilterListInitReport, self).__init__(
+        super().__init__(
             "PacUserTriStateFilterListInitReport",
             session_context,
         )

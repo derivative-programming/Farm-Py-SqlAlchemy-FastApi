@@ -24,7 +24,8 @@ from main import app
 
 from .....models import \
     factory as request_factory  # pylint: disable=reimported  # noqa: F401
-from ..customer_build_temp_api_key import CustomerBuildTempApiKeyRouterConfig
+from ..customer_build_temp_api_key import \
+    CustomerBuildTempApiKeyRouterConfig
 
 
 @pytest.mark.asyncio

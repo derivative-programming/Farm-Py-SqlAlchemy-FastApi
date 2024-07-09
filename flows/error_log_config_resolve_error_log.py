@@ -1,5 +1,6 @@
 # flows/default/error_log_config_resolve_error_log.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowErrorLogConfigResolveErrorLog class

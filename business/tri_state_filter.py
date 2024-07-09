@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import TriStateFilter
 
-from .tri_state_filter_dyna_flows import TriStateFilterDynaFlowsBusObj
+from .tri_state_filter_dyna_flows import \
+    TriStateFilterDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (

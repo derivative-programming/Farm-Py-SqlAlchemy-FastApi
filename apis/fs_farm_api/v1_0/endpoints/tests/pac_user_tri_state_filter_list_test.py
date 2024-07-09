@@ -24,7 +24,8 @@ from main import app
 
 from .....models import \
     factory as request_factory  # pylint: disable=reimported  # noqa: F401
-from ..pac_user_tri_state_filter_list import PacUserTriStateFilterListRouterConfig
+from ..pac_user_tri_state_filter_list import \
+    PacUserTriStateFilterListRouterConfig
 
 
 @pytest.mark.asyncio

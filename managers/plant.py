@@ -19,7 +19,8 @@ from helpers.session_context import SessionContext
 from models.flavor import Flavor  # FlvrForeignKeyID
 from models.land import Land  # LandID
 from models.plant import Plant
-from models.serialization_schema.plant import PlantSchema
+from models.serialization_schema.plant import \
+    PlantSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -242,7 +243,8 @@ class PlantManager:
                 plant, or None if not found.
         """
         logging.info(
-            "PlantManager.get_by_id start plant_id: %s",
+            "PlantManager.get_by_id "
+            "start plant_id: %s",
             str(plant_id))
         if not isinstance(plant_id, int):
             raise TypeError(
@@ -339,7 +341,8 @@ class PlantManager:
             plant_id)
         if not plant:
             raise PlantNotFoundError(
-                f"Plant with ID {plant_id} not found!")
+                f"Plant with ID "
+                f"{plant_id} not found!")
 
         await self._session_context.session.delete(
             plant)
@@ -434,7 +437,8 @@ class PlantManager:
         new_plant = await self.get_by_id(
             plant_dict["plant_id"])
         if new_plant is None:
-            new_plant = Plant(**plant_dict)
+            new_plant = Plant(
+                **plant_dict)
             self._session_context.session.add(new_plant)
         else:
             for key, value in plant_dict.items():
@@ -468,18 +472,12 @@ class PlantManager:
         plant_dict_converted = schema.load(
             plant_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new Plant instance
-        # using the validated data
-        # new_plant = Plant(**plant_dict_converted)
-
         # load or create
         new_plant = await self.get_by_id(
             plant_dict_converted["plant_id"])
         if new_plant is None:
-            new_plant = Plant(**plant_dict_converted)
+            new_plant = Plant(
+                **plant_dict_converted)
             self._session_context.session.add(new_plant)
         else:
             for key, value in plant_dict_converted.items():
@@ -551,7 +549,8 @@ class PlantManager:
             "PlantManager.update_bulk start")
         updated_plants = []
         for update in plant_updates:
-            plant_id = update.get("plant_id")
+            plant_id = update.get(
+                "plant_id")
             if not isinstance(plant_id, int):
                 raise TypeError(
                     f"The plant_id must be an integer, "
@@ -561,7 +560,8 @@ class PlantManager:
                 continue
 
             logging.info(
-                "PlantManager.update_bulk plant_id:%s",
+                "PlantManager.update_bulk "
+                "plant_id:%s",
                 plant_id)
 
             plant = await self.get_by_id(
@@ -569,7 +569,8 @@ class PlantManager:
 
             if not plant:
                 raise PlantNotFoundError(
-                    f"Plant with ID {plant_id} not found!")
+                    f"Plant with ID "
+                    f"{plant_id} not found!")
 
             for key, value in update.items():
                 if key != "plant_id":
@@ -587,7 +588,8 @@ class PlantManager:
 
         return updated_plants
 
-    async def delete_bulk(self, plant_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, plant_ids: List[int]) -> bool:
         """
         Delete multiple plants
         by their IDs.
@@ -606,7 +608,8 @@ class PlantManager:
                 plant_id)
             if not plant:
                 raise PlantNotFoundError(
-                    f"Plant with ID {plant_id} not found!"
+                    f"Plant with ID "
+                    f"{plant_id} not found!"
                 )
 
             if plant:
@@ -784,13 +787,13 @@ class PlantManager:
     ##GENREMOVECOMMENT    self,
     ##GENREMOVECOMMENT    GENVALSnakeName
     ##GENREMOVECOMMENT) -> List[GENVALPascalObjectName]:
-    ##GENREMOVECOMMENT    logging.info(
-    ##GENREMOVECOMMENT        "GENVALPascalObjectNameManager"
-    ##GENREMOVECOMMENT        ".get_by_GENVALSnakeName_prop")
     ##GENREMOVECOMMENT    """
     ##GENREMOVECOMMENT    Retrieve a list of GENVALPascalObjectName by
     ##GENREMOVECOMMENT    GENVALSnakeName.
     ##GENREMOVECOMMENT    """
+    ##GENREMOVECOMMENT    logging.info(
+    ##GENREMOVECOMMENT        "GENVALPascalObjectNameManager"
+    ##GENREMOVECOMMENT        ".get_by_GENVALSnakeName_prop")
     ##GENREMOVECOMMENT    query_filter = (
     ##GENREMOVECOMMENT        GENVALPascalObjectName._GENVALSnakeName == GENVALSnakeName)  # pylint: disable=protected-access  # noqa: E501
     ##GENREMOVECOMMENT    query_results = await self._run_query(query_filter)

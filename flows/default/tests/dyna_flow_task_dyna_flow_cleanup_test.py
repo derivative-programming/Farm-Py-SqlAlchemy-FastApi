@@ -104,11 +104,3 @@ class TestDynaFlowTaskDynaFlowCleanupPostModelResponse:
                 )
 
         session_context.role_name_csv = role_required
-
-        # result = await response_instance.process_request(
-        #     session=session,
-        #     session_context=session_context,
-        #     dyna_flow_task_code=dyna_flow_task.code,
-        #     request=request_instance
-        #     )
-        # assert isinstance(result,FlowDynaFlowTaskDynaFlowCleanupResult)

@@ -113,7 +113,8 @@ class PlantFactory(factory.Factory):
         kwargs["flvr_foreign_key_id"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
-        kwargs["land_code_peek"] = land_id_land_instance.code  # LandID
+        kwargs["land_code_peek"] = (  # LandID
+            land_id_land_instance.code)
         kwargs["flvr_foreign_key_code_peek"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
@@ -123,7 +124,8 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_id = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
-        obj.land_code_peek = land_id_land_instance.code  # LandID
+        obj.land_code_peek = (  # LandID
+            land_id_land_instance.code)
         obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
@@ -164,7 +166,8 @@ class PlantFactory(factory.Factory):
         kwargs["flvr_foreign_key_id"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
-        kwargs["land_code_peek"] = land_id_land_instance.code  # LandID
+        kwargs["land_code_peek"] = (  # LandID
+            land_id_land_instance.code)
         kwargs["flvr_foreign_key_code_peek"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
@@ -174,7 +177,8 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_id = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
-        obj.land_code_peek = land_id_land_instance.code  # LandID
+        obj.land_code_peek = (  # LandID
+            land_id_land_instance.code)
         obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
@@ -210,7 +214,8 @@ class PlantFactory(factory.Factory):
         kwargs["flvr_foreign_key_id"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
-        kwargs["land_code_peek"] = land_id_land_instance.code  # LandID
+        kwargs["land_code_peek"] = (  # LandID
+            land_id_land_instance.code)
         kwargs["flvr_foreign_key_code_peek"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
@@ -221,7 +226,8 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_id = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
-        obj.land_code_peek = land_id_land_instance.code  # LandID
+        obj.land_code_peek = (  # LandID
+            land_id_land_instance.code)
         obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
@@ -256,7 +262,8 @@ class PlantFactory(factory.Factory):
         kwargs["flvr_foreign_key_id"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
-        kwargs["land_code_peek"] = land_id_land_instance.code  # LandID
+        kwargs["land_code_peek"] = (  # LandID
+            land_id_land_instance.code)
         kwargs["flvr_foreign_key_code_peek"] = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset
@@ -267,7 +274,8 @@ class PlantFactory(factory.Factory):
         obj.flvr_foreign_key_id = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.flavor_id)
 # endset
-        obj.land_code_peek = land_id_land_instance.code  # LandID
+        obj.land_code_peek = (  # LandID
+            land_id_land_instance.code)
         obj.flvr_foreign_key_code_peek = (  # FlvrForeignKeyID
             flvr_foreign_key_id_flavor_instance.code)
 # endset

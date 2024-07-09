@@ -19,7 +19,8 @@ from helpers.session_context import SessionContext
 from models.organization import Organization  # OrganizationID
 from models.org_customer import OrgCustomer  # OrgCustomerID
 from models.org_api_key import OrgApiKey
-from models.serialization_schema.org_api_key import OrgApiKeySchema
+from models.serialization_schema.org_api_key import \
+    OrgApiKeySchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -230,7 +231,8 @@ class OrgApiKeyManager:
                 org_api_key, or None if not found.
         """
         logging.info(
-            "OrgApiKeyManager.get_by_id start org_api_key_id: %s",
+            "OrgApiKeyManager.get_by_id "
+            "start org_api_key_id: %s",
             str(org_api_key_id))
         if not isinstance(org_api_key_id, int):
             raise TypeError(
@@ -327,7 +329,8 @@ class OrgApiKeyManager:
             org_api_key_id)
         if not org_api_key:
             raise OrgApiKeyNotFoundError(
-                f"OrgApiKey with ID {org_api_key_id} not found!")
+                f"OrgApiKey with ID "
+                f"{org_api_key_id} not found!")
 
         await self._session_context.session.delete(
             org_api_key)
@@ -422,7 +425,8 @@ class OrgApiKeyManager:
         new_org_api_key = await self.get_by_id(
             org_api_key_dict["org_api_key_id"])
         if new_org_api_key is None:
-            new_org_api_key = OrgApiKey(**org_api_key_dict)
+            new_org_api_key = OrgApiKey(
+                **org_api_key_dict)
             self._session_context.session.add(new_org_api_key)
         else:
             for key, value in org_api_key_dict.items():
@@ -456,18 +460,12 @@ class OrgApiKeyManager:
         org_api_key_dict_converted = schema.load(
             org_api_key_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new OrgApiKey instance
-        # using the validated data
-        # new_org_api_key = OrgApiKey(**org_api_key_dict_converted)
-
         # load or create
         new_org_api_key = await self.get_by_id(
             org_api_key_dict_converted["org_api_key_id"])
         if new_org_api_key is None:
-            new_org_api_key = OrgApiKey(**org_api_key_dict_converted)
+            new_org_api_key = OrgApiKey(
+                **org_api_key_dict_converted)
             self._session_context.session.add(new_org_api_key)
         else:
             for key, value in org_api_key_dict_converted.items():
@@ -539,7 +537,8 @@ class OrgApiKeyManager:
             "OrgApiKeyManager.update_bulk start")
         updated_org_api_keys = []
         for update in org_api_key_updates:
-            org_api_key_id = update.get("org_api_key_id")
+            org_api_key_id = update.get(
+                "org_api_key_id")
             if not isinstance(org_api_key_id, int):
                 raise TypeError(
                     f"The org_api_key_id must be an integer, "
@@ -549,7 +548,8 @@ class OrgApiKeyManager:
                 continue
 
             logging.info(
-                "OrgApiKeyManager.update_bulk org_api_key_id:%s",
+                "OrgApiKeyManager.update_bulk "
+                "org_api_key_id:%s",
                 org_api_key_id)
 
             org_api_key = await self.get_by_id(
@@ -557,7 +557,8 @@ class OrgApiKeyManager:
 
             if not org_api_key:
                 raise OrgApiKeyNotFoundError(
-                    f"OrgApiKey with ID {org_api_key_id} not found!")
+                    f"OrgApiKey with ID "
+                    f"{org_api_key_id} not found!")
 
             for key, value in update.items():
                 if key != "org_api_key_id":
@@ -575,7 +576,8 @@ class OrgApiKeyManager:
 
         return updated_org_api_keys
 
-    async def delete_bulk(self, org_api_key_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, org_api_key_ids: List[int]) -> bool:
         """
         Delete multiple org_api_keys
         by their IDs.
@@ -594,7 +596,8 @@ class OrgApiKeyManager:
                 org_api_key_id)
             if not org_api_key:
                 raise OrgApiKeyNotFoundError(
-                    f"OrgApiKey with ID {org_api_key_id} not found!"
+                    f"OrgApiKey with ID "
+                    f"{org_api_key_id} not found!"
                 )
 
             if org_api_key:

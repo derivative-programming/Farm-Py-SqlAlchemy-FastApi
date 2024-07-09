@@ -51,8 +51,6 @@ class TestReportItemPacUserLandList:
             "pac_name": "test",
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemPacUserLandList(**data)
         report_item = ReportItemPacUserLandList()
         report_item.load_data_provider_dict(data)
         assert report_item.land_code == UUID(int=2)

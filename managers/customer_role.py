@@ -19,7 +19,8 @@ from helpers.session_context import SessionContext
 from models.customer import Customer  # CustomerID
 from models.role import Role  # RoleID
 from models.customer_role import CustomerRole
-from models.serialization_schema.customer_role import CustomerRoleSchema
+from models.serialization_schema.customer_role import \
+    CustomerRoleSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -230,7 +231,8 @@ class CustomerRoleManager:
                 customer_role, or None if not found.
         """
         logging.info(
-            "CustomerRoleManager.get_by_id start customer_role_id: %s",
+            "CustomerRoleManager.get_by_id "
+            "start customer_role_id: %s",
             str(customer_role_id))
         if not isinstance(customer_role_id, int):
             raise TypeError(
@@ -327,7 +329,8 @@ class CustomerRoleManager:
             customer_role_id)
         if not customer_role:
             raise CustomerRoleNotFoundError(
-                f"CustomerRole with ID {customer_role_id} not found!")
+                f"CustomerRole with ID "
+                f"{customer_role_id} not found!")
 
         await self._session_context.session.delete(
             customer_role)
@@ -422,7 +425,8 @@ class CustomerRoleManager:
         new_customer_role = await self.get_by_id(
             customer_role_dict["customer_role_id"])
         if new_customer_role is None:
-            new_customer_role = CustomerRole(**customer_role_dict)
+            new_customer_role = CustomerRole(
+                **customer_role_dict)
             self._session_context.session.add(new_customer_role)
         else:
             for key, value in customer_role_dict.items():
@@ -456,18 +460,12 @@ class CustomerRoleManager:
         customer_role_dict_converted = schema.load(
             customer_role_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new CustomerRole instance
-        # using the validated data
-        # new_customer_role = CustomerRole(**customer_role_dict_converted)
-
         # load or create
         new_customer_role = await self.get_by_id(
             customer_role_dict_converted["customer_role_id"])
         if new_customer_role is None:
-            new_customer_role = CustomerRole(**customer_role_dict_converted)
+            new_customer_role = CustomerRole(
+                **customer_role_dict_converted)
             self._session_context.session.add(new_customer_role)
         else:
             for key, value in customer_role_dict_converted.items():
@@ -539,7 +537,8 @@ class CustomerRoleManager:
             "CustomerRoleManager.update_bulk start")
         updated_customer_roles = []
         for update in customer_role_updates:
-            customer_role_id = update.get("customer_role_id")
+            customer_role_id = update.get(
+                "customer_role_id")
             if not isinstance(customer_role_id, int):
                 raise TypeError(
                     f"The customer_role_id must be an integer, "
@@ -549,7 +548,8 @@ class CustomerRoleManager:
                 continue
 
             logging.info(
-                "CustomerRoleManager.update_bulk customer_role_id:%s",
+                "CustomerRoleManager.update_bulk "
+                "customer_role_id:%s",
                 customer_role_id)
 
             customer_role = await self.get_by_id(
@@ -557,7 +557,8 @@ class CustomerRoleManager:
 
             if not customer_role:
                 raise CustomerRoleNotFoundError(
-                    f"CustomerRole with ID {customer_role_id} not found!")
+                    f"CustomerRole with ID "
+                    f"{customer_role_id} not found!")
 
             for key, value in update.items():
                 if key != "customer_role_id":
@@ -575,7 +576,8 @@ class CustomerRoleManager:
 
         return updated_customer_roles
 
-    async def delete_bulk(self, customer_role_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, customer_role_ids: List[int]) -> bool:
         """
         Delete multiple customer_roles
         by their IDs.
@@ -594,7 +596,8 @@ class CustomerRoleManager:
                 customer_role_id)
             if not customer_role:
                 raise CustomerRoleNotFoundError(
-                    f"CustomerRole with ID {customer_role_id} not found!"
+                    f"CustomerRole with ID "
+                    f"{customer_role_id} not found!"
                 )
 
             if customer_role:

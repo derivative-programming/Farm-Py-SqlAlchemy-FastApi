@@ -505,7 +505,8 @@ class TestErrorLogFactoryAsync:
         # url
         assert isinstance(new_obj.browser_code, uuid.UUID)
         assert isinstance(new_obj.context_code, uuid.UUID)
-        assert new_obj.created_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.created_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.description == ""
         assert new_obj.is_client_side_error is False
         assert new_obj.is_resolved is False

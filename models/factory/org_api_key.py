@@ -85,7 +85,8 @@ class OrgApiKeyFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         kwargs["org_customer_id"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-        kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
+        kwargs["organization_code_peek"] = (  # OrganizationID
+            organization_id_organization_instance.code)
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
         obj = model_class(*args, **kwargs)
@@ -93,7 +94,8 @@ class OrgApiKeyFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         obj.org_customer_id = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-        obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
+        obj.organization_code_peek = (  # OrganizationID
+            organization_id_organization_instance.code)
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
         return obj
@@ -131,7 +133,8 @@ class OrgApiKeyFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         kwargs["org_customer_id"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-        kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
+        kwargs["organization_code_peek"] = (  # OrganizationID
+            organization_id_organization_instance.code)
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
         obj = model_class(*args, **kwargs)
@@ -139,7 +142,8 @@ class OrgApiKeyFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         obj.org_customer_id = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-        obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
+        obj.organization_code_peek = (  # OrganizationID
+            organization_id_organization_instance.code)
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
         session.add(obj)
@@ -172,7 +176,8 @@ class OrgApiKeyFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         kwargs["org_customer_id"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-        kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
+        kwargs["organization_code_peek"] = (  # OrganizationID
+            organization_id_organization_instance.code)
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
         obj = OrgApiKeyFactory \
@@ -181,7 +186,8 @@ class OrgApiKeyFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         obj.org_customer_id = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-        obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
+        obj.organization_code_peek = (  # OrganizationID
+            organization_id_organization_instance.code)
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
         session.add(obj)
@@ -213,7 +219,8 @@ class OrgApiKeyFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         kwargs["org_customer_id"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-        kwargs["organization_code_peek"] = organization_id_organization_instance.code  # OrganizationID
+        kwargs["organization_code_peek"] = (  # OrganizationID
+            organization_id_organization_instance.code)
         kwargs["org_customer_code_peek"] = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
         obj = OrgApiKeyFactory \
@@ -222,7 +229,8 @@ class OrgApiKeyFactory(factory.Factory):
             organization_id_organization_instance.organization_id)
         obj.org_customer_id = (  # OrgCustomerID
             org_customer_id_org_customer_instance.org_customer_id)
-        obj.organization_code_peek = organization_id_organization_instance.code  # OrganizationID
+        obj.organization_code_peek = (  # OrganizationID
+            organization_id_organization_instance.code)
         obj.org_customer_code_peek = (  # OrgCustomerID
             org_customer_id_org_customer_instance.code)
         return obj

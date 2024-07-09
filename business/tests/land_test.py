@@ -69,7 +69,8 @@ async def new_bus_obj(session, new_obj) -> LandBusObj:
     """
 
     session_context = SessionContext({}, session)
-    land_bus_obj = LandBusObj(session_context, new_obj)
+    land_bus_obj = LandBusObj(
+        session_context, new_obj)
 
     return land_bus_obj
 
@@ -103,7 +104,8 @@ class TestLandBusObj:
                 bus_obj.load_from_obj_instance.called
                 for bus_obj in bus_obj_list)
 
-            for bus_obj, land in zip(bus_obj_list, obj_list):
+            for bus_obj, land in \
+                    zip(bus_obj_list, obj_list):
                 mock_load.assert_any_call(land)
 
     @pytest.mark.asyncio

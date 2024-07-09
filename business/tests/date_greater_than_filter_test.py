@@ -69,7 +69,8 @@ async def new_bus_obj(session, new_obj) -> DateGreaterThanFilterBusObj:
     """
 
     session_context = SessionContext({}, session)
-    date_greater_than_filter_bus_obj = DateGreaterThanFilterBusObj(session_context, new_obj)
+    date_greater_than_filter_bus_obj = DateGreaterThanFilterBusObj(
+        session_context, new_obj)
 
     return date_greater_than_filter_bus_obj
 
@@ -103,7 +104,8 @@ class TestDateGreaterThanFilterBusObj:
                 bus_obj.load_from_obj_instance.called
                 for bus_obj in bus_obj_list)
 
-            for bus_obj, date_greater_than_filter in zip(bus_obj_list, obj_list):
+            for bus_obj, date_greater_than_filter in \
+                    zip(bus_obj_list, obj_list):
                 mock_load.assert_any_call(date_greater_than_filter)
 
     @pytest.mark.asyncio

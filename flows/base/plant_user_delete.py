@@ -39,7 +39,7 @@ class BaseFlowPlantUserDelete(BaseFlow):  # pylint: disable=too-few-public-metho
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowPlantUserDelete, self).__init__(
+        super().__init__(
             "PlantUserDelete",
             session_context,
         )

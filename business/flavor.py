@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import Flavor
 
-from .flavor_dyna_flows import FlavorDynaFlowsBusObj
+from .flavor_dyna_flows import \
+    FlavorDynaFlowsBusObj
 
 
 NOT_INITIALIZED_ERROR_MESSAGE = (

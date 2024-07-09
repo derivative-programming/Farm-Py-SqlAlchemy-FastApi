@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.tri_state_filter import TriStateFilter
-from models.serialization_schema.tri_state_filter import TriStateFilterSchema
+from models.serialization_schema.tri_state_filter import \
+    TriStateFilterSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -101,7 +102,6 @@ class TriStateFilterManager:
             item.description = ""
             item.display_order = await self.count()
             item.is_active = True
-            # item.state_int_value = 1
             await self.add(item)
         if await self.from_enum(TriStateFilterEnum.YES) \
                 is None:
@@ -111,7 +111,6 @@ class TriStateFilterManager:
             item.description = "Yes"
             item.display_order = await self.count()
             item.is_active = True
-            # item.state_int_value = 1
             await self.add(item)
         if await self.from_enum(TriStateFilterEnum.NO) \
                 is None:
@@ -121,7 +120,6 @@ class TriStateFilterManager:
             item.description = "No"
             item.display_order = await self.count()
             item.is_active = True
-            # item.state_int_value = 1
             await self.add(item)
         logging.info("TriStateFilterManager.Initialize end")
 
@@ -294,7 +292,8 @@ class TriStateFilterManager:
                 tri_state_filter, or None if not found.
         """
         logging.info(
-            "TriStateFilterManager.get_by_id start tri_state_filter_id: %s",
+            "TriStateFilterManager.get_by_id "
+            "start tri_state_filter_id: %s",
             str(tri_state_filter_id))
         if not isinstance(tri_state_filter_id, int):
             raise TypeError(
@@ -391,7 +390,8 @@ class TriStateFilterManager:
             tri_state_filter_id)
         if not tri_state_filter:
             raise TriStateFilterNotFoundError(
-                f"TriStateFilter with ID {tri_state_filter_id} not found!")
+                f"TriStateFilter with ID "
+                f"{tri_state_filter_id} not found!")
 
         await self._session_context.session.delete(
             tri_state_filter)
@@ -486,7 +486,8 @@ class TriStateFilterManager:
         new_tri_state_filter = await self.get_by_id(
             tri_state_filter_dict["tri_state_filter_id"])
         if new_tri_state_filter is None:
-            new_tri_state_filter = TriStateFilter(**tri_state_filter_dict)
+            new_tri_state_filter = TriStateFilter(
+                **tri_state_filter_dict)
             self._session_context.session.add(new_tri_state_filter)
         else:
             for key, value in tri_state_filter_dict.items():
@@ -520,18 +521,12 @@ class TriStateFilterManager:
         tri_state_filter_dict_converted = schema.load(
             tri_state_filter_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new TriStateFilter instance
-        # using the validated data
-        # new_tri_state_filter = TriStateFilter(**tri_state_filter_dict_converted)
-
         # load or create
         new_tri_state_filter = await self.get_by_id(
             tri_state_filter_dict_converted["tri_state_filter_id"])
         if new_tri_state_filter is None:
-            new_tri_state_filter = TriStateFilter(**tri_state_filter_dict_converted)
+            new_tri_state_filter = TriStateFilter(
+                **tri_state_filter_dict_converted)
             self._session_context.session.add(new_tri_state_filter)
         else:
             for key, value in tri_state_filter_dict_converted.items():
@@ -603,7 +598,8 @@ class TriStateFilterManager:
             "TriStateFilterManager.update_bulk start")
         updated_tri_state_filters = []
         for update in tri_state_filter_updates:
-            tri_state_filter_id = update.get("tri_state_filter_id")
+            tri_state_filter_id = update.get(
+                "tri_state_filter_id")
             if not isinstance(tri_state_filter_id, int):
                 raise TypeError(
                     f"The tri_state_filter_id must be an integer, "
@@ -613,7 +609,8 @@ class TriStateFilterManager:
                 continue
 
             logging.info(
-                "TriStateFilterManager.update_bulk tri_state_filter_id:%s",
+                "TriStateFilterManager.update_bulk "
+                "tri_state_filter_id:%s",
                 tri_state_filter_id)
 
             tri_state_filter = await self.get_by_id(
@@ -621,7 +618,8 @@ class TriStateFilterManager:
 
             if not tri_state_filter:
                 raise TriStateFilterNotFoundError(
-                    f"TriStateFilter with ID {tri_state_filter_id} not found!")
+                    f"TriStateFilter with ID "
+                    f"{tri_state_filter_id} not found!")
 
             for key, value in update.items():
                 if key != "tri_state_filter_id":
@@ -639,7 +637,8 @@ class TriStateFilterManager:
 
         return updated_tri_state_filters
 
-    async def delete_bulk(self, tri_state_filter_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, tri_state_filter_ids: List[int]) -> bool:
         """
         Delete multiple tri_state_filters
         by their IDs.
@@ -658,7 +657,8 @@ class TriStateFilterManager:
                 tri_state_filter_id)
             if not tri_state_filter:
                 raise TriStateFilterNotFoundError(
-                    f"TriStateFilter with ID {tri_state_filter_id} not found!"
+                    f"TriStateFilter with ID "
+                    f"{tri_state_filter_id} not found!"
                 )
 
             if tri_state_filter:

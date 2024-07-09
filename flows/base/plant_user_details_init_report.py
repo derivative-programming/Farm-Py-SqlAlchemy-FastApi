@@ -39,7 +39,7 @@ class BaseFlowPlantUserDetailsInitReport(BaseFlow):  # pylint: disable=too-few-p
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowPlantUserDetailsInitReport, self).__init__(
+        super().__init__(
             "PlantUserDetailsInitReport",
             session_context,
         )

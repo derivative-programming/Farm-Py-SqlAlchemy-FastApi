@@ -69,7 +69,8 @@ async def new_bus_obj(session, new_obj) -> DynaFlowTypeBusObj:
     """
 
     session_context = SessionContext({}, session)
-    dyna_flow_type_bus_obj = DynaFlowTypeBusObj(session_context, new_obj)
+    dyna_flow_type_bus_obj = DynaFlowTypeBusObj(
+        session_context, new_obj)
 
     return dyna_flow_type_bus_obj
 
@@ -103,7 +104,8 @@ class TestDynaFlowTypeBusObj:
                 bus_obj.load_from_obj_instance.called
                 for bus_obj in bus_obj_list)
 
-            for bus_obj, dyna_flow_type in zip(bus_obj_list, obj_list):
+            for bus_obj, dyna_flow_type in \
+                    zip(bus_obj_list, obj_list):
                 mock_load.assert_any_call(dyna_flow_type)
 
     @pytest.mark.asyncio

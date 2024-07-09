@@ -51,8 +51,6 @@ class TestReportItemPacUserDynaFlowTaskTypeList:
             "dyna_flow_task_type_name": "test",
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemPacUserDynaFlowTaskTypeList(**data)
         report_item = ReportItemPacUserDynaFlowTaskTypeList()
         report_item.load_data_provider_dict(data)
         assert report_item.dyna_flow_task_type_code == UUID(int=2)

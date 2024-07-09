@@ -45,8 +45,6 @@ class TestReportItemPacConfigDynaFlowTaskRunToDoList:
             "dyna_flow_priority_level": 1,
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemPacConfigDynaFlowTaskRunToDoList(**data)
         report_item = ReportItemPacConfigDynaFlowTaskRunToDoList()
         report_item.load_data_provider_dict(data)
         assert report_item.dyna_flow_task_code == UUID(int=2)

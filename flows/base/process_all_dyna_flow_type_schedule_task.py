@@ -39,7 +39,7 @@ class BaseFlowProcessAllDynaFlowTypeScheduleTask(BaseFlow):  # pylint: disable=t
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowProcessAllDynaFlowTypeScheduleTask, self).__init__(
+        super().__init__(
             "ProcessAllDynaFlowTypeScheduleTask",
             session_context,
         )

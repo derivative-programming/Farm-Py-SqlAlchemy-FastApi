@@ -28,9 +28,9 @@ COPY dockerfile_sonarscanner_app_entrypoint.sh /usr/src/app/
 
 # Ensure the script has Unix line endings using sed as a fallback
 RUN apt-get update
-RUN apt-get install -y dos2unix
+# RUN apt-get install -y dos2unix
 # RUN sed -i 's/\r$//' /usr/src/app/dockerfile_sonarscanner_app_entrypoint.sh
-RUN dos2unix /usr/src/app/dockerfile_sonarscanner_app_entrypoint.sh
+# RUN dos2unix /usr/src/app/dockerfile_sonarscanner_app_entrypoint.sh
 
 # Make the script executable
 RUN chmod +x /usr/src/app/dockerfile_sonarscanner_app_entrypoint.sh

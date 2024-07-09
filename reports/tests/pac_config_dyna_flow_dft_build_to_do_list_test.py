@@ -10,24 +10,21 @@ class in the
 """
 
 import os
-import uuid  # noqa: F401
-from decimal import Decimal  # noqa: F401
-from datetime import datetime, date  # noqa: F401
 import sqlite3
-from unittest.mock import patch, AsyncMock
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from unittest.mock import AsyncMock, patch
+
 import pytest
-# from typing import List
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.pac import PacFactory
-from reports.pac_config_dyna_flow_dft_build_to_do_list import (
-    ReportManagerPacConfigDynaFlowDFTBuildToDoList)
-from reports.report_request_validation_error import (
-    ReportRequestValidationError)
-from reports.providers.pac_config_dyna_flow_dft_build_to_do_list import (
-    ReportProviderPacConfigDynaFlowDFTBuildToDoList)
-from reports.row_models.pac_config_dyna_flow_dft_build_to_do_list import (
-    ReportItemPacConfigDynaFlowDFTBuildToDoList)
+from reports.pac_config_dyna_flow_dft_build_to_do_list import ReportManagerPacConfigDynaFlowDFTBuildToDoList
+from reports.providers.pac_config_dyna_flow_dft_build_to_do_list import ReportProviderPacConfigDynaFlowDFTBuildToDoList
+from reports.report_request_validation_error import \
+    ReportRequestValidationError
+from reports.row_models.pac_config_dyna_flow_dft_build_to_do_list import ReportItemPacConfigDynaFlowDFTBuildToDoList
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
@@ -150,7 +147,6 @@ class TestReportManagerPacConfigDynaFlowDFTBuildToDoList:
             session_context.role_name_csv = role_required
             is_build_task_debug_required_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
             page_number = 1
-            # item_count_per_page = 10
             order_by_column_name = ""
             order_by_descending = False
 
@@ -208,7 +204,6 @@ class TestReportManagerPacConfigDynaFlowDFTBuildToDoList:
 
             session_context.role_name_csv = role_required
             is_build_task_debug_required_tri_state_filter_code: uuid.UUID = uuid.uuid4()  # type: ignore
-            # page_number = 1
             item_count_per_page = 10
             order_by_column_name = ""
             order_by_descending = False

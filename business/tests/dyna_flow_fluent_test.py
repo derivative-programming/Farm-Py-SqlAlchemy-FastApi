@@ -11,7 +11,8 @@ from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
 
 import pytest
-from business.dyna_flow_fluent import DynaFlowFluentBusObj
+from business.dyna_flow_fluent import \
+    DynaFlowFluentBusObj
 from helpers.session_context import SessionContext
 
 

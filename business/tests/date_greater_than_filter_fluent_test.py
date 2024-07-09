@@ -11,7 +11,8 @@ from decimal import Decimal  # noqa: F401
 from uuid import uuid4  # noqa: F401
 
 import pytest
-from business.date_greater_than_filter_fluent import DateGreaterThanFilterFluentBusObj
+from business.date_greater_than_filter_fluent import \
+    DateGreaterThanFilterFluentBusObj
 from helpers.session_context import SessionContext
 
 

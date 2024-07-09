@@ -307,11 +307,13 @@ class Customer(Base):
         self.email = kwargs.get(
             'email', "")
         self.email_confirmed_utc_date_time = kwargs.get(
-            'email_confirmed_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'email_confirmed_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.first_name = kwargs.get(
             'first_name', "")
         self.forgot_password_key_expiration_utc_date_time = kwargs.get(
-            'forgot_password_key_expiration_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'forgot_password_key_expiration_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.forgot_password_key_value = kwargs.get(
             'forgot_password_key_value', "")
         self.fs_user_code_value = kwargs.get(
@@ -331,7 +333,8 @@ class Customer(Base):
         self.is_verbose_logging_forced = kwargs.get(
             'is_verbose_logging_forced', False)
         self.last_login_utc_date_time = kwargs.get(
-            'last_login_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'last_login_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_name = kwargs.get(
             'last_name', "")
         self.password = kwargs.get(
@@ -341,7 +344,8 @@ class Customer(Base):
         self.province = kwargs.get(
             'province', "")
         self.registration_utc_date_time = kwargs.get(
-            'registration_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'registration_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.tac_id = kwargs.get(
             'tac_id', 0)
         self.utc_offset_in_minutes = kwargs.get(
@@ -349,9 +353,11 @@ class Customer(Base):
         self.zip = kwargs.get(
             'zip', "")
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'insert_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'last_update_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.tac_code_peek = kwargs.get(  # TacID
             'tac_code_peek', uuid.UUID(int=0))
 
@@ -526,10 +532,12 @@ class Customer(Base):
     @property
     def active_organization_id(self) -> int:
         """
-        Returns the value of the '_active_organization_id' attribute of the object.
+        Returns the value of the '_active_organization_id'
+            attribute of the object.
         If the attribute is not set, it returns 0.
 
-        :return: The value of the '_active_organization_id' attribute or 0 if not set.
+        :return: The value of the '_active_organization_id'
+            attribute or 0 if not set.
         :rtype: int
         """
         return getattr(self, '_active_organization_id', 0) or 0
@@ -985,10 +993,12 @@ class Customer(Base):
     @property
     def utc_offset_in_minutes(self) -> int:
         """
-        Returns the value of the '_utc_offset_in_minutes' attribute of the object.
+        Returns the value of the '_utc_offset_in_minutes'
+            attribute of the object.
         If the attribute is not set, it returns 0.
 
-        :return: The value of the '_utc_offset_in_minutes' attribute or 0 if not set.
+        :return: The value of the '_utc_offset_in_minutes'
+            attribute or 0 if not set.
         :rtype: int
         """
         return getattr(self, '_utc_offset_in_minutes', 0) or 0
@@ -1110,7 +1120,8 @@ def set_updated_on(
     target
 ):  # pylint: disable=unused-argument
     """
-    Sets the 'last_update_utc_date_time' attribute of
+    Sets the 'last_update_utc_date_time'
+    attribute of
     the target object to the current UTC date and time.
 
     :param mapper: The SQLAlchemy mapper object.

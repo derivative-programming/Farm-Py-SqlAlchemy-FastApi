@@ -39,7 +39,7 @@ class BaseFlowLandPlantListInitReport(BaseFlow):  # pylint: disable=too-few-publ
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowLandPlantListInitReport, self).__init__(
+        super().__init__(
             "LandPlantListInitReport",
             session_context,
         )

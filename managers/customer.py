@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.tac import Tac  # TacID
 from models.customer import Customer
-from models.serialization_schema.customer import CustomerSchema
+from models.serialization_schema.customer import \
+    CustomerSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -219,7 +220,8 @@ class CustomerManager:
                 customer, or None if not found.
         """
         logging.info(
-            "CustomerManager.get_by_id start customer_id: %s",
+            "CustomerManager.get_by_id "
+            "start customer_id: %s",
             str(customer_id))
         if not isinstance(customer_id, int):
             raise TypeError(
@@ -316,7 +318,8 @@ class CustomerManager:
             customer_id)
         if not customer:
             raise CustomerNotFoundError(
-                f"Customer with ID {customer_id} not found!")
+                f"Customer with ID "
+                f"{customer_id} not found!")
 
         await self._session_context.session.delete(
             customer)
@@ -411,7 +414,8 @@ class CustomerManager:
         new_customer = await self.get_by_id(
             customer_dict["customer_id"])
         if new_customer is None:
-            new_customer = Customer(**customer_dict)
+            new_customer = Customer(
+                **customer_dict)
             self._session_context.session.add(new_customer)
         else:
             for key, value in customer_dict.items():
@@ -445,18 +449,12 @@ class CustomerManager:
         customer_dict_converted = schema.load(
             customer_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new Customer instance
-        # using the validated data
-        # new_customer = Customer(**customer_dict_converted)
-
         # load or create
         new_customer = await self.get_by_id(
             customer_dict_converted["customer_id"])
         if new_customer is None:
-            new_customer = Customer(**customer_dict_converted)
+            new_customer = Customer(
+                **customer_dict_converted)
             self._session_context.session.add(new_customer)
         else:
             for key, value in customer_dict_converted.items():
@@ -528,7 +526,8 @@ class CustomerManager:
             "CustomerManager.update_bulk start")
         updated_customers = []
         for update in customer_updates:
-            customer_id = update.get("customer_id")
+            customer_id = update.get(
+                "customer_id")
             if not isinstance(customer_id, int):
                 raise TypeError(
                     f"The customer_id must be an integer, "
@@ -538,7 +537,8 @@ class CustomerManager:
                 continue
 
             logging.info(
-                "CustomerManager.update_bulk customer_id:%s",
+                "CustomerManager.update_bulk "
+                "customer_id:%s",
                 customer_id)
 
             customer = await self.get_by_id(
@@ -546,7 +546,8 @@ class CustomerManager:
 
             if not customer:
                 raise CustomerNotFoundError(
-                    f"Customer with ID {customer_id} not found!")
+                    f"Customer with ID "
+                    f"{customer_id} not found!")
 
             for key, value in update.items():
                 if key != "customer_id":
@@ -564,7 +565,8 @@ class CustomerManager:
 
         return updated_customers
 
-    async def delete_bulk(self, customer_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, customer_ids: List[int]) -> bool:
         """
         Delete multiple customers
         by their IDs.
@@ -583,7 +585,8 @@ class CustomerManager:
                 customer_id)
             if not customer:
                 raise CustomerNotFoundError(
-                    f"Customer with ID {customer_id} not found!"
+                    f"Customer with ID "
+                    f"{customer_id} not found!"
                 )
 
             if customer:
@@ -718,13 +721,13 @@ class CustomerManager:
         self,
         email
     ) -> List[Customer]:
-        logging.info(
-            "CustomerManager"
-            ".get_by_email_prop")
         """
         Retrieve a list of Customer by
         email.
         """
+        logging.info(
+            "CustomerManager"
+            ".get_by_email_prop")
         query_filter = (
             Customer._email == email)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)
@@ -733,13 +736,13 @@ class CustomerManager:
         self,
         fs_user_code_value
     ) -> List[Customer]:
-        logging.info(
-            "CustomerManager"
-            ".get_by_fs_user_code_value_prop")
         """
         Retrieve a list of Customer by
         fs_user_code_value.
         """
+        logging.info(
+            "CustomerManager"
+            ".get_by_fs_user_code_value_prop")
         query_filter = (
             Customer._fs_user_code_value == fs_user_code_value)  # pylint: disable=protected-access  # noqa: E501
         query_results = await self._run_query(query_filter)

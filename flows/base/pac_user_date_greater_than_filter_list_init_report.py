@@ -39,7 +39,7 @@ class BaseFlowPacUserDateGreaterThanFilterListInitReport(BaseFlow):  # pylint: d
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowPacUserDateGreaterThanFilterListInitReport, self).__init__(
+        super().__init__(
             "PacUserDateGreaterThanFilterListInitReport",
             session_context,
         )

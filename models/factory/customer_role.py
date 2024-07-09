@@ -80,7 +80,8 @@ class CustomerRoleFactory(factory.Factory):
             customer_id_customer_instance.customer_id)
         kwargs["role_id"] = (  # RoleID
             role_id_role_instance.role_id)
-        kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
+        kwargs["customer_code_peek"] = (  # CustomerID
+            customer_id_customer_instance.code)
         kwargs["role_code_peek"] = (  # RoleID
             role_id_role_instance.code)
         obj = model_class(*args, **kwargs)
@@ -88,7 +89,8 @@ class CustomerRoleFactory(factory.Factory):
             customer_id_customer_instance.customer_id)
         obj.role_id = (  # RoleID
             role_id_role_instance.role_id)
-        obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
+        obj.customer_code_peek = (  # CustomerID
+            customer_id_customer_instance.code)
         obj.role_code_peek = (  # RoleID
             role_id_role_instance.code)
         return obj
@@ -126,7 +128,8 @@ class CustomerRoleFactory(factory.Factory):
             customer_id_customer_instance.customer_id)
         kwargs["role_id"] = (  # RoleID
             role_id_role_instance.role_id)
-        kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
+        kwargs["customer_code_peek"] = (  # CustomerID
+            customer_id_customer_instance.code)
         kwargs["role_code_peek"] = (  # RoleID
             role_id_role_instance.code)
         obj = model_class(*args, **kwargs)
@@ -134,7 +137,8 @@ class CustomerRoleFactory(factory.Factory):
             customer_id_customer_instance.customer_id)
         obj.role_id = (  # RoleID
             role_id_role_instance.role_id)
-        obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
+        obj.customer_code_peek = (  # CustomerID
+            customer_id_customer_instance.code)
         obj.role_code_peek = (  # RoleID
             role_id_role_instance.code)
         session.add(obj)
@@ -167,7 +171,8 @@ class CustomerRoleFactory(factory.Factory):
             customer_id_customer_instance.customer_id)
         kwargs["role_id"] = (  # RoleID
             role_id_role_instance.role_id)
-        kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
+        kwargs["customer_code_peek"] = (  # CustomerID
+            customer_id_customer_instance.code)
         kwargs["role_code_peek"] = (  # RoleID
             role_id_role_instance.code)
         obj = CustomerRoleFactory \
@@ -176,7 +181,8 @@ class CustomerRoleFactory(factory.Factory):
             customer_id_customer_instance.customer_id)
         obj.role_id = (  # RoleID
             role_id_role_instance.role_id)
-        obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
+        obj.customer_code_peek = (  # CustomerID
+            customer_id_customer_instance.code)
         obj.role_code_peek = (  # RoleID
             role_id_role_instance.code)
         session.add(obj)
@@ -208,7 +214,8 @@ class CustomerRoleFactory(factory.Factory):
             customer_id_customer_instance.customer_id)
         kwargs["role_id"] = (  # RoleID
             role_id_role_instance.role_id)
-        kwargs["customer_code_peek"] = customer_id_customer_instance.code  # CustomerID
+        kwargs["customer_code_peek"] = (  # CustomerID
+            customer_id_customer_instance.code)
         kwargs["role_code_peek"] = (  # RoleID
             role_id_role_instance.code)
         obj = CustomerRoleFactory \
@@ -217,7 +224,8 @@ class CustomerRoleFactory(factory.Factory):
             customer_id_customer_instance.customer_id)
         obj.role_id = (  # RoleID
             role_id_role_instance.role_id)
-        obj.customer_code_peek = customer_id_customer_instance.code  # CustomerID
+        obj.customer_code_peek = (  # CustomerID
+            customer_id_customer_instance.code)
         obj.role_code_peek = (  # RoleID
             role_id_role_instance.code)
         return obj

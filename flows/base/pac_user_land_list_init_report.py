@@ -39,7 +39,7 @@ class BaseFlowPacUserLandListInitReport(BaseFlow):  # pylint: disable=too-few-pu
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowPacUserLandListInitReport, self).__init__(
+        super().__init__(
             "PacUserLandListInitReport",
             session_context,
         )

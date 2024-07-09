@@ -104,11 +104,3 @@ class TestErrorLogConfigResolveErrorLogPostModelResponse:
                 )
 
         session_context.role_name_csv = role_required
-
-        # result = await response_instance.process_request(
-        #     session=session,
-        #     session_context=session_context,
-        #     error_log_code=error_log.code,
-        #     request=request_instance
-        #     )
-        # assert isinstance(result,FlowErrorLogConfigResolveErrorLogResult)

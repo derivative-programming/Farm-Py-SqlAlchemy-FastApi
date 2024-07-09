@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.tac import Tac  # TacID
 from models.organization import Organization
-from models.serialization_schema.organization import OrganizationSchema
+from models.serialization_schema.organization import \
+    OrganizationSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -219,7 +220,8 @@ class OrganizationManager:
                 organization, or None if not found.
         """
         logging.info(
-            "OrganizationManager.get_by_id start organization_id: %s",
+            "OrganizationManager.get_by_id "
+            "start organization_id: %s",
             str(organization_id))
         if not isinstance(organization_id, int):
             raise TypeError(
@@ -316,7 +318,8 @@ class OrganizationManager:
             organization_id)
         if not organization:
             raise OrganizationNotFoundError(
-                f"Organization with ID {organization_id} not found!")
+                f"Organization with ID "
+                f"{organization_id} not found!")
 
         await self._session_context.session.delete(
             organization)
@@ -411,7 +414,8 @@ class OrganizationManager:
         new_organization = await self.get_by_id(
             organization_dict["organization_id"])
         if new_organization is None:
-            new_organization = Organization(**organization_dict)
+            new_organization = Organization(
+                **organization_dict)
             self._session_context.session.add(new_organization)
         else:
             for key, value in organization_dict.items():
@@ -445,18 +449,12 @@ class OrganizationManager:
         organization_dict_converted = schema.load(
             organization_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new Organization instance
-        # using the validated data
-        # new_organization = Organization(**organization_dict_converted)
-
         # load or create
         new_organization = await self.get_by_id(
             organization_dict_converted["organization_id"])
         if new_organization is None:
-            new_organization = Organization(**organization_dict_converted)
+            new_organization = Organization(
+                **organization_dict_converted)
             self._session_context.session.add(new_organization)
         else:
             for key, value in organization_dict_converted.items():
@@ -528,7 +526,8 @@ class OrganizationManager:
             "OrganizationManager.update_bulk start")
         updated_organizations = []
         for update in organization_updates:
-            organization_id = update.get("organization_id")
+            organization_id = update.get(
+                "organization_id")
             if not isinstance(organization_id, int):
                 raise TypeError(
                     f"The organization_id must be an integer, "
@@ -538,7 +537,8 @@ class OrganizationManager:
                 continue
 
             logging.info(
-                "OrganizationManager.update_bulk organization_id:%s",
+                "OrganizationManager.update_bulk "
+                "organization_id:%s",
                 organization_id)
 
             organization = await self.get_by_id(
@@ -546,7 +546,8 @@ class OrganizationManager:
 
             if not organization:
                 raise OrganizationNotFoundError(
-                    f"Organization with ID {organization_id} not found!")
+                    f"Organization with ID "
+                    f"{organization_id} not found!")
 
             for key, value in update.items():
                 if key != "organization_id":
@@ -564,7 +565,8 @@ class OrganizationManager:
 
         return updated_organizations
 
-    async def delete_bulk(self, organization_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, organization_ids: List[int]) -> bool:
         """
         Delete multiple organizations
         by their IDs.
@@ -583,7 +585,8 @@ class OrganizationManager:
                 organization_id)
             if not organization:
                 raise OrganizationNotFoundError(
-                    f"Organization with ID {organization_id} not found!"
+                    f"Organization with ID "
+                    f"{organization_id} not found!"
                 )
 
             if organization:

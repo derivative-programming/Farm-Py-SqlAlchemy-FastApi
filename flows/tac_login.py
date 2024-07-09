@@ -1,5 +1,6 @@
 # flows/default/tac_login.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowTacLogin class
@@ -17,6 +18,8 @@ from decimal import Decimal  # noqa: F401
 from business.tac import TacBusObj
 from flows.base import LogSeverity
 from flows.base.tac_login import BaseFlowTacLogin
+from flows.customer_build_temp_api_key import (
+    FlowCustomerBuildTempApiKey, FlowCustomerBuildTempApiKeyResult)
 from helpers import SessionContext  # noqa: F401
 from helpers import TypeConversion  # noqa: F401
 

@@ -513,8 +513,10 @@ class TestOrgApiKeyFactoryAsync:
         assert isinstance(new_obj.org_customer_code_peek, uuid.UUID)
         assert new_obj.api_key_value == ""
         assert new_obj.created_by == ""
-        assert new_obj.created_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
-        assert new_obj.expiration_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.created_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.expiration_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.is_active is False
         assert new_obj.is_temp_user_key is False
         assert new_obj.name == ""

@@ -58,10 +58,7 @@ class BusObjFactory:
             ValueError: If the object type is unknown.
         """
 
-        if name == '':
-            raise ValueError(f"Unknown object type: {name}")
-
-        elif name == 'Customer':
+        if name == 'Customer':
             return await (
                 CustomerBusObj(session_context)
                 .load_from_code(code)
@@ -190,9 +187,7 @@ class BusObjFactory:
             ValueError: If the object type is unknown.
         """
 
-        if name == '':
-            raise ValueError(f"Unknown object type: {name}")
-        elif name == 'Customer':
+        if name == 'Customer':
             return await (
                 CustomerBusObj(session_context)
                 .load_from_id(obj_id)

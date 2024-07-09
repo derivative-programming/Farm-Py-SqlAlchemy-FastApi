@@ -285,8 +285,10 @@ class TestDynaFlowTypeScheduleFactory:
         assert new_obj.dyna_flow_type_id == 0
         assert new_obj.frequency_in_hours == 0
         assert new_obj.is_active is False
-        assert new_obj.last_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
-        assert new_obj.next_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.last_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.next_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.pac_id == 0
 
     def test_last_change_code_concurrency(self, session):

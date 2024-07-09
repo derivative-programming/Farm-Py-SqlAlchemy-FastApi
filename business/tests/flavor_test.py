@@ -69,7 +69,8 @@ async def new_bus_obj(session, new_obj) -> FlavorBusObj:
     """
 
     session_context = SessionContext({}, session)
-    flavor_bus_obj = FlavorBusObj(session_context, new_obj)
+    flavor_bus_obj = FlavorBusObj(
+        session_context, new_obj)
 
     return flavor_bus_obj
 
@@ -103,7 +104,8 @@ class TestFlavorBusObj:
                 bus_obj.load_from_obj_instance.called
                 for bus_obj in bus_obj_list)
 
-            for bus_obj, flavor in zip(bus_obj_list, obj_list):
+            for bus_obj, flavor in \
+                    zip(bus_obj_list, obj_list):
                 mock_load.assert_any_call(flavor)
 
     @pytest.mark.asyncio

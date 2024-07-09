@@ -104,7 +104,8 @@ class DynaFlowFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["dyna_flow_type_code_peek"] = (  # DynaFlowTypeID
             dyna_flow_type_id_dyna_flow_type_instance.code)
-        kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
+        kwargs["pac_code_peek"] = (  # PacID
+            pac_id_pac_instance.code)
         obj = model_class(*args, **kwargs)
         obj.dyna_flow_type_id = (  # DynaFlowTypeID
             dyna_flow_type_id_dyna_flow_type_instance.dyna_flow_type_id)
@@ -112,7 +113,8 @@ class DynaFlowFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         obj.dyna_flow_type_code_peek = (  # DynaFlowTypeID
             dyna_flow_type_id_dyna_flow_type_instance.code)
-        obj.pac_code_peek = pac_id_pac_instance.code  # PacID
+        obj.pac_code_peek = (  # PacID
+            pac_id_pac_instance.code)
         return obj
 
     @classmethod
@@ -150,7 +152,8 @@ class DynaFlowFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["dyna_flow_type_code_peek"] = (  # DynaFlowTypeID
             dyna_flow_type_id_dyna_flow_type_instance.code)
-        kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
+        kwargs["pac_code_peek"] = (  # PacID
+            pac_id_pac_instance.code)
         obj = model_class(*args, **kwargs)
         obj.dyna_flow_type_id = (  # DynaFlowTypeID
             dyna_flow_type_id_dyna_flow_type_instance.dyna_flow_type_id)
@@ -158,7 +161,8 @@ class DynaFlowFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         obj.dyna_flow_type_code_peek = (  # DynaFlowTypeID
             dyna_flow_type_id_dyna_flow_type_instance.code)
-        obj.pac_code_peek = pac_id_pac_instance.code  # PacID
+        obj.pac_code_peek = (  # PacID
+            pac_id_pac_instance.code)
         session.add(obj)
         session.commit()
         return obj
@@ -191,7 +195,8 @@ class DynaFlowFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["dyna_flow_type_code_peek"] = (  # DynaFlowTypeID
             dyna_flow_type_id_dyna_flow_type_instance.code)
-        kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
+        kwargs["pac_code_peek"] = (  # PacID
+            pac_id_pac_instance.code)
         obj = DynaFlowFactory \
             .build(session=None, *args, **kwargs)
         obj.dyna_flow_type_id = (  # DynaFlowTypeID
@@ -200,7 +205,8 @@ class DynaFlowFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         obj.dyna_flow_type_code_peek = (  # DynaFlowTypeID
             dyna_flow_type_id_dyna_flow_type_instance.code)
-        obj.pac_code_peek = pac_id_pac_instance.code  # PacID
+        obj.pac_code_peek = (  # PacID
+            pac_id_pac_instance.code)
         session.add(obj)
         await session.flush()
         return obj
@@ -232,7 +238,8 @@ class DynaFlowFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         kwargs["dyna_flow_type_code_peek"] = (  # DynaFlowTypeID
             dyna_flow_type_id_dyna_flow_type_instance.code)
-        kwargs["pac_code_peek"] = pac_id_pac_instance.code  # PacID
+        kwargs["pac_code_peek"] = (  # PacID
+            pac_id_pac_instance.code)
         obj = DynaFlowFactory \
             .build(session=None, *args, **kwargs)
         obj.dyna_flow_type_id = (  # DynaFlowTypeID
@@ -241,5 +248,6 @@ class DynaFlowFactory(factory.Factory):
             pac_id_pac_instance.pac_id)
         obj.dyna_flow_type_code_peek = (  # DynaFlowTypeID
             dyna_flow_type_id_dyna_flow_type_instance.code)
-        obj.pac_code_peek = pac_id_pac_instance.code  # PacID
+        obj.pac_code_peek = (  # PacID
+            pac_id_pac_instance.code)
         return obj

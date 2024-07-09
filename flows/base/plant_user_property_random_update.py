@@ -39,7 +39,7 @@ class BaseFlowPlantUserPropertyRandomUpdate(BaseFlow):  # pylint: disable=too-fe
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowPlantUserPropertyRandomUpdate, self).__init__(
+        super().__init__(
             "PlantUserPropertyRandomUpdate",
             session_context,
         )

@@ -1,5 +1,6 @@
 # flows/default/plant_user_details_init_report.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowPlantUserDetailsInitReport class

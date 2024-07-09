@@ -51,8 +51,6 @@ class TestReportItemPacUserTriStateFilterList:
             "tri_state_filter_state_int_value": 1,
 # endset  # noqa: E122
         }
-
-        # report_item = ReportItemPacUserTriStateFilterList(**data)
         report_item = ReportItemPacUserTriStateFilterList()
         report_item.load_data_provider_dict(data)
         assert report_item.tri_state_filter_code == UUID(int=2)

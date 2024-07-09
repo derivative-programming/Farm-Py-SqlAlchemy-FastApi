@@ -24,7 +24,8 @@ from main import app
 
 from .....models import \
     factory as request_factory  # pylint: disable=reimported  # noqa: F401
-from ..customer_user_log_out import CustomerUserLogOutRouterConfig
+from ..customer_user_log_out import \
+    CustomerUserLogOutRouterConfig
 
 
 @pytest.mark.asyncio

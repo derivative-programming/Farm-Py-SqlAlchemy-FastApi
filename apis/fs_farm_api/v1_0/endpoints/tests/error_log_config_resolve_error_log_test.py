@@ -24,7 +24,8 @@ from main import app
 
 from .....models import \
     factory as request_factory  # pylint: disable=reimported  # noqa: F401
-from ..error_log_config_resolve_error_log import ErrorLogConfigResolveErrorLogRouterConfig
+from ..error_log_config_resolve_error_log import \
+    ErrorLogConfigResolveErrorLogRouterConfig
 
 
 @pytest.mark.asyncio

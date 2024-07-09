@@ -24,7 +24,8 @@ from main import app
 
 from .....models import \
     factory as request_factory  # pylint: disable=reimported  # noqa: F401
-from ..pac_user_flavor_list import PacUserFlavorListRouterConfig
+from ..pac_user_flavor_list import \
+    PacUserFlavorListRouterConfig
 
 
 @pytest.mark.asyncio

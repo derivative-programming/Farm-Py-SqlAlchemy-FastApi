@@ -39,7 +39,7 @@ class BaseFlowTacFarmDashboardInitReport(BaseFlow):  # pylint: disable=too-few-p
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowTacFarmDashboardInitReport, self).__init__(
+        super().__init__(
             "TacFarmDashboardInitReport",
             session_context,
         )

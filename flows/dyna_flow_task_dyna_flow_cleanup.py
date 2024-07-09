@@ -1,5 +1,6 @@
 # flows/default/dyna_flow_task_dyna_flow_cleanup.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowDynaFlowTaskDynaFlowCleanup class

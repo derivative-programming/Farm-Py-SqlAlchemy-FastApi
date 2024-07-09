@@ -1,5 +1,6 @@
 # flows/default/land_add_plant.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowLandAddPlant class
@@ -14,6 +15,7 @@ import uuid  # noqa: F401
 from datetime import date, datetime, timezone  # noqa: F401
 from decimal import Decimal  # noqa: F401
 
+import business
 from business.land import LandBusObj
 from flows.base import LogSeverity
 from flows.base.land_add_plant import BaseFlowLandAddPlant
@@ -212,8 +214,9 @@ class FlowLandAddPlant(
         output_some_phone_number_output: str = ""
         output_some_email_address_output: str = ""
 # endset
-        plant: PlantBusObj = land_bus_obj.build_plant()
-        plant.flvr_foreign_key_id = await FlavorBusObj.get(land_bus_obj.session,code=request_flavor_code).code
+        plant: business.PlantBusObj = await land_bus_obj.build_plant()
+        plant.flvr_foreign_key_id = await business.FlavorBusObj.get(
+            land_bus_obj.get_session_context(), code=request_flavor_code).code
         plant.other_flavor = request_other_flavor
         plant.some_int_val = request_some_int_val
         plant.some_big_int_val = request_some_big_int_val
@@ -231,11 +234,11 @@ class FlowLandAddPlant(
         plant.some_phone_number = request_some_phone_number
         plant.some_email_address = request_some_email_address
         # plant.some_int_val = request_sample_image_upload_file
-        plant.save()
+        await plant.save()
 
-        land_code_output: uuid.UUID = land.code
+        land_code_output: uuid.UUID = land_bus_obj.code
         plant_code_output: uuid.UUID = plant.code
-        output_flavor_code_output = plant.flvr_foreign_key.code
+        output_flavor_code_output = plant.flvr_foreign_key_code_peek
         output_other_flavor_output = plant.other_flavor
         output_some_int_val_output = plant.some_int_val
         output_some_big_int_val_output = plant.some_big_int_val

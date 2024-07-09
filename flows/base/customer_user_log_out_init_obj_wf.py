@@ -39,7 +39,7 @@ class BaseFlowCustomerUserLogOutInitObjWF(BaseFlow):  # pylint: disable=too-few-
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowCustomerUserLogOutInitObjWF, self).__init__(
+        super().__init__(
             "CustomerUserLogOutInitObjWF",
             session_context,
         )

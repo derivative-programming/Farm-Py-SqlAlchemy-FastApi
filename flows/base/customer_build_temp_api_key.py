@@ -39,7 +39,7 @@ class BaseFlowCustomerBuildTempApiKey(BaseFlow):  # pylint: disable=too-few-publ
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowCustomerBuildTempApiKey, self).__init__(
+        super().__init__(
             "CustomerBuildTempApiKey",
             session_context,
         )

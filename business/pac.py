@@ -15,7 +15,8 @@ import models
 from helpers.session_context import SessionContext
 from models import Pac
 
-from .pac_dyna_flows import PacDynaFlowsBusObj
+from .pac_dyna_flows import \
+    PacDynaFlowsBusObj
 
 
 from .tri_state_filter import TriStateFilterBusObj

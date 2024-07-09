@@ -48,8 +48,10 @@ class DateGreaterThanFilterEnum(Enum):
 ##GENTrainingBlock[caseLookupEnums]End
 class DateGreaterThanFilterManager:
     """
-    The DateGreaterThanFilterManager class is responsible for managing date_greater_than_filters in the system.
-    It provides methods for adding, updating, deleting, and retrieving date_greater_than_filters.
+    The DateGreaterThanFilterManager class is
+    responsible for managing date_greater_than_filters in the system.
+    It provides methods for adding, updating, deleting,
+    and retrieving date_greater_than_filters.
     """
     def __init__(self, session_context: SessionContext):
         """
@@ -107,7 +109,6 @@ class DateGreaterThanFilterManager:
             item.description = ""
             item.display_order = await self.count()
             item.is_active = True
-            # item.day_count = 1
             await self.add(item)
         if await self.from_enum(DateGreaterThanFilterEnum.LAST_24_HOURS) \
                 is None:
@@ -117,7 +118,6 @@ class DateGreaterThanFilterManager:
             item.description = "Last 24 Hours"
             item.display_order = await self.count()
             item.is_active = True
-            # item.day_count = 1
             await self.add(item)
         if await self.from_enum(DateGreaterThanFilterEnum.LAST_7_DAYS) \
                 is None:
@@ -127,7 +127,6 @@ class DateGreaterThanFilterManager:
             item.description = "Last 7 Days"
             item.display_order = await self.count()
             item.is_active = True
-            # item.day_count = 1
             await self.add(item)
         if await self.from_enum(DateGreaterThanFilterEnum.LAST_30_DAYS) \
                 is None:
@@ -137,7 +136,6 @@ class DateGreaterThanFilterManager:
             item.description = "Last 30 Days"
             item.display_order = await self.count()
             item.is_active = True
-            # item.day_count = 1
             await self.add(item)
         if await self.from_enum(DateGreaterThanFilterEnum.LAST_90_DAYS) \
                 is None:
@@ -147,7 +145,6 @@ class DateGreaterThanFilterManager:
             item.description = "Last 90 Days"
             item.display_order = await self.count()
             item.is_active = True
-            # item.day_count = 1
             await self.add(item)
         if await self.from_enum(DateGreaterThanFilterEnum.LAST_365_DAYS) \
                 is None:
@@ -157,7 +154,6 @@ class DateGreaterThanFilterManager:
             item.description = "Last 365 Days"
             item.display_order = await self.count()
             item.is_active = True
-            # item.day_count = 1
             await self.add(item)
 # endset
         logging.info("DateGreaterThanFilterManager.Initialize end")
@@ -186,19 +182,24 @@ class DateGreaterThanFilterManager:
 
     async def build(self, **kwargs) -> DateGreaterThanFilter:
         """
-        Builds a new DateGreaterThanFilter object with the specified attributes.
+        Builds a new DateGreaterThanFilter object
+        with the specified attributes.
         Args:
             **kwargs: The attributes of the date_greater_than_filter.
         Returns:
-            DateGreaterThanFilter: The newly created DateGreaterThanFilter object.
+            DateGreaterThanFilter: The newly created
+            DateGreaterThanFilter object.
         """
         logging.info("DateGreaterThanFilterManager.build")
         return DateGreaterThanFilter(**kwargs)
-    async def add(self, date_greater_than_filter: DateGreaterThanFilter) -> DateGreaterThanFilter:
+    
+    async def add(self, date_greater_than_filter: DateGreaterThanFilter
+                  ) -> DateGreaterThanFilter:
         """
         Adds a new date_greater_than_filter to the system.
         Args:
-            date_greater_than_filter (DateGreaterThanFilter): The date_greater_than_filter to add.
+            date_greater_than_filter (DateGreaterThanFilter):
+            The date_greater_than_filter to add.
         Returns:
             DateGreaterThanFilter: The added date_greater_than_filter.
         """
@@ -235,7 +236,8 @@ class DateGreaterThanFilterManager:
         Args:
             query_filter: The filter to apply to the query.
         Returns:
-            List[DateGreaterThanFilter]: The list of date_greater_than_filters that match the query.
+            List[DateGreaterThanFilter]: The list of
+            date_greater_than_filters that match the query.
         """
         logging.info("DateGreaterThanFilterManager._run_query")
         date_greater_than_filter_query_all = self._build_query()
@@ -282,9 +284,11 @@ class DateGreaterThanFilterManager:
         """
         Retrieves a date_greater_than_filter by its ID.
         Args:
-            date_greater_than_filter_id (int): The ID of the date_greater_than_filter to retrieve.
+            date_greater_than_filter_id (int): The ID
+            of the date_greater_than_filter to retrieve.
         Returns:
-            Optional[DateGreaterThanFilter]: The retrieved date_greater_than_filter, or None if not found.
+            Optional[DateGreaterThanFilter]: The retrieved
+            date_greater_than_filter, or None if not found.
         """
         logging.info(
             "DateGreaterThanFilterManager.get_by_id start date_greater_than_filter_id: %s",

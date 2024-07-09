@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.land import Land
-from models.serialization_schema.land import LandSchema
+from models.serialization_schema.land import \
+    LandSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -100,7 +101,6 @@ class LandManager:
             item.description = "Unknown"
             item.display_order = await self.count()
             item.is_active = True
-            # item. = 1
             await self.add(item)
         if await self.from_enum(LandEnum.FIELD_ONE) \
                 is None:
@@ -110,7 +110,6 @@ class LandManager:
             item.description = "Field One"
             item.display_order = await self.count()
             item.is_active = True
-            # item. = 1
             await self.add(item)
         logging.info("LandManager.Initialize end")
 
@@ -283,7 +282,8 @@ class LandManager:
                 land, or None if not found.
         """
         logging.info(
-            "LandManager.get_by_id start land_id: %s",
+            "LandManager.get_by_id "
+            "start land_id: %s",
             str(land_id))
         if not isinstance(land_id, int):
             raise TypeError(
@@ -380,7 +380,8 @@ class LandManager:
             land_id)
         if not land:
             raise LandNotFoundError(
-                f"Land with ID {land_id} not found!")
+                f"Land with ID "
+                f"{land_id} not found!")
 
         await self._session_context.session.delete(
             land)
@@ -475,7 +476,8 @@ class LandManager:
         new_land = await self.get_by_id(
             land_dict["land_id"])
         if new_land is None:
-            new_land = Land(**land_dict)
+            new_land = Land(
+                **land_dict)
             self._session_context.session.add(new_land)
         else:
             for key, value in land_dict.items():
@@ -509,18 +511,12 @@ class LandManager:
         land_dict_converted = schema.load(
             land_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new Land instance
-        # using the validated data
-        # new_land = Land(**land_dict_converted)
-
         # load or create
         new_land = await self.get_by_id(
             land_dict_converted["land_id"])
         if new_land is None:
-            new_land = Land(**land_dict_converted)
+            new_land = Land(
+                **land_dict_converted)
             self._session_context.session.add(new_land)
         else:
             for key, value in land_dict_converted.items():
@@ -592,7 +588,8 @@ class LandManager:
             "LandManager.update_bulk start")
         updated_lands = []
         for update in land_updates:
-            land_id = update.get("land_id")
+            land_id = update.get(
+                "land_id")
             if not isinstance(land_id, int):
                 raise TypeError(
                     f"The land_id must be an integer, "
@@ -602,7 +599,8 @@ class LandManager:
                 continue
 
             logging.info(
-                "LandManager.update_bulk land_id:%s",
+                "LandManager.update_bulk "
+                "land_id:%s",
                 land_id)
 
             land = await self.get_by_id(
@@ -610,7 +608,8 @@ class LandManager:
 
             if not land:
                 raise LandNotFoundError(
-                    f"Land with ID {land_id} not found!")
+                    f"Land with ID "
+                    f"{land_id} not found!")
 
             for key, value in update.items():
                 if key != "land_id":
@@ -628,7 +627,8 @@ class LandManager:
 
         return updated_lands
 
-    async def delete_bulk(self, land_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, land_ids: List[int]) -> bool:
         """
         Delete multiple lands
         by their IDs.
@@ -647,7 +647,8 @@ class LandManager:
                 land_id)
             if not land:
                 raise LandNotFoundError(
-                    f"Land with ID {land_id} not found!"
+                    f"Land with ID "
+                    f"{land_id} not found!"
                 )
 
             if land:

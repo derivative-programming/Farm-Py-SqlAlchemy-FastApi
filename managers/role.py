@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.role import Role
-from models.serialization_schema.role import RoleSchema
+from models.serialization_schema.role import \
+    RoleSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -102,7 +103,6 @@ class RoleManager:
             item.description = ""
             item.display_order = await self.count()
             item.is_active = True
-            # item. = 1
             await self.add(item)
         if await self.from_enum(RoleEnum.ADMIN) \
                 is None:
@@ -112,7 +112,6 @@ class RoleManager:
             item.description = "Admin"
             item.display_order = await self.count()
             item.is_active = True
-            # item. = 1
             await self.add(item)
         if await self.from_enum(RoleEnum.CONFIG) \
                 is None:
@@ -122,7 +121,6 @@ class RoleManager:
             item.description = "Config"
             item.display_order = await self.count()
             item.is_active = True
-            # item. = 1
             await self.add(item)
         if await self.from_enum(RoleEnum.USER) \
                 is None:
@@ -132,7 +130,6 @@ class RoleManager:
             item.description = "User"
             item.display_order = await self.count()
             item.is_active = True
-            # item. = 1
             await self.add(item)
         logging.info("RoleManager.Initialize end")
 
@@ -305,7 +302,8 @@ class RoleManager:
                 role, or None if not found.
         """
         logging.info(
-            "RoleManager.get_by_id start role_id: %s",
+            "RoleManager.get_by_id "
+            "start role_id: %s",
             str(role_id))
         if not isinstance(role_id, int):
             raise TypeError(
@@ -402,7 +400,8 @@ class RoleManager:
             role_id)
         if not role:
             raise RoleNotFoundError(
-                f"Role with ID {role_id} not found!")
+                f"Role with ID "
+                f"{role_id} not found!")
 
         await self._session_context.session.delete(
             role)
@@ -497,7 +496,8 @@ class RoleManager:
         new_role = await self.get_by_id(
             role_dict["role_id"])
         if new_role is None:
-            new_role = Role(**role_dict)
+            new_role = Role(
+                **role_dict)
             self._session_context.session.add(new_role)
         else:
             for key, value in role_dict.items():
@@ -531,18 +531,12 @@ class RoleManager:
         role_dict_converted = schema.load(
             role_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new Role instance
-        # using the validated data
-        # new_role = Role(**role_dict_converted)
-
         # load or create
         new_role = await self.get_by_id(
             role_dict_converted["role_id"])
         if new_role is None:
-            new_role = Role(**role_dict_converted)
+            new_role = Role(
+                **role_dict_converted)
             self._session_context.session.add(new_role)
         else:
             for key, value in role_dict_converted.items():
@@ -614,7 +608,8 @@ class RoleManager:
             "RoleManager.update_bulk start")
         updated_roles = []
         for update in role_updates:
-            role_id = update.get("role_id")
+            role_id = update.get(
+                "role_id")
             if not isinstance(role_id, int):
                 raise TypeError(
                     f"The role_id must be an integer, "
@@ -624,7 +619,8 @@ class RoleManager:
                 continue
 
             logging.info(
-                "RoleManager.update_bulk role_id:%s",
+                "RoleManager.update_bulk "
+                "role_id:%s",
                 role_id)
 
             role = await self.get_by_id(
@@ -632,7 +628,8 @@ class RoleManager:
 
             if not role:
                 raise RoleNotFoundError(
-                    f"Role with ID {role_id} not found!")
+                    f"Role with ID "
+                    f"{role_id} not found!")
 
             for key, value in update.items():
                 if key != "role_id":
@@ -650,7 +647,8 @@ class RoleManager:
 
         return updated_roles
 
-    async def delete_bulk(self, role_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, role_ids: List[int]) -> bool:
         """
         Delete multiple roles
         by their IDs.
@@ -669,7 +667,8 @@ class RoleManager:
                 role_id)
             if not role:
                 raise RoleNotFoundError(
-                    f"Role with ID {role_id} not found!"
+                    f"Role with ID "
+                    f"{role_id} not found!"
                 )
 
             if role:

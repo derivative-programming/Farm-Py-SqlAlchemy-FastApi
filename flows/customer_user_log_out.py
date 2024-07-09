@@ -1,5 +1,6 @@
 # flows/default/customer_user_log_out.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowCustomerUserLogOut class

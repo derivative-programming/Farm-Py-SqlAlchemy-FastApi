@@ -1,5 +1,6 @@
 # flows/default/pac_process_all_dyna_flow_type_schedule_flow.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowPacProcessAllDynaFlowTypeScheduleFlow class

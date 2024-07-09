@@ -552,7 +552,8 @@ class TestDynaFlowTaskFactoryAsync:
         # resultValue
         # retryCount
         # startedUTCDateTime
-        assert new_obj.completed_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.completed_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.dependency_dyna_flow_task_id == 0
         assert new_obj.description == ""
         assert new_obj.dyna_flow_id == 0
@@ -566,14 +567,17 @@ class TestDynaFlowTaskFactoryAsync:
         assert new_obj.is_started is False
         assert new_obj.is_successful is False
         assert new_obj.max_retry_count == 0
-        assert new_obj.min_start_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.min_start_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.param_1 == ""
         assert new_obj.param_2 == ""
         assert new_obj.processor_identifier == ""
-        assert new_obj.requested_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.requested_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert new_obj.result_value == ""
         assert new_obj.retry_count == 0
-        assert new_obj.started_utc_date_time == datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
+        assert new_obj.started_utc_date_time == \
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc)
 
     @pytest.mark.asyncio
     async def test_last_change_code_concurrency(self, session):

@@ -10,24 +10,21 @@ class in the
 """
 
 import os
-import uuid  # noqa: F401
-from decimal import Decimal  # noqa: F401
-from datetime import datetime, date  # noqa: F401
 import sqlite3
-from unittest.mock import patch, AsyncMock
+import uuid  # noqa: F401
+from datetime import date, datetime  # noqa: F401
+from decimal import Decimal  # noqa: F401
+from unittest.mock import AsyncMock, patch
+
 import pytest
-# from typing import List
 from helpers.session_context import SessionContext
 from helpers.type_conversion import TypeConversion  # noqa: F401
 from models.factory.pac import PacFactory
-from reports.pac_config_dyna_flow_task_retry_run_list import (
-    ReportManagerPacConfigDynaFlowTaskRetryRunList)
-from reports.report_request_validation_error import (
-    ReportRequestValidationError)
-from reports.providers.pac_config_dyna_flow_task_retry_run_list import (
-    ReportProviderPacConfigDynaFlowTaskRetryRunList)
-from reports.row_models.pac_config_dyna_flow_task_retry_run_list import (
-    ReportItemPacConfigDynaFlowTaskRetryRunList)
+from reports.pac_config_dyna_flow_task_retry_run_list import ReportManagerPacConfigDynaFlowTaskRetryRunList
+from reports.providers.pac_config_dyna_flow_task_retry_run_list import ReportProviderPacConfigDynaFlowTaskRetryRunList
+from reports.report_request_validation_error import \
+    ReportRequestValidationError
+from reports.row_models.pac_config_dyna_flow_task_retry_run_list import ReportItemPacConfigDynaFlowTaskRetryRunList
 
 # Register the adapter
 sqlite3.register_adapter(Decimal, str)
@@ -150,7 +147,6 @@ class TestReportManagerPacConfigDynaFlowTaskRetryRunList:
             session_context.role_name_csv = role_required
 
             page_number = 1
-            # item_count_per_page = 10
             order_by_column_name = ""
             order_by_descending = False
 
@@ -208,7 +204,6 @@ class TestReportManagerPacConfigDynaFlowTaskRetryRunList:
 
             session_context.role_name_csv = role_required
 
-            # page_number = 1
             item_count_per_page = 10
             order_by_column_name = ""
             order_by_descending = False

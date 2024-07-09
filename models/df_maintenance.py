@@ -171,21 +171,26 @@ class DFMaintenance(Base):
         self.is_scheduled_df_process_request_started = kwargs.get(
             'is_scheduled_df_process_request_started', False)
         self.last_scheduled_df_process_request_utc_date_time = kwargs.get(
-            'last_scheduled_df_process_request_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'last_scheduled_df_process_request_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.next_scheduled_df_process_request_utc_date_time = kwargs.get(
-            'next_scheduled_df_process_request_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'next_scheduled_df_process_request_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.pac_id = kwargs.get(
             'pac_id', 0)
         self.paused_by_username = kwargs.get(
             'paused_by_username', "")
         self.paused_utc_date_time = kwargs.get(
-            'paused_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'paused_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.scheduled_df_process_request_processor_identifier = kwargs.get(
             'scheduled_df_process_request_processor_identifier', "")
         self.insert_utc_date_time = kwargs.get(
-            'insert_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'insert_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.last_update_utc_date_time = kwargs.get(
-            'last_update_utc_date_time', datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
+            'last_update_utc_date_time',
+            datetime(1753, 1, 1, 0, 0, tzinfo=timezone.utc))
         self.pac_code_peek = kwargs.get(  # PacID
             'pac_code_peek', uuid.UUID(int=0))
 
@@ -620,7 +625,8 @@ def set_updated_on(
     target
 ):  # pylint: disable=unused-argument
     """
-    Sets the 'last_update_utc_date_time' attribute of
+    Sets the 'last_update_utc_date_time'
+    attribute of
     the target object to the current UTC date and time.
 
     :param mapper: The SQLAlchemy mapper object.

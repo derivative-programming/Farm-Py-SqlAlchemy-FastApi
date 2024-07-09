@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.pac import Pac  # PacID
 from models.tac import Tac
-from models.serialization_schema.tac import TacSchema
+from models.serialization_schema.tac import \
+    TacSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -100,7 +101,6 @@ class TacManager:
             item.description = ""
             item.display_order = await self.count()
             item.is_active = True
-            # item. = 1
             await self.add(item)
         if await self.from_enum(TacEnum.PRIMARY) \
                 is None:
@@ -110,7 +110,6 @@ class TacManager:
             item.description = "Primary"
             item.display_order = await self.count()
             item.is_active = True
-            # item. = 1
             await self.add(item)
         logging.info("TacManager.Initialize end")
 
@@ -283,7 +282,8 @@ class TacManager:
                 tac, or None if not found.
         """
         logging.info(
-            "TacManager.get_by_id start tac_id: %s",
+            "TacManager.get_by_id "
+            "start tac_id: %s",
             str(tac_id))
         if not isinstance(tac_id, int):
             raise TypeError(
@@ -380,7 +380,8 @@ class TacManager:
             tac_id)
         if not tac:
             raise TacNotFoundError(
-                f"Tac with ID {tac_id} not found!")
+                f"Tac with ID "
+                f"{tac_id} not found!")
 
         await self._session_context.session.delete(
             tac)
@@ -475,7 +476,8 @@ class TacManager:
         new_tac = await self.get_by_id(
             tac_dict["tac_id"])
         if new_tac is None:
-            new_tac = Tac(**tac_dict)
+            new_tac = Tac(
+                **tac_dict)
             self._session_context.session.add(new_tac)
         else:
             for key, value in tac_dict.items():
@@ -509,18 +511,12 @@ class TacManager:
         tac_dict_converted = schema.load(
             tac_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new Tac instance
-        # using the validated data
-        # new_tac = Tac(**tac_dict_converted)
-
         # load or create
         new_tac = await self.get_by_id(
             tac_dict_converted["tac_id"])
         if new_tac is None:
-            new_tac = Tac(**tac_dict_converted)
+            new_tac = Tac(
+                **tac_dict_converted)
             self._session_context.session.add(new_tac)
         else:
             for key, value in tac_dict_converted.items():
@@ -592,7 +588,8 @@ class TacManager:
             "TacManager.update_bulk start")
         updated_tacs = []
         for update in tac_updates:
-            tac_id = update.get("tac_id")
+            tac_id = update.get(
+                "tac_id")
             if not isinstance(tac_id, int):
                 raise TypeError(
                     f"The tac_id must be an integer, "
@@ -602,7 +599,8 @@ class TacManager:
                 continue
 
             logging.info(
-                "TacManager.update_bulk tac_id:%s",
+                "TacManager.update_bulk "
+                "tac_id:%s",
                 tac_id)
 
             tac = await self.get_by_id(
@@ -610,7 +608,8 @@ class TacManager:
 
             if not tac:
                 raise TacNotFoundError(
-                    f"Tac with ID {tac_id} not found!")
+                    f"Tac with ID "
+                    f"{tac_id} not found!")
 
             for key, value in update.items():
                 if key != "tac_id":
@@ -628,7 +627,8 @@ class TacManager:
 
         return updated_tacs
 
-    async def delete_bulk(self, tac_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, tac_ids: List[int]) -> bool:
         """
         Delete multiple tacs
         by their IDs.
@@ -647,7 +647,8 @@ class TacManager:
                 tac_id)
             if not tac:
                 raise TacNotFoundError(
-                    f"Tac with ID {tac_id} not found!"
+                    f"Tac with ID "
+                    f"{tac_id} not found!"
                 )
 
             if tac:

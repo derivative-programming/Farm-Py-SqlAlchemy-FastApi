@@ -20,9 +20,10 @@ from reports.row_models.pac_user_tri_state_filter_list import (
     ReportItemPacUserTriStateFilterList)
 from .report_request_validation_error import (
     ReportRequestValidationError)
+from .report_manager_base import ReportManagerBase
 
 
-class ReportManagerPacUserTriStateFilterList():
+class ReportManagerPacUserTriStateFilterList(ReportManagerBase):
     """
     This class is the manager of report
     'Pac User Tri State Filter List'
@@ -136,46 +137,6 @@ class ReportManagerPacUserTriStateFilterList():
             for obj in data_list:
                 writer.writerow(obj.__dict__)
 
-    def _parse_bool(self, value):
-        """
-        Parse a boolean value.
-
-        Args:
-            value (str): The value to parse.
-
-        Returns:
-            bool: The parsed boolean value.
-        """
-        return value.lower() in ['true', '1', 'yes']
-
-    def _convert_value(self, value, attr_type):
-        """
-        Convert a value to the specified attribute type.
-
-        Args:
-            value: The value to convert.
-            attr_type: The attribute type to convert to.
-
-        Returns:
-            The converted value.
-        """
-        if attr_type == int:
-            return int(value)
-        elif attr_type == bool:
-            return self._parse_bool(value)
-        elif attr_type == float:
-            return float(value)
-        elif attr_type == Decimal:
-            return Decimal(value)
-        elif attr_type == datetime:
-            return datetime.fromisoformat(value)
-        elif attr_type == date:
-            return date.fromisoformat(value)
-        elif attr_type == uuid.UUID:
-            return uuid.UUID(value)
-
-        return value
-
     async def read_csv(
         self,
         file_name: str
@@ -207,21 +168,5 @@ class ReportManagerPacUserTriStateFilterList():
                         attr_type = type(getattr(obj, key))
                         converted_value = self._convert_value(value, attr_type)
                         setattr(obj, key, converted_value)
-                        # if attr_type == int:
-                        #     setattr(obj, key, int(value))
-                        # elif attr_type == bool:
-                        #     setattr(obj, key, self._parse_bool(value))
-                        # elif attr_type == float:
-                        #     setattr(obj, key, float(value))
-                        # elif attr_type == Decimal:
-                        #     setattr(obj, key, Decimal(value))
-                        # elif attr_type == datetime:
-                        #     setattr(obj, key, datetime.fromisoformat(value))
-                        # elif attr_type == date:
-                        #     setattr(obj, key, date.fromisoformat(value))
-                        # elif attr_type == uuid.UUID:
-                        #     setattr(obj, key, uuid.UUID(value))
-                        # else:
-                        #     setattr(obj, key, value)
                 objects.append(obj)
         return objects

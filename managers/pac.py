@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 
 from models.pac import Pac
-from models.serialization_schema.pac import PacSchema
+from models.serialization_schema.pac import \
+    PacSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -99,7 +100,6 @@ class PacManager:
             item.description = ""
             item.display_order = await self.count()
             item.is_active = True
-            # item. = 1
             await self.add(item)
         logging.info("PacManager.Initialize end")
 
@@ -266,7 +266,8 @@ class PacManager:
                 pac, or None if not found.
         """
         logging.info(
-            "PacManager.get_by_id start pac_id: %s",
+            "PacManager.get_by_id "
+            "start pac_id: %s",
             str(pac_id))
         if not isinstance(pac_id, int):
             raise TypeError(
@@ -363,7 +364,8 @@ class PacManager:
             pac_id)
         if not pac:
             raise PacNotFoundError(
-                f"Pac with ID {pac_id} not found!")
+                f"Pac with ID "
+                f"{pac_id} not found!")
 
         await self._session_context.session.delete(
             pac)
@@ -458,7 +460,8 @@ class PacManager:
         new_pac = await self.get_by_id(
             pac_dict["pac_id"])
         if new_pac is None:
-            new_pac = Pac(**pac_dict)
+            new_pac = Pac(
+                **pac_dict)
             self._session_context.session.add(new_pac)
         else:
             for key, value in pac_dict.items():
@@ -492,18 +495,12 @@ class PacManager:
         pac_dict_converted = schema.load(
             pac_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new Pac instance
-        # using the validated data
-        # new_pac = Pac(**pac_dict_converted)
-
         # load or create
         new_pac = await self.get_by_id(
             pac_dict_converted["pac_id"])
         if new_pac is None:
-            new_pac = Pac(**pac_dict_converted)
+            new_pac = Pac(
+                **pac_dict_converted)
             self._session_context.session.add(new_pac)
         else:
             for key, value in pac_dict_converted.items():
@@ -575,7 +572,8 @@ class PacManager:
             "PacManager.update_bulk start")
         updated_pacs = []
         for update in pac_updates:
-            pac_id = update.get("pac_id")
+            pac_id = update.get(
+                "pac_id")
             if not isinstance(pac_id, int):
                 raise TypeError(
                     f"The pac_id must be an integer, "
@@ -585,7 +583,8 @@ class PacManager:
                 continue
 
             logging.info(
-                "PacManager.update_bulk pac_id:%s",
+                "PacManager.update_bulk "
+                "pac_id:%s",
                 pac_id)
 
             pac = await self.get_by_id(
@@ -593,7 +592,8 @@ class PacManager:
 
             if not pac:
                 raise PacNotFoundError(
-                    f"Pac with ID {pac_id} not found!")
+                    f"Pac with ID "
+                    f"{pac_id} not found!")
 
             for key, value in update.items():
                 if key != "pac_id":
@@ -611,7 +611,8 @@ class PacManager:
 
         return updated_pacs
 
-    async def delete_bulk(self, pac_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, pac_ids: List[int]) -> bool:
         """
         Delete multiple pacs
         by their IDs.
@@ -630,7 +631,8 @@ class PacManager:
                 pac_id)
             if not pac:
                 raise PacNotFoundError(
-                    f"Pac with ID {pac_id} not found!"
+                    f"Pac with ID "
+                    f"{pac_id} not found!"
                 )
 
             if pac:

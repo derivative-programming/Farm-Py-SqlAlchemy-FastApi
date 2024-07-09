@@ -53,15 +53,7 @@ from dyna_flows.dyna_flow_factory import DynaFlowFactory  # noqa: F401
 from flows.flow_factory import FlowFactory  # noqa: F401
 from helpers.session_context import SessionContext
 from reports import (ReportItemPacConfigDynaFlowDFTBuildToDoList,
-                     ReportItemPacConfigDynaFlowRetryTaskBuildList,
-                     ReportItemPacConfigDynaFlowTaskRetryRunList,
-                     ReportItemPacConfigDynaFlowTaskRunToDoList,
-                     ReportItemPacConfigDynaFlowTaskSearch,
-                     ReportManagerPacConfigDynaFlowDFTBuildToDoList,
-                     ReportManagerPacConfigDynaFlowRetryTaskBuildList,
-                     ReportManagerPacConfigDynaFlowTaskRetryRunList,
-                     ReportManagerPacConfigDynaFlowTaskRunToDoList,
-                     ReportManagerPacConfigDynaFlowTaskSearch)
+                     ReportItemPacConfigDynaFlowTaskRunToDoList)
 from services.custom_temp_folder import CustomTempFolder
 from services.machine_identifier import MachineIdentifier
 from services.queue_manager import QueueManager
@@ -75,12 +67,18 @@ class DynaFlowProcessor:
     task queues for DynaFlow tasks.
     """
     def __init__(self):
-        print(f"DYNAFLOW_TASK_RESULT_QUEUE_NAME: {DYNAFLOW_TASK_RESULT_QUEUE_NAME}")
-        print(f"DYNAFLOW_TASK_DEAD_QUEUE_NAME: {DYNAFLOW_TASK_DEAD_QUEUE_NAME}")
-        print(f"DYNAFLOW_TASK_PROCESSOR_QUEUE_NAME: {DYNAFLOW_TASK_PROCESSOR_QUEUE_NAME}")
-        print(f"IS_DYNAFLOW_TASK_QUEUE_USED: {IS_DYNAFLOW_TASK_QUEUE_USED}")
-        print(f"IS_DYNAFLOW_TASK_MASTER: {IS_DYNAFLOW_TASK_MASTER}")
-        print(f"IS_DYNAFLOW_TASK_PROCESSOR: {IS_DYNAFLOW_TASK_PROCESSOR}")
+        print(f"DYNAFLOW_TASK_RESULT_QUEUE_NAME: "
+              f"{DYNAFLOW_TASK_RESULT_QUEUE_NAME}")
+        print(f"DYNAFLOW_TASK_DEAD_QUEUE_NAME: "
+              f"{DYNAFLOW_TASK_DEAD_QUEUE_NAME}")
+        print(f"DYNAFLOW_TASK_PROCESSOR_QUEUE_NAME: "
+              f"{DYNAFLOW_TASK_PROCESSOR_QUEUE_NAME}")
+        print(f"IS_DYNAFLOW_TASK_QUEUE_USED: "
+              f"{IS_DYNAFLOW_TASK_QUEUE_USED}")
+        print(f"IS_DYNAFLOW_TASK_MASTER: "
+              f"{IS_DYNAFLOW_TASK_MASTER}")
+        print(f"IS_DYNAFLOW_TASK_PROCESSOR: "
+              f"{IS_DYNAFLOW_TASK_PROCESSOR}")
 
         self._task_result_queue_name = DYNAFLOW_TASK_RESULT_QUEUE_NAME
         self._task_dead_queue_name = DYNAFLOW_TASK_DEAD_QUEUE_NAME
@@ -89,9 +87,12 @@ class DynaFlowProcessor:
         self._is_dyna_flow_task_master = IS_DYNAFLOW_TASK_MASTER
         self._is_dyna_flow_task_processor = IS_DYNAFLOW_TASK_PROCESSOR
 
-        print(f"self._is_task_queue_used: {self._is_task_queue_used}")
-        print(f"self._is_dyna_flow_task_master: {self._is_dyna_flow_task_master}")
-        print(f"self._is_dyna_flow_task_processor: {self._is_dyna_flow_task_processor}")
+        print("self._is_task_queue_used: "
+              f"{self._is_task_queue_used}")
+        print("self._is_dyna_flow_task_master: "
+              f"{self._is_dyna_flow_task_master}")
+        print("self._is_dyna_flow_task_processor: "
+              f"{self._is_dyna_flow_task_processor}")
 
         assert isinstance(self._is_dyna_flow_task_master, bool)
         assert isinstance(self._is_dyna_flow_task_processor, bool)
@@ -138,8 +139,6 @@ class DynaFlowProcessor:
 
         await self.cleanup_my_past_dyna_flow_tasks()
 
-        # local_run_loop = read_application_setting("localRunLoop", "false")
-
         run_to_do_count = 0
         build_to_do_count = 0
         result_message_count = 0
@@ -184,8 +183,12 @@ class DynaFlowProcessor:
         """
         print("Initializing DynaFlowProcessor")
 
-        print(f"self._is_dyna_flow_task_master: {self._is_dyna_flow_task_master}")
-        print(f"self._is_dyna_flow_task_processor: {self._is_dyna_flow_task_processor}")
+        print(
+            "self._is_dyna_flow_task_master: "
+            f"{self._is_dyna_flow_task_master}")
+        print(
+            "self._is_dyna_flow_task_processor: "
+            f"{self._is_dyna_flow_task_processor}")
         if self._is_dyna_flow_task_master is not True and \
                 self._is_dyna_flow_task_processor is not True:
             print("No task master or processor")
@@ -426,7 +429,9 @@ class DynaFlowProcessor:
             await df_maintenance.save()
         else:
             df_maintenance = df_maintenance_list[0]
-        print(f"DynaFlow maintenance object retrieved {df_maintenance.df_maintenance_id}")
+        print(
+            "DynaFlow maintenance object "
+            f"retrieved {df_maintenance.df_maintenance_id}")
         return df_maintenance
 
     async def cleanup_my_past_dyna_flow_tasks(self):
@@ -858,14 +863,16 @@ class DynaFlowProcessor:
                     return task_ownership
 
                 dyna_flow_task.is_started = True
-                dyna_flow_task.started_utc_date_time = datetime.now(timezone.utc)
+                dyna_flow_task.started_utc_date_time = \
+                    datetime.now(timezone.utc)
                 dyna_flow_task.processor_identifier = self.get_instance_id()
 
                 dyna_flow_task_type = next(
                     (
                         x
                         for x in dyna_flow_task_type_list
-                        if x.dyna_flow_task_type_id == dyna_flow_task.dyna_flow_task_type_id
+                        if x.dyna_flow_task_type_id == (
+                            dyna_flow_task.dyna_flow_task_type_id)
                     ),
                     None
                 )
@@ -894,7 +901,9 @@ class DynaFlowProcessor:
         """
         Get the JSON representation of a DynaFlow task
         """
-        print(f"Getting JSON representation of DynaFlow task {dyna_flow_task_code}")
+        print(
+            "Getting JSON representation of "
+            f"DynaFlow task {dyna_flow_task_code}")
         json = ""
         async for session in get_db():
 
@@ -912,7 +921,6 @@ class DynaFlowProcessor:
             except Exception as e:
                 print(f'Error occurred: {e}')
                 await session.rollback()
-                task_ownership = False
             finally:
                 await session.close()
         print("JSON representation of DynaFlow task retrieved")
@@ -1004,7 +1012,6 @@ class DynaFlowProcessor:
                 dyna_flow_task_type_list)
         print("DynaFlow tasks run from the database")
         return run_to_do_count
-
 
     async def run_dyna_flow_db_task(
         self,
@@ -1116,14 +1123,16 @@ class DynaFlowProcessor:
 
                 self._custom_temp_folder.clear_temp_folder()
 
-                dyna_flow_task.started_utc_date_time = datetime.now(timezone.utc)
+                dyna_flow_task.started_utc_date_time = \
+                    datetime.now(timezone.utc)
                 dyna_flow_task.is_started = True
                 await dyna_flow_task.save()
 
                 dyna_flow = await dyna_flow_task.get_dyna_flow_id_bus_obj()
                 if dyna_flow.is_started is not True:
                     dyna_flow.is_started = True
-                    dyna_flow.started_utc_date_time = datetime.now(timezone.utc)
+                    dyna_flow.started_utc_date_time = \
+                        datetime.now(timezone.utc)
                     await dyna_flow.save()
 
                 if dyna_flow.is_completed is True:
@@ -1141,7 +1150,8 @@ class DynaFlowProcessor:
                         dyna_flow_task_list = [
                             x
                             for x in dyna_flow_task_list
-                            if x.is_completed is not True and x.is_canceled is not True
+                            if x.is_completed is not True and (
+                                x.is_canceled is not True)
                         ]
 
                         if len(dyna_flow_task_list) == 0:
@@ -1209,7 +1219,7 @@ class DynaFlowProcessor:
                     await dyna_flow_task.load_from_code(dyna_flow_task_code)
 
                     if dyna_flow_task.retry_count >= \
-                    dyna_flow_task.max_retry_count:
+                            dyna_flow_task.max_retry_count:
                         if dyna_flow_task.max_retry_count > 0:
                             print("Max Retry count completed. Not Successful.")
                         dyna_flow_task.is_completed = True

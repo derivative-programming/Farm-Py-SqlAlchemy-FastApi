@@ -24,7 +24,8 @@ from main import app
 
 from .....models import \
     factory as request_factory  # pylint: disable=reimported  # noqa: F401
-from ..plant_user_property_random_update import PlantUserPropertyRandomUpdateRouterConfig
+from ..plant_user_property_random_update import \
+    PlantUserPropertyRandomUpdateRouterConfig
 
 
 @pytest.mark.asyncio

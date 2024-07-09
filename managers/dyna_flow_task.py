@@ -19,7 +19,8 @@ from helpers.session_context import SessionContext
 from models.dyna_flow import DynaFlow  # DynaFlowID
 from models.dyna_flow_task_type import DynaFlowTaskType  # DynaFlowTaskTypeID
 from models.dyna_flow_task import DynaFlowTask
-from models.serialization_schema.dyna_flow_task import DynaFlowTaskSchema
+from models.serialization_schema.dyna_flow_task import \
+    DynaFlowTaskSchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -230,7 +231,8 @@ class DynaFlowTaskManager:
                 dyna_flow_task, or None if not found.
         """
         logging.info(
-            "DynaFlowTaskManager.get_by_id start dyna_flow_task_id: %s",
+            "DynaFlowTaskManager.get_by_id "
+            "start dyna_flow_task_id: %s",
             str(dyna_flow_task_id))
         if not isinstance(dyna_flow_task_id, int):
             raise TypeError(
@@ -327,7 +329,8 @@ class DynaFlowTaskManager:
             dyna_flow_task_id)
         if not dyna_flow_task:
             raise DynaFlowTaskNotFoundError(
-                f"DynaFlowTask with ID {dyna_flow_task_id} not found!")
+                f"DynaFlowTask with ID "
+                f"{dyna_flow_task_id} not found!")
 
         await self._session_context.session.delete(
             dyna_flow_task)
@@ -422,7 +425,8 @@ class DynaFlowTaskManager:
         new_dyna_flow_task = await self.get_by_id(
             dyna_flow_task_dict["dyna_flow_task_id"])
         if new_dyna_flow_task is None:
-            new_dyna_flow_task = DynaFlowTask(**dyna_flow_task_dict)
+            new_dyna_flow_task = DynaFlowTask(
+                **dyna_flow_task_dict)
             self._session_context.session.add(new_dyna_flow_task)
         else:
             for key, value in dyna_flow_task_dict.items():
@@ -456,18 +460,12 @@ class DynaFlowTaskManager:
         dyna_flow_task_dict_converted = schema.load(
             dyna_flow_task_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new DynaFlowTask instance
-        # using the validated data
-        # new_dyna_flow_task = DynaFlowTask(**dyna_flow_task_dict_converted)
-
         # load or create
         new_dyna_flow_task = await self.get_by_id(
             dyna_flow_task_dict_converted["dyna_flow_task_id"])
         if new_dyna_flow_task is None:
-            new_dyna_flow_task = DynaFlowTask(**dyna_flow_task_dict_converted)
+            new_dyna_flow_task = DynaFlowTask(
+                **dyna_flow_task_dict_converted)
             self._session_context.session.add(new_dyna_flow_task)
         else:
             for key, value in dyna_flow_task_dict_converted.items():
@@ -539,7 +537,8 @@ class DynaFlowTaskManager:
             "DynaFlowTaskManager.update_bulk start")
         updated_dyna_flow_tasks = []
         for update in dyna_flow_task_updates:
-            dyna_flow_task_id = update.get("dyna_flow_task_id")
+            dyna_flow_task_id = update.get(
+                "dyna_flow_task_id")
             if not isinstance(dyna_flow_task_id, int):
                 raise TypeError(
                     f"The dyna_flow_task_id must be an integer, "
@@ -549,7 +548,8 @@ class DynaFlowTaskManager:
                 continue
 
             logging.info(
-                "DynaFlowTaskManager.update_bulk dyna_flow_task_id:%s",
+                "DynaFlowTaskManager.update_bulk "
+                "dyna_flow_task_id:%s",
                 dyna_flow_task_id)
 
             dyna_flow_task = await self.get_by_id(
@@ -557,7 +557,8 @@ class DynaFlowTaskManager:
 
             if not dyna_flow_task:
                 raise DynaFlowTaskNotFoundError(
-                    f"DynaFlowTask with ID {dyna_flow_task_id} not found!")
+                    f"DynaFlowTask with ID "
+                    f"{dyna_flow_task_id} not found!")
 
             for key, value in update.items():
                 if key != "dyna_flow_task_id":
@@ -575,7 +576,8 @@ class DynaFlowTaskManager:
 
         return updated_dyna_flow_tasks
 
-    async def delete_bulk(self, dyna_flow_task_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, dyna_flow_task_ids: List[int]) -> bool:
         """
         Delete multiple dyna_flow_tasks
         by their IDs.
@@ -594,7 +596,8 @@ class DynaFlowTaskManager:
                 dyna_flow_task_id)
             if not dyna_flow_task:
                 raise DynaFlowTaskNotFoundError(
-                    f"DynaFlowTask with ID {dyna_flow_task_id} not found!"
+                    f"DynaFlowTask with ID "
+                    f"{dyna_flow_task_id} not found!"
                 )
 
             if dyna_flow_task:

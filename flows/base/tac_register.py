@@ -39,7 +39,7 @@ class BaseFlowTacRegister(BaseFlow):  # pylint: disable=too-few-public-methods
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowTacRegister, self).__init__(
+        super().__init__(
             "TacRegister",
             session_context,
         )

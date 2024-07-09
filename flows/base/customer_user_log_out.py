@@ -39,7 +39,7 @@ class BaseFlowCustomerUserLogOut(BaseFlow):  # pylint: disable=too-few-public-me
             session_context (SessionContext): The session context for the flow.
         """
 
-        super(BaseFlowCustomerUserLogOut, self).__init__(
+        super().__init__(
             "CustomerUserLogOut",
             session_context,
         )

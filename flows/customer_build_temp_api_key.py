@@ -1,5 +1,6 @@
 # flows/default/customer_build_temp_api_key.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowCustomerBuildTempApiKey class

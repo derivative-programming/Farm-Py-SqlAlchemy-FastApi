@@ -1,5 +1,6 @@
 # flows/default/dyna_flow_task_plant_task_one.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowDynaFlowTaskPlantTaskOne class

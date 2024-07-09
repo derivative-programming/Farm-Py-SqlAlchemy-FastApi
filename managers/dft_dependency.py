@@ -18,7 +18,8 @@ from sqlalchemy.future import select
 from helpers.session_context import SessionContext
 from models.dyna_flow_task import DynaFlowTask  # DynaFlowTaskID
 from models.dft_dependency import DFTDependency
-from models.serialization_schema.dft_dependency import DFTDependencySchema
+from models.serialization_schema.dft_dependency import \
+    DFTDependencySchema
 from services.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -219,7 +220,8 @@ class DFTDependencyManager:
                 dft_dependency, or None if not found.
         """
         logging.info(
-            "DFTDependencyManager.get_by_id start dft_dependency_id: %s",
+            "DFTDependencyManager.get_by_id "
+            "start dft_dependency_id: %s",
             str(dft_dependency_id))
         if not isinstance(dft_dependency_id, int):
             raise TypeError(
@@ -316,7 +318,8 @@ class DFTDependencyManager:
             dft_dependency_id)
         if not dft_dependency:
             raise DFTDependencyNotFoundError(
-                f"DFTDependency with ID {dft_dependency_id} not found!")
+                f"DFTDependency with ID "
+                f"{dft_dependency_id} not found!")
 
         await self._session_context.session.delete(
             dft_dependency)
@@ -411,7 +414,8 @@ class DFTDependencyManager:
         new_dft_dependency = await self.get_by_id(
             dft_dependency_dict["dft_dependency_id"])
         if new_dft_dependency is None:
-            new_dft_dependency = DFTDependency(**dft_dependency_dict)
+            new_dft_dependency = DFTDependency(
+                **dft_dependency_dict)
             self._session_context.session.add(new_dft_dependency)
         else:
             for key, value in dft_dependency_dict.items():
@@ -445,18 +449,12 @@ class DFTDependencyManager:
         dft_dependency_dict_converted = schema.load(
             dft_dependency_dict)
 
-        #we need to load the obj form db and into session first.
-        # If not found, then no chagnes can be saved
-
-        # Create a new DFTDependency instance
-        # using the validated data
-        # new_dft_dependency = DFTDependency(**dft_dependency_dict_converted)
-
         # load or create
         new_dft_dependency = await self.get_by_id(
             dft_dependency_dict_converted["dft_dependency_id"])
         if new_dft_dependency is None:
-            new_dft_dependency = DFTDependency(**dft_dependency_dict_converted)
+            new_dft_dependency = DFTDependency(
+                **dft_dependency_dict_converted)
             self._session_context.session.add(new_dft_dependency)
         else:
             for key, value in dft_dependency_dict_converted.items():
@@ -528,7 +526,8 @@ class DFTDependencyManager:
             "DFTDependencyManager.update_bulk start")
         updated_dft_dependencys = []
         for update in dft_dependency_updates:
-            dft_dependency_id = update.get("dft_dependency_id")
+            dft_dependency_id = update.get(
+                "dft_dependency_id")
             if not isinstance(dft_dependency_id, int):
                 raise TypeError(
                     f"The dft_dependency_id must be an integer, "
@@ -538,7 +537,8 @@ class DFTDependencyManager:
                 continue
 
             logging.info(
-                "DFTDependencyManager.update_bulk dft_dependency_id:%s",
+                "DFTDependencyManager.update_bulk "
+                "dft_dependency_id:%s",
                 dft_dependency_id)
 
             dft_dependency = await self.get_by_id(
@@ -546,7 +546,8 @@ class DFTDependencyManager:
 
             if not dft_dependency:
                 raise DFTDependencyNotFoundError(
-                    f"DFTDependency with ID {dft_dependency_id} not found!")
+                    f"DFTDependency with ID "
+                    f"{dft_dependency_id} not found!")
 
             for key, value in update.items():
                 if key != "dft_dependency_id":
@@ -564,7 +565,8 @@ class DFTDependencyManager:
 
         return updated_dft_dependencys
 
-    async def delete_bulk(self, dft_dependency_ids: List[int]) -> bool:
+    async def delete_bulk(
+            self, dft_dependency_ids: List[int]) -> bool:
         """
         Delete multiple dft_dependencys
         by their IDs.
@@ -583,7 +585,8 @@ class DFTDependencyManager:
                 dft_dependency_id)
             if not dft_dependency:
                 raise DFTDependencyNotFoundError(
-                    f"DFTDependency with ID {dft_dependency_id} not found!"
+                    f"DFTDependency with ID "
+                    f"{dft_dependency_id} not found!"
                 )
 
             if dft_dependency:

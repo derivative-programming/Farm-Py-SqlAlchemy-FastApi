@@ -1,5 +1,6 @@
 # flows/default/land_add_plant_init_obj_wf.py  # pylint: disable=duplicate-code
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the
 FlowLandAddPlantInitObjWF class

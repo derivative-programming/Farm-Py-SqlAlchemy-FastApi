@@ -1,6 +1,7 @@
 # apis/models/init/tests/land_add_plant_init_obj_wf_test.py  # pylint: disable=duplicate-code
 # pylint: disable=redefined-outer-name, too-many-public-methods
 # pylint: disable=unused-import
+# pylint: disable=too-few-public-methods
 """
 This module contains the unit tests for the
 land_add_plant_init_obj_wf module.
@@ -21,7 +22,7 @@ from ..land_add_plant_init_obj_wf import (
     LandAddPlantInitObjWFGetInitModelResponse)
 
 
-class MockFlowLandAddPlantInitObjWFResult:  # pylint: disable=too-few-public-methods
+class MockFlowLandAddPlantInitObjWFResult:
     """
     A mock object for the
     FlowLandAddPlantInitObjWFResult

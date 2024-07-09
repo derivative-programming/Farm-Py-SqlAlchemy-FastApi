@@ -121,12 +121,7 @@ class TestBaseFlowLandAddPlant():
             assert flow.queued_validation_errors[
                 'requestSomeBigIntVal'] == (
                 'Please enter a Some Big Int Val')
-        # if FlowConstants.PARAM_REQUEST_SOME_BIT_VAL_IS_REQUIRED \
-        #         is True:
-        #     assert 'requestSomeBitVal' in flow.queued_validation_errors
-        #     assert flow.queued_validation_errors[
-        #         'requestSomeBitVal'] == (
-        #         'Please enter a Some Bit Val')
+        # PARAM_REQUEST_SOME_BIT_VAL_IS_REQUIRED
         if FlowConstants.PARAM_REQUEST_IS_EDIT_ALLOWED_IS_REQUIRED \
                 is True:
             assert 'requestIsEditAllowed' in flow.queued_validation_errors
