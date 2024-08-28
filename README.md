@@ -40,6 +40,9 @@ Install python
 Update pip...
 >python.exe -m pip install --upgrade pip
 
+create a virtual env...
+python -m venv env    
+
 start virtual env...
 env\scripts\activate
 

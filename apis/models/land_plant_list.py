@@ -281,6 +281,36 @@ class LandPlantListGetModelResponseItem(CamelModel):
         ),
         alias="detailsLinkPlantCode",
         description="Details Link Plant Code")
+    test_file_download_link_pac_code: UUID4 = Field(
+        default_factory=lambda: uuid.UUID(
+            '00000000-0000-0000-0000-000000000000'
+        ),
+        alias="TestFileDownloadLinkPacCode",
+        description="Test File Download Link Pac Code")
+    test_conditional_file_download_link_pac_code: UUID4 = Field(
+        default_factory=lambda: uuid.UUID(
+            '00000000-0000-0000-0000-000000000000'
+        ),
+        alias="TestConditionalFileDownloadLinkPacCode",
+        description="Test Conditional File Download Link Pac Code")
+    test_async_flow_req_link_pac_code: UUID4 = Field(
+        default_factory=lambda: uuid.UUID(
+            '00000000-0000-0000-0000-000000000000'
+        ),
+        alias="TestAsyncFlowReqLinkPacCode",
+        description="Test Async Flow Req Link Pac Code")
+    test_conditional_async_flow_req_link_pac_code: UUID4 = Field(
+        default_factory=lambda: uuid.UUID(
+            '00000000-0000-0000-0000-000000000000'
+        ),
+        alias="TestConditionalAsyncFlowReqLinkPacCode",
+        description="Test Conditional Async Flow Req Link Pac Code")
+    conditional_btn_example_link_plant_code: UUID4 = Field(
+        default_factory=lambda: uuid.UUID(
+            '00000000-0000-0000-0000-000000000000'
+        ),
+        alias="ConditionalBtnExampleLinkPlantCode",
+        description="Conditional Btn Example Link Plant Code")
 # endset
 
     def load_report_item(
@@ -341,6 +371,16 @@ class LandPlantListGetModelResponseItem(CamelModel):
             data.delete_async_button_link_plant_code)
         self.details_link_plant_code = (
             data.details_link_plant_code)
+        self.test_file_download_link_pac_code = (
+            data.test_file_download_link_pac_code)
+        self.test_conditional_file_download_link_pac_code = (
+            data.test_conditional_file_download_link_pac_code)
+        self.test_async_flow_req_link_pac_code = (
+            data.test_async_flow_req_link_pac_code)
+        self.test_conditional_async_flow_req_link_pac_code = (
+            data.test_conditional_async_flow_req_link_pac_code)
+        self.conditional_btn_example_link_plant_code = (
+            data.conditional_btn_example_link_plant_code)
 # endset
 
     def build_report_item(
@@ -403,6 +443,16 @@ class LandPlantListGetModelResponseItem(CamelModel):
             self.delete_async_button_link_plant_code)
         data.details_link_plant_code = (
             self.details_link_plant_code)
+        data.test_file_download_link_pac_code = (
+            self.test_file_download_link_pac_code)
+        data.test_conditional_file_download_link_pac_code = (
+            self.test_conditional_file_download_link_pac_code)
+        data.test_async_flow_req_link_pac_code = (
+            self.test_async_flow_req_link_pac_code)
+        data.test_conditional_async_flow_req_link_pac_code = (
+            self.test_conditional_async_flow_req_link_pac_code)
+        data.conditional_btn_example_link_plant_code = (
+            self.conditional_btn_example_link_plant_code)
 
         return data
 # endset

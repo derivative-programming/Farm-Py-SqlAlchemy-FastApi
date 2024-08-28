@@ -57,6 +57,11 @@ class TestReportItemLandPlantList:
         assert report_item.update_link_plant_code.int == 0
         assert report_item.delete_async_button_link_plant_code.int == 0
         assert report_item.details_link_plant_code.int == 0
+        assert report_item.test_file_download_link_pac_code.int == 0
+        assert report_item.test_conditional_file_download_link_pac_code.int == 0
+        assert report_item.test_async_flow_req_link_pac_code.int == 0
+        assert report_item.test_conditional_async_flow_req_link_pac_code.int == 0
+        assert report_item.conditional_btn_example_link_plant_code.int == 0
 # endset
 
     def test_load_data_provider_dict(self):
@@ -86,6 +91,11 @@ class TestReportItemLandPlantList:
             "update_link_plant_code": str(UUID(int=3)),
             "delete_async_button_link_plant_code": str(UUID(int=4)),
             "details_link_plant_code": str(UUID(int=5)),
+            "test_file_download_link_pac_code": str(UUID(int=5)),
+            "test_conditional_file_download_link_pac_code": str(UUID(int=5)),
+            "test_async_flow_req_link_pac_code": str(UUID(int=5)),
+            "test_conditional_async_flow_req_link_pac_code": str(UUID(int=5)),
+            "conditional_btn_example_link_plant_code": str(UUID(int=5)),
 # endset  # noqa: E122
         }
         report_item = ReportItemLandPlantList()
@@ -116,4 +126,9 @@ class TestReportItemLandPlantList:
         assert report_item.update_link_plant_code == UUID(int=3)
         assert report_item.delete_async_button_link_plant_code == UUID(int=4)
         assert report_item.details_link_plant_code == UUID(int=5)
+        assert report_item.test_file_download_link_pac_code == UUID(int=5)
+        assert report_item.test_conditional_file_download_link_pac_code == UUID(int=5)
+        assert report_item.test_async_flow_req_link_pac_code == UUID(int=5)
+        assert report_item.test_conditional_async_flow_req_link_pac_code == UUID(int=5)
+        assert report_item.conditional_btn_example_link_plant_code == UUID(int=5)
 # endset

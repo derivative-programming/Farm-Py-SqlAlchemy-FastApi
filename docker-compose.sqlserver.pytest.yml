@@ -25,7 +25,7 @@ services:
       SA_PASSWORD: "password"
       ACCEPT_EULA: "Y"
     volumes:
-      - pytest_app_sqlserver_data:/var/opt/mssql
+      - farm_pytest_app_sqlserver_data:/var/opt/mssql
     networks:
       - pytest-app-sqlserver-network
   
@@ -46,5 +46,5 @@ networks:
     driver: bridge
 
 volumes:
-  pytest_app_sqlserver_data:
+  farm_pytest_app_sqlserver_data:
 

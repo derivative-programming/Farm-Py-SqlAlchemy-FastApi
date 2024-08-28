@@ -131,6 +131,11 @@ class TestReportProviderLandPlantList:
                 "update_link_plant_code",
                 "delete_async_button_link_plant_code",
                 "details_link_plant_code",
+                "test_file_download_link_pac_code",
+                "test_conditional_file_download_link_pac_code",
+                "test_async_flow_req_link_pac_code",
+                "test_conditional_async_flow_req_link_pac_code",
+                "conditional_btn_example_link_plant_code",
 # endset  # noqa: E122
             ]
             for key in expected_keys:

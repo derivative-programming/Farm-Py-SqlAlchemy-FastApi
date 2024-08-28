@@ -286,6 +286,11 @@ class MockReportItemLandPlantList:  # pylint: disable=too-few-public-methods
         self.update_link_plant_code = uuid.uuid4()
         self.delete_async_button_link_plant_code = uuid.uuid4()
         self.details_link_plant_code = uuid.uuid4()
+        self.test_file_download_link_pac_code = uuid.uuid4()
+        self.test_conditional_file_download_link_pac_code = uuid.uuid4()
+        self.test_async_flow_req_link_pac_code = uuid.uuid4()
+        self.test_conditional_async_flow_req_link_pac_code = uuid.uuid4()
+        self.conditional_btn_example_link_plant_code = uuid.uuid4()
 # endset
 
 
@@ -389,3 +394,13 @@ async def test_process_request(session_context, report_request, report_items):
                 report_item.delete_async_button_link_plant_code
             assert response_item.details_link_plant_code == \
                 report_item.details_link_plant_code
+            assert response_item.test_file_download_link_pac_code == \
+                report_item.test_file_download_link_pac_code
+            assert response_item.test_conditional_file_download_link_pac_code == \
+                report_item.test_conditional_file_download_link_pac_code
+            assert response_item.test_async_flow_req_link_pac_code == \
+                report_item.test_async_flow_req_link_pac_code
+            assert response_item.test_conditional_async_flow_req_link_pac_code == \
+                report_item.test_conditional_async_flow_req_link_pac_code
+            assert response_item.conditional_btn_example_link_plant_code == \
+                report_item.conditional_btn_example_link_plant_code

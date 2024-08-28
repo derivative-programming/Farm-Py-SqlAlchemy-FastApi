@@ -47,6 +47,16 @@ class ReportItemLandPlantList():  # pylint: disable=too-few-public-methods
         uuid.UUID(int=0))
     details_link_plant_code: uuid.UUID = (
         uuid.UUID(int=0))
+    test_file_download_link_pac_code: uuid.UUID = (
+        uuid.UUID(int=0))
+    test_conditional_file_download_link_pac_code: uuid.UUID = (
+        uuid.UUID(int=0))
+    test_async_flow_req_link_pac_code: uuid.UUID = (
+        uuid.UUID(int=0))
+    test_conditional_async_flow_req_link_pac_code: uuid.UUID = (
+        uuid.UUID(int=0))
+    conditional_btn_example_link_plant_code: uuid.UUID = (
+        uuid.UUID(int=0))
 # endset
 
     def load_data_provider_dict(
@@ -109,4 +119,14 @@ class ReportItemLandPlantList():  # pylint: disable=too-few-public-methods
         )
         self.details_link_plant_code = (
             TypeConversion.get_uuid(data["details_link_plant_code"]))
+        self.test_file_download_link_pac_code = (
+            TypeConversion.get_uuid(data["test_file_download_link_pac_code"]))
+        self.test_conditional_file_download_link_pac_code = (
+            TypeConversion.get_uuid(data["test_conditional_file_download_link_pac_code"]))
+        self.test_async_flow_req_link_pac_code = (
+            TypeConversion.get_uuid(data["test_async_flow_req_link_pac_code"]))
+        self.test_conditional_async_flow_req_link_pac_code = (
+            TypeConversion.get_uuid(data["test_conditional_async_flow_req_link_pac_code"]))
+        self.conditional_btn_example_link_plant_code = (
+            TypeConversion.get_uuid(data["conditional_btn_example_link_plant_code"]))
 # endset
