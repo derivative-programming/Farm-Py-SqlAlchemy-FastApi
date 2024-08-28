@@ -180,6 +180,11 @@ class MockReportItemPlantUserDetails:  # pylint: disable=too-few-public-methods
         self.update_button_text_link_plant_code = uuid.uuid4()
         self.random_property_updates_link_plant_code = uuid.uuid4()
         self.back_to_dashboard_link_tac_code = uuid.uuid4()
+        self.test_file_download_link_pac_code = uuid.uuid4()
+        self.test_conditional_async_file_download_link_pac_code = uuid.uuid4()
+        self.test_async_flow_req_link_pac_code = uuid.uuid4()
+        self.test_conditional_async_flow_req_link_pac_code = uuid.uuid4()
+        self.conditional_btn_example_link_tac_code = uuid.uuid4()
 
 
 @pytest.fixture
@@ -282,3 +287,13 @@ async def test_process_request(session_context, report_request, report_items):
                 report_item.random_property_updates_link_plant_code
             assert response_item.back_to_dashboard_link_tac_code == \
                 report_item.back_to_dashboard_link_tac_code
+            assert response_item.test_file_download_link_pac_code == \
+                report_item.test_file_download_link_pac_code
+            assert response_item.test_conditional_async_file_download_link_pac_code == \
+                report_item.test_conditional_async_file_download_link_pac_code
+            assert response_item.test_async_flow_req_link_pac_code == \
+                report_item.test_async_flow_req_link_pac_code
+            assert response_item.test_conditional_async_flow_req_link_pac_code == \
+                report_item.test_conditional_async_flow_req_link_pac_code
+            assert response_item.conditional_btn_example_link_tac_code == \
+                report_item.conditional_btn_example_link_tac_code

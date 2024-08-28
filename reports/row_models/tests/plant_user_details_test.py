@@ -56,6 +56,11 @@ class TestReportItemPlantUserDetails:
         assert report_item.update_button_text_link_plant_code.int == 0
         assert report_item.random_property_updates_link_plant_code.int == 0
         assert report_item.back_to_dashboard_link_tac_code.int == 0
+        assert report_item.test_file_download_link_pac_code.int == 0
+        assert report_item.test_conditional_async_file_download_link_pac_code.int == 0
+        assert report_item.test_async_flow_req_link_pac_code.int == 0
+        assert report_item.test_conditional_async_flow_req_link_pac_code.int == 0
+        assert report_item.conditional_btn_example_link_tac_code.int == 0
 
     def test_load_data_provider_dict(self):
         """Test loading data into the model from a dictionary."""
@@ -84,6 +89,11 @@ class TestReportItemPlantUserDetails:
             "update_button_text_link_plant_code": str(UUID(int=5)),
             "random_property_updates_link_plant_code": str(UUID(int=4)),
             "back_to_dashboard_link_tac_code": str(UUID(int=5)),
+            "test_file_download_link_pac_code": str(UUID(int=4)),
+            "test_conditional_async_file_download_link_pac_code": str(UUID(int=4)),
+            "test_async_flow_req_link_pac_code": str(UUID(int=4)),
+            "test_conditional_async_flow_req_link_pac_code": str(UUID(int=4)),
+            "conditional_btn_example_link_tac_code": str(UUID(int=5)),
 # endset  # noqa: E122
         }
         report_item = ReportItemPlantUserDetails()
@@ -113,3 +123,8 @@ class TestReportItemPlantUserDetails:
         assert report_item.update_button_text_link_plant_code == UUID(int=5)
         assert report_item.random_property_updates_link_plant_code == UUID(int=4)
         assert report_item.back_to_dashboard_link_tac_code == UUID(int=5)
+        assert report_item.test_file_download_link_pac_code == UUID(int=4)
+        assert report_item.test_conditional_async_file_download_link_pac_code == UUID(int=4)
+        assert report_item.test_async_flow_req_link_pac_code == UUID(int=4)
+        assert report_item.test_conditional_async_flow_req_link_pac_code == UUID(int=4)
+        assert report_item.conditional_btn_example_link_tac_code == UUID(int=5)

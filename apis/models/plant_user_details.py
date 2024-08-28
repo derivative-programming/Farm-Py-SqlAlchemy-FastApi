@@ -212,6 +212,36 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
         ),
         alias="backToDashboardLinkTacCode",
         description="Back To Dashboard Link Tac Code")
+    test_file_download_link_pac_code: UUID4 = Field(
+        default_factory=lambda: uuid.UUID(
+            '00000000-0000-0000-0000-000000000000'
+        ),
+        alias="testFileDownloadLinkPacCode",
+        description="Test File Download Link Pac Code")
+    test_conditional_async_file_download_link_pac_code: UUID4 = Field(
+        default_factory=lambda: uuid.UUID(
+            '00000000-0000-0000-0000-000000000000'
+        ),
+        alias="testConditionalAsyncFileDownloadLinkPacCode",
+        description="Test Conditional Async File Download Link Pac Code")
+    test_async_flow_req_link_pac_code: UUID4 = Field(
+        default_factory=lambda: uuid.UUID(
+            '00000000-0000-0000-0000-000000000000'
+        ),
+        alias="testAsyncFlowReqLinkPacCode",
+        description="Test Async Flow Req Link Pac Code")
+    test_conditional_async_flow_req_link_pac_code: UUID4 = Field(
+        default_factory=lambda: uuid.UUID(
+            '00000000-0000-0000-0000-000000000000'
+        ),
+        alias="testConditionalAsyncFlowReqLinkPacCode",
+        description="Test Conditional Async Flow Req Link Pac Code")
+    conditional_btn_example_link_tac_code: UUID4 = Field(
+        default_factory=lambda: uuid.UUID(
+            '00000000-0000-0000-0000-000000000000'
+        ),
+        alias="conditionalBtnExampleLinkTacCode",
+        description="Conditional Btn Example Link Tac Code")
 
     def load_report_item(
             self, data: ReportItemPlantUserDetails):
@@ -271,6 +301,16 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
             data.random_property_updates_link_plant_code)
         self.back_to_dashboard_link_tac_code = (
             data.back_to_dashboard_link_tac_code)
+        self.test_file_download_link_pac_code = (
+            data.test_file_download_link_pac_code)
+        self.test_conditional_async_file_download_link_pac_code = (
+            data.test_conditional_async_file_download_link_pac_code)
+        self.test_async_flow_req_link_pac_code = (
+            data.test_async_flow_req_link_pac_code)
+        self.test_conditional_async_flow_req_link_pac_code = (
+            data.test_conditional_async_flow_req_link_pac_code)
+        self.conditional_btn_example_link_tac_code = (
+            data.conditional_btn_example_link_tac_code)
 
     def build_report_item(
         self
@@ -331,6 +371,16 @@ class PlantUserDetailsGetModelResponseItem(CamelModel):
             self.random_property_updates_link_plant_code)
         data.back_to_dashboard_link_tac_code = (
             self.back_to_dashboard_link_tac_code)
+        data.test_file_download_link_pac_code = (
+            self.test_file_download_link_pac_code)
+        data.test_conditional_async_file_download_link_pac_code = (
+            self.test_conditional_async_file_download_link_pac_code)
+        data.test_async_flow_req_link_pac_code = (
+            self.test_async_flow_req_link_pac_code)
+        data.test_conditional_async_flow_req_link_pac_code = (
+            self.test_conditional_async_flow_req_link_pac_code)
+        data.conditional_btn_example_link_tac_code = (
+            self.conditional_btn_example_link_tac_code)
         return data
 
 

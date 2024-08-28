@@ -97,6 +97,11 @@ class TestReportProviderPlantUserDetails:
                 "update_button_text_link_plant_code",
                 "random_property_updates_link_plant_code",
                 "back_to_dashboard_link_tac_code",
+                "test_file_download_link_pac_code",
+                "test_conditional_async_file_download_link_pac_code",
+                "test_async_flow_req_link_pac_code",
+                "test_conditional_async_flow_req_link_pac_code",
+                "conditional_btn_example_link_tac_code",
 # endset  # noqa: E122
             ]
             for key in expected_keys:

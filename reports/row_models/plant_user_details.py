@@ -47,6 +47,16 @@ class ReportItemPlantUserDetails():  # pylint: disable=too-few-public-methods
         uuid.UUID(int=0))
     back_to_dashboard_link_tac_code: uuid.UUID = (
         uuid.UUID(int=0))
+    test_file_download_link_pac_code: uuid.UUID = (
+        uuid.UUID(int=0))
+    test_conditional_async_file_download_link_pac_code: uuid.UUID = (
+        uuid.UUID(int=0))
+    test_async_flow_req_link_pac_code: uuid.UUID = (
+        uuid.UUID(int=0))
+    test_conditional_async_flow_req_link_pac_code: uuid.UUID = (
+        uuid.UUID(int=0))
+    conditional_btn_example_link_tac_code: uuid.UUID = (
+        uuid.UUID(int=0))
 
     def load_data_provider_dict(
             self, data: dict):
@@ -107,3 +117,21 @@ class ReportItemPlantUserDetails():  # pylint: disable=too-few-public-methods
         )
         self.back_to_dashboard_link_tac_code = (
             TypeConversion.get_uuid(data["back_to_dashboard_link_tac_code"]))
+        self.test_file_download_link_pac_code = (
+            TypeConversion.get_uuid(
+                data["test_file_download_link_pac_code"])
+        )
+        self.test_conditional_async_file_download_link_pac_code = (
+            TypeConversion.get_uuid(
+                data["test_conditional_async_file_download_link_pac_code"])
+        )
+        self.test_async_flow_req_link_pac_code = (
+            TypeConversion.get_uuid(
+                data["test_async_flow_req_link_pac_code"])
+        )
+        self.test_conditional_async_flow_req_link_pac_code = (
+            TypeConversion.get_uuid(
+                data["test_conditional_async_flow_req_link_pac_code"])
+        )
+        self.conditional_btn_example_link_tac_code = (
+            TypeConversion.get_uuid(data["conditional_btn_example_link_tac_code"]))

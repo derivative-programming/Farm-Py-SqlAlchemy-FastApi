@@ -153,6 +153,10 @@ class MockReportItemTacFarmDashboard:  # pylint: disable=too-few-public-methods
         self.field_one_plant_list_link_land_code = uuid.uuid4()
         self.conditional_btn_example_link_land_code = uuid.uuid4()
         self.is_conditional_btn_available = True
+        self.test_file_download_link_pac_code = uuid.uuid4()
+        self.test_conditional_file_download_link_pac_code = uuid.uuid4()
+        self.test_async_flow_req_link_pac_code = uuid.uuid4()
+        self.test_conditional_async_flow_req_link_pac_code = uuid.uuid4()
 
 
 @pytest.fixture
@@ -215,3 +219,11 @@ async def test_process_request(session_context, report_request, report_items):
                 report_item.conditional_btn_example_link_land_code
             assert response_item.is_conditional_btn_available == \
                 report_item.is_conditional_btn_available
+            assert response_item.test_file_download_link_pac_code == \
+                report_item.test_file_download_link_pac_code
+            assert response_item.test_conditional_file_download_link_pac_code == \
+                report_item.test_conditional_file_download_link_pac_code
+            assert response_item.test_async_flow_req_link_pac_code == \
+                report_item.test_async_flow_req_link_pac_code
+            assert response_item.test_conditional_async_flow_req_link_pac_code == \
+                report_item.test_conditional_async_flow_req_link_pac_code

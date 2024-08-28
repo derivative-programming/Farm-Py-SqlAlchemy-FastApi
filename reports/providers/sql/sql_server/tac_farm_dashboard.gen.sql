@@ -10,6 +10,14 @@
 
 			cast((case when 1=0 then 1 else 0 end) as bit) as is_conditional_btn_available,
 
+			pac.code as test_file_download_link_pac_code,
+
+			pac.code as test_conditional_file_download_link_pac_code,
+
+			pac.code as test_async_flow_req_link_pac_code,
+
+			pac.code as test_conditional_async_flow_req_link_pac_code,
+
 			ROW_NUMBER() OVER(
 				ORDER BY
 

@@ -50,6 +50,16 @@
 
 			plant.code as details_link_plant_code,
 
+			pac.code as test_file_download_link_pac_code,
+
+			pac.code as test_conditional_file_download_link_pac_code,
+
+			pac.code as test_async_flow_req_link_pac_code,
+
+			pac.code as test_conditional_async_flow_req_link_pac_code,
+
+			plant.code as conditional_btn_example_link_plant_code,
+
 			ROW_NUMBER() OVER(
 				ORDER BY
 

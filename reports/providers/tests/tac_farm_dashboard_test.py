@@ -77,6 +77,10 @@ class TestReportProviderTacFarmDashboard:
                 "field_one_plant_list_link_land_code",
                 "conditional_btn_example_link_land_code",
                 "is_conditional_btn_available",
+                "test_file_download_link_pac_code",
+                "test_conditional_file_download_link_pac_code",
+                "test_async_flow_req_link_pac_code",
+                "test_conditional_async_flow_req_link_pac_code",
 # endset  # noqa: E122
             ]
             for key in expected_keys:
